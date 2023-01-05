@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "id": "lifesteal",
+  "version": "${version}",
+
+  "custom": {
+    "cardinal-components": [
+      "lifesteal:leveldata",
+      "lifesteal:healthdata"
+    ]
+  },
+  "icon": "lifesteal.png",
+  "name": "Lifesteal",
+  "description": "Lifesteal is a mod where killing other players steals their hearts for your own gain",
+  "authors": [
+    "LoxiGoose",
+    "bredtxt",
+    "iZophoro"
+  ],
+  "contact": {
+    "repo": "https://github.com/LoxiGoose/Lifesteal-Architectury",
+    "issues": "https://github.com/LoxiGoose/Lifesteal-Architectury/issues"
+  },
+  "license": "GPL-3.0",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "net.goose.lifesteal.fabric.LifestealFabric"
+    ],
+    "cardinal-components": [
+      "net.goose.lifesteal.data.fabric.ModComponents"
+    ]
+  },
+  "mixins": [
+    "lifesteal.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.14.12",
+    "minecraft": ">=1.19.3"
+  }
+}

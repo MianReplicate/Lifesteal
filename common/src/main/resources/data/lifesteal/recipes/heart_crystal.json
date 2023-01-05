@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern":[
+    "BDB",
+    "DCD",
+    "BDB"
+  ],
+
+  "key": {
+    "C": {
+      "item": "lifesteal:heart_core"
+    },
+    "B": {
+      "item": "lifesteal:heart_core_block"
+    },
+    "D": {
+      "item": "minecraft:diamond"
+    }
+  },
+
+  "result": {
+    "item": "lifesteal:heart_crystal"
+  }
+}

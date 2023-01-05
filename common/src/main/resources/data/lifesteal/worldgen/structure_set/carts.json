@@ -1,0 +1,50 @@
+{
+  "structures": [
+    {
+      "structure": "lifesteal:ore_cart_1",            //<= structure
+      "weight": 80                                    //<= weight
+    },
+    {
+      "structure": "lifesteal:ore_cart_2",            //<= structure
+      "weight": 10                                    //<= weight
+    },
+    {
+      "structure": "lifesteal:ore_cart_3",            //<= structure
+      "weight": 20                                    //<= weight
+    },
+    {
+      "structure": "lifesteal:ore_cart_4",            //<= structure
+      "weight": 1                                    //<= weight
+    },
+    {
+      "structure": "lifesteal:ore_cart_5",            //<= structure
+      "weight": 100                                    //<= weight
+    },
+    {
+      "structure": "lifesteal:ore_cart_6",            //<= structure
+      "weight": 90                                    //<= weight
+    },
+    {
+      "structure": "lifesteal:abandoned_trading_cart",            //<= structure
+      "weight": 40                                    //<= weight
+    },
+    {
+      "structure": "lifesteal:robbed_cart_1",            //<= structure
+      "weight": 150                                    //<= weight
+    },
+    {
+      "structure": "lifesteal:robbed_cart_2",            //<= structure
+      "weight": 150                                    //<= weight
+    },
+    {
+      "structure": "lifesteal:robbed_cart_3",            //<= structure
+      "weight": 150                                    //<= weight
+    }
+  ],
+  "placement": {
+    "type": "minecraft:random_spread",                          //<= "random_spread" or "concentric_rings" (Use for strongholds). In most cases: "random_spread"
+    "spacing": 40,                                              //<= Roughly the average distance in chunks between two structures in this set.
+    "separation": 20,                                           //<= The minimum distance in chunks. Needs to be smaller than spacing.
+    "salt": 1542327653                                          //<= unique identifier
+  }
+}

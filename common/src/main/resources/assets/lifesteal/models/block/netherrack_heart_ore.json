@@ -1,0 +1,6 @@
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "lifesteal:block/netherrack_heart_ore"
+  }
+}

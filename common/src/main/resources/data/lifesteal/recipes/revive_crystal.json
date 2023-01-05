@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern":[
+    "BCB",
+    "NHN",
+    "BCB"
+  ],
+
+  "key": {
+    "C": {
+      "item": "lifesteal:heart_core"
+    },
+    "B": {
+      "item": "lifesteal:heart_core_block"
+    },
+    "N": {
+      "item": "minecraft:netherite_ingot"
+    },
+    "H": {
+      "item": "lifesteal:heart_crystal"
+    }
+  },
+
+  "result": {
+    "item": "lifesteal:revive_crystal"
+  }
+}

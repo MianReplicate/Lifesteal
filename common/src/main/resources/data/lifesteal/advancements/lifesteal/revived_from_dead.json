@@ -1,0 +1,22 @@
+{
+  "display": {
+    "icon": {
+      "item": "minecraft:player_head"
+    },
+    "title": {
+      "translate": "advancements.lifesteal.revived.title"
+    },
+    "description": {
+      "translate": "advancements.lifesteal.revived.desc"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true
+  },
+  "parent": "lifesteal:lifesteal/root",
+  "criteria": {
+    "requirement": {
+      "trigger": "lifesteal:revived"
+    }
+  }
+}

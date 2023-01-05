@@ -1,0 +1,60 @@
+{
+  "display": {
+    "icon": {
+      "item": "minecraft:netherite_helmet"
+    },
+    "title": {
+      "translate": "advancements.lifesteal.get_10_max_hearts_with_netherite_armor.title"
+    },
+    "description": {
+      "translate": "advancements.lifesteal.get_10_max_hearts_with_netherite_armor.desc"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true
+  },
+  "parent": "lifesteal:lifesteal/get_10_max_hearts",
+  "criteria": {
+    "get10maxhearts": {
+      "trigger": "lifesteal:get_10_max_hearts"
+    },
+    "havefullnetheritearmor": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:netherite_helmet"
+            ]
+          },
+          {
+            "items": [
+              "minecraft:netherite_chestplate"
+            ]
+          },
+          {
+            "items": [
+              "minecraft:netherite_leggings"
+            ]
+          },
+          {
+            "items": [
+              "minecraft:netherite_boots"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "get10maxhearts"
+    ],
+    [
+      "havefullnetheritearmor"
+    ]
+  ],
+  "rewards": {
+    "experience": 500
+  }
+}

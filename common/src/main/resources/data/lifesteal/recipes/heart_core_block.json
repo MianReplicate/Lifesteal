@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern":[
+    "FFF",
+    "FCF",
+    "FFF"
+  ],
+
+  "key": {
+    "C": {
+      "item": "lifesteal:heart_core"
+    },
+    "F": {
+      "item": "lifesteal:heart_fragment"
+    }
+  },
+
+  "result": {
+    "item": "lifesteal:heart_core_block"
+  }
+}

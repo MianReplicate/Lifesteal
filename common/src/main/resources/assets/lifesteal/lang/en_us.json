@@ -1,0 +1,47 @@
+{
+  "item.lifesteal.heart_core": "Heart Core",
+  "item.lifesteal.heart_fragment": "Heart Fragment",
+  "item.lifesteal.heart_crystal": "Heart Crystal",
+  "item.lifesteal.heart_crystal.unnatural": "Unnatural Heart Crystal",
+  "item.lifesteal.revive_crystal": "Revive Crystal",
+
+  "block.lifesteal.heart_core_block": "Heart Core Block",
+  "block.lifesteal.heart_ore": "Heart Ore",
+  "block.lifesteal.deepslate_heart_ore": "Deepslate Heart Ore",
+  "block.lifesteal.netherrack_heart_ore": "Netherrack Heart Ore",
+
+  "gui.lifesteal.heart_core_disabled": "Heart Cores have been disabled in the configurations",
+  "gui.lifesteal.heart_crystal_disabled": "Heart Crystals have been disabled in the configurations",
+  "gui.lifesteal.revive_crystal_disabled": "Revive Crystals have been disabled in the configurations",
+  "gui.lifesteal.heart_crystal_reaching_max": "You already have the max amount of hearts",
+  "gui.lifesteal.heart_core_at_max_health": "You are already at max health",
+  "gui.lifesteal.can't_withdraw_less_than_minimum": "You can't withdraw over the minimum amount of hearts you can lose",
+  "gui.lifesteal.invaild_revive_block": "You need to right click a specified player's head to revive them.",
+  "gui.lifesteal.already_revived": "This player is already alive.",
+  "gui.lifesteal.revived": "This player has successfully been revived!",
+  "gui.lifesteal.singleplayer": "This item can only be used in multiplayer!",
+
+  "bannedmessage.lifesteal.lost_max_hearts": "You have lost all your max hearts, you are now permanently banned till further notice.",
+
+  "chat.message.lifesteal.reached_max_hearts": "You have reached max hearts.",
+  "chat.message.lifesteal.lost_max_hearts": "You have lost all your max hearts. You are now permanently dead.",
+  "chat.message.lifesteal.no_more_hearts_to_steal": "This player doesn't have any hearts you can steal.",
+  "chat.message.lifesteal.revived_player": " has been revived from the dead!",
+
+  "itemGroup.lifesteal": "Lifesteal",
+
+  "advancements.lifesteal.get_fragment.title": "Fragment of the Past",
+  "advancements.lifesteal.get_fragment.desc": "The beginning of the end.",
+  "advancements.lifesteal.get_heart_core.title": "A Beacon of Hope",
+  "advancements.lifesteal.get_heart_core.desc": "Retrieve the core of a heart crystal.",
+  "advancements.lifesteal.get_heart_crystal.title": "Once Upon a Time..",
+  "advancements.lifesteal.get_heart_crystal.desc": "Shiny shiny heart.. oh what shall I do with you?",
+  "advancements.lifesteal.get_10_max_hearts.title": "Invincible",
+  "advancements.lifesteal.get_10_max_hearts.desc": "Get 10 permanent new max hearts.",
+  "advancements.lifesteal.use_totem_while_20_max_hearts.title": "Defying Mortality",
+  "advancements.lifesteal.use_totem_while_20_max_hearts.desc": "Save yourself from death with a Totem of Undying, even at the peak of immortality.",
+  "advancements.lifesteal.get_10_max_hearts_with_netherite_armor.title": "Challenging Death",
+  "advancements.lifesteal.get_10_max_hearts_with_netherite_armor.desc": "Gain 10 extra hearts AND get a full Netherite Armor set. Truly immortal.",
+  "advancements.lifesteal.revived.title": "The End of Time",
+  "advancements.lifesteal.revived.desc": "Defy the meaning of death."
+}

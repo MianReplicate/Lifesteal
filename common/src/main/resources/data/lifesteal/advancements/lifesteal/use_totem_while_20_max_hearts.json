@@ -1,0 +1,22 @@
+{
+  "display": {
+    "icon": {
+      "item": "minecraft:totem_of_undying"
+    },
+    "title": {
+      "translate": "advancements.lifesteal.use_totem_while_20_max_hearts.title"
+    },
+    "description": {
+      "translate": "advancements.lifesteal.use_totem_while_20_max_hearts.desc"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true
+  },
+  "parent": "lifesteal:lifesteal/get_10_max_hearts",
+  "criteria": {
+    "requirement": {
+      "trigger": "lifesteal:use_totem_while_20_max_hearts"
+    }
+  }
+}

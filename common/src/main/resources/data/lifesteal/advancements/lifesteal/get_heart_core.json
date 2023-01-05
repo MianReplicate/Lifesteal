@@ -1,0 +1,31 @@
+{
+  "display": {
+    "icon": {
+      "item": "lifesteal:heart_core"
+    },
+    "title": {
+      "translate": "advancements.lifesteal.get_heart_core.title"
+    },
+    "description": {
+      "translate": "advancements.lifesteal.get_heart_core.desc"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true
+  },
+  "parent": "lifesteal:lifesteal/root",
+  "criteria": {
+    "requirement": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "lifesteal:heart_core"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}
