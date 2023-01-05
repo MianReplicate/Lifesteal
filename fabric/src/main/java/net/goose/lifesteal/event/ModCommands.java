@@ -5,7 +5,6 @@ import net.goose.lifesteal.LifeSteal;
 
 public class ModCommands {
     public static void register(){
-        LifeSteal.LOGGER.debug("Registering ModCommands for " + LifeSteal.MOD_ID);
         CommandRegistrationCallback.EVENT.register((dispatcher, registry, selection) -> net.goose.lifesteal.command.ModCommands.registerCommands(command -> command.accept(dispatcher)));
     }
 }

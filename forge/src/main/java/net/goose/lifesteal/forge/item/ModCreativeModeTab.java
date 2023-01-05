@@ -21,28 +21,8 @@ public class ModCreativeModeTab {
         stack.setTag(tag);
         return stack;
     }
-
-    public static void registerTabItems(final CreativeModeTabEvent.BuildContents event) {
-        if (event.getTab() == CreativeModeTabs.FOOD_AND_DRINKS) {
-            event.accept(ModItems.HEART_CRYSTAL.get());
-            event.accept(ModItems.HEART_CORE.get());
-        }
-        if (event.getTab() == CreativeModeTabs.COLORED_BLOCKS) {
-            event.accept(ModBlocks.HEART_CORE_BLOCK.get());
-        }
-        if (event.getTab() == CreativeModeTabs.INGREDIENTS) {
-            event.accept(ModItems.HEART_CORE.get());
-            event.accept(ModBlocks.HEART_CORE_BLOCK.get());
-            event.accept(ModItems.HEART_FRAGMENT.get());
-        }
-        if (event.getTab() == CreativeModeTabs.NATURAL_BLOCKS) {
-            event.accept(ModBlocks.HEART_ORE.get());
-            event.accept(ModBlocks.DEEPSLATE_HEART_ORE.get());
-            event.accept(ModBlocks.NETHERRACK_HEART_ORE.get());
-        }
-    }
-
     public static void registerTab(CreativeModeTabEvent.Register event) {
+        LifeSteal.LOGGER.debug("Registering ModCreativeModeTab for " + LifeSteal.MOD_ID);
         event.registerCreativeModeTab(TAB, builder -> builder.title(Component.translatable("itemGroup.lifesteal")).icon(ModCreativeModeTab::makeIcon).displayItems((flags, output, isOp) -> {
             for (RegistrySupplier<Item> item : ModItems.ITEMS.getEntries()) {
                 output.accept(item.get());

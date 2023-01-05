@@ -23,6 +23,7 @@ public class ModItems {
             () -> new ReviveCrystalItem(new Item.Properties().stacksTo(1).fireResistant()));
 
     public static void register(){
+        LifeSteal.LOGGER.debug("Registering ModItems for " + LifeSteal.MOD_ID);
         ITEMS.register();
     }
 }

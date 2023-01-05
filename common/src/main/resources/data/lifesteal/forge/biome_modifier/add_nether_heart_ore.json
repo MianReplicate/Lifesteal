@@ -1,6 +1,0 @@
-{
-  "type": "forge:add_features",
-  "biomes": "#lifesteal:nether_ore",
-  "features": "lifesteal:nether_heart_ore_placed",
-  "step": "underground_ores"
-}

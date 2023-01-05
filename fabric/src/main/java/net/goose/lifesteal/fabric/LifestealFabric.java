@@ -8,6 +8,7 @@ import net.goose.lifesteal.configuration.ConfigHolder;
 import net.goose.lifesteal.event.ModCommands;
 import net.goose.lifesteal.event.ModEvents;
 import net.goose.lifesteal.item.ModItems;
+import net.goose.lifesteal.world.gen.ModBiomeModifier;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -15,6 +16,7 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 
 public class LifestealFabric implements ModInitializer {
+
     private static final CreativeModeTab LIFESTEAL_TAB = FabricItemGroup.builder(new ResourceLocation(LifeSteal.MOD_ID, "creative_tab")).icon(() -> new ItemStack(ModItems.HEART_CRYSTAL.get()))
             .title(Component.translatable("itemGroup.lifesteal"))
             .displayItems((enabledFeatures, entries, operatorEnabled) -> {
@@ -33,5 +35,6 @@ public class LifestealFabric implements ModInitializer {
         LifeSteal.init();
         ModEvents.register();
         ModCommands.register();
+        ModBiomeModifier.register();
     }
 }

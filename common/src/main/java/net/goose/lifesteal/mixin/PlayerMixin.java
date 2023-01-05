@@ -23,6 +23,8 @@ public abstract class PlayerMixin extends LivingEntity {
     @Inject(method = "dropEquipment", at = @At("HEAD"))
     private void onDeath(final CallbackInfo info) {
 
+        LifeSteal.LOGGER.info("RUNNING!");
+
         final int maximumheartsGainable = LifeSteal.config.maximumamountofheartsGainable.get();
         final int maximumheartsLoseable = LifeSteal.config.maximumamountofheartsLoseable.get();
         final int startingHitPointDifference = LifeSteal.config.startingHeartDifference.get();

@@ -41,6 +41,7 @@ public class ModBlocks {
     }
 
     public static void register() {
+        LifeSteal.LOGGER.debug("Registering ModBlocks for " + LifeSteal.MOD_ID);
         BLOCKS.register();
     }
 }

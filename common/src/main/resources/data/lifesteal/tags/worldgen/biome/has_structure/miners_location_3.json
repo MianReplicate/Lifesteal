@@ -3,7 +3,9 @@
 
   "_comment": " This biome tag can specify the biome directly. Or specify another biome tag by starting with # ",
   "values": [
-    "#forge:is_plains",
+    "minecraft:plains",
+    "minecraft:sunflower_plains",
+    "minecraft:snowy_plains",
     "minecraft:taiga",
     "minecraft:forest",
     "minecraft:meadow"
