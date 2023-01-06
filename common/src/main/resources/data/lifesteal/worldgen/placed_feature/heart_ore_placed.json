@@ -1,5 +1,5 @@
 {
-  "feature": "lifesteal:ore_heart",
+  "feature": "lifesteal:heart_ore",
   "placement": [
     {
       "type": "minecraft:count",

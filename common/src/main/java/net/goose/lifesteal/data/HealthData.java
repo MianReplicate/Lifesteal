@@ -107,6 +107,10 @@ public class HealthData implements IHealthData {
     }
 
     @Override
+    public LivingEntity getLivingEntity(){
+        return this.livingEntity;
+    }
+    @Override
     public int getHeartDifference() {
         return this.heartDifference;
     }

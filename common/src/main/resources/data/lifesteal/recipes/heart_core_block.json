@@ -1,9 +1,9 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern":[
-    "FFF",
-    "FCF",
-    "FFF"
+    "CFC",
+    "FDF",
+    "CFC"
   ],
 
   "key": {
@@ -12,6 +12,9 @@
     },
     "F": {
       "item": "lifesteal:heart_fragment"
+    },
+    "D": {
+      "item": "minecraft:diamond"
     }
   },
 

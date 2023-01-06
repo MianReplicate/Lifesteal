@@ -13,6 +13,7 @@ loom {
         extraAccessWideners.add loom.accessWidenerPath.get().asFile.name
 
         mixinConfig "lifesteal.mixins.json"
+
     }
 
     launches {

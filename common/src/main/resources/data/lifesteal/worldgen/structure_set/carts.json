@@ -44,7 +44,7 @@
   "placement": {
     "type": "minecraft:random_spread",                          //<= "random_spread" or "concentric_rings" (Use for strongholds). In most cases: "random_spread"
     "spacing": 40,                                              //<= Roughly the average distance in chunks between two structures in this set.
-    "separation": 20,                                           //<= The minimum distance in chunks. Needs to be smaller than spacing.
+    "separation": 15,                                           //<= The minimum distance in chunks. Needs to be smaller than spacing.
     "salt": 1542327653                                          //<= unique identifier
   }
 }

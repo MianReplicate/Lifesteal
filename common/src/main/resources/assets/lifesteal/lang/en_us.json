@@ -20,6 +20,7 @@
   "gui.lifesteal.already_revived": "This player is already alive.",
   "gui.lifesteal.revived": "This player has successfully been revived!",
   "gui.lifesteal.singleplayer": "This item can only be used in multiplayer!",
+  "gui.lifesteal.withdrawing_disabled": "Withdrawing is disabled in the configurations",
 
   "bannedmessage.lifesteal.lost_max_hearts": "You have lost all your max hearts, you are now permanently banned till further notice.",
 

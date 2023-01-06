@@ -4,6 +4,7 @@ import net.goose.lifesteal.util.Serializable;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.LivingEntity;
 
 
 public interface IHealthData extends Serializable<CompoundTag> {
@@ -14,6 +15,7 @@ public interface IHealthData extends Serializable<CompoundTag> {
 
     void spawnPlayerHead(ServerPlayer serverPlayer);
 
+    LivingEntity getLivingEntity();
     int getHeartDifference();
 
     void setHeartDifference(int hearts);

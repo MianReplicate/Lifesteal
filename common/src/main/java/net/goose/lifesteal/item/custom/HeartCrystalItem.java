@@ -33,8 +33,16 @@ public class HeartCrystalItem extends Item {
     public ItemStack finishUsingItem(ItemStack item, Level level, LivingEntity entity) {
 
         if (!level.isClientSide() && entity instanceof ServerPlayer serverPlayer) {
+            CompoundTag compoundTag = item.getTagElement("lifesteal");
+            boolean droppedHeartCrystal = false;
 
-            if (!LifeSteal.config.disableHeartCrystals.get()) {
+            if(compoundTag != null){
+                if(compoundTag.getBoolean("dropped")){
+                    droppedHeartCrystal = true;
+                }
+            }
+
+            if (!LifeSteal.config.disableHeartCrystals.get() || droppedHeartCrystal) {
                 AtomicInteger currentheartDifference = new AtomicInteger();
                 HealthData.get(entity).ifPresent(IHeartCap -> currentheartDifference.set(IHeartCap.getHeartDifference()));
 
@@ -56,10 +64,9 @@ public class HeartCrystalItem extends Item {
                 });
 
                 // Formula, for every hit point, increase duration of the regeneration by 50 ticks: TickDuration = MaxHealth * 50
-                CompoundTag compoundTag = item.getTagElement("lifesteal");
                 if (compoundTag == null) {
                     applyCrystalEffect(entity);
-                } else if (compoundTag.getBoolean("Fresh")) {
+                } else if (!compoundTag.getBoolean("Unfresh")) {
                     applyCrystalEffect(entity);
                 }
 

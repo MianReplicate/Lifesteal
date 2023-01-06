@@ -14,6 +14,7 @@ import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -47,25 +48,26 @@ public class LifestealCommand {
 
     private static int withdraw(CommandSourceStack source, int amount) throws CommandSyntaxException {
         if (source.isPlayer()) {
-            final int maximumheartsLoseable = LifeSteal.config.maximumamountofheartsLoseable.get();
-            final int startingHitPointDifference = LifeSteal.config.startingHeartDifference.get();
+            LivingEntity livingEntity = source.getPlayer();
+            ServerPlayer serverPlayer = (ServerPlayer) livingEntity;
 
-            LivingEntity playerthatsentcommand = source.getPlayer();
-            if (playerthatsentcommand instanceof Player player) {
+            if(!LifeSteal.config.disableWithdrawing.get()){
+                final int maximumheartsLoseable = LifeSteal.config.maximumamountofheartsLoseable.get();
+                final int startingHitPointDifference = LifeSteal.config.startingHeartDifference.get();
                 String advancementUsed = (String) LifeSteal.config.advancementUsedForWithdrawing.get();
 
-                if (source.getPlayer().getAdvancements().getOrStartProgress(Advancement.Builder.advancement().build(new ResourceLocation(advancementUsed))).isDone() || advancementUsed.isEmpty()) {
+                if (serverPlayer.getAdvancements().getOrStartProgress(Advancement.Builder.advancement().build(new ResourceLocation(advancementUsed))).isDone() || advancementUsed.isEmpty() || serverPlayer.isCreative()) {
                     AtomicInteger heartDifference = new AtomicInteger();
-                    HealthData.get(playerthatsentcommand).ifPresent(IHeartCap ->
+                    HealthData.get(livingEntity).ifPresent(IHeartCap ->
                             heartDifference.set(IHeartCap.getHeartDifference() - (LifeSteal.config.heartCrystalAmountGain.get() * amount)));
 
                     if (maximumheartsLoseable >= 0) {
                         if (heartDifference.get() < startingHitPointDifference - maximumheartsLoseable) {
-                            player.displayClientMessage(Component.translatable("gui.lifesteal.can't_withdraw_less_than_minimum"), true);
+                            serverPlayer.displayClientMessage(Component.translatable("gui.lifesteal.can't_withdraw_less_than_minimum"), true);
                             return Command.SINGLE_SUCCESS;
                         }
                     }
-                    HealthData.get(playerthatsentcommand).ifPresent(IHeartCap ->
+                    HealthData.get(livingEntity).ifPresent(IHeartCap ->
                     {
                         IHeartCap.setHeartDifference(heartDifference.get());
                         IHeartCap.refreshHearts(false);
@@ -73,19 +75,21 @@ public class LifestealCommand {
 
                     ItemStack heartCrystal = new ItemStack(ModItems.HEART_CRYSTAL.get(), amount);
                     CompoundTag compoundTag = heartCrystal.getOrCreateTagElement("lifesteal");
-                    compoundTag.putBoolean("Fresh", false);
+                    compoundTag.putBoolean("Unfresh", true);
                     heartCrystal.setHoverName(Component.translatable("item.lifesteal.heart_crystal.unnatural"));
-                    if (player.getInventory().getFreeSlot() == -1) {
-                        player.drop(heartCrystal, true);
+                    if (serverPlayer.getInventory().getFreeSlot() == -1) {
+                        serverPlayer.drop(heartCrystal, true);
                     } else {
-                        player.getInventory().add(heartCrystal);
+                        serverPlayer.getInventory().add(heartCrystal);
                     }
                 } else {
                     String text = (String) LifeSteal.config.textUsedForRequirementOnWithdrawing.get();
                     if (!text.isEmpty()) {
-                        player.displayClientMessage(Component.literal((String) LifeSteal.config.textUsedForRequirementOnWithdrawing.get()), true);
+                        serverPlayer.displayClientMessage(Component.literal((String) LifeSteal.config.textUsedForRequirementOnWithdrawing.get()), true);
                     }
                 }
+            }else{
+                serverPlayer.displayClientMessage(Component.translatable("gui.lifesteal.withdrawing_disabled"), true);
             }
         }
         return Command.SINGLE_SUCCESS;

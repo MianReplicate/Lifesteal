@@ -2,11 +2,14 @@ package net.goose.lifesteal.mixin;
 
 import net.goose.lifesteal.LifeSteal;
 import net.goose.lifesteal.data.HealthData;
+import net.goose.lifesteal.item.ModItems;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -20,10 +23,27 @@ public abstract class PlayerMixin extends LivingEntity {
         super(entityType, level);
     }
 
+    public void increaseHearts(HealthData data, int health, LivingEntity killedPlayer){
+        if(LifeSteal.config.playerdropsHeartCrystalWhenKilled.get()){
+            ItemStack itemStack = new ItemStack(ModItems.HEART_CRYSTAL.get());
+            CompoundTag compoundTag = itemStack.getOrCreateTagElement("lifesteal");
+            compoundTag.putBoolean("dropped", true);
+            compoundTag.putBoolean("Unfresh", true);
+            itemStack.setHoverName(Component.literal(killedPlayer.getName().getString() + "'s Heart"));
+
+            ServerPlayer serverPlayer = (ServerPlayer) data.getLivingEntity();
+            if (serverPlayer.getInventory().getFreeSlot() == -1) {
+                serverPlayer.drop(itemStack, true);
+            } else {
+                serverPlayer.getInventory().add(itemStack);
+            }
+        }else {
+            data.setHeartDifference(data.getHeartDifference() + health);
+            data.refreshHearts(false);
+        }
+    }
     @Inject(method = "dropEquipment", at = @At("HEAD"))
     private void onDeath(final CallbackInfo info) {
-
-        LifeSteal.LOGGER.info("RUNNING!");
 
         final int maximumheartsGainable = LifeSteal.config.maximumamountofheartsGainable.get();
         final int maximumheartsLoseable = LifeSteal.config.maximumamountofheartsLoseable.get();
@@ -73,23 +93,19 @@ public abstract class PlayerMixin extends LivingEntity {
                             if (killerEntityIsPlayer && !disableLifesteal) {
                                 HealthData.get(killerEntity).ifPresent(killerData -> {
                                     if (playersGainHeartsifKillednoHeart) {
-                                        killerData.setHeartDifference(killerData.getHeartDifference() + amountOfHealthLostUponLoss);
-                                        killerData.refreshHearts(false);
-
+                                        increaseHearts(killerData, amountOfHealthLostUponLoss, killedEntity);
                                     } else {
 
                                         if (!disableHeartLoss) {
                                             if (maximumheartsLoseable > -1) {
                                                 if (startingHitPointDifference + HeartDifference > -maximumheartsLoseable) {
-                                                    killerData.setHeartDifference(killerData.getHeartDifference() + amountOfHealthLostUponLoss);
-                                                    killerData.refreshHearts(false);
+                                                    increaseHearts(killerData, amountOfHealthLostUponLoss, killedEntity);
                                                 } else {
                                                     serverPlayer.sendSystemMessage(Component.translatable("chat.message.lifesteal.no_more_hearts_to_steal"));
                                                 }
 
                                             } else {
-                                                killerData.setHeartDifference(killerData.getHeartDifference() + amountOfHealthLostUponLoss);
-                                                killerData.refreshHearts(false);
+                                                increaseHearts(killerData, amountOfHealthLostUponLoss, killedEntity);
                                             }
                                         } else {
                                             serverPlayer.sendSystemMessage(Component.translatable("chat.message.lifesteal.no_more_hearts_to_steal"));

@@ -1,5 +1,5 @@
 {
-  "feature": "lifesteal:netherore_heart",
+  "feature": "lifesteal:nether_heart_ore",
   "placement": [
     {
       "type": "minecraft:count",

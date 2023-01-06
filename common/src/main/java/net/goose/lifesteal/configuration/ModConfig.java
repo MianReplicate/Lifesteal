@@ -22,11 +22,13 @@ public class ModConfig {
     public final ForgeConfigSpec.IntValue heartCrystalAmountGain;
     public final ForgeConfigSpec.DoubleValue heartCoreHeal;
     public final ForgeConfigSpec.BooleanValue tellPlayersIfHitPointChanged;
+    public final ForgeConfigSpec.BooleanValue disableWithdrawing;
     public final ForgeConfigSpec.ConfigValue advancementUsedForWithdrawing;
     public final ForgeConfigSpec.ConfigValue textUsedForRequirementOnWithdrawing;
     public final ForgeConfigSpec.BooleanValue tellPlayersIfReachedMaxHearts;
     public final ForgeConfigSpec.BooleanValue silentlyRevivePlayer;
     public final ForgeConfigSpec.BooleanValue playersSpawnHeadUponDeath;
+    public final ForgeConfigSpec.BooleanValue playerdropsHeartCrystalWhenKilled;
 
 
     public ModConfig(final ForgeConfigSpec.Builder builder) {
@@ -45,19 +47,28 @@ public class ModConfig {
 
         builder.comment("This category is the configuration for items and enchantments in this mod");
         builder.push("Items and Enchantments");
-        this.heartCrystalAmountGain = buildInt(builder, "Amount of HitPoints Heart Crystal Permanently Gives:", 2, 1, Integer.MAX_VALUE, "This is the amount of hit points a Heart Crystal should give when used. 2 HitPoints = 1 Heart, 3 = 1.5 Heart.");
-        this.heartCoreHeal = buildDouble(builder, "Percentage of max Health Heart Core Heals", 0.25, 0.01, 1, "The percentage of max health a heart core should heal when used.");
-        this.preventFromUsingCrystalIfMax = buildBoolean(builder, "Prevent Players From Using Heart Crystals If At Max Hearts:", true, "If a max is set for the amount of hearts you can get, this option when true, makes it so players can't eat heart crystals if they're already at the max.");
-        this.preventFromUsingCoreIfMax = buildBoolean(builder, "Prevent Players From Using Heart Cores If At Max Health:", true, "If this option is true, a player cannot eat heart cores if they are already at their max health.");
-        this.disableHeartCrystals = buildBoolean(builder, "Disable Heart Crystals:", false, "If you just want the generic Lifesteal mod, you can disable this and nobody can gain hearts through Heart Crystals but only through lifestealing.");
+        builder.push("Heart Cores");
         this.disableHeartCores = buildBoolean(builder, "Disable Heart Cores:", false, "Heart Cores can heal on default 25% of your health if right clicked. This value determines if they should be disabled.");
+        this.heartCoreHeal = buildDouble(builder, "Percentage of max Health Heart Core Heals", 0.33, 0.01, 1, "The percentage of max health a heart core should heal when used.");
+        this.preventFromUsingCoreIfMax = buildBoolean(builder, "Prevent Players From Using Heart Cores If At Max Health:", true, "If this option is true, a player cannot eat heart cores if they are already at their max health.");
+
+        builder.pop();
+        builder.push("Heart Crystals");
+        this.disableHeartCrystals = buildBoolean(builder, "Disable Heart Crystals:", false, "If you just want the generic Lifesteal mod, you can disable this and nobody can gain hearts through Heart Crystals but only through lifestealing.");
+        this.heartCrystalAmountGain = buildInt(builder, "Amount of HitPoints Heart Crystal Permanently Gives:", 2, 1, Integer.MAX_VALUE, "This is the amount of hit points a Heart Crystal should give when used. 2 HitPoints = 1 Heart, 3 = 1.5 Heart.");
+        this.preventFromUsingCrystalIfMax = buildBoolean(builder, "Prevent Players From Using Heart Crystals If At Max Hearts:", true, "If a max is set for the amount of hearts you can get, this option when true, makes it so players can't eat heart crystals if they're already at the max.");
+
+        builder.pop();
+        builder.push("Revive Crystals");
         this.disableReviveCrystals = buildBoolean(builder, "Disable Revive Crystals:", false, "This value determines whether or not revive crystals are disabled. If you're in singleplayer, this value is always true.");
 
+        builder.pop();
         builder.pop();
         builder.comment("This category is everything related to life stealing from someone.");
         builder.push("Lifesteal Related");
         this.disableLifesteal = buildBoolean(builder, "Disable Lifesteal:", false, "This option changes the entire mod into more of a permanent heart gaining system. This makes it so nobody can gain hearts from lifestealing but ONLY through Heart Crystals. MOBS can still take your hearts away if they kill you though, UNLESS you have that option disabled.");
         this.playersGainHeartsifKillednoHeart = buildBoolean(builder, "Players Gain Hearts From No Heart Players:", false, "This value determines if a player should still earn hearts from a player they killed even if the player doesn't have hearts to spare. EX: MinimumHeartHave");
+        this.playerdropsHeartCrystalWhenKilled = buildBoolean(builder, "Players Drop Heart Crystals When Killed:", false, "This value determines whether the killer will automatically gain hearts from a player or if the player drops a heart crystal instead that can be eaten. The config that disables Heart Crystals will not disable Heart Crystals dropped by players.");
 
         builder.pop();
         builder.comment("This category will hold the maximums for certain values");
@@ -71,6 +82,7 @@ public class ModConfig {
         builder.push("Commands");
         this.tellPlayersIfHitPointChanged = buildBoolean(builder, "Tell Players if Their HitPoint Difference Changed:", true, "This just makes it so when an admin changed a person's hitpoints, this value would determine if the game should tell the person in chat that their hitpoints was changed.");
         builder.push("Withdrawing");
+        this.disableWithdrawing = buildBoolean(builder, "Disable Withdrawing", false, "This value determines if withdrawing hearts should be disabled or not.");
         this.advancementUsedForWithdrawing = buildString(builder, "The Advancement Needed to Unlock Withdrawing:", "lifesteal:lifesteal/get_heart_crystal", "This value determines the advancement used to unlock withdrawing. You would find the advancement you want to use by using the ID of the advancement which is found with the /advancement command. If the value is empty, withdraw will be unlocked automatically.");
         this.textUsedForRequirementOnWithdrawing = buildString(builder, "The Text Shown When Withdrawing Isn't Unlocked:", "You need to at least have gotten one heart crystal in this world to withdraw", "This value determines what text will pop up when a player hasn't unlocked withdrawing. If this value is empty, no text will pop up.");
 

@@ -1,9 +1,9 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern":[
-    "BDB",
+    "BHB",
     "DCD",
-    "BDB"
+    "RBG"
   ],
 
   "key": {
@@ -15,6 +15,15 @@
     },
     "D": {
       "item": "minecraft:diamond"
+    },
+    "G": {
+      "item": "minecraft:golden_apple"
+    },
+    "R": {
+      "item": "minecraft:blaze_rod"
+    },
+    "H": {
+      "item": "minecraft:heart_of_the_sea"
     }
   },
 

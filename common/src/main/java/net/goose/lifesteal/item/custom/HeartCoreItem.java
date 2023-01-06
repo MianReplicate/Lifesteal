@@ -38,8 +38,8 @@ public class HeartCoreItem extends Item {
                         oldDuration = mobEffect.getDuration();
                     }
 
-                    int tickTime = (int) ((amountThatWillBeHealed * 50) / 2) + oldDuration;
-                    entity.addEffect(new MobEffectInstance(MobEffects.REGENERATION, tickTime, 1));
+                    int tickTime = (int) ((amountThatWillBeHealed * 50) / 3) + oldDuration;
+                    entity.addEffect(new MobEffectInstance(MobEffects.REGENERATION, tickTime, 2));
                 } else {
                     serverPlayer.displayClientMessage(Component.translatable("gui.lifesteal.heart_core_at_max_health"), true);
                     item.grow(1);
