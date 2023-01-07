@@ -58,6 +58,7 @@ public class HealthData implements IHealthData {
         if (livingEntity instanceof ServerPlayer serverPlayer) {
             if (!level.isClientSide) {
                 HashMap hashMap = iLevelData.getMap();
+
                 BlockPos blockPos = (BlockPos) hashMap.get(livingEntity.getUUID());
 
                 if (blockPos != null) {
@@ -98,7 +99,6 @@ public class HealthData implements IHealthData {
             blockEntity.setRemoved();
         }
         final IntegerProperty ROTATION = BlockStateProperties.ROTATION_16;
-        LifeSteal.LOGGER.info(String.valueOf(-(double) (serverPlayer.getYRot() * 16.0F / 360.0F)));
         BlockState playerHeadState = Blocks.PLAYER_HEAD.defaultBlockState().setValue(ROTATION, Integer.valueOf(Mth.floor((double)((180.0F + serverPlayer.getYRot()) * 16.0F / 360.0F) + 0.5) & 15));
         level.setBlockAndUpdate(blockPos, playerHeadState);
         SkullBlockEntity playerHeadEntity = new SkullBlockEntity(blockPos, playerHeadState);
@@ -198,6 +198,8 @@ public class HealthData implements IHealthData {
 
                     MinecraftServer server = livingEntity.level.getServer();
 
+                    Component component = Component.translatable("bannedmessage.lifesteal.lost_max_hearts");
+
                     if (!server.isSingleplayer()) {
 
                         if (LifeSteal.config.playersSpawnHeadUponDeath.get()) {
@@ -206,7 +208,6 @@ public class HealthData implements IHealthData {
 
                         serverPlayer.getInventory().dropAll();
 
-                        @Nullable Component component = Component.translatable("bannedmessage.lifesteal.lost_max_hearts");
                         UserBanList userbanlist = server.getPlayerList().getBans();
                         serverPlayer.getGameProfile();
                         GameProfile gameprofile = serverPlayer.getGameProfile();
@@ -215,11 +216,11 @@ public class HealthData implements IHealthData {
                         userbanlist.add(userbanlistentry);
 
                         if (serverPlayer != null) {
-                            serverPlayer.connection.disconnect(Component.translatable("bannedmessage.lifesteal.lost_max_hearts"));
+                            serverPlayer.connection.disconnect(component);
                         }
                     } else if (!serverPlayer.isSpectator()) {
                         serverPlayer.setGameMode(GameType.SPECTATOR);
-                        livingEntity.sendSystemMessage(Component.translatable("chat.message.lifesteal.lost_max_hearts"));
+                        livingEntity.sendSystemMessage(component);
                     }
 
                 }

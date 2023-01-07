@@ -6,8 +6,9 @@ public class ModConfig {
 
     public final ForgeConfigSpec.IntValue startingHeartDifference;
     public final ForgeConfigSpec.BooleanValue shouldAllMobsGiveHearts;
-    public final ForgeConfigSpec.BooleanValue loseHeartsOnlyWhenKilledByPlayer;
-    public final ForgeConfigSpec.BooleanValue loseHeartsOnlyWhenKilledByEntity;
+    public final ForgeConfigSpec.BooleanValue loseHeartsWhenKilledByPlayer;
+    public final ForgeConfigSpec.BooleanValue loseHeartsWhenKilledByMob;
+    public final ForgeConfigSpec.BooleanValue loseHeartsWhenKilledByEnvironment;
     public final ForgeConfigSpec.IntValue amountOfHealthLostUponLoss;
     public final ForgeConfigSpec.IntValue maximumamountofheartsGainable;
     public final ForgeConfigSpec.IntValue maximumamountofheartsLoseable;
@@ -18,7 +19,6 @@ public class ModConfig {
     public final ForgeConfigSpec.BooleanValue disableHeartCores;
     public final ForgeConfigSpec.BooleanValue disableReviveCrystals;
     public final ForgeConfigSpec.BooleanValue playersGainHeartsifKillednoHeart;
-    public final ForgeConfigSpec.BooleanValue disableHeartLoss;
     public final ForgeConfigSpec.IntValue heartCrystalAmountGain;
     public final ForgeConfigSpec.DoubleValue heartCoreHeal;
     public final ForgeConfigSpec.BooleanValue tellPlayersIfHitPointChanged;
@@ -36,13 +36,16 @@ public class ModConfig {
         builder.comment("This category holds general values that will mostly be customized by most.");
         builder.push("Starting Configurations");
         this.startingHeartDifference = buildInt(builder, "Starting HitPoint Difference:", 0, -19, Integer.MAX_VALUE, "This value modifies how many hearts you'll start at in a world. 2 would mean 1 extra heart, -2 would mean 1 less heart. If you have lives enabled, you'll gain a life when you get max hearts double your starting hearts. EX: If 3 hearts is your starting value, you'll gain a life if you get 3 more hearts. ");
-        this.loseHeartsOnlyWhenKilledByPlayer = buildBoolean(builder, "Lose Hearts Only When Killed By a Player:", false, "When this is true, you will lose hearts when killed by a player. Otherwise, you can lose max hearts just by any sorts of death.. (This is overridden by the mob value below if it's true)");
-        this.loseHeartsOnlyWhenKilledByEntity = buildBoolean(builder, "Lose Hearts Only When Killed By an Entity:", false, "When this is true, you will lose hearts when killed by a mob. Otherwise, you can lose max hearts just by any sorts of death.");
         this.amountOfHealthLostUponLoss = buildInt(builder, "Amount of HitPoints/Health Lost/Given Upon Death/Kill:", 2, 1, Integer.MAX_VALUE, "This values modifies the amount of hit points that should be lost when you die. The same also applies when you gain max health from lifestealing. 2 hit points = 1 health.");
-        this.disableHeartLoss = buildBoolean(builder, "Disable Heart Loss:", false, "This value determines if a PLAYER should lose HEARTS AT ALL.");
-        this.silentlyRevivePlayer = buildBoolean(builder, "Silently Revive Players:", false, "When a player is revived with the Revive Crystal, this value determines whether or not a chat message will be sent indicating they have been brought back from the dead.");
         this.playersSpawnHeadUponDeath = buildBoolean(builder, "Players Spawn Their Head Upon Death:", true, "In multiplayer, this value determines whether heads spawn or not when a player dies. NOTE: In singleplayer, this value is always false.");
 
+        builder.pop();
+
+        builder.comment("This category is for how players should lose hearts. If you want players to not be able to lose hearts at all, disable all the config options below.");
+        builder.push("Losing Hearts");
+        this.loseHeartsWhenKilledByPlayer = buildBoolean(builder, "Lose Hearts When Killed By a Player:", true, "When this is true, you will lose hearts when killed by a player.");
+        this.loseHeartsWhenKilledByMob = buildBoolean(builder, "Lose Hearts When Killed By a Mob:", true, "When this is true, you will lose hearts when killed by a mob.");
+        this.loseHeartsWhenKilledByEnvironment = buildBoolean(builder, "Lose Hearts When Killed By the Environment:", true, "When this is true, you will lose hearts when killed by the environment.");
         builder.pop();
 
         builder.comment("This category is the configuration for items and enchantments in this mod");
@@ -61,12 +64,13 @@ public class ModConfig {
         builder.pop();
         builder.push("Revive Crystals");
         this.disableReviveCrystals = buildBoolean(builder, "Disable Revive Crystals:", false, "This value determines whether or not revive crystals are disabled. If you're in singleplayer, this value is always true.");
+        this.silentlyRevivePlayer = buildBoolean(builder, "Silently Revive Players:", false, "When a player is revived, this value determines whether or not a chat message will be sent indicating they have been brought back from the dead.");
 
         builder.pop();
         builder.pop();
         builder.comment("This category is everything related to life stealing from someone.");
         builder.push("Lifesteal Related");
-        this.disableLifesteal = buildBoolean(builder, "Disable Lifesteal:", false, "This option changes the entire mod into more of a permanent heart gaining system. This makes it so nobody can gain hearts from lifestealing but ONLY through Heart Crystals. MOBS can still take your hearts away if they kill you though, UNLESS you have that option disabled.");
+        this.disableLifesteal = buildBoolean(builder, "Disable Lifesteal:", false, "This option changes the entire mod into more of a permanent heart gaining system. This makes it so nobody can gain hearts from lifestealing but ONLY through Heart Crystals. This DOESN'T affect losing hearts, it just affects GAINING hearts.");
         this.playersGainHeartsifKillednoHeart = buildBoolean(builder, "Players Gain Hearts From No Heart Players:", false, "This value determines if a player should still earn hearts from a player they killed even if the player doesn't have hearts to spare. EX: MinimumHeartHave");
         this.playerdropsHeartCrystalWhenKilled = buildBoolean(builder, "Players Drop Heart Crystals When Killed:", false, "This value determines whether the killer will automatically gain hearts from a player or if the player drops a heart crystal instead that can be eaten. The config that disables Heart Crystals will not disable Heart Crystals dropped by players.");
 

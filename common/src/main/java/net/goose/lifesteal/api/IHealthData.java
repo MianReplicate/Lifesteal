@@ -8,7 +8,6 @@ import net.minecraft.world.entity.LivingEntity;
 
 
 public interface IHealthData extends Serializable<CompoundTag> {
-
     void revivedTeleport(ServerLevel level, ILevelData iLevelData, boolean synchronize);
 
     void revivedTeleport(ServerLevel level, ILevelData iLevelData);

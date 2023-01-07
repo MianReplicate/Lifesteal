@@ -32,6 +32,7 @@ public abstract class PlayerMixin extends LivingEntity {
             itemStack.setHoverName(Component.literal(killedPlayer.getName().getString() + "'s Heart"));
 
             ServerPlayer serverPlayer = (ServerPlayer) data.getLivingEntity();
+
             if (serverPlayer.getInventory().getFreeSlot() == -1) {
                 serverPlayer.drop(itemStack, true);
             } else {
@@ -51,9 +52,9 @@ public abstract class PlayerMixin extends LivingEntity {
         final int amountOfHealthLostUponLossConfig = LifeSteal.config.amountOfHealthLostUponLoss.get();
         final boolean playersGainHeartsifKillednoHeart = LifeSteal.config.playersGainHeartsifKillednoHeart.get();
         final boolean disableLifesteal = LifeSteal.config.disableLifesteal.get();
-        final boolean disableHeartLoss = LifeSteal.config.disableHeartLoss.get();
-        final boolean loseHeartsOnlyWhenKilledByEntity = LifeSteal.config.loseHeartsOnlyWhenKilledByEntity.get();
-        final boolean loseHeartsOnlyWhenKilledByPlayer = LifeSteal.config.loseHeartsOnlyWhenKilledByPlayer.get();
+        final boolean loseHeartsWhenKilledByPlayer = LifeSteal.config.loseHeartsWhenKilledByPlayer.get();
+        final boolean loseHeartsWhenKilledByMob = LifeSteal.config.loseHeartsWhenKilledByMob.get();
+        final boolean loseHeartsWhenKilledByEnvironment = LifeSteal.config.loseHeartsWhenKilledByEnvironment.get();
 
         LivingEntity killedEntity = this;
 
@@ -87,6 +88,7 @@ public abstract class PlayerMixin extends LivingEntity {
                         }
                     }
 
+                    // THE CODE BELOW IS FOR INCREASING THE KILLER ENTITY HITPOINTDIFFERENCE IF THEY EXIST
                     if (killerEntity != null) { // IF THERE IS A KILLER ENTITY
                         if (killerEntity != killedEntity) { // IF IT'S NOT THEMSELVES (Shooting themselves with an arrow lol)
                             // EVERYTHING BELOW THIS COMMENT IS CODE FOR MAKING THE KILLER PERSON'S HEART DIFFERENCE GO UP.
@@ -95,56 +97,47 @@ public abstract class PlayerMixin extends LivingEntity {
                                     if (playersGainHeartsifKillednoHeart) {
                                         increaseHearts(killerData, amountOfHealthLostUponLoss, killedEntity);
                                     } else {
-
-                                        if (!disableHeartLoss) {
-                                            if (maximumheartsLoseable > -1) {
-                                                if (startingHitPointDifference + HeartDifference > -maximumheartsLoseable) {
-                                                    increaseHearts(killerData, amountOfHealthLostUponLoss, killedEntity);
-                                                } else {
-                                                    serverPlayer.sendSystemMessage(Component.translatable("chat.message.lifesteal.no_more_hearts_to_steal"));
-                                                }
-
-                                            } else {
+                                        if (maximumheartsLoseable > -1) {
+                                            if (startingHitPointDifference + HeartDifference > -maximumheartsLoseable) {
                                                 increaseHearts(killerData, amountOfHealthLostUponLoss, killedEntity);
+                                            } else {
+                                                serverPlayer.sendSystemMessage(Component.translatable("chat.message.lifesteal.no_more_hearts_to_steal"));
                                             }
+
                                         } else {
-                                            serverPlayer.sendSystemMessage(Component.translatable("chat.message.lifesteal.no_more_hearts_to_steal"));
+                                            increaseHearts(killerData, amountOfHealthLostUponLoss, killedEntity);
                                         }
                                     }
 
                                 });
                             }
-
-                            // EVERYTHING BELOW THIS COMMENT IS CODE FOR LOWERING THE KILLED PERSON'S HEART DIFFERENCE IF THERE WAS A KILLER ENTITY
-                            if (!disableHeartLoss) {
-                                if (loseHeartsOnlyWhenKilledByPlayer && !loseHeartsOnlyWhenKilledByEntity) {
-                                    if (killerEntityIsPlayer && !disableLifesteal) {
-                                        healthData.setHeartDifference(healthData.getHeartDifference() - amountOfHealthLostUponLoss);
-                                        healthData.refreshHearts(false);
-                                    }
-                                } else {
-                                    if (disableLifesteal) {
-                                        if (!killerEntityIsPlayer) {
-                                            healthData.setHeartDifference(healthData.getHeartDifference() - amountOfHealthLostUponLoss);
-                                            healthData.refreshHearts(false);
-                                        }
-                                    } else {
-                                        healthData.setHeartDifference(healthData.getHeartDifference() - amountOfHealthLostUponLoss);
-                                        healthData.refreshHearts(false);
-                                    }
-                                }
-                            }
-                        } else if (!disableHeartLoss) { // IF THIS IS THEMSELVES
-                            healthData.setHeartDifference(healthData.getHeartDifference() - amountOfHealthLostUponLoss);
-                            healthData.refreshHearts(false);
-                        }
-                    } else {
-                        if (!loseHeartsOnlyWhenKilledByEntity && !loseHeartsOnlyWhenKilledByPlayer && !disableHeartLoss) {
-                            healthData.setHeartDifference(healthData.getHeartDifference() - amountOfHealthLostUponLoss);
-                            healthData.refreshHearts(false);
                         }
                     }
 
+                    // THE CODE BELOW IS FOR REDUCING THE KILLED ENTITY'S HITPOINTDIFFERENCE
+
+                    if (loseHeartsWhenKilledByPlayer || loseHeartsWhenKilledByMob || loseHeartsWhenKilledByEnvironment) {
+                        if (killerEntity != null) { // IF KILLER ENTITY EXISTS
+                            if (killedEntity != killerEntity) { // IF KILLER ENTITY ISNT SELF/ IF A KILLER KILLED OUR GUY
+                                if (killerEntityIsPlayer) { // IF THEY ARE A PLAYER
+                                    if(!loseHeartsWhenKilledByPlayer){
+                                        return;
+                                    }
+                                } else if (!loseHeartsWhenKilledByMob) {
+                                    return;
+                                }
+                            } else if (!loseHeartsWhenKilledByPlayer) {
+                                return;
+                            }
+                        } else if (!loseHeartsWhenKilledByEnvironment) {
+                            return;
+                        }
+                    } else {
+                        return;
+                    }
+
+                    healthData.setHeartDifference(healthData.getHeartDifference() - amountOfHealthLostUponLoss);
+                    healthData.refreshHearts(false);
                 }
             }
         });
