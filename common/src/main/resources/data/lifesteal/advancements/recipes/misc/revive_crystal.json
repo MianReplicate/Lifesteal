@@ -1,0 +1,47 @@
+{
+  "parent": "lifesteal:recipes/root",
+  "criteria": {
+    "has_totem": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:totem_of_undying"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_crystal": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "lifesteal:heart_crystal"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "lifesteal:revive_crystal"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_totem",
+      "has_crystal",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "lifesteal:revive_crystal"
+    ]
+  }
+}
