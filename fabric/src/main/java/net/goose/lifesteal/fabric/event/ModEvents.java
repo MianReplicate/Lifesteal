@@ -1,4 +1,4 @@
-package net.goose.lifesteal.event;
+package net.goose.lifesteal.fabric.event;
 
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.goose.lifesteal.LifeSteal;

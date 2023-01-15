@@ -1,10 +1,10 @@
 package net.goose.lifesteal;
 
 import net.goose.lifesteal.advancement.ModCriteria;
-import net.goose.lifesteal.block.ModBlocks;
+import net.goose.lifesteal.common.block.ModBlocks;
 import net.goose.lifesteal.common.blockentity.ModBlockEntityTypes;
+import net.goose.lifesteal.common.item.ModItems;
 import net.goose.lifesteal.configuration.ModConfig;
-import net.goose.lifesteal.item.ModItems;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

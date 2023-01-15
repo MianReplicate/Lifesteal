@@ -1,11 +1,11 @@
-package net.goose.lifesteal.item;
+package net.goose.lifesteal.common.item;
 
 import net.goose.lifesteal.LifeSteal;
-import net.goose.lifesteal.block.ModBlocks;
-import net.goose.lifesteal.item.custom.HeartCoreItem;
-import net.goose.lifesteal.item.custom.HeartCrystalItem;
-import net.goose.lifesteal.item.custom.ReviveCrystalItem;
-import net.goose.lifesteal.item.custom.ReviveHeadItem;
+import net.goose.lifesteal.common.block.ModBlocks;
+import net.goose.lifesteal.common.item.custom.HeartCoreItem;
+import net.goose.lifesteal.common.item.custom.HeartCrystalItem;
+import net.goose.lifesteal.common.item.custom.ReviveCrystalItem;
+import net.goose.lifesteal.common.item.custom.ReviveHeadItem;
 import net.goose.lifesteal.registry.DeferredRegistry;
 import net.goose.lifesteal.registry.RegistrySupplier;
 import net.minecraft.core.registries.Registries;

@@ -1,4 +1,4 @@
-package net.goose.lifesteal.event;
+package net.goose.lifesteal.fabric.event;
 
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.goose.lifesteal.LifeSteal;

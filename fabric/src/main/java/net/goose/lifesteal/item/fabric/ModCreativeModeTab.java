@@ -2,13 +2,13 @@ package net.goose.lifesteal.item.fabric;
 
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.goose.lifesteal.LifeSteal;
-import net.goose.lifesteal.item.ModCreativeModeTabHelper;
-import net.goose.lifesteal.item.ModItems;
+import net.goose.lifesteal.common.item.ModCreativeModeTabHelper;
+import net.goose.lifesteal.common.item.ModItems;
 import net.goose.lifesteal.registry.RegistrySupplier;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
 
-import static net.goose.lifesteal.item.ModCreativeModeTabHelper.TAB;
+import static net.goose.lifesteal.common.item.ModCreativeModeTabHelper.TAB;
 public class ModCreativeModeTab {
     public static void register() {
         LifeSteal.LOGGER.debug("Registering ModCreativeModeTab for " + LifeSteal.MOD_ID);

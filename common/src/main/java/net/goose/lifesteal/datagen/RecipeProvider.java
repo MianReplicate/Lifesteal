@@ -1,7 +1,7 @@
 package net.goose.lifesteal.datagen;
 
 import net.goose.lifesteal.LifeSteal;
-import net.goose.lifesteal.item.ModItems;
+import net.goose.lifesteal.common.item.ModItems;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeCategory;

@@ -1,8 +1,8 @@
-package net.goose.lifesteal.item.custom;
+package net.goose.lifesteal.common.item.custom;
 
 import com.mojang.authlib.GameProfile;
 import net.goose.lifesteal.LifeSteal;
-import net.goose.lifesteal.block.ModBlocks;
+import net.goose.lifesteal.common.block.ModBlocks;
 import net.goose.lifesteal.data.HealthData;
 import net.goose.lifesteal.data.LevelData;
 import net.minecraft.ChatFormatting;
@@ -10,7 +10,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.players.PlayerList;
@@ -46,21 +45,21 @@ public class ReviveCrystalItem extends Item {
         {
             ServerPlayer serverPlayer = (ServerPlayer) level.getPlayerByUUID(gameprofile.getId());
 
-            if(serverPlayer == null){
+            if (serverPlayer == null) {
 
                 if (userBanList != null) {
-                    if(userBanList.isBanned(gameprofile)){
-                        if(userBanList.get(gameprofile).getSource().matches(LifeSteal.MOD_ID)){
+                    if (userBanList.isBanned(gameprofile)) {
+                        if (userBanList.get(gameprofile).getSource().matches(LifeSteal.MOD_ID)) {
                             iLevelData.setUUIDanditsBlockPos(gameprofile.getId(), blockPos);
                             successful.set(true);
                             userBanList.remove(gameprofile);
                         }
-                    } else{
+                    } else {
                         iLevelData.setUUIDanditsBlockPos(gameprofile.getId(), blockPos);
                         successful.set(true);
                     }
                 }
-            }else {
+            } else {
                 iLevelData.setUUIDanditsBlockPos(gameprofile.getId(), blockPos);
 
                 LivingEntity livingEntity = (LivingEntity) serverPlayer.getCamera();
@@ -73,7 +72,7 @@ public class ReviveCrystalItem extends Item {
             }
         });
 
-        if(successful.get()){
+        if (successful.get()) {
             level.removeBlock(blockPos, true);
             if (!LifeSteal.config.disableLightningEffect.get()) {
                 Entity entity = new LightningBolt(EntityType.LIGHTNING_BOLT, level);
@@ -138,9 +137,9 @@ public class ReviveCrystalItem extends Item {
                     UserBanList userBanList = level.getServer().getPlayerList().getBans();
 
                     AtomicBoolean successful = revivePlayer(level, blockPos, gameprofile, player, userBanList);
-                    if(successful.get()){
+                    if (successful.get()) {
                         itemStack.shrink(1);
-                    }else{
+                    } else {
                         player.displayClientMessage(Component.translatable("gui.lifesteal.error_revive_block"), true);
                     }
                 } else {

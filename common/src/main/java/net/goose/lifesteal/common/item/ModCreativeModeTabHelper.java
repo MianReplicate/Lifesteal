@@ -1,4 +1,4 @@
-package net.goose.lifesteal.item;
+package net.goose.lifesteal.common.item;
 
 import net.goose.lifesteal.LifeSteal;
 import net.minecraft.nbt.CompoundTag;

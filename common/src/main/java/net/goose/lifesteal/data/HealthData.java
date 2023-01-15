@@ -6,7 +6,7 @@ import net.goose.lifesteal.LifeSteal;
 import net.goose.lifesteal.advancement.ModCriteria;
 import net.goose.lifesteal.api.IHealthData;
 import net.goose.lifesteal.api.ILevelData;
-import net.goose.lifesteal.block.ModBlocks;
+import net.goose.lifesteal.common.block.ModBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -25,7 +25,6 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.SkullBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -231,7 +230,7 @@ public class HealthData implements IHealthData {
                             serverPlayer.connection.disconnect(component);
                         }
                     } else if (!serverPlayer.isSpectator()) {
-                        if(LifeSteal.config.playersSpawnHeadUponDeath.get() && !server.isSingleplayer()){
+                        if (LifeSteal.config.playersSpawnHeadUponDeath.get() && !server.isSingleplayer()) {
                             spawnPlayerHead(serverPlayer);
                         }
 

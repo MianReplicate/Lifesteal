@@ -1,4 +1,4 @@
-package net.goose.lifesteal.item.custom;
+package net.goose.lifesteal.common.item.custom;
 
 import net.goose.lifesteal.LifeSteal;
 import net.minecraft.network.chat.Component;

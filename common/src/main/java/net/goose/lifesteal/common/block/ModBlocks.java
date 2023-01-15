@@ -1,9 +1,9 @@
-package net.goose.lifesteal.block;
+package net.goose.lifesteal.common.block;
 
 import net.goose.lifesteal.LifeSteal;
-import net.goose.lifesteal.block.custom.ReviveHeadBlock;
-import net.goose.lifesteal.block.custom.ReviveWallHeadBlock;
-import net.goose.lifesteal.item.ModItems;
+import net.goose.lifesteal.common.block.custom.ReviveHeadBlock;
+import net.goose.lifesteal.common.block.custom.ReviveWallHeadBlock;
+import net.goose.lifesteal.common.item.ModItems;
 import net.goose.lifesteal.registry.DeferredRegistry;
 import net.goose.lifesteal.registry.RegistrySupplier;
 import net.minecraft.core.registries.Registries;

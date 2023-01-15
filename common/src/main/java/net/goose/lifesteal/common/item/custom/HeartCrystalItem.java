@@ -1,4 +1,4 @@
-package net.goose.lifesteal.item.custom;
+package net.goose.lifesteal.common.item.custom;
 
 import net.goose.lifesteal.LifeSteal;
 import net.goose.lifesteal.data.HealthData;
@@ -81,7 +81,7 @@ public class HeartCrystalItem extends Item {
                     }
                 }
 
-                if(success.get()){
+                if (success.get()) {
                     int newheartDifference = IHeartCap.getHeartDifference() + LifeSteal.config.heartCrystalAmountGain.get();
 
                     IHeartCap.setHeartDifference(newheartDifference);

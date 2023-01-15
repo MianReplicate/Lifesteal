@@ -1,6 +1,6 @@
-package net.goose.lifesteal.item.custom;
+package net.goose.lifesteal.common.item.custom;
 
-import net.goose.lifesteal.block.ModBlocks;
+import net.goose.lifesteal.common.block.ModBlocks;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;

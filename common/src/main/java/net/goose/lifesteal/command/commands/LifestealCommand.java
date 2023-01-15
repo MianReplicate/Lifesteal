@@ -5,8 +5,8 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.goose.lifesteal.LifeSteal;
+import net.goose.lifesteal.common.item.ModItems;
 import net.goose.lifesteal.data.HealthData;
-import net.goose.lifesteal.item.ModItems;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -106,10 +106,10 @@ public class LifestealCommand {
 
         LivingEntity playerthatsentcommand = source.getPlayer();
 
-        HealthData.get(chosenentity).ifPresent(iHeartData ->{
-            if(!source.isPlayer()){
+        HealthData.get(chosenentity).ifPresent(iHeartData -> {
+            if (!source.isPlayer()) {
                 LifeSteal.LOGGER.info(Component.translatable("chat.message.lifesteal.get_hit_point_for_player", chosenentity.getName().getString(), iHeartData.getHeartDifference()).toString());
-            }else {
+            } else {
                 playerthatsentcommand.sendSystemMessage(Component.translatable("chat.message.lifesteal.get_hit_point_for_player", chosenentity.getName().getString(), iHeartData.getHeartDifference()));
             }
         });

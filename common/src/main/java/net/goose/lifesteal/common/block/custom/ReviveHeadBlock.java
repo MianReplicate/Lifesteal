@@ -1,4 +1,4 @@
-package net.goose.lifesteal.block.custom;
+package net.goose.lifesteal.common.block.custom;
 
 import com.mojang.authlib.GameProfile;
 import net.goose.lifesteal.common.blockentity.custom.ReviveSkullBlockEntity;

@@ -1,6 +1,6 @@
-package net.goose.lifesteal.block.custom;
+package net.goose.lifesteal.common.block.custom;
 
-import net.goose.lifesteal.block.ModBlocks;
+import net.goose.lifesteal.common.block.ModBlocks;
 import net.goose.lifesteal.common.blockentity.custom.ReviveSkullBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.LivingEntity;

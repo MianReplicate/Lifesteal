@@ -1,8 +1,8 @@
 package net.goose.lifesteal.mixin;
 
 import net.goose.lifesteal.LifeSteal;
+import net.goose.lifesteal.common.item.ModItems;
 import net.goose.lifesteal.data.HealthData;
-import net.goose.lifesteal.item.ModItems;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -45,7 +45,7 @@ public abstract class PlayerMixin extends LivingEntity {
             if (LifeSteal.config.playerDropsHeartCrystalOnlyWhenKillerHasMax.get() && maximumhitpointsGainable > -1) {
                 if (data.getHeartDifference() + hitpoint > LifeSteal.config.startingHeartDifference.get() + maximumhitpointsGainable) {
                     giveKilledHeartCrystal(killedPlayer, killerPlayer);
-                }else{
+                } else {
                     data.setHeartDifference(data.getHeartDifference() + hitpoint);
                     data.refreshHearts(false);
                 }

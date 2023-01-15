@@ -1,7 +1,7 @@
 package net.goose.lifesteal.common.blockentity;
 
 import net.goose.lifesteal.LifeSteal;
-import net.goose.lifesteal.block.ModBlocks;
+import net.goose.lifesteal.common.block.ModBlocks;
 import net.goose.lifesteal.common.blockentity.custom.ReviveSkullBlockEntity;
 import net.goose.lifesteal.registry.DeferredRegistry;
 import net.goose.lifesteal.registry.RegistrySupplier;
