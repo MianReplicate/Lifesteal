@@ -22,8 +22,5 @@ public class LifestealForge {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
         modEventBus.addListener(ModCreativeModeTab::register);
-
-        MinecraftForge.EVENT_BUS.register(EventHandler.class);
-        MinecraftForge.EVENT_BUS.register(ModCapabilities.EventCapHandler.class);
     }
 }
