@@ -14,8 +14,6 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 @SuppressWarnings("unused")
-@Mod.EventBusSubscriber(modid = LifeSteal.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
-
 public class EventHandler {
     @SubscribeEvent
     public static void OnCommandsRegister(RegisterCommandsEvent event) {

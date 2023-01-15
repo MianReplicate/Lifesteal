@@ -1,6 +1,5 @@
 package net.goose.lifesteal.data.forge;
 
-import net.goose.lifesteal.LifeSteal;
 import net.goose.lifesteal.api.IHealthData;
 import net.goose.lifesteal.api.ILevelData;
 import net.minecraft.world.entity.Entity;
@@ -12,7 +11,6 @@ import net.minecraftforge.common.capabilities.CapabilityToken;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 
 public class ModCapabilities {
     public static final Capability<IHealthData> HEART_CAP_CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {
@@ -20,7 +18,6 @@ public class ModCapabilities {
     public static final Capability<ILevelData> LEVEL_CAP_CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {
     });
 
-    @Mod.EventBusSubscriber(modid = LifeSteal.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
     public static class EventCapHandler {
         @SubscribeEvent
         public static void attachentityCapabilities(final AttachCapabilitiesEvent<Entity> event) {
