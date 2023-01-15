@@ -6,6 +6,7 @@ import net.goose.lifesteal.LifeSteal;
 import net.goose.lifesteal.advancement.ModCriteria;
 import net.goose.lifesteal.api.IHealthData;
 import net.goose.lifesteal.api.ILevelData;
+import net.goose.lifesteal.block.ModBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -49,10 +50,12 @@ public class HealthData implements IHealthData {
     public static Optional<HealthData> get(LivingEntity livingEntity) {
         throw new AssertionError();
     }
+
     @ExpectPlatform
     public static Optional<HealthData> get(Entity entity) {
         throw new AssertionError();
     }
+
     @Override
     public void revivedTeleport(ServerLevel level, ILevelData iLevelData, boolean synchronize) {
         if (livingEntity instanceof ServerPlayer serverPlayer) {
@@ -71,10 +74,18 @@ public class HealthData implements IHealthData {
                     if (serverPlayer.isSpectator()) {
                         serverPlayer.setGameMode(GameType.SURVIVAL);
                     }
-                    int tickTime = 600;
-                    livingEntity.addEffect(new MobEffectInstance(MobEffects.REGENERATION, tickTime, 3));
-                    livingEntity.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, tickTime, 3));
-                    livingEntity.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, tickTime, 3));
+                    if (!LifeSteal.config.disableStatusEffects.get()) {
+                        int tickTime = 600;
+                        livingEntity.addEffect(new MobEffectInstance(MobEffects.REGENERATION, tickTime, 3));
+                        livingEntity.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, tickTime, 3));
+                        livingEntity.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, tickTime, 3));
+                    }
+                    if (LifeSteal.config.customHeartDifferenceWhenRevived.get()) {
+                        setHeartDifference(LifeSteal.config.startingHeartDifferenceFromCrystal.get());
+                    } else {
+                        setHeartDifference(LifeSteal.config.startingHeartDifference.get());
+                    }
+                    refreshHearts(true);
                     if (synchronize) {
                         serverPlayer.jumpFromGround();
                         serverPlayer.syncPacketPositionCodec(blockPos.getX(), blockPos.getY(), blockPos.getZ());
@@ -99,7 +110,7 @@ public class HealthData implements IHealthData {
             blockEntity.setRemoved();
         }
         final IntegerProperty ROTATION = BlockStateProperties.ROTATION_16;
-        BlockState playerHeadState = Blocks.PLAYER_HEAD.defaultBlockState().setValue(ROTATION, Integer.valueOf(Mth.floor((double)((180.0F + serverPlayer.getYRot()) * 16.0F / 360.0F) + 0.5) & 15));
+        BlockState playerHeadState = ModBlocks.REVIVE_HEAD.get().defaultBlockState().setValue(ROTATION, Integer.valueOf(Mth.floor((double) ((180.0F + serverPlayer.getYRot()) * 16.0F / 360.0F) + 0.5) & 15));
         level.setBlockAndUpdate(blockPos, playerHeadState);
         SkullBlockEntity playerHeadEntity = new SkullBlockEntity(blockPos, playerHeadState);
         playerHeadEntity.setOwner(serverPlayer.getGameProfile());
@@ -107,9 +118,10 @@ public class HealthData implements IHealthData {
     }
 
     @Override
-    public LivingEntity getLivingEntity(){
+    public LivingEntity getLivingEntity() {
         return this.livingEntity;
     }
+
     @Override
     public int getHeartDifference() {
         return this.heartDifference;
@@ -127,13 +139,13 @@ public class HealthData implements IHealthData {
 
         if (!livingEntity.level.isClientSide) {
             final int defaultheartDifference = LifeSteal.config.startingHeartDifference.get();
-            final int maximumheartsGainable = LifeSteal.config.maximumamountofheartsGainable.get();
-            final int minimumamountofheartscanlose = LifeSteal.config.maximumamountofheartsLoseable.get();
+            final int maximumheartsGainable = LifeSteal.config.maximumamountofhitpointsGainable.get();
+            final int minimumamountofheartscanlose = LifeSteal.config.maximumamountofhitpointsLoseable.get();
 
             AttributeInstance Attribute = livingEntity.getAttribute(Attributes.MAX_HEALTH);
             Set<AttributeModifier> attributemodifiers = Attribute.getModifiers();
 
-            if (maximumheartsGainable > 0) {
+            if (maximumheartsGainable > -1) {
                 if (this.heartDifference - defaultheartDifference >= maximumheartsGainable) {
                     this.heartDifference = maximumheartsGainable + defaultheartDifference;
 
@@ -200,7 +212,7 @@ public class HealthData implements IHealthData {
 
                     Component component = Component.translatable("bannedmessage.lifesteal.lost_max_hearts");
 
-                    if (!server.isSingleplayer()) {
+                    if (!server.isSingleplayer() && LifeSteal.config.uponDeathBanned.get()) {
 
                         if (LifeSteal.config.playersSpawnHeadUponDeath.get()) {
                             spawnPlayerHead(serverPlayer);
@@ -212,13 +224,19 @@ public class HealthData implements IHealthData {
                         serverPlayer.getGameProfile();
                         GameProfile gameprofile = serverPlayer.getGameProfile();
 
-                        UserBanListEntry userbanlistentry = new UserBanListEntry(gameprofile, null, "Lifesteal", null, component == null ? null : component.getString());
+                        UserBanListEntry userbanlistentry = new UserBanListEntry(gameprofile, null, LifeSteal.MOD_ID, null, component == null ? null : component.getString());
                         userbanlist.add(userbanlistentry);
 
                         if (serverPlayer != null) {
                             serverPlayer.connection.disconnect(component);
                         }
                     } else if (!serverPlayer.isSpectator()) {
+                        if(LifeSteal.config.playersSpawnHeadUponDeath.get() && !server.isSingleplayer()){
+                            spawnPlayerHead(serverPlayer);
+                        }
+
+                        serverPlayer.getInventory().dropAll();
+
                         serverPlayer.setGameMode(GameType.SPECTATOR);
                         livingEntity.sendSystemMessage(component);
                     }

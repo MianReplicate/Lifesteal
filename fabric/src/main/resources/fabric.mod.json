@@ -27,6 +27,9 @@
     "main": [
       "net.goose.lifesteal.fabric.LifestealFabric"
     ],
+    "client": [
+      "net.goose.lifesteal.fabric.LifestealFabricClient"
+    ],
     "cardinal-components": [
       "net.goose.lifesteal.data.fabric.ModComponents"
     ]

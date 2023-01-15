@@ -13,10 +13,13 @@ loom {
         extraAccessWideners.add loom.accessWidenerPath.get().asFile.name
 
         mixinConfig "lifesteal.mixins.json"
-
     }
 
     launches {
+        client {
+            arg "--username", "DevGoose###"
+        }
+
         data {
             arg "--existing", project(":common").file("src/main/resources/").absolutePath
         }

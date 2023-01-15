@@ -13,18 +13,6 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
-    "has_crystal": {
-      "conditions": {
-        "items": [
-          {
-            "items": [
-              "lifesteal:heart_crystal"
-            ]
-          }
-        ]
-      },
-      "trigger": "minecraft:inventory_changed"
-    },
     "has_the_recipe": {
       "conditions": {
         "recipe": "lifesteal:revive_crystal"
@@ -35,7 +23,6 @@
   "requirements": [
     [
       "has_totem",
-      "has_crystal",
       "has_the_recipe"
     ]
   ],

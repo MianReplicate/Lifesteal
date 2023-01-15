@@ -13,7 +13,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class HeartCrystalItem extends Item {
 
@@ -29,53 +29,72 @@ public class HeartCrystalItem extends Item {
         entity.addEffect(new MobEffectInstance(MobEffects.REGENERATION, tickTime, 3));
     }
 
+    public void canceled(ServerPlayer serverPlayer, ItemStack item) {
+        item.grow(1);
+        serverPlayer.containerMenu.broadcastChanges();
+    }
+
     @Override
     public ItemStack finishUsingItem(ItemStack item, Level level, LivingEntity entity) {
 
         if (!level.isClientSide() && entity instanceof ServerPlayer serverPlayer) {
             CompoundTag compoundTag = item.getTagElement("lifesteal");
-            boolean droppedHeartCrystal = false;
+            boolean compoundTagExists;
+            boolean droppedHeartCrystal;
+            boolean unnaturalHeartCrystal;
+            AtomicBoolean success = new AtomicBoolean(true);
 
-            if(compoundTag != null){
-                if(compoundTag.getBoolean("dropped")){
-                    droppedHeartCrystal = true;
+            if (compoundTag != null) {
+                compoundTagExists = true;
+                droppedHeartCrystal = compoundTag.getBoolean("dropped");
+
+                unnaturalHeartCrystal = compoundTag.getBoolean("Unfresh");
+            } else {
+                unnaturalHeartCrystal = false;
+                droppedHeartCrystal = false;
+                compoundTagExists = false;
+            }
+
+            if (!droppedHeartCrystal) {
+                if (unnaturalHeartCrystal) {
+                    if (LifeSteal.config.disableUnnaturalHeartCrystals.get()) {
+                        serverPlayer.displayClientMessage(Component.translatable("gui.lifesteal.unnatural_heart_crystal_disabled"), true);
+                        canceled(serverPlayer, item);
+                        success.set(false);
+                    }
+                } else {
+                    if (LifeSteal.config.disableHeartCrystals.get()) {
+                        serverPlayer.displayClientMessage(Component.translatable("gui.lifesteal.heart_crystal_disabled"), true);
+                        canceled(serverPlayer, item);
+                        success.set(false);
+                    }
                 }
             }
 
-            if (!LifeSteal.config.disableHeartCrystals.get() || droppedHeartCrystal) {
-                AtomicInteger currentheartDifference = new AtomicInteger();
-                HealthData.get(entity).ifPresent(IHeartCap -> currentheartDifference.set(IHeartCap.getHeartDifference()));
-
-                if (LifeSteal.config.maximumamountofheartsGainable.get() > -1 && LifeSteal.config.preventFromUsingCrystalIfMax.get()) {
-                    int maximumheartDifference = LifeSteal.config.startingHeartDifference.get() + LifeSteal.config.maximumamountofheartsGainable.get();
-                    if (currentheartDifference.get() == maximumheartDifference) {
+            HealthData.get(entity).ifPresent(IHeartCap -> {
+                if (LifeSteal.config.maximumamountofhitpointsGainable.get() > -1 && LifeSteal.config.preventFromUsingCrystalIfMax.get()) {
+                    int maximumheartDifference = LifeSteal.config.startingHeartDifference.get() + LifeSteal.config.maximumamountofhitpointsGainable.get();
+                    if (IHeartCap.getHeartDifference() == maximumheartDifference) {
                         serverPlayer.displayClientMessage(Component.translatable("gui.lifesteal.heart_crystal_reaching_max"), true);
-                        item.setCount(item.getCount() + 1);
-                        serverPlayer.containerMenu.broadcastChanges();
-                        return super.finishUsingItem(item, level, entity);
+                        canceled(serverPlayer, item);
+                        success.set(false);
                     }
                 }
 
-                int newheartDifference = currentheartDifference.get() + LifeSteal.config.heartCrystalAmountGain.get();
+                if(success.get()){
+                    int newheartDifference = IHeartCap.getHeartDifference() + LifeSteal.config.heartCrystalAmountGain.get();
 
-                HealthData.get(entity).ifPresent(IHeartCap -> {
                     IHeartCap.setHeartDifference(newheartDifference);
                     IHeartCap.refreshHearts(false);
-                });
 
-                // Formula, for every hit point, increase duration of the regeneration by 50 ticks: TickDuration = MaxHealth * 50
-                if (compoundTag == null) {
-                    applyCrystalEffect(entity);
-                } else if (!compoundTag.getBoolean("Unfresh")) {
-                    applyCrystalEffect(entity);
+                    // Formula, for every hit point, increase duration of the regeneration by 50 ticks: TickDuration = MaxHealth * 50
+                    if (!compoundTagExists) {
+                        applyCrystalEffect(entity);
+                    } else if (!unnaturalHeartCrystal) {
+                        applyCrystalEffect(entity);
+                    }
                 }
-
-            } else {
-                serverPlayer.displayClientMessage(Component.translatable("gui.lifesteal.heart_crystal_disabled"), true);
-                item.grow(1);
-                serverPlayer.containerMenu.broadcastChanges();
-
-            }
+            });
         }
         return super.finishUsingItem(item, level, entity);
     }

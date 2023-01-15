@@ -34,7 +34,7 @@ public class LevelData implements ILevelData {
 
     @Override
     public void setUUIDanditsBlockPos(UUID uuid, BlockPos blockPos) {
-        if(!bannedMap.containsKey(uuid)){
+        if (!bannedMap.containsKey(uuid)) {
             bannedMap.put(uuid, blockPos);
         }
     }

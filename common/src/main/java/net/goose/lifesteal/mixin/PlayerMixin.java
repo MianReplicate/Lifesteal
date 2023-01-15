@@ -23,31 +23,45 @@ public abstract class PlayerMixin extends LivingEntity {
         super(entityType, level);
     }
 
-    public void increaseHearts(HealthData data, int health, LivingEntity killedPlayer){
-        if(LifeSteal.config.playerdropsHeartCrystalWhenKilled.get()){
-            ItemStack itemStack = new ItemStack(ModItems.HEART_CRYSTAL.get());
-            CompoundTag compoundTag = itemStack.getOrCreateTagElement("lifesteal");
-            compoundTag.putBoolean("dropped", true);
-            compoundTag.putBoolean("Unfresh", true);
-            itemStack.setHoverName(Component.literal(killedPlayer.getName().getString() + "'s Heart"));
+    public void giveKilledHeartCrystal(LivingEntity killedPlayer, ServerPlayer killerPlayer) {
+        ItemStack itemStack = new ItemStack(ModItems.HEART_CRYSTAL.get());
+        CompoundTag compoundTag = itemStack.getOrCreateTagElement("lifesteal");
+        compoundTag.putBoolean("dropped", true);
+        compoundTag.putBoolean("Unfresh", true);
+        itemStack.setHoverName(Component.translatable("item.lifesteal.heart_crystal.named", killedPlayer.getName().getString()));
 
-            ServerPlayer serverPlayer = (ServerPlayer) data.getLivingEntity();
+        if (killerPlayer.getInventory().getFreeSlot() == -1) {
+            killerPlayer.drop(itemStack, true);
+        } else {
+            killerPlayer.getInventory().add(itemStack);
+        }
+    }
 
-            if (serverPlayer.getInventory().getFreeSlot() == -1) {
-                serverPlayer.drop(itemStack, true);
+    public void increaseHearts(HealthData data, int hitpoint, LivingEntity killedPlayer) {
+        if (LifeSteal.config.playerDropsHeartCrystalWhenKilled.get()) {
+            final int maximumhitpointsGainable = LifeSteal.config.maximumamountofhitpointsGainable.get();
+            final ServerPlayer killerPlayer = (ServerPlayer) data.getLivingEntity();
+
+            if (LifeSteal.config.playerDropsHeartCrystalOnlyWhenKillerHasMax.get() && maximumhitpointsGainable > -1) {
+                if (data.getHeartDifference() + hitpoint > LifeSteal.config.startingHeartDifference.get() + maximumhitpointsGainable) {
+                    giveKilledHeartCrystal(killedPlayer, killerPlayer);
+                }else{
+                    data.setHeartDifference(data.getHeartDifference() + hitpoint);
+                    data.refreshHearts(false);
+                }
             } else {
-                serverPlayer.getInventory().add(itemStack);
+                giveKilledHeartCrystal(killedPlayer, killerPlayer);
             }
-        }else {
-            data.setHeartDifference(data.getHeartDifference() + health);
+        } else {
+            data.setHeartDifference(data.getHeartDifference() + hitpoint);
             data.refreshHearts(false);
         }
     }
+
     @Inject(method = "dropEquipment", at = @At("HEAD"))
     private void onDeath(final CallbackInfo info) {
 
-        final int maximumheartsGainable = LifeSteal.config.maximumamountofheartsGainable.get();
-        final int maximumheartsLoseable = LifeSteal.config.maximumamountofheartsLoseable.get();
+        final int maximumheartsLoseable = LifeSteal.config.maximumamountofhitpointsLoseable.get();
         final int startingHitPointDifference = LifeSteal.config.startingHeartDifference.get();
         final int amountOfHealthLostUponLossConfig = LifeSteal.config.amountOfHealthLostUponLoss.get();
         final boolean playersGainHeartsifKillednoHeart = LifeSteal.config.playersGainHeartsifKillednoHeart.get();
@@ -120,7 +134,7 @@ public abstract class PlayerMixin extends LivingEntity {
                         if (killerEntity != null) { // IF KILLER ENTITY EXISTS
                             if (killedEntity != killerEntity) { // IF KILLER ENTITY ISNT SELF/ IF A KILLER KILLED OUR GUY
                                 if (killerEntityIsPlayer) { // IF THEY ARE A PLAYER
-                                    if(!loseHeartsWhenKilledByPlayer){
+                                    if (!loseHeartsWhenKilledByPlayer) {
                                         return;
                                     }
                                 } else if (!loseHeartsWhenKilledByMob) {

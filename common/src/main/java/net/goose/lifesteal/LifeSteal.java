@@ -2,6 +2,7 @@ package net.goose.lifesteal;
 
 import net.goose.lifesteal.advancement.ModCriteria;
 import net.goose.lifesteal.block.ModBlocks;
+import net.goose.lifesteal.common.blockentity.ModBlockEntityTypes;
 import net.goose.lifesteal.configuration.ModConfig;
 import net.goose.lifesteal.item.ModItems;
 import org.slf4j.Logger;
@@ -16,6 +17,7 @@ public class LifeSteal {
         LOGGER.info("Lifestealers are on the loose!");
         ModItems.register();
         ModBlocks.register();
+        ModBlockEntityTypes.register();
         ModCriteria.init();
     }
 }

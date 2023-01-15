@@ -13,7 +13,7 @@
     "show_toast": true,
     "announce_to_chat": true
   },
-  "parent": "lifesteal:lifesteal/get_10_max_hearts",
+  "parent": "lifesteal:story/get_10_max_hearts",
   "criteria": {
     "get10maxhearts": {
       "trigger": "lifesteal:get_10_max_hearts"

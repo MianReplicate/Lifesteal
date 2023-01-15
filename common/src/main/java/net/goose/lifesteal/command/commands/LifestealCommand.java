@@ -17,7 +17,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.concurrent.atomic.AtomicInteger;
@@ -51,8 +50,8 @@ public class LifestealCommand {
             LivingEntity livingEntity = source.getPlayer();
             ServerPlayer serverPlayer = (ServerPlayer) livingEntity;
 
-            if(!LifeSteal.config.disableWithdrawing.get()){
-                final int maximumheartsLoseable = LifeSteal.config.maximumamountofheartsLoseable.get();
+            if (!LifeSteal.config.disableWithdrawing.get()) {
+                final int maximumheartsLoseable = LifeSteal.config.maximumamountofhitpointsLoseable.get();
                 final int startingHitPointDifference = LifeSteal.config.startingHeartDifference.get();
                 String advancementUsed = (String) LifeSteal.config.advancementUsedForWithdrawing.get();
 
@@ -88,7 +87,7 @@ public class LifestealCommand {
                         serverPlayer.displayClientMessage(Component.literal((String) LifeSteal.config.textUsedForRequirementOnWithdrawing.get()), true);
                     }
                 }
-            }else{
+            } else {
                 serverPlayer.displayClientMessage(Component.translatable("gui.lifesteal.withdrawing_disabled"), true);
             }
         }
@@ -98,7 +97,7 @@ public class LifestealCommand {
     private static int getHitPoint(CommandSourceStack source) throws CommandSyntaxException {
         if (source.isPlayer()) {
             LivingEntity playerthatsentcommand = source.getPlayer();
-            HealthData.get(playerthatsentcommand).ifPresent(HeartCap -> playerthatsentcommand.sendSystemMessage(Component.translatable("Your HitPoint difference is " + HeartCap.getHeartDifference() + ".")));
+            HealthData.get(playerthatsentcommand).ifPresent(iHeartData -> playerthatsentcommand.sendSystemMessage(Component.translatable("chat.message.lifesteal.get_hit_point_for_self", iHeartData.getHeartDifference())));
         }
         return Command.SINGLE_SUCCESS;
     }
@@ -107,11 +106,13 @@ public class LifestealCommand {
 
         LivingEntity playerthatsentcommand = source.getPlayer();
 
-        if (!source.isPlayer()) {
-            HealthData.get(chosenentity).ifPresent(HeartCap -> LifeSteal.LOGGER.info(chosenentity.getName().getString() + "'s HitPoint difference is " + HeartCap.getHeartDifference() + "."));
-        } else {
-            HealthData.get(chosenentity).ifPresent(HeartCap -> playerthatsentcommand.sendSystemMessage(Component.translatable(chosenentity.getName().getString() + "'s HitPoint difference is " + HeartCap.getHeartDifference() + ".")));
-        }
+        HealthData.get(chosenentity).ifPresent(iHeartData ->{
+            if(!source.isPlayer()){
+                LifeSteal.LOGGER.info(Component.translatable("chat.message.lifesteal.get_hit_point_for_player", chosenentity.getName().getString(), iHeartData.getHeartDifference()).toString());
+            }else {
+                playerthatsentcommand.sendSystemMessage(Component.translatable("chat.message.lifesteal.get_hit_point_for_player", chosenentity.getName().getString(), iHeartData.getHeartDifference()));
+            }
+        });
         return Command.SINGLE_SUCCESS;
     }
 
@@ -123,7 +124,7 @@ public class LifestealCommand {
                 IHeartCap.refreshHearts(false);
             });
 
-            playerthatsentcommand.sendSystemMessage(Component.translatable("Your HitPoint difference has been set to " + amount));
+            playerthatsentcommand.sendSystemMessage(Component.translatable("chat.message.lifesteal.set_hit_point_for_self", amount));
         }
         return Command.SINGLE_SUCCESS;
     }
@@ -137,14 +138,14 @@ public class LifestealCommand {
             IHeartCap.refreshHearts(false);
         });
 
-        if (chosenentity != playerthatsentcommand && source.isPlayer()) {
-            playerthatsentcommand.sendSystemMessage(Component.translatable("Set " + chosenentity.getName().getString() + "'s HitPoint difference to " + amount));
+        if (source.isPlayer()) {
+            playerthatsentcommand.sendSystemMessage(Component.translatable("chat.message.lifesteal.set_hit_point_for_player", chosenentity.getName().getString(), amount));
         } else if (!source.isPlayer()) {
-            LifeSteal.LOGGER.info("Set " + chosenentity.getName().getString() + "'s HitPoint difference to " + amount);
+            LifeSteal.LOGGER.info("chat.message.lifesteal.set_hit_point_for_player", chosenentity.getName().getString(), amount);
         }
 
-        if (LifeSteal.config.tellPlayersIfHitPointChanged.get()) {
-            chosenentity.sendSystemMessage(Component.translatable("Your HitPoint difference has been set to " + amount));
+        if (LifeSteal.config.tellPlayersIfHitPointChanged.get() && chosenentity != playerthatsentcommand) {
+            chosenentity.sendSystemMessage(Component.translatable("chat.message.lifesteal.set_hit_point_for_self", amount));
         }
 
         return Command.SINGLE_SUCCESS;

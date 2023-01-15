@@ -1,9 +1,9 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern":[
-    "TCG",
+    "GCG",
     "NHN",
-    "CGC"
+    "CTC"
   ],
 
   "key": {
