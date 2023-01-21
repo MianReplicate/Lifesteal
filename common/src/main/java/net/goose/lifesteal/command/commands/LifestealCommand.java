@@ -130,21 +130,20 @@ public class LifestealCommand {
     }
 
     private static int setHitPoint(CommandSourceStack source, Entity chosenentity, int amount) throws CommandSyntaxException {
-
-        LivingEntity playerthatsentcommand = source.getPlayer();
-
         HealthData.get(chosenentity).ifPresent(IHeartCap -> {
             IHeartCap.setHeartDifference(amount);
             IHeartCap.refreshHearts(false);
         });
 
         if (source.isPlayer()) {
+            LivingEntity playerthatsentcommand = source.getPlayer();
+
             playerthatsentcommand.sendSystemMessage(Component.translatable("chat.message.lifesteal.set_hit_point_for_player", chosenentity.getName().getString(), amount));
         } else if (!source.isPlayer()) {
             LifeSteal.LOGGER.info("chat.message.lifesteal.set_hit_point_for_player", chosenentity.getName().getString(), amount);
         }
 
-        if (LifeSteal.config.tellPlayersIfHitPointChanged.get() && chosenentity != playerthatsentcommand) {
+        if (LifeSteal.config.tellPlayersIfHitPointChanged.get()) {
             chosenentity.sendSystemMessage(Component.translatable("chat.message.lifesteal.set_hit_point_for_self", amount));
         }
 
