@@ -21,7 +21,9 @@ public class ModConfig {
     public final ForgeConfigSpec.BooleanValue disableReviveCrystals;
     public final ForgeConfigSpec.BooleanValue playersGainHeartsifKillednoHeart;
     public final ForgeConfigSpec.IntValue heartCrystalAmountGain;
+    public final ForgeConfigSpec.BooleanValue crystalInstantUse;
     public final ForgeConfigSpec.DoubleValue heartCoreHeal;
+    public final ForgeConfigSpec.BooleanValue coreInstantUse;
     public final ForgeConfigSpec.BooleanValue disableStatusEffects;
     public final ForgeConfigSpec.BooleanValue disableLightningEffect;
     public final ForgeConfigSpec.BooleanValue customHeartDifferenceWhenRevived;
@@ -34,12 +36,11 @@ public class ModConfig {
     public final ForgeConfigSpec.BooleanValue silentlyRevivePlayer;
     public final ForgeConfigSpec.BooleanValue playersSpawnHeadUponDeath;
     public final ForgeConfigSpec.BooleanValue playerDropsHeartCrystalWhenKilled;
-    public final ForgeConfigSpec.BooleanValue playerDropsHeartCrystalOnlyWhenKillerHasMax;
+    public final ForgeConfigSpec.BooleanValue playerDropsHeartCrystalWhenKillerHasMax;
     public final ForgeConfigSpec.BooleanValue uponDeathBanned;
 
-
     public ModConfig(final ForgeConfigSpec.Builder builder) {
-        builder.comment("It's recommended to edit the config BEFORE you make/play a world. While editing the config in an already generated world can work sometimes, there may be visual bugs or just bugs in general.");
+        builder.comment("It's recommended to edit the config BEFORE you start up Minecraft. While most configs will work just fine while changed ingame, some require a restart to work properly.");
         builder.comment("This category holds general values that will mostly be customized by most.");
         builder.push("Starting Configurations");
         this.startingHeartDifference = buildInt(builder, "Starting HitPoint Difference:", 0, -19, Integer.MAX_VALUE, "This value modifies how many hearts you'll start at in a world. 2 would mean 1 extra heart, -2 would mean 1 less heart. If you have lives enabled, you'll gain a life when you get max hearts double your starting hearts. EX: If 3 hearts is your starting value, you'll gain a life if you get 3 more hearts. ");
@@ -62,6 +63,7 @@ public class ModConfig {
         this.disableHeartCores = buildBoolean(builder, "Disable Heart Cores:", false, "Heart Cores can heal on default 25% of your health if right clicked. This value determines if they should be disabled.");
         this.heartCoreHeal = buildDouble(builder, "Percentage of max Health Heart Core Heals", 0.33, 0.01, 1, "The percentage of max health a heart core should heal when used.");
         this.preventFromUsingCoreIfMax = buildBoolean(builder, "Prevent Players From Using Heart Cores If At Max Health:", true, "If this option is true, a player cannot eat heart cores if they are already at their max health.");
+        this.coreInstantUse = buildBoolean(builder, "Instantly use Heart Cores:", false, "If this value is true, right clicking the heart core instantly uses it rather than you eating it.");
 
         builder.pop();
         builder.push("Heart Crystals");
@@ -69,6 +71,7 @@ public class ModConfig {
         this.disableUnnaturalHeartCrystals = buildBoolean(builder, "Disable Unnatural Heart Crystals:", false, "Disables Unnatural Heart Crystals. Unnatural Heart Crystals are achieved by using the withdraw command.");
         this.heartCrystalAmountGain = buildInt(builder, "Amount of HitPoints Heart Crystal Permanently Gives:", 2, 1, Integer.MAX_VALUE, "This is the amount of hit points a Heart Crystal should give when used. 2 HitPoints = 1 Heart, 3 = 1.5 Heart.");
         this.preventFromUsingCrystalIfMax = buildBoolean(builder, "Prevent Players From Using Heart Crystals If At Max Hearts:", true, "If a max is set for the amount of hearts you can get, this option when true, makes it so players can't eat heart crystals if they're already at the max.");
+        this.crystalInstantUse = buildBoolean(builder, "Instantly use Heart Crystals:", false, "If this value is true, right clicking the heart crystal instantly uses it rather than you eating it.");
 
         builder.pop();
         builder.push("Revive Crystals");
@@ -86,7 +89,7 @@ public class ModConfig {
         this.disableLifesteal = buildBoolean(builder, "Disable Lifesteal:", false, "This makes it so you can't gain hearts from killing other players. THIS DOESN'T AFFECT LOSING HEARTS.");
         this.playersGainHeartsifKillednoHeart = buildBoolean(builder, "Players Gain Hearts From No Heart Players:", false, "This value determines if a player should still earn hearts from a player they killed even if the player doesn't have hearts to spare. EX: MinimumHeartHave");
         this.playerDropsHeartCrystalWhenKilled = buildBoolean(builder, "Players Drop Heart Crystals When Killed:", false, "This value determines whether the killer will automatically gain hearts from a player or if the player drops a heart crystal instead that can be eaten. The config that disables Unnatural Heart Crystals will not affect this.");
-        this.playerDropsHeartCrystalOnlyWhenKillerHasMax = buildBoolean(builder, "Players Drop Heart Crystals Only When Killer has Max", false, "This value determines if the above value should only apply if the killer has received the max amount of hearts. This requires both the above value and MaximumHearts config to be enabled.");
+        this.playerDropsHeartCrystalWhenKillerHasMax = buildBoolean(builder, "Players Drop Heart Crystals When Killer has Max", false, "This value determines if a killed person should drop a heart crystal when the killer has max hearts. This requires the MaximumHearts config to be enabled.");
 
         builder.pop();
         builder.comment("This category will hold the maximums for certain values");

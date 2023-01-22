@@ -141,9 +141,6 @@ public class HealthData implements IHealthData {
             final int maximumheartsGainable = LifeSteal.config.maximumamountofhitpointsGainable.get();
             final int minimumamountofheartscanlose = LifeSteal.config.maximumamountofhitpointsLoseable.get();
 
-            AttributeInstance Attribute = livingEntity.getAttribute(Attributes.MAX_HEALTH);
-            Set<AttributeModifier> attributemodifiers = Attribute.getModifiers();
-
             if (maximumheartsGainable > -1) {
                 if (this.heartDifference - defaultheartDifference >= maximumheartsGainable) {
                     this.heartDifference = maximumheartsGainable + defaultheartDifference;
@@ -160,6 +157,10 @@ public class HealthData implements IHealthData {
                 }
             }
 
+            AttributeInstance Attribute = livingEntity.getAttribute(Attributes.MAX_HEALTH);
+            Set<AttributeModifier> attributemodifiers = Attribute.getModifiers();
+            double healthModifiedTotal = this.heartDifference;
+
             if (!attributemodifiers.isEmpty()) {
                 Iterator<AttributeModifier> attributeModifierIterator = attributemodifiers.iterator();
 
@@ -168,27 +169,30 @@ public class HealthData implements IHealthData {
                 while (attributeModifierIterator.hasNext()) {
 
                     AttributeModifier attributeModifier = attributeModifierIterator.next();
-                    if (attributeModifier != null && attributeModifier.getName().equals("LifeStealHealthModifier")) {
-                        FoundAttribute = true;
+                    if(attributeModifier != null){
 
-                        Attribute.removeModifier(attributeModifier);
+                        if (attributeModifier.getName().equals("LifeStealHealthModifier")) {
+                            FoundAttribute = true;
+                            Attribute.removeModifier(attributeModifier);
+                            AttributeModifier newmodifier = new AttributeModifier("LifeStealHealthModifier", this.heartDifference, AttributeModifier.Operation.ADDITION);
+                            Attribute.addPermanentModifier(newmodifier);
+                        } else {
+                            AttributeModifier.Operation operation = attributeModifier.getOperation();
+                            double amount = attributeModifier.getAmount();
 
-                        AttributeModifier newmodifier = new AttributeModifier("LifeStealHealthModifier", this.heartDifference, AttributeModifier.Operation.ADDITION);
-
-                        Attribute.addPermanentModifier(newmodifier);
+                            if(operation == AttributeModifier.Operation.ADDITION){
+                                healthModifiedTotal += amount;
+                            }
+                        }
                     }
                 }
 
                 if (!FoundAttribute) {
-
                     AttributeModifier attributeModifier = new AttributeModifier("LifeStealHealthModifier", this.heartDifference, AttributeModifier.Operation.ADDITION);
-
                     Attribute.addPermanentModifier(attributeModifier);
                 }
             } else {
-
                 AttributeModifier attributeModifier = new AttributeModifier("LifeStealHealthModifier", this.heartDifference, AttributeModifier.Operation.ADDITION);
-
                 Attribute.addPermanentModifier(attributeModifier);
             }
 
@@ -200,7 +204,7 @@ public class HealthData implements IHealthData {
                 livingEntity.setHealth(livingEntity.getMaxHealth());
             }
 
-            if (livingEntity.getMaxHealth() <= 1 && this.heartDifference <= -20) {
+            if (livingEntity.getMaxHealth() <= 1 && healthModifiedTotal <= -20) {
                 if (livingEntity instanceof ServerPlayer serverPlayer) {
 
                     this.heartDifference = defaultheartDifference;

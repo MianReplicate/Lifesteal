@@ -3,9 +3,12 @@ package net.goose.lifesteal.common.item.custom;
 import net.goose.lifesteal.LifeSteal;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -19,8 +22,9 @@ public class HeartCoreItem extends Item {
         super(pProperties);
     }
 
-    @Override
-    public ItemStack finishUsingItem(ItemStack item, Level level, LivingEntity entity) {
+    public boolean runHeartCoreCode(Level level, LivingEntity entity){
+        boolean success = true;
+
         if (!level.isClientSide() && entity instanceof ServerPlayer serverPlayer) {
             if (!LifeSteal.config.disableHeartCores.get()) {
                 if (entity.getHealth() < entity.getMaxHealth() || !LifeSteal.config.preventFromUsingCoreIfMax.get()) {
@@ -42,15 +46,51 @@ public class HeartCoreItem extends Item {
                     entity.addEffect(new MobEffectInstance(MobEffects.REGENERATION, tickTime, 2));
                 } else {
                     serverPlayer.displayClientMessage(Component.translatable("gui.lifesteal.heart_core_at_max_health"), true);
-                    item.grow(1);
-                    serverPlayer.containerMenu.broadcastChanges();
+                    success = false;
                 }
             } else {
                 serverPlayer.displayClientMessage(Component.translatable("gui.lifesteal.heart_core_disabled"), true);
-                item.grow(1);
-                serverPlayer.containerMenu.broadcastChanges();
+                success = false;
             }
         }
-        return super.finishUsingItem(item, level, entity);
+        return success;
+    }
+    @Override
+    public ItemStack finishUsingItem(ItemStack item, Level level, LivingEntity entity) {
+        boolean success = runHeartCoreCode(level, entity);
+        return success ? super.finishUsingItem(item, level, entity): item;
+    }
+
+    @Override
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionHand){
+        if(!this.isEdible()){
+            ItemStack item = player.getItemInHand(interactionHand);
+            boolean success = runHeartCoreCode(level, player);
+
+            if(success){
+                item.shrink(1);
+                player.containerMenu.broadcastChanges();
+            }
+        }
+
+        return super.use(level, player, interactionHand);
+    }
+
+    @Override
+    public boolean isEdible() {
+        if(LifeSteal.config.coreInstantUse.get()){
+            return false;
+        }else{
+            return true;
+        }
+    }
+
+    @Override
+    public FoodProperties getFoodProperties() {
+        if(LifeSteal.config.coreInstantUse.get()){
+            return null;
+        }else{
+            return this.HeartCore;
+        }
     }
 }
