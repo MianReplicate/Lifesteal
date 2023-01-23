@@ -42,19 +42,14 @@ public abstract class PlayerMixin extends LivingEntity {
         final ServerPlayer killerPlayer = (ServerPlayer) data.getLivingEntity();
         boolean alreadyGiven = false;
 
-        LifeSteal.LOGGER.info("Increasing hearts");
-
         if(maximumhitpointsGainable > -1 && LifeSteal.config.playerDropsHeartCrystalWhenKillerHasMax.get()){
-            LifeSteal.LOGGER.info("1");
             if (data.getHeartDifference() + hitpoint > LifeSteal.config.startingHeartDifference.get() + maximumhitpointsGainable) {
-                LifeSteal.LOGGER.info("2");
                 giveKilledHeartCrystal(killedPlayer, killerPlayer);
                 alreadyGiven = true;
             }
         }
 
         if(!alreadyGiven){
-            LifeSteal.LOGGER.info("3");
             if (LifeSteal.config.playerDropsHeartCrystalWhenKilled.get()) {
                 giveKilledHeartCrystal(killedPlayer, killerPlayer);
             }else{

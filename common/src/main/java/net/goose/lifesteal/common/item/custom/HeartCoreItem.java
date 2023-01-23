@@ -25,9 +25,9 @@ public class HeartCoreItem extends Item {
     public boolean runHeartCoreCode(Level level, LivingEntity entity){
         boolean success = true;
 
-        if (!level.isClientSide() && entity instanceof ServerPlayer serverPlayer) {
+        if (entity instanceof ServerPlayer serverPlayer) {
             if (!LifeSteal.config.disableHeartCores.get()) {
-                if (entity.getHealth() < entity.getMaxHealth() || !LifeSteal.config.preventFromUsingCoreIfMax.get()) {
+                if (Math.round(entity.getHealth()) < entity.getMaxHealth() || !LifeSteal.config.preventFromUsingCoreIfMax.get()) {
                     float maxHealth = entity.getMaxHealth();
                     float amountThatWillBeHealed = (float) (maxHealth * LifeSteal.config.heartCoreHeal.get());
                     float differenceInHealth = entity.getMaxHealth() - entity.getHealth();
@@ -57,7 +57,11 @@ public class HeartCoreItem extends Item {
     }
     @Override
     public ItemStack finishUsingItem(ItemStack item, Level level, LivingEntity entity) {
-        boolean success = runHeartCoreCode(level, entity);
+        boolean success = false;
+        if(!level.isClientSide){
+            success = runHeartCoreCode(level, entity);
+        }
+
         return success ? super.finishUsingItem(item, level, entity): item;
     }
 
