@@ -129,7 +129,6 @@ public class LifestealCommand {
         return Command.SINGLE_SUCCESS;
     }
     // Test
-
     private static int setHitPoint(CommandSourceStack source, Entity chosenentity, int amount) throws CommandSyntaxException {
         HealthData.get(chosenentity).ifPresent(IHeartCap -> {
             IHeartCap.setHeartDifference(amount);
