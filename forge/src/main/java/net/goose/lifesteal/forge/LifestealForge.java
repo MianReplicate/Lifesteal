@@ -15,14 +15,15 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 @Mod(LifeSteal.MOD_ID)
 public class LifestealForge {
     public LifestealForge() {
+        IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
+        IEventBus eventBus = MinecraftForge.EVENT_BUS;
+
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, ConfigHolder.SERVER_SPEC);
         LifeSteal.config = ConfigHolder.SERVER;
         LifeSteal.init();
 
-        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
-
-        MinecraftForge.EVENT_BUS.register(EventHandler.class);
-        MinecraftForge.EVENT_BUS.register(ModCapabilities.EventCapHandler.class);
-        modEventBus.addListener(ModCreativeModeTab::register);
+        eventBus.register(EventHandler.class);
+        eventBus.register(ModCapabilities.EventCapHandler.class);
+        modBus.addListener(ModCreativeModeTab::register);
     }
 }
