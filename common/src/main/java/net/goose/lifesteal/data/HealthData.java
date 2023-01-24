@@ -157,7 +157,7 @@ public class HealthData implements IHealthData {
             }
 
             AttributeInstance Attribute = livingEntity.getAttribute(Attributes.MAX_HEALTH);
-            Set<AttributeModifier> attributemodifiers = Attribute.getModifiers();
+            Set<AttributeModifier> attributemodifiers = Attribute.getModifiers(AttributeModifier.Operation.ADDITION);
             AtomicReference<Double> healthModifiedTotal = new AtomicReference<>((double) this.heartDifference);
 
             if (!attributemodifiers.isEmpty()) {
@@ -172,12 +172,8 @@ public class HealthData implements IHealthData {
                             AttributeModifier newmodifier = new AttributeModifier("LifeStealHealthModifier", this.heartDifference, AttributeModifier.Operation.ADDITION);
                             Attribute.addPermanentModifier(newmodifier);
                         } else {
-                            AttributeModifier.Operation operation = attributeModifier.getOperation();
                             double amount = attributeModifier.getAmount();
-
-                            if(operation == AttributeModifier.Operation.ADDITION){
-                                healthModifiedTotal.set(healthModifiedTotal.get() + amount);
-                            }
+                            healthModifiedTotal.set(healthModifiedTotal.get() + amount);
                         }
                     }
                 });
