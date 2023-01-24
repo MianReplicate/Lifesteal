@@ -159,6 +159,7 @@ public class HealthData implements IHealthData {
             AttributeInstance Attribute = livingEntity.getAttribute(Attributes.MAX_HEALTH);
             Set<AttributeModifier> attributemodifiers = Attribute.getModifiers(AttributeModifier.Operation.ADDITION);
             AtomicReference<Double> healthModifiedTotal = new AtomicReference<>((double) this.heartDifference);
+            String attributeModifierID = new String("LifeStealHealthModifier");
 
             if (!attributemodifiers.isEmpty()) {
                 AtomicBoolean FoundAttribute = new AtomicBoolean(false);
@@ -166,10 +167,10 @@ public class HealthData implements IHealthData {
                 attributemodifiers.forEach(attributeModifier -> {
                     if(attributeModifier != null){
 
-                        if (attributeModifier.getName().equals("LifeStealHealthModifier")) {
+                        if (attributeModifier.getName().equals(attributeModifierID)) {
                             FoundAttribute.set(true);
                             Attribute.removeModifier(attributeModifier);
-                            AttributeModifier newmodifier = new AttributeModifier("LifeStealHealthModifier", this.heartDifference, AttributeModifier.Operation.ADDITION);
+                            AttributeModifier newmodifier = new AttributeModifier(attributeModifierID, this.heartDifference, AttributeModifier.Operation.ADDITION);
                             Attribute.addPermanentModifier(newmodifier);
                         } else {
                             double amount = attributeModifier.getAmount();
@@ -179,11 +180,11 @@ public class HealthData implements IHealthData {
                 });
 
                 if (!FoundAttribute.get()) {
-                    AttributeModifier attributeModifier = new AttributeModifier("LifeStealHealthModifier", this.heartDifference, AttributeModifier.Operation.ADDITION);
+                    AttributeModifier attributeModifier = new AttributeModifier(attributeModifierID, this.heartDifference, AttributeModifier.Operation.ADDITION);
                     Attribute.addPermanentModifier(attributeModifier);
                 }
             } else {
-                AttributeModifier attributeModifier = new AttributeModifier("LifeStealHealthModifier", this.heartDifference, AttributeModifier.Operation.ADDITION);
+                AttributeModifier attributeModifier = new AttributeModifier(attributeModifierID, this.heartDifference, AttributeModifier.Operation.ADDITION);
                 Attribute.addPermanentModifier(attributeModifier);
             }
 
