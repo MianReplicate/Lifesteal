@@ -1,0 +1,135 @@
+apply plugin: 'com.github.johnrengelman.shadow'
+
+evaluationDependsOn(':common')
+
+def loomPlatform = project.property('loom.platform')
+
+sourceSets.main.resources.srcDirs = [ 'src/main/resources', 'src/main/generated' ]
+
+def resourceTargets = ['fabric.mod.json', 'mods.toml']
+def intoTargets = ["$rootDir/out/production/resources/", "$rootDir/out/production/${project.name}.main/", "$rootDir/bin/main/"]
+def replaceProperties = [mod_id                 : mod_id, mod_name: mod_name, mod_version: mod_version,
+                         mod_authors            : mod_authors, mod_credits:mod_credits, mod_description: mod_description,
+                         display_url            :display_url, logo_file:logo_file,
+                         issue_tracker_url      : issue_tracker_url,
+                         update_json_url        : update_json_url,
+                         mod_license            : mod_license,
+                         minecraft_version_range: minecraft_version_range,
+                         minecraft_version      : minecraft_version, fabric_loader_version: fabric_loader_version,
+                         fabric_api_version     : fabric_api_version, repository_url: repository_url, forge_version_range: forge_version_range,
+                            ]
+processResources {
+    inputs.properties replaceProperties
+    replaceProperties.put 'project', project
+
+    filesMatching(resourceTargets) {
+        expand replaceProperties
+    }
+
+    intoTargets.each { target ->
+        if (file(target).exists()) {
+            copy {
+                from(sourceSets.main.resources) {
+                    include resourceTargets
+                    expand replaceProperties
+                }
+                into target
+            }
+        }
+    }
+
+}
+
+configurations {
+    common
+    shadowCommon
+    compileClasspath.extendsFrom common
+    runtimeClasspath.extendsFrom common
+    create("development${loomPlatform.capitalize()}") {
+        extendsFrom common
+    }
+}
+
+architectury {
+    platformSetupLoomIde()
+
+    if(loomPlatform == 'fabric') fabric()
+    else if(loomPlatform == 'forge') forge()
+    else if(loomPlatform == 'quilt') loader(loomPlatform)
+    else throw new GradleException("Unknown 'loom.platform' value: ${loomPlatform} for project: '${project.name}' ('${project.path}')")
+}
+
+loom {
+    if(loomPlatform == 'forge') {
+        forge {
+            if(accessWidenerFile.exists()) {
+                convertAccessWideners = true
+                extraAccessWideners.add accessWidenerFile.name
+            }
+
+            if(file("src/main/resources/${mod_id}.mixins.json").exists()) {
+                mixinConfig "${mod_id}.mixins.json"
+            }
+
+            if(getRootProject().file("common/src/main/resources/${mod_id}-common.mixins.json").exists()) {
+                mixinConfig "${mod_id}-common.mixins.json"
+            }
+
+            dataGen {
+                mod "${mod_id}"
+            }
+        }
+    }
+}
+
+dependencies {
+    if(loomPlatform == 'fabric') {
+        modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
+        modApi "net.fabricmc.fabric-api:fabric-api:${fabric_api_version}+${minecraft_version}"
+    } else if(loomPlatform == 'forge') {
+        forge "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
+    }
+
+    common(project(path: ':common', configuration: 'namedElements')) { transitive false }
+    shadowCommon(project(path: ':common', configuration: "transformProduction${loomPlatform.capitalize()}")) { transitive false }
+}
+
+shadowJar {
+    exclude 'architectury.common.json'
+    configurations = [ project.configurations.shadowCommon ]
+    classifier 'dev-shadow'
+}
+
+remapJar {
+    if(loomPlatform == 'fabric' || loomPlatform == 'quilt') {
+        injectAccessWidener = true
+    }
+
+    input.set shadowJar.archiveFile
+    dependsOn shadowJar
+    classifier null
+}
+
+jar {
+    classifier 'dev'
+}
+
+sourcesJar {
+    def commonSources = project(':common').sourcesJar
+    dependsOn commonSources
+    from commonSources.archiveFile.map { zipTree(it) }
+}
+
+components.java {
+    withVariantsFromConfiguration(project.configurations.shadowRuntimeElements) {
+        skip()
+    }
+}
+
+idea.module {
+    excludeDirs += [
+            file('.gradle'),
+            file('build'),
+            file('run')
+    ]
+}

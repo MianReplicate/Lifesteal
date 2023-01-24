@@ -1,120 +1,14 @@
-plugins {
-    id "com.github.johnrengelman.shadow" version "7.1.2"
-}
-
-architectury {
-    platformSetupLoomIde()
-    fabric()
-}
+apply from: '../loader.gradle'
 
 loom {
-    accessWidenerPath = project(":common").loom.accessWidenerPath
-}
-
-configurations {
-    common
-    shadowCommon // Don't use shadow from the shadow plugin because we don't want IDEA to index this.
-    compileClasspath.extendsFrom common
-    runtimeClasspath.extendsFrom common
-    developmentFabric.extendsFrom common
-}
-
-dependencies {
-    modImplementation "net.fabricmc:fabric-loader:${rootProject.fabric_loader_version}"
-    modApi "net.fabricmc.fabric-api:fabric-api:${rootProject.fabric_api_version}"+"+"+rootProject.minecraft_version
-    // Remove the next line if you don't want to depend on the API
-
-    implementation 'com.electronwill.night-config:core:3.6.3'
-    implementation 'com.electronwill.night-config:toml:3.6.3'
-
-    modImplementation "fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${rootProject.forge_config_api_port_version}"
-    include "fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${rootProject.forge_config_api_port_version}"
-
-    // Adds a dependency on the base cardinal components module (required by every other module)
-    // Replace modImplementation with modApi if you expose components in your own API
-    modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-base:${rootProject.cardinal_components_api_version}"
-    modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-world:${rootProject.cardinal_components_api_version}"
-    modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${rootProject.cardinal_components_api_version}"
-    // Includes Cardinal Components API as a Jar-in-Jar dependency (optional)
-    include "dev.onyxstudios.cardinal-components-api:cardinal-components-base:${rootProject.cardinal_components_api_version}"
-    include "dev.onyxstudios.cardinal-components-api:cardinal-components-world:${rootProject.cardinal_components_api_version}"
-    include "dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${rootProject.cardinal_components_api_version}"
-
-    common(project(path: ":common", configuration: "namedElements")) { transitive false }
-    shadowCommon(project(path: ":common", configuration: "transformProductionFabric")) { transitive false }
-}
-
-def resourceTargets = ['fabric.mod.json']
-def intoTargets = ["$rootDir/out/production/resources/", "$rootDir/out/production/${project.name}.main/", "$rootDir/bin/main/"]
-def replaceProperties = [mod_id: mod_id, mod_name: mod_name, mod_version: mod_version,
-                         mod_authors: mod_authors, credits:credits, mod_description: mod_description,
-                         display_url:display_url, logo_file:logo_file,
-                         issue_tracker_url: issue_tracker_url,
-                         update_json_url: update_json_url,
-                         license: license,
-                         minecraft_version_range: minecraft_version_range,
-                         minecraft_version: minecraft_version, fabric_loader_version: fabric_loader_version,
-                         fabric_api_version: fabric_api_version, repository_url: repository_url]
-
-
-processResources {
-    inputs.properties replaceProperties
-    replaceProperties.put 'project', project
-
-    filesMatching(resourceTargets) {
-        expand replaceProperties
-    }
-
-    intoTargets.each { target ->
-        if (file(target).exists()) {
-            copy {
-                from(sourceSets.main.resources) {
-                    include resourceTargets
-                    expand replaceProperties
-                }
-                into target
-            }
-        }
-    }
-
-}
-shadowJar {
-    configurations = [project.configurations.shadowCommon]
-    classifier "dev-shadow"
-}
-
-remapJar {
-    input.set shadowJar.archiveFile
-    dependsOn shadowJar
-    classifier null
-}
-
-jar {
-    classifier "dev"
-}
-
-sourcesJar {
-    def commonSources = project(":common").sourcesJar
-    dependsOn commonSources
-    from commonSources.archiveFile.map { zipTree(it) }
-}
-
-components.java {
-    withVariantsFromConfiguration(project.configurations.shadowRuntimeElements) {
-        skip()
-    }
-}
-
-publishing {
-    publications {
-        mavenFabric(MavenPublication) {
-            artifactId = rootProject.mod_id + "-" + project.name
-            from components.java
-        }
-    }
-
-    // See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
-    repositories {
-        // Add repositories to publish to here.
+    runs {
+        /*data {
+            inherit(client)
+            vmArg('-Dfabric-api.datagen')
+            vmArg("-Dfabric-api.datagen.output-dir=${file('src/main/generated')}")
+            // vmArg("-Dfabric-api.datagen.output-dir=${project(':common').file('src/main/generated')}")
+            vmArg("-Dfabric-api.datagen.modid=${MOD_ID}")
+            vmArg('-Dfabric-api.datagen.strict-validation=true')
+        }*/
     }
 }

@@ -1,3 +1,14 @@
+architectury {
+    def platforms = rootProject
+            .subprojects
+            .findAll { it.hasProperty('loom.platform') }
+            .collect { it.property('loom.platform') as String }
+            .toSet()
+
+    println "Platforms: ${platforms.toListString()}"
+    common(platforms)
+}
+
 dependencies {
     // We depend on fabric loader here to use the fabric @Environment annotations and get the mixin dependencies
     // Do NOT use other classes from fabric loader
@@ -7,26 +18,17 @@ dependencies {
     implementation 'com.electronwill.night-config:core:3.6.3'
     implementation 'com.electronwill.night-config:toml:3.6.3'
     compileOnly "fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${rootProject.forge_config_api_port_version}"
+    compileOnly "org.spongepowered:mixin:${mixin_version}"
 }
 
 loom {
     accessWidenerPath = file("src/main/resources/lifesteal.accesswidener")
 }
 
-architectury {
-    common(rootProject.enabled_platforms.split(","))
-}
-
-publishing {
-    publications {
-        mavenCommon(MavenPublication) {
-            artifactId = rootProject.mod_id
-            from components.java
-        }
-    }
-
-    // See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
-    repositories {
-        // Add repositories to publish to here.
-    }
+idea.module {
+    excludeDirs += [
+            file('.gradle'),
+            file('build'),
+            file('run')
+    ]
 }

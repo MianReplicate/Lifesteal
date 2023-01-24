@@ -2,6 +2,8 @@ plugins {
     id "architectury-plugin" version "3.4-SNAPSHOT"
     id "dev.architectury.loom" version "0.11.0-SNAPSHOT" apply false
     id "io.github.pacifistmc.forgix" version "1.2.6"
+    id 'org.jetbrains.gradle.plugin.idea-ext' version '1.1' apply false
+    id 'com.github.johnrengelman.shadow' version '7.1.2' apply false
 }
 
 forgix {
@@ -26,34 +28,24 @@ architectury {
 }
 
 subprojects {
+    apply plugin: 'java-library'
+    apply plugin: 'idea'
+    apply plugin: 'maven-publish'
+    apply plugin: 'architectury-plugin'
     apply plugin: "dev.architectury.loom"
+    apply plugin: 'org.jetbrains.gradle.plugin.idea-ext'
 
-    loom {
-        silentMojangMappingsLicense()
+    project.ext {
+        accessWidenerFile = rootProject.file("common/src/main/resources/${mod_id}.accesswidener")
     }
-
-    dependencies {
-        minecraft "com.mojang:minecraft:${rootProject.minecraft_version}"
-        // The following line declares the mojmap mappings, you may use other mappings as well
-        mappings loom.officialMojangMappings()
-        // The following line declares the yarn mappings you may select this one as well.
-        // mappings "net.fabricmc:yarn:@YARN_MAPPINGS@:v2"
-    }
-
-    build.finalizedBy(mergeJars)
-    assemble.finalizedBy(mergeJars)
-}
-
-allprojects {
-    apply plugin: "java"
-    apply plugin: "architectury-plugin"
-    apply plugin: "maven-publish"
 
     archivesBaseName = rootProject.mod_id
     version = rootProject.mod_version
     group = rootProject.mod_base_package
 
     repositories {
+        mavenLocal()
+        maven { url 'https://maven.parchmentmc.org' }
         // Add repositories to retrieve artifacts from in here.
         // You should only use this when depending on other mods because
         // Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
@@ -67,6 +59,15 @@ allprojects {
             name = 'Ladysnake Mods'
             url = 'https://ladysnake.jfrog.io/artifactory/mods'
         }
+        maven {
+            url 'https://www.cursemaven.com'
+            content { includeGroup 'curse.maven' }
+        }
+
+        maven {
+            url 'https://api.modrinth.com/maven'
+            content { includeGroup 'maven.modrinth' }
+        }
     }
 
     tasks.withType(JavaCompile) {
@@ -75,6 +76,80 @@ allprojects {
     }
 
     java {
+        toolchain {
+            languageVersion.set(JavaLanguageVersion.of("${java_version}"))
+        }
+
         withSourcesJar()
     }
+
+    tasks.withType(JavaCompile).configureEach {
+        options.encoding = 'UTF-8'
+        options.release.set(JavaLanguageVersion.of("${java_version}").asInt())
+
+        javaToolchains {
+            compilerFor {
+                languageVersion.set(JavaLanguageVersion.of("${java_version}"))
+            }
+        }
+    }
+
+    sourceSets.test {
+        java.srcDirs = [ ]
+        resources.srcDirs = [ ]
+    }
+
+    architectury {
+        minecraft = "${minecraft_version}"
+    }
+
+    loom {
+        silentMojangMappingsLicense()
+
+        if(accessWidenerFile.exists()) {
+            accessWidenerPath = accessWidenerFile
+        }
+    }
+
+    dependencies {
+        minecraft "com.mojang:minecraft:${rootProject.minecraft_version}"
+        // The following line declares the mojmap mappings, you may use other mappings as well
+        // The following line declares the yarn mappings you may select this one as well.
+        // mappings "net.fabricmc:yarn:@YARN_MAPPINGS@:v2"
+        mappings(loom.layered {
+            officialMojangMappings()
+
+            if(rootProject.hasProperty('parchment_mappings')) {
+                def mcVersion = rootProject.hasProperty('parchment_minecraft_version') ? "${parchment_minecraft_version}" : "${minecraft_version}"
+                parchment("org.parchmentmc.data:parchment-${mcVersion}:${parchment_mappings}@zip")
+            }
+        })
+
+        compileOnly 'com.google.code.findbugs:jsr305:3.0.2'
+        compileOnly 'com.google.errorprone:error_prone_annotations:2.11.0'
+    }
+
+    processResources {
+        project.properties.each {
+            inputs.property "${it.key}", "${it.value}"
+        }
+
+        filesMatching([ '*.mixins.json', 'pack.mcmeta', 'META-INF/mods.toml', 'fabric.mod.json', 'architectury.common.json' ]) {
+            expand project.properties
+        }
+    }
+
+
+    build.finalizedBy(mergeJars)
+    assemble.finalizedBy(mergeJars)
+}
+
+apply plugin: 'org.jetbrains.gradle.plugin.idea-ext'
+
+idea.module {
+    excludeDirs += [
+            file('.idea'),
+            file('.gradle'),
+            file('gradle')
+    ]
 }
