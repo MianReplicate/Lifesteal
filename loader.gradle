@@ -86,6 +86,22 @@ dependencies {
     if(loomPlatform == 'fabric') {
         modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
         modApi "net.fabricmc.fabric-api:fabric-api:${fabric_api_version}+${minecraft_version}"
+
+        implementation 'com.electronwill.night-config:core:3.6.3'
+        implementation 'com.electronwill.night-config:toml:3.6.3'
+
+        modImplementation "fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${forge_config_api_port_version}"
+        include "fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${forge_config_api_port_version}"
+
+        // Adds a dependency on the base cardinal components module (required by every other module)
+        // Replace modImplementation with modApi if you expose components in your own API
+        modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-base:${cardinal_components_api_version}"
+        modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-world:${cardinal_components_api_version}"
+        modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${cardinal_components_api_version}"
+        // Includes Cardinal Components API as a Jar-in-Jar dependency (optional)
+        include "dev.onyxstudios.cardinal-components-api:cardinal-components-base:${cardinal_components_api_version}"
+        include "dev.onyxstudios.cardinal-components-api:cardinal-components-world:${cardinal_components_api_version}"
+        include "dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${cardinal_components_api_version}"
     } else if(loomPlatform == 'forge') {
         forge "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
     }
