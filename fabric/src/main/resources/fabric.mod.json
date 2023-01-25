@@ -21,7 +21,7 @@
     "repo": "${repository_url}",
     "issues": "${issue_tracker_url}"
   },
-  "license": "${license}",
+  "license": "${mod_license}",
   "environment": "*",
   "entrypoints": {
     "main": [

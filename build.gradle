@@ -7,24 +7,24 @@ plugins {
 }
 
 forgix {
-    group = rootProject.mod_base_package // This is the common group of the mod which by default in Architectury Template it's defined as "maven_group" in your gradle.properties. If this property is not defined then by default it'll fetch the group from the maven_group property in your gradle.properties
-    mergedJarName = "${rootProject.mod_id}-${rootProject.mod_version}+${rootProject.minecraft_version}.jar" // This is the name of the merged jar. If this property is not defined then by default it'll fetch the "archives_base_name" property with the "mod_version" property in your gradle.properties.
+    group = mod_base_package // This is the common group of the mod which by default in Architectury Template it's defined as "maven_group" in your gradle.properties. If this property is not defined then by default it'll fetch the group from the maven_group property in your gradle.properties
+    mergedJarName = "${mod_id}-${mod_version}+${minecraft_version}.jar" // This is the name of the merged jar. If this property is not defined then by default it'll fetch the "archives_base_name" property with the "mod_version" property in your gradle.properties.
     outputDir = "build/libs/Merged" // This is the output directory of the merged jar from the root project. If this property is not defined then by default it's set to "Merged".
 
     forge {
         projectName = "forge" // This is the name of the forge project. If this property is not defined then by default it'll set to "forge" since that's the name the Architectury Template uses.
-        jarLocation = "build/libs/lifesteal-${rootProject.mod_version}.jar" // This is the location of the forge jar from the forge project. If this property is not defined then by default it fetches the jar with the shortest name.
+        jarLocation = "build/libs/lifesteal-${mod_version}.jar" // This is the location of the forge jar from the forge project. If this property is not defined then by default it fetches the jar with the shortest name.
     }
 
     fabric {
         projectName = "fabric" // This is the name of the fabric project. If this property is not defined then by default it'll set to "fabric" since that's the name the Architectury Template uses.
-        jarLocation = "build/libs/lifesteal-${rootProject.mod_version}.jar" // This is the location of the fabric jar from the fabric project. If this property is not defined then by default it fetches the jar with the shortest name.
+        jarLocation = "build/libs/lifesteal-${mod_version}.jar" // This is the location of the fabric jar from the fabric project. If this property is not defined then by default it fetches the jar with the shortest name.
     }
 
 }
 
 architectury {
-    minecraft = rootProject.minecraft_version
+    minecraft = minecraft_version
 }
 
 subprojects {
@@ -36,12 +36,12 @@ subprojects {
     apply plugin: 'org.jetbrains.gradle.plugin.idea-ext'
 
     project.ext {
-        accessWidenerFile = rootProject.file("common/src/main/resources/${mod_id}.accesswidener")
+        accessWidenerFile = file("common/src/main/resources/${mod_id}.accesswidener")
     }
 
-    archivesBaseName = rootProject.mod_id
-    version = rootProject.mod_version
-    group = rootProject.mod_base_package
+    archivesBaseName = mod_id
+    version = mod_version
+    group = mod_base_package
 
     repositories {
         mavenLocal()
