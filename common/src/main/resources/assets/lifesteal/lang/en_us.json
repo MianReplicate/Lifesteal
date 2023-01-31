@@ -42,18 +42,18 @@
 
   "itemGroup.lifesteal": "Lifesteal",
 
-  "advancements.lifesteal.get_fragment.title": "Fragment of the Past",
-  "advancements.lifesteal.get_fragment.desc": "The beginning of the end.",
-  "advancements.lifesteal.get_heart_core.title": "A Beacon of Hope",
-  "advancements.lifesteal.get_heart_core.desc": "Retrieve the core of a heart crystal.",
-  "advancements.lifesteal.get_heart_crystal.title": "Once Upon a Time..",
-  "advancements.lifesteal.get_heart_crystal.desc": "Shiny shiny heart.. oh what shall I do with you?",
-  "advancements.lifesteal.get_10_max_hearts.title": "Invincible",
-  "advancements.lifesteal.get_10_max_hearts.desc": "Get 10 permanent new max hearts.",
-  "advancements.lifesteal.use_totem_while_20_max_hearts.title": "Defying Mortality",
-  "advancements.lifesteal.use_totem_while_20_max_hearts.desc": "Save yourself from death with a Totem of Undying, even at the peak of immortality.",
-  "advancements.lifesteal.get_10_max_hearts_with_netherite_armor.title": "Challenging Death",
-  "advancements.lifesteal.get_10_max_hearts_with_netherite_armor.desc": "Gain 10 extra hearts AND get a full Netherite Armor set. Truly immortal.",
-  "advancements.lifesteal.revived.title": "The End of Time",
-  "advancements.lifesteal.revived.desc": "Defy the meaning of death."
+  "advancements.lifesteal:get_fragment.title": "Fragment of the Past",
+  "advancements.lifesteal:get_fragment.desc": "The beginning of the end.",
+  "advancements.lifesteal:get_heart_core.title": "A Beacon of Hope",
+  "advancements.lifesteal:get_heart_core.desc": "Retrieve the core of a heart crystal.",
+  "advancements.lifesteal:get_heart_crystal.title": "Once Upon a Time..",
+  "advancements.lifesteal:get_heart_crystal.desc": "Shiny shiny heart.. oh what shall I do with you?",
+  "advancements.lifesteal:get_10_max_hearts.title": "Invincible",
+  "advancements.lifesteal:get_10_max_hearts.desc": "Get 10 permanent new max hearts.",
+  "advancements.lifesteal:use_totem_while_20_max_hearts.title": "Defying Mortality",
+  "advancements.lifesteal:use_totem_while_20_max_hearts.desc": "Save yourself from death with a Totem of Undying, even at the peak of immortality.",
+  "advancements.lifesteal:get_10_max_hearts_with_netherite_armor.title": "Challenging Death",
+  "advancements.lifesteal:get_10_max_hearts_with_netherite_armor.desc": "Gain 10 extra hearts AND get a full Netherite Armor set. Truly immortal.",
+  "advancements.lifesteal:revived.title": "The End of Time",
+  "advancements.lifesteal:revived.desc": "Defy the meaning of death."
 }

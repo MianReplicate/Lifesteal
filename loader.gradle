@@ -4,7 +4,13 @@ evaluationDependsOn(':common')
 
 def loomPlatform = project.property('loom.platform')
 
-sourceSets.main.resources.srcDirs = [ 'src/main/resources', 'src/main/generated' ]
+sourceSets.main.resources.srcDirs = [ 'src/main/resources', {
+    if(loomPlatform == 'fabric'){
+        project(':forge').file('src/generated/resources').absolutePath
+    }
+}
+]
+
 
 def resourceTargets = ['fabric.mod.json', 'mods.toml']
 def intoTargets = ["$rootDir/out/production/resources/", "$rootDir/out/production/${project.name}.main/", "$rootDir/bin/main/"]
