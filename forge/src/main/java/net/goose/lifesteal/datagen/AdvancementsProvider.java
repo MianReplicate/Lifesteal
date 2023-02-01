@@ -5,7 +5,10 @@ import net.goose.lifesteal.advancement.LSAdvancementTrigger;
 import net.goose.lifesteal.advancement.ModCriteria;
 import net.goose.lifesteal.common.block.ModBlocks;
 import net.goose.lifesteal.common.item.ModItems;
-import net.minecraft.advancements.*;
+import net.minecraft.advancements.Advancement;
+import net.minecraft.advancements.AdvancementRewards;
+import net.minecraft.advancements.DisplayInfo;
+import net.minecraft.advancements.FrameType;
 import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.advancements.critereon.InventoryChangeTrigger;
 import net.minecraft.core.HolderLookup;
@@ -38,7 +41,7 @@ public class AdvancementsProvider extends ForgeAdvancementProvider {
     }
 
     private static DisplayInfo simpleDisplay(ItemLike icon, String name, FrameType frameType) {
-        return simpleDisplayWithBackground(icon, name, frameType, (ResourceLocation)null);
+        return simpleDisplayWithBackground(icon, name, frameType, null);
     }
 
     private static DisplayInfo simpleDisplayWithBackground(ItemLike icon, String name, FrameType frameType, @Nullable ResourceLocation background) {
@@ -49,6 +52,7 @@ public class AdvancementsProvider extends ForgeAdvancementProvider {
         String expandedName = "advancement." + LifeSteal.MOD_ID + ":" + name;
         return new DisplayInfo(icon, Component.translatable(expandedName), Component.translatable(expandedName + ".desc"), background, frameType, showToast, announceChat, hidden);
     }
+
     public static class AdvancementsGenerator implements AdvancementGenerator {
 
         @Override

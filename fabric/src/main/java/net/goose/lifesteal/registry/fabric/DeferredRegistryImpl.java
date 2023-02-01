@@ -1,6 +1,5 @@
 package net.goose.lifesteal.registry.fabric;
 
-import com.google.common.base.MoreObjects;
 import net.goose.lifesteal.registry.DeferredRegistry;
 import net.goose.lifesteal.registry.RegistrySupplier;
 import net.minecraft.core.Registry;

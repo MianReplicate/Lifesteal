@@ -22,7 +22,7 @@ public class BiomeTagsProvider extends net.minecraft.data.tags.BiomeTagsProvider
         tag(ModTags.OVERWORLD_ORE).addTags(BiomeTags.IS_OVERWORLD, Tags.Biomes.IS_UNDERGROUND);
         tag(ModTags.NETHER_ORE).addTags(BiomeTags.IS_NETHER, Tags.Biomes.IS_DRY_NETHER, Tags.Biomes.IS_HOT_NETHER);
 
-        tag(ModTags.BASE_MINERS_LOCATION).add(Biomes.PLAINS,Biomes.SUNFLOWER_PLAINS,Biomes.SNOWY_PLAINS, Biomes.MEADOW);
+        tag(ModTags.BASE_MINERS_LOCATION).add(Biomes.PLAINS, Biomes.SUNFLOWER_PLAINS, Biomes.SNOWY_PLAINS, Biomes.MEADOW);
 
         tag(ModTags.MINERS_LOCATION_1).add(Biomes.FOREST);
         tag(ModTags.MINERS_LOCATION_1).addTag(ModTags.BASE_MINERS_LOCATION);
@@ -32,7 +32,7 @@ public class BiomeTagsProvider extends net.minecraft.data.tags.BiomeTagsProvider
 
         tag(ModTags.MINERS_LOCATION_3).addTags(ModTags.BASE_MINERS_LOCATION, ModTags.MINERS_LOCATION_2, ModTags.MINERS_LOCATION_1);
 
-        tag(ModTags.MINERS_LOCATION_4).add(Biomes.TAIGA,Biomes.DARK_FOREST);
+        tag(ModTags.MINERS_LOCATION_4).add(Biomes.TAIGA, Biomes.DARK_FOREST);
 
     }
 }

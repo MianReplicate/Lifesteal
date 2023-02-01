@@ -27,6 +27,7 @@ public class HealthDataImpl {
     public static Optional<IHealthData> get(final Entity entity) {
         return entity.getCapability(ModCapabilities.HEART_CAP_CAPABILITY).resolve();
     }
+
     public static void attach(final AttachCapabilitiesEvent<Entity> event) {
         class HeartCapProvider implements ICapabilityProvider, INBTSerializable<CompoundTag> {
 

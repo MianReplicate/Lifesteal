@@ -1,6 +1,5 @@
 package net.goose.lifesteal.datagen;
 
-import io.netty.util.concurrent.BlockingOperationException;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;

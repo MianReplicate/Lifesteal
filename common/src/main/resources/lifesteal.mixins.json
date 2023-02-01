@@ -6,7 +6,8 @@
   "mixins": [
     "LivingMixin",
     "PlayerMixin",
-    "ServerPlayerMixin"
+    "ServerPlayerMixin",
+    "LevelChunkMixin"
   ],
   "client": [
   ],

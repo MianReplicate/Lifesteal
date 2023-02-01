@@ -32,7 +32,7 @@ public class HeartCrystalItem extends Item {
         entity.addEffect(new MobEffectInstance(MobEffects.REGENERATION, tickTime, 3));
     }
 
-    public boolean runHeartCrystalCode(ItemStack item, Level level, LivingEntity entity){
+    public boolean runHeartCrystalCode(ItemStack item, Level level, LivingEntity entity) {
         AtomicBoolean success = new AtomicBoolean(false);
 
         if (!level.isClientSide() && entity instanceof ServerPlayer serverPlayer) {
@@ -99,16 +99,16 @@ public class HeartCrystalItem extends Item {
     @Override
     public ItemStack finishUsingItem(ItemStack item, Level level, LivingEntity entity) {
         boolean success = runHeartCrystalCode(item, level, entity);
-        return success ? super.finishUsingItem(item, level, entity): item;
+        return success ? super.finishUsingItem(item, level, entity) : item;
     }
 
     @Override
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionHand){
-        if(!this.isEdible()){
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionHand) {
+        if (!this.isEdible()) {
             ItemStack item = player.getItemInHand(interactionHand);
             boolean success = runHeartCrystalCode(item, level, player);
 
-            if(success){
+            if (success) {
                 item.shrink(1);
                 player.containerMenu.broadcastChanges();
             }
@@ -119,19 +119,15 @@ public class HeartCrystalItem extends Item {
 
     @Override
     public boolean isEdible() {
-        if(LifeSteal.config.crystalInstantUse.get()){
-            return false;
-        }else{
-            return true;
-        }
+        return !LifeSteal.config.crystalInstantUse.get();
     }
 
     @Override
     public FoodProperties getFoodProperties() {
-        if(LifeSteal.config.crystalInstantUse.get()){
+        if (LifeSteal.config.crystalInstantUse.get()) {
             return null;
-        }else{
-            return this.HeartCrystal;
+        } else {
+            return HeartCrystal;
         }
     }
 }

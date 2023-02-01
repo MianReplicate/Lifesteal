@@ -42,6 +42,7 @@ public class ModConfig {
     public final ForgeConfigSpec.IntValue permissionLevelForWithdraw;
     public final ForgeConfigSpec.IntValue permissionLevelForSettingHitPoints;
     public final ForgeConfigSpec.IntValue permissionLevelForGettingHitPoints;
+    public final ForgeConfigSpec.BooleanValue unbreakableReviveHeads;
 
     public ModConfig(final ForgeConfigSpec.Builder builder) {
         builder.comment("It's recommended to edit the config BEFORE you start up Minecraft. While most configs will work just fine while changed ingame, some require a restart to work properly.");
@@ -51,6 +52,7 @@ public class ModConfig {
         this.amountOfHealthLostUponLoss = buildInt(builder, "Amount of HitPoints/Health Lost/Given Upon Death/Kill:", 2, 1, Integer.MAX_VALUE, "This values modifies the amount of hit points that should be lost when you die. The same also applies when you gain max health from lifestealing. 2 hit points = 1 health.");
         this.playersSpawnHeadUponDeath = buildBoolean(builder, "Players Spawn Their Head Upon Death:", true, "In multiplayer, this value determines whether heads spawn or not when a player dies. NOTE: In singleplayer, this value is always false.");
         this.uponDeathBanned = buildBoolean(builder, "Players get Banned Upon Losing All Hearts:", true, "In multiplayer, this value decides whether or not a player gets banned when they lose all hearts. If this value is false, they will go into spectator mode. This value does NOT affect singleplayer, you'll always go into spectator.");
+        this.playerDropsHeartCrystalWhenKilled = buildBoolean(builder, "Players Drop Heart Crystals When Killed:", false, "Any time the player dies, they will drop a Heart Crystal. The config that disables Unnatural Heart Crystals will not affect this.");
 
         builder.pop();
 
@@ -62,7 +64,7 @@ public class ModConfig {
         builder.pop();
 
         builder.comment("This category is the configuration for items and enchantments in this mod");
-        builder.push("Items and Enchantments");
+        builder.push("Items and Blocks");
         builder.push("Heart Cores");
         this.disableHeartCores = buildBoolean(builder, "Disable Heart Cores:", false, "Heart Cores can heal on default 25% of your health if right clicked. This value determines if they should be disabled.");
         this.heartCoreHeal = buildDouble(builder, "Percentage of max Health Heart Core Heals", 0.33, 0.01, 1, "The percentage of max health a heart core should heal when used.");
@@ -87,13 +89,15 @@ public class ModConfig {
         this.startingHeartDifferenceFromCrystal = buildInt(builder, "Amount of Hitpoints Given When Revived:", 0, -19, Integer.MAX_VALUE, "This is applied the same way StartingHeartDifference works, this is used instead of StartingHeartDifference if the configuration to use this value is enabled.");
 
         builder.pop();
+        builder.push("Revive Heads");
+        this.unbreakableReviveHeads = buildBoolean(builder, "Indestructible Revive Heads:", false, "When this value is true, Revive Heads are indestructible! WARNING: This config is quite destructive, THE BLOCK IS LITERALLY INDESTRUCTIBLE. NOTHING (and I mean nothing!) can DESTROY IT. Not even /setblock or a person in creative.");
+
+        builder.pop();
         builder.pop();
         builder.comment("This category is everything related to life stealing from someone.");
         builder.push("Lifesteal Related");
         this.disableLifesteal = buildBoolean(builder, "Disable Lifesteal:", false, "This makes it so you can't gain hearts from killing other players. THIS DOESN'T AFFECT LOSING HEARTS.");
         this.playersGainHeartsifKillednoHeart = buildBoolean(builder, "Players Gain Hearts From No Heart Players:", false, "This value determines if a player should still earn hearts from a player they killed even if the player doesn't have hearts to spare. EX: MinimumHeartHave");
-        this.playerDropsHeartCrystalWhenKilled = buildBoolean(builder, "Players Drop Heart Crystals When Killed:", false, "This value determines whether the killer will automatically gain hearts from a player or if the player drops a heart crystal instead that can be eaten. The config that disables Unnatural Heart Crystals will not affect this.");
-        this.playerDropsHeartCrystalWhenKillerHasMax = buildBoolean(builder, "Players Drop Heart Crystals When Killer has Max", false, "This value determines if a killed person should drop a heart crystal when the killer has max hearts. This requires the MaximumHearts config to be enabled.");
 
         builder.pop();
         builder.comment("This category will hold the maximums for certain values");
@@ -101,6 +105,7 @@ public class ModConfig {
         this.maximumamountofhitpointsGainable = buildInt(builder, "Maximum Amount of Hitpoints a Player can get:", -1, -1, Integer.MAX_VALUE, "This value makes a limit SET after your Starting HitPoint Difference for how many hit points/hearts a player can get. 2 hit points = 1 heart. Set this to less than 0 to disable the feature.");
         this.maximumamountofhitpointsLoseable = buildInt(builder, "Maximum Amount Of Hitpoints a Player can Lose:", -1, -1, Integer.MAX_VALUE, "This value makes a limit set on how many hit points/hearts a player can lose, this value is actually set depending on the Starting Health Difference. EX: Starting Health Difference - MinimumHeartHave. Set this to less than 0 to disable the feature.");
         this.tellPlayersIfReachedMaxHearts = buildBoolean(builder, "Tell Players if They Have Reached max Hearts:", true, "When a player has reached max hearts or attempt to go higher than the max, if this value is true, a message will let them know indicating they cannot go higher.");
+        this.playerDropsHeartCrystalWhenKillerHasMax = buildBoolean(builder, "Players Drop Heart Crystals When Killer has Max", false, "This value determines if a killed person should drop a heart crystal when the killer has max hearts. NOTE: This requires the MaximumHearts config to be enabled.");
 
         builder.pop();
         builder.comment("This category holds values related to commands. Permission Levels range from 0 to 4, 0: Everyone, 1: Moderators, 2: Gamemasters, 3: Admins, 4: Owners");
@@ -125,7 +130,7 @@ public class ModConfig {
     }
 
     private static ForgeConfigSpec.IntValue buildInt(ForgeConfigSpec.Builder builder, String name, int defaultValue, int min, int max, @Nullable String comment) {
-        return comment == null ? builder.translation(name).defineInRange(name, defaultValue, min, max): builder.comment(comment).translation(name).defineInRange(name, defaultValue, min, max);
+        return comment == null ? builder.translation(name).defineInRange(name, defaultValue, min, max) : builder.comment(comment).translation(name).defineInRange(name, defaultValue, min, max);
     }
 
     private static ForgeConfigSpec.DoubleValue buildDouble(ForgeConfigSpec.Builder builder, String name, double defaultValue, double min, double max, String comment) {

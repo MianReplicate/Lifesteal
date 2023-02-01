@@ -1,6 +1,0 @@
-{
-  "type": "forge:add_features",
-  "biomes": "#lifesteal:overworld_ore",
-  "features": "lifesteal:heart_ore_placed",
-  "step": "underground_ores"
-}

@@ -21,6 +21,7 @@ public class LevelDataImpl {
     public static Optional<ILevelData> get(final Level level) {
         return level.getCapability(ModCapabilities.LEVEL_CAP_CAPABILITY).resolve();
     }
+
     public static void attach(final AttachCapabilitiesEvent<Level> event) {
         class LevelCapProvider implements ICapabilityProvider, INBTSerializable<CompoundTag> {
 

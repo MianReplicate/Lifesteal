@@ -27,6 +27,7 @@ public class WorldGenProvider extends DatapackBuiltinEntriesProvider {
     public WorldGenProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider) {
         super(output, lookupProvider, BUILDER, Set.of(LifeSteal.MOD_ID));
     }
+
     public static HolderLookup.Provider createLookup() {
         return BUILDER.buildPatch(RegistryAccess.fromRegistryOfRegistries(BuiltInRegistries.REGISTRY), VanillaRegistries.createLookup());
     }

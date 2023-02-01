@@ -19,7 +19,9 @@ import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.LootTables;
 import net.minecraft.world.level.storage.loot.ValidationContext;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
-import net.minecraft.world.level.storage.loot.functions.*;
+import net.minecraft.world.level.storage.loot.functions.CopyNbtFunction;
+import net.minecraft.world.level.storage.loot.functions.EnchantWithLevelsFunction;
+import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceCondition;
 import net.minecraft.world.level.storage.loot.providers.nbt.ContextNbtProvider;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
@@ -37,6 +39,7 @@ public class LootProvider extends LootTableProvider {
     public LootProvider(PackOutput arg, Set<ResourceLocation> set, List<SubProviderEntry> list) {
         super(arg, set, list);
     }
+
     @Override
     protected void validate(Map<ResourceLocation, LootTable> map, ValidationContext validationContext) {
         for (Map.Entry<ResourceLocation, LootTable> entry : map.entrySet())

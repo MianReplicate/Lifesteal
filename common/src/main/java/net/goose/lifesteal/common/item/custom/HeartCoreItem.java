@@ -22,7 +22,7 @@ public class HeartCoreItem extends Item {
         super(pProperties);
     }
 
-    public boolean runHeartCoreCode(Level level, LivingEntity entity){
+    public boolean runHeartCoreCode(Level level, LivingEntity entity) {
         boolean success = true;
 
         if (entity instanceof ServerPlayer serverPlayer) {
@@ -55,23 +55,24 @@ public class HeartCoreItem extends Item {
         }
         return success;
     }
+
     @Override
     public ItemStack finishUsingItem(ItemStack item, Level level, LivingEntity entity) {
         boolean success = false;
-        if(!level.isClientSide){
+        if (!level.isClientSide) {
             success = runHeartCoreCode(level, entity);
         }
 
-        return success ? super.finishUsingItem(item, level, entity): item;
+        return success ? super.finishUsingItem(item, level, entity) : item;
     }
 
     @Override
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionHand){
-        if(!this.isEdible()){
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionHand) {
+        if (!this.isEdible()) {
             ItemStack item = player.getItemInHand(interactionHand);
             boolean success = runHeartCoreCode(level, player);
 
-            if(success){
+            if (success) {
                 item.shrink(1);
                 player.containerMenu.broadcastChanges();
             }
@@ -82,19 +83,15 @@ public class HeartCoreItem extends Item {
 
     @Override
     public boolean isEdible() {
-        if(LifeSteal.config.coreInstantUse.get()){
-            return false;
-        }else{
-            return true;
-        }
+        return !LifeSteal.config.coreInstantUse.get();
     }
 
     @Override
     public FoodProperties getFoodProperties() {
-        if(LifeSteal.config.coreInstantUse.get()){
+        if (LifeSteal.config.coreInstantUse.get()) {
             return null;
-        }else{
-            return this.HeartCore;
+        } else {
+            return HeartCore;
         }
     }
 }

@@ -23,36 +23,30 @@ public abstract class PlayerMixin extends LivingEntity {
         super(entityType, level);
     }
 
-    public void giveKilledHeartCrystal(LivingEntity killedPlayer, ServerPlayer killerPlayer) {
+    public void dropKilledHeartCrystal(LivingEntity killedPlayer) {
         ItemStack itemStack = new ItemStack(ModItems.HEART_CRYSTAL.get());
         CompoundTag compoundTag = itemStack.getOrCreateTagElement("lifesteal");
         compoundTag.putBoolean("dropped", true);
         compoundTag.putBoolean("Unfresh", true);
         itemStack.setHoverName(Component.translatable("item.lifesteal.heart_crystal.named", killedPlayer.getName().getString()));
 
-        if (killerPlayer.getInventory().getFreeSlot() == -1) {
-            killerPlayer.drop(itemStack, true);
-        } else {
-            killerPlayer.getInventory().add(itemStack);
-        }
+        ServerPlayer serverPlayer = (ServerPlayer) killedPlayer;
+        serverPlayer.drop(itemStack, true, false);
     }
 
     public void increaseHearts(HealthData data, int hitpoint, LivingEntity killedPlayer) {
         final int maximumhitpointsGainable = LifeSteal.config.maximumamountofhitpointsGainable.get();
-        final ServerPlayer killerPlayer = (ServerPlayer) data.getLivingEntity();
         boolean alreadyGiven = false;
 
-        if(maximumhitpointsGainable > -1 && LifeSteal.config.playerDropsHeartCrystalWhenKillerHasMax.get()){
+        if (maximumhitpointsGainable > -1 && LifeSteal.config.playerDropsHeartCrystalWhenKillerHasMax.get() && !LifeSteal.config.playerDropsHeartCrystalWhenKilled.get()) {
             if (data.getHeartDifference() + hitpoint > LifeSteal.config.startingHeartDifference.get() + maximumhitpointsGainable) {
-                giveKilledHeartCrystal(killedPlayer, killerPlayer);
+                dropKilledHeartCrystal(killedPlayer);
                 alreadyGiven = true;
             }
         }
 
-        if(!alreadyGiven){
-            if (LifeSteal.config.playerDropsHeartCrystalWhenKilled.get()) {
-                giveKilledHeartCrystal(killedPlayer, killerPlayer);
-            }else{
+        if (!alreadyGiven) {
+            if (!LifeSteal.config.playerDropsHeartCrystalWhenKilled.get()) {
                 data.setHeartDifference(data.getHeartDifference() + hitpoint);
                 data.refreshHearts(false);
             }
@@ -153,6 +147,10 @@ public abstract class PlayerMixin extends LivingEntity {
 
                     healthData.setHeartDifference(healthData.getHeartDifference() - amountOfHealthLostUponLoss);
                     healthData.refreshHearts(false);
+
+                    if (LifeSteal.config.playerDropsHeartCrystalWhenKilled.get()) {
+                        dropKilledHeartCrystal(killedEntity);
+                    }
                 }
             }
         });

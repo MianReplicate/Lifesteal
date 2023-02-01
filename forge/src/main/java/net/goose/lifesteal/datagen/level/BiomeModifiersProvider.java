@@ -17,6 +17,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 public class BiomeModifiersProvider {
     private static final ResourceKey<BiomeModifier> ADD_OVERWORLD_FEATURES = ResourceKey.create(ForgeRegistries.Keys.BIOME_MODIFIERS, new ResourceLocation(LifeSteal.MOD_ID, "add_overworld_features"));
     private static final ResourceKey<BiomeModifier> ADD_NETHER_FEATURES = ResourceKey.create(ForgeRegistries.Keys.BIOME_MODIFIERS, new ResourceLocation(LifeSteal.MOD_ID, "add_nether_features"));
+
     public static void bootstrap(BootstapContext<BiomeModifier> context) {
         var overworldTags = context.lookup(Registries.BIOME).getOrThrow(ModTags.OVERWORLD_ORE);
         var netherTags = context.lookup(Registries.BIOME).getOrThrow(ModTags.NETHER_ORE);

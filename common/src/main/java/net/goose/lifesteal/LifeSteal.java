@@ -19,9 +19,11 @@ public class LifeSteal {
     public static ResourceLocation MINERS_RUINED_SHACK_TABLE = new ResourceLocation(MOD_ID, "chests/miners_ruined_shack");
     public static ResourceLocation RICH_CART_TABLE = new ResourceLocation(MOD_ID, "chests/rich_cart");
     public static ResourceLocation RUINED_LIBRARY_TABLE = new ResourceLocation(MOD_ID, "chests/ruined_library");
+
     public static ResourceLocation modLoc(String name) {
         return new ResourceLocation(MOD_ID, name);
     }
+
     public static void init() {
         LOGGER.info("Lifestealers are on the loose!");
         ModItems.register();
