@@ -19,9 +19,9 @@ public abstract class LivingMixin {
     @Nullable
     public abstract LivingEntity getAttacker();
 
-    @Inject(method = "checkTotemDeathProtection", at = @At("HEAD"))
+    @Inject(method = "checkTotemDeathProtection", at = @At("TAIL"))
     private void totemUsed(final DamageSource source, final CallbackInfoReturnable<Boolean> cir) {
-        if (!cir.isCancelled()) {
+        if (!cir.isCancelled() && cir.getReturnValue()) { // The return value is if there's a totem or not.
             LivingEntity livingEntity = ((LivingEntity) (Object) this);
             if (livingEntity instanceof ServerPlayer serverPlayer) {
                 HealthData.get(livingEntity).ifPresent(healthData ->
