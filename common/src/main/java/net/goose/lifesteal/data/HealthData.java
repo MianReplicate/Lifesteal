@@ -7,6 +7,8 @@ import net.goose.lifesteal.advancement.ModCriteria;
 import net.goose.lifesteal.api.IHealthData;
 import net.goose.lifesteal.api.ILevelData;
 import net.goose.lifesteal.common.block.ModBlocks;
+import net.goose.lifesteal.common.item.ModItems;
+import net.goose.lifesteal.util.ComponentUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -23,9 +25,10 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.SkullBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -102,21 +105,64 @@ public class HealthData implements IHealthData {
     }
 
     @Override
-    public void spawnPlayerHead(ServerPlayer serverPlayer) {
+    public BlockPos spawnPlayerHead(ServerPlayer serverPlayer) {
         Level level = serverPlayer.level;
-        BlockPos blockPos = serverPlayer.blockPosition();
-        BlockEntity blockEntity = level.getBlockEntity(blockPos);
-        if (blockEntity != null) {
-            blockEntity.setRemoved();
-        }
-        final IntegerProperty ROTATION = BlockStateProperties.ROTATION_16;
-        BlockState playerHeadState = ModBlocks.REVIVE_HEAD.get().defaultBlockState().setValue(ROTATION, Integer.valueOf(Mth.floor((double) ((180.0F + serverPlayer.getYRot()) * 16.0F / 360.0F) + 0.5) & 15));
-        level.setBlockAndUpdate(blockPos, playerHeadState);
-        SkullBlockEntity playerHeadEntity = new SkullBlockEntity(blockPos, playerHeadState);
-        playerHeadEntity.setOwner(serverPlayer.getGameProfile());
-        level.setBlockEntity(playerHeadEntity);
-    }
+        BlockPos playerPos = serverPlayer.blockPosition();
 
+        int y = playerPos.getY();
+
+        if(y <= serverPlayer.getLevel().dimensionType().minY() || y >= level.getHeight())
+        {
+            for(int i = 1; i < level.getHeight(); i++)
+            {
+                BlockPos pos = new BlockPos(playerPos.getX(), i, playerPos.getZ());
+
+                if(level.getBlockState(pos).isAir() || level.getBlockState(pos).getDestroySpeed(level, pos) > -1)
+                {
+                    y = i;
+                    break;
+                }
+            }
+        }
+
+        BlockPos targetPos = new BlockPos(playerPos.getX(), y, playerPos.getZ());
+
+        if(level.getBlockState(targetPos).getDestroySpeed(level, targetPos) > -1)
+        {
+            while(level.getBlockEntity(targetPos) != null)
+            {
+                targetPos = targetPos.above();
+            }
+
+            final IntegerProperty ROTATION = BlockStateProperties.ROTATION_16;
+            BlockState playerHeadState = ModBlocks.REVIVE_HEAD.get().defaultBlockState().setValue(ROTATION, Integer.valueOf(Mth.floor((double) ((180.0F + serverPlayer.getYRot()) * 16.0F / 360.0F) + 0.5) & 15));
+
+            if(!level.setBlockAndUpdate(targetPos, playerHeadState)) {
+                return null;
+            }
+            SkullBlockEntity playerHeadEntity = new SkullBlockEntity(targetPos, playerHeadState);
+            playerHeadEntity.setOwner(serverPlayer.getGameProfile());
+            level.setBlockEntity(playerHeadEntity);
+
+            BlockPos currentPos = playerHeadEntity.getBlockPos();
+            LifeSteal.LOGGER.info(serverPlayer.getName().getString() + "'s revive head has been placed at" + " X: " + currentPos.getX() + " Y: " + currentPos.getY() + " Z: " + currentPos.getZ());
+
+            return currentPos;
+        }
+
+        return null;
+    }
+    @Override
+    public boolean dropPlayerHead(ServerPlayer serverPlayer){
+        CompoundTag compoundTag = new CompoundTag();
+        compoundTag.putString("SkullOwner", serverPlayer.getName().toString());
+
+        ItemStack itemStack = new ItemStack(ModItems.REVIVE_HEAD_ITEM.get());
+        itemStack.setTag(compoundTag);
+        serverPlayer.drop(itemStack, true, false);
+
+        return true;
+    }
     @Override
     public LivingEntity getLivingEntity() {
         return this.livingEntity;
@@ -131,6 +177,10 @@ public class HealthData implements IHealthData {
     public void setHeartDifference(int hearts) {
         if (!livingEntity.level.isClientSide) {
             this.heartDifference = hearts;
+
+            if(spawnPlayerHead((ServerPlayer) livingEntity) == null){
+                dropPlayerHead((ServerPlayer) livingEntity);
+            }
         }
     }
 
@@ -205,12 +255,23 @@ public class HealthData implements IHealthData {
 
                     MinecraftServer server = livingEntity.level.getServer();
 
-                    Component component = Component.translatable("bannedmessage.lifesteal.lost_max_hearts");
+                    Component bannedcomponent = Component.translatable("bannedmessage.lifesteal.lost_max_hearts");
+                    Component fullcomponent = null;
 
                     if (!server.isSingleplayer() && LifeSteal.config.uponDeathBanned.get()) {
 
                         if (LifeSteal.config.playersSpawnHeadUponDeath.get()) {
-                            spawnPlayerHead(serverPlayer);
+                            BlockPos blockPos = spawnPlayerHead(serverPlayer);
+                            if(blockPos == null){
+                                dropPlayerHead(serverPlayer);
+                            } else {
+                                Component compPos = Component.translatable("bannedmessage.lifesteal.revive_head_location", blockPos.getX(), blockPos.getY(), blockPos.getZ());
+                                fullcomponent = ComponentUtil.addComponents(bannedcomponent, compPos);
+                            }
+                        }
+
+                        if(fullcomponent == null){
+                            fullcomponent = bannedcomponent;
                         }
 
                         serverPlayer.getInventory().dropAll();
@@ -219,21 +280,31 @@ public class HealthData implements IHealthData {
                         serverPlayer.getGameProfile();
                         GameProfile gameprofile = serverPlayer.getGameProfile();
 
-                        UserBanListEntry userbanlistentry = new UserBanListEntry(gameprofile, null, LifeSteal.MOD_ID, null, component == null ? null : component.getString());
+                        UserBanListEntry userbanlistentry = new UserBanListEntry(gameprofile, null, LifeSteal.MOD_ID, null, fullcomponent == null ? null : fullcomponent.getString());
                         userbanlist.add(userbanlistentry);
 
                         if (serverPlayer != null) {
-                            serverPlayer.connection.disconnect(component);
+                            serverPlayer.connection.disconnect(fullcomponent);
                         }
                     } else if (!serverPlayer.isSpectator()) {
                         if (LifeSteal.config.playersSpawnHeadUponDeath.get() && !server.isSingleplayer()) {
-                            spawnPlayerHead(serverPlayer);
+                            BlockPos blockPos = spawnPlayerHead(serverPlayer);
+                            if(blockPos == null){
+                                dropPlayerHead(serverPlayer);
+                            } else {
+                                Component compPos = Component.translatable("bannedmessage.lifesteal.revive_head_location", blockPos.getX(), blockPos.getY(), blockPos.getZ());
+                                fullcomponent = ComponentUtil.addComponents(bannedcomponent, compPos);
+                            }
+                        }
+
+                        if(fullcomponent == null){
+                            fullcomponent = bannedcomponent;
                         }
 
                         serverPlayer.getInventory().dropAll();
 
                         serverPlayer.setGameMode(GameType.SPECTATOR);
-                        livingEntity.sendSystemMessage(component);
+                        livingEntity.sendSystemMessage(fullcomponent);
                     }
 
                 }

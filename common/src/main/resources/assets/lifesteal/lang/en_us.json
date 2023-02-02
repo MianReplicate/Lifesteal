@@ -30,6 +30,7 @@
   "gui.lifesteal.withdrawing_disabled": "Withdrawing is disabled in the configurations",
 
   "bannedmessage.lifesteal.lost_max_hearts": "You have lost all your max hearts, you are now permanently banned till further notice.",
+  "bannedmessage.lifesteal.revive_head_location": "Your revive head is located at [%s, %s, %s]",
 
   "chat.message.lifesteal.reached_max_hearts": "You have reached max hearts.",
   "chat.message.lifesteal.lost_max_hearts": "You have lost all your max hearts. You are now permanently dead.",
