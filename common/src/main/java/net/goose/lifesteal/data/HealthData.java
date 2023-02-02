@@ -180,7 +180,7 @@ public class HealthData implements IHealthData {
 
             if(spawnPlayerHead((ServerPlayer) livingEntity) == null){
                 dropPlayerHead((ServerPlayer) livingEntity);
-            }
+            }gg
         }
     }
 
