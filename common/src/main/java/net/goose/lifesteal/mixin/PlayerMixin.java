@@ -16,7 +16,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(Player.class)
+@Mixin(value = Player.class, priority = 1)
 public abstract class PlayerMixin extends LivingEntity {
 
     protected PlayerMixin(EntityType<? extends LivingEntity> entityType, Level level) {
@@ -74,12 +74,7 @@ public abstract class PlayerMixin extends LivingEntity {
 
                     LivingEntity killerEntity = killedEntity.getLastHurtByMob();
                     boolean killerEntityIsPlayer = killerEntity instanceof ServerPlayer;
-                    ServerPlayer serverPlayer;
-                    if (killerEntityIsPlayer) {
-                        serverPlayer = (ServerPlayer) killerEntity;
-                    } else {
-                        serverPlayer = null;
-                    }
+                    ServerPlayer killerPlayer = killerEntityIsPlayer ? (ServerPlayer) killerEntity: null;
 
                     int amountOfHealthLostUponLoss;
 
@@ -110,7 +105,7 @@ public abstract class PlayerMixin extends LivingEntity {
                                             if (startingHitPointDifference + HeartDifference > -maximumheartsLoseable) {
                                                 increaseHearts(killerData, amountOfHealthLostUponLoss, killedEntity);
                                             } else {
-                                                serverPlayer.sendSystemMessage(Component.translatable("chat.message.lifesteal.no_more_hearts_to_steal"));
+                                                killerPlayer.sendSystemMessage(Component.translatable("chat.message.lifesteal.no_more_hearts_to_steal"));
                                             }
 
                                         } else {
@@ -147,7 +142,6 @@ public abstract class PlayerMixin extends LivingEntity {
 
                     healthData.setHeartDifference(healthData.getHeartDifference() - amountOfHealthLostUponLoss);
                     healthData.refreshHearts(false);
-
                     if (LifeSteal.config.playerDropsHeartCrystalWhenKilled.get()) {
                         dropKilledHeartCrystal(killedEntity);
                     }

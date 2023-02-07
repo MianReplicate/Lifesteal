@@ -35,7 +35,7 @@
     ]
   },
   "mixins": [
-    "lifesteal.mixins.json"
+    "lifesteal-common.mixins.json"
   ],
   "depends": {
     "fabricloader": ">=${fabric_loader_version}",
