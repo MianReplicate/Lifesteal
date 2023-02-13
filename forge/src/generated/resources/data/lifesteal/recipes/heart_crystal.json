@@ -1,0 +1,31 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "bhb",
+    "dcd",
+    "rbg"
+  ],
+  "key": {
+    "b": {
+      "item": "lifesteal:heart_core_block"
+    },
+    "d": {
+      "item": "minecraft:diamond"
+    },
+    "c": {
+      "item": "lifesteal:heart_core"
+    },
+    "r": {
+      "item": "minecraft:blaze_rod"
+    },
+    "g": {
+      "item": "minecraft:golden_apple"
+    },
+    "h": {
+      "item": "minecraft:heart_of_the_sea"
+    }
+  },
+  "result": {
+    "item": "lifesteal:heart_crystal"
+  }
+}

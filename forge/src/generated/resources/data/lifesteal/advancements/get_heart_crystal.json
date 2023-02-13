@@ -1,0 +1,37 @@
+{
+  "parent": "lifesteal:get_heart_core",
+  "display": {
+    "icon": {
+      "item": "lifesteal:heart_crystal"
+    },
+    "title": {
+      "translate": "advancement.lifesteal:get_heart_crystal"
+    },
+    "description": {
+      "translate": "advancement.lifesteal:get_heart_crystal.desc"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "has_heart_crystal": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "lifesteal:heart_crystal"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_heart_crystal"
+    ]
+  ]
+}

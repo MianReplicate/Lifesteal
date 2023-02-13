@@ -1,0 +1,32 @@
+{
+  "parent": "lifesteal:get_heart_crystal",
+  "display": {
+    "icon": {
+      "item": "lifesteal:heart_core_block"
+    },
+    "title": {
+      "translate": "advancement.lifesteal:get_10_max_hearts"
+    },
+    "description": {
+      "translate": "advancement.lifesteal:get_10_max_hearts.desc"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "rewards": {
+    "experience": 500
+  },
+  "criteria": {
+    "has_10_max_hearts": {
+      "trigger": "lifesteal:get_10_max_hearts",
+      "conditions": {}
+    }
+  },
+  "requirements": [
+    [
+      "has_10_max_hearts"
+    ]
+  ]
+}

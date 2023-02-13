@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:taiga",
+    "#lifesteal:has_structure/base_miners_location"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "fff",
+    "fgf",
+    "fff"
+  ],
+  "key": {
+    "f": {
+      "item": "lifesteal:heart_fragment"
+    },
+    "g": {
+      "item": "minecraft:golden_apple"
+    }
+  },
+  "result": {
+    "item": "lifesteal:heart_core"
+  }
+}
