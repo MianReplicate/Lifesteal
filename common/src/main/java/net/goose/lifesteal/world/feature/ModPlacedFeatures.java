@@ -1,4 +1,4 @@
-package net.goose.lifesteal.world.gen;
+package net.goose.lifesteal.world.feature;
 
 import net.goose.lifesteal.LifeSteal;
 import net.goose.lifesteal.registry.DeferredRegistry;

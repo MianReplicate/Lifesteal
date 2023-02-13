@@ -1,4 +1,4 @@
-package net.goose.lifesteal.world.gen;
+package net.goose.lifesteal.world.feature;
 
 import com.google.common.collect.ImmutableList;
 import net.goose.lifesteal.LifeSteal;
