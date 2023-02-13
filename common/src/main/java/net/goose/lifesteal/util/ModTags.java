@@ -1,7 +1,7 @@
 package net.goose.lifesteal.util;
 
 import net.goose.lifesteal.LifeSteal;
-import net.minecraft.core.registries.Registries;
+import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
@@ -20,22 +20,22 @@ public class ModTags {
     public static TagKey<Biome> MINERS_LOCATION_4 = makeBiome(LifeSteal.MOD_ID, "has_structure/miners_location_4");
 
     private static TagKey<Item> makeItem(String domain, String path) {
-        return TagKey.create(Registries.ITEM, new ResourceLocation(domain, path));
+        return TagKey.create(Registry.ITEM.key(), new ResourceLocation(domain, path));
     }
 
     private static TagKey<Block> makeBlock(String domain, String path) {
-        return TagKey.create(Registries.BLOCK, new ResourceLocation(domain, path));
+        return TagKey.create(Registry.BLOCK.key(), new ResourceLocation(domain, path));
     }
 
     private static TagKey<EntityType<?>> makeEntityType(String domain, String path) {
-        return TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation(domain, path));
+        return TagKey.create(Registry.ENTITY_TYPE.key(), new ResourceLocation(domain, path));
     }
 
     private static TagKey<Structure> makeStructure(String domain, String path) {
-        return TagKey.create(Registries.STRUCTURE, new ResourceLocation(domain, path));
+        return TagKey.create(Registry.STRUCTURE_REGISTRY, new ResourceLocation(domain, path));
     }
 
     private static TagKey<Biome> makeBiome(String domain, String path) {
-        return TagKey.create(Registries.BIOME, new ResourceLocation(domain, path));
+        return TagKey.create(Registry.BIOME_REGISTRY, new ResourceLocation(domain, path));
     }
 }

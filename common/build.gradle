@@ -17,7 +17,7 @@ dependencies {
 
     implementation 'com.electronwill.night-config:core:3.6.3'
     implementation 'com.electronwill.night-config:toml:3.6.3'
-    compileOnly "fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${forge_config_api_port_version}"
+    compileOnly "net.minecraftforge:forgeconfigapiport-fabric:${forge_config_api_port_version}"
     compileOnly "org.spongepowered:mixin:${mixin_version}"
 }
 

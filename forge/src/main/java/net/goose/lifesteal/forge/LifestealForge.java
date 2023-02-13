@@ -5,7 +5,6 @@ import net.goose.lifesteal.configuration.ConfigHolder;
 import net.goose.lifesteal.data.forge.ModCapabilities;
 import net.goose.lifesteal.datagen.ModDataGenerators;
 import net.goose.lifesteal.forge.event.EventHandler;
-import net.goose.lifesteal.item.forge.ModCreativeModeTab;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -26,6 +25,5 @@ public class LifestealForge {
 
         eventBus.register(EventHandler.class);
         eventBus.register(ModCapabilities.EventCapHandler.class);
-        modBus.addListener(ModCreativeModeTab::register);
     }
 }

@@ -42,6 +42,7 @@
   "chat.message.lifesteal.set_hit_point_for_player": "Set %s's HitPoint difference to %s.",
 
   "itemGroup.lifesteal": "Lifesteal",
+  "itemGroup.lifesteal.creativemodetab": "Lifesteal",
 
   "advancement.lifesteal:get_fragment": "Fragment of the Past",
   "advancement.lifesteal:get_fragment.desc": "The beginning of the end.",

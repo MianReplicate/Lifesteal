@@ -28,7 +28,6 @@ import net.minecraft.world.level.block.AbstractSkullBlock;
 import net.minecraft.world.level.block.SkullBlock;
 import net.minecraft.world.level.block.WallSkullBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.RotationSegment;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
@@ -52,12 +51,11 @@ public class ReviveHeadBER implements BlockEntityRenderer<ReviveSkullBlockEntity
 
     @Override
     public void render(ReviveSkullBlockEntity skullBlockEntity, float pPartialTick, PoseStack poseStack, MultiBufferSource multiBufferSource, int pPackedLight, int pPackedOverlay) {
-        float animation = skullBlockEntity.getAnimation(pPartialTick);
+        float animation = skullBlockEntity.getMouthAnimation(pPartialTick);
         BlockState blockState = skullBlockEntity.getBlockState();
         boolean bl = blockState.getBlock() instanceof WallSkullBlock;
         Direction direction = bl ? blockState.getValue(WallSkullBlock.FACING) : null;
-        int k = bl ? RotationSegment.convertToSegment(direction) : blockState.getValue(SkullBlock.ROTATION);
-        float degrees = RotationSegment.convertToDegrees(k);
+        float degrees = 22.5F * (float)(bl ? (2 + direction.get2DDataValue()) * 4 : (Integer)blockState.getValue(SkullBlock.ROTATION));
         SkullBlock.Type type = ((AbstractSkullBlock) blockState.getBlock()).getType();
         SkullModelBase skullModelBase = this.modelByType.get(type);
         RenderType renderType = getRenderType(type, skullBlockEntity.getOwnerProfile());

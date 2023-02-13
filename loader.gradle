@@ -96,8 +96,8 @@ dependencies {
         implementation 'com.electronwill.night-config:core:3.6.3'
         implementation 'com.electronwill.night-config:toml:3.6.3'
 
-        modImplementation "fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${forge_config_api_port_version}"
-        include "fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${forge_config_api_port_version}"
+        modImplementation "net.minecraftforge:forgeconfigapiport-fabric:${forge_config_api_port_version}"
+        include "net.minecraftforge:forgeconfigapiport-fabric:${forge_config_api_port_version}"
 
         // Adds a dependency on the base cardinal components module (required by every other module)
         // Replace modImplementation with modApi if you expose components in your own API

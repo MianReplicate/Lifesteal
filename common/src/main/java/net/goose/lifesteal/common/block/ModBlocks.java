@@ -3,10 +3,11 @@ package net.goose.lifesteal.common.block;
 import net.goose.lifesteal.LifeSteal;
 import net.goose.lifesteal.common.block.custom.ReviveHeadBlock;
 import net.goose.lifesteal.common.block.custom.ReviveWallHeadBlock;
+import net.goose.lifesteal.common.item.ModCreativeModeTab;
 import net.goose.lifesteal.common.item.ModItems;
 import net.goose.lifesteal.registry.DeferredRegistry;
 import net.goose.lifesteal.registry.RegistrySupplier;
-import net.minecraft.core.registries.Registries;
+import net.minecraft.core.Registry;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -19,7 +20,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.function.Supplier;
 
 public class ModBlocks {
-    public static final DeferredRegistry<Block> BLOCKS = DeferredRegistry.create(LifeSteal.MOD_ID, Registries.BLOCK);
+    public static final DeferredRegistry<Block> BLOCKS = DeferredRegistry.create(LifeSteal.MOD_ID, Registry.BLOCK_REGISTRY);
 
     public static final RegistrySupplier<Block> HEART_CORE_BLOCK = registerBlock("heart_core_block", () ->
             new Block(BlockBehaviour.Properties.of(Material.METAL).strength(6f).requiresCorrectToolForDrops()), true, null);
@@ -50,11 +51,11 @@ public class ModBlocks {
     }
 
     private static <T extends Block> RegistrySupplier<Item> registerBlockItem(String name, RegistrySupplier<T> block, Item.Properties properties) {
-        return ModItems.ITEMS.register(name, () -> new BlockItem(block.get(), properties));
+        return ModItems.ITEMS.register(name, () -> new BlockItem(block.get(), properties.tab(ModCreativeModeTab.creativeModeTab)));
     }
 
     private static <T extends Block> RegistrySupplier<Item> registerBlockItem(String name, RegistrySupplier<T> block) {
-        return ModItems.ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties()));
+        return ModItems.ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties().tab(ModCreativeModeTab.creativeModeTab)));
     }
 
 

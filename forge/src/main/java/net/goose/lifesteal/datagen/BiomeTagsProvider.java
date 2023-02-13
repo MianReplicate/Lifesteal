@@ -2,23 +2,20 @@ package net.goose.lifesteal.datagen;
 
 import net.goose.lifesteal.LifeSteal;
 import net.goose.lifesteal.util.ModTags;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.data.PackOutput;
+import net.minecraft.data.DataGenerator;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.world.level.biome.Biomes;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.concurrent.CompletableFuture;
-
 public class BiomeTagsProvider extends net.minecraft.data.tags.BiomeTagsProvider {
-    public BiomeTagsProvider(PackOutput arg, CompletableFuture<HolderLookup.Provider> completableFuture, @Nullable ExistingFileHelper existingFileHelper) {
-        super(arg, completableFuture, LifeSteal.MOD_ID, existingFileHelper);
+    public BiomeTagsProvider(DataGenerator arg, @Nullable ExistingFileHelper existingFileHelper) {
+        super(arg, LifeSteal.MOD_ID, existingFileHelper);
     }
 
     @Override
-    protected void addTags(HolderLookup.Provider provider) {
+    protected void addTags() {
         tag(ModTags.OVERWORLD_ORE).addTags(BiomeTags.IS_OVERWORLD, Tags.Biomes.IS_UNDERGROUND);
         tag(ModTags.NETHER_ORE).addTags(BiomeTags.IS_NETHER, Tags.Biomes.IS_DRY_NETHER, Tags.Biomes.IS_HOT_NETHER);
 

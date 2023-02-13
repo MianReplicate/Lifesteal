@@ -1,9 +1,10 @@
 package net.goose.lifesteal.registry.fabric;
 
+import com.google.common.base.MoreObjects;
 import net.goose.lifesteal.registry.DeferredRegistry;
 import net.goose.lifesteal.registry.RegistrySupplier;
 import net.minecraft.core.Registry;
-import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 
@@ -27,13 +28,13 @@ public class DeferredRegistryImpl {
 
         public Impl(String modid, ResourceKey<? extends Registry<T>> resourceKey) {
             this.modid = modid;
-            this.registry = (Registry<T>) Objects.requireNonNull(BuiltInRegistries.REGISTRY.get(resourceKey.location()), "Registry " + resourceKey + " not found!");
+            this.registry = (Registry<T>) MoreObjects.firstNonNull(Registry.REGISTRY.get(resourceKey.location()), BuiltinRegistries.REGISTRY.get(resourceKey.location()));
             this.entries = new ArrayList<>();
         }
 
         @Override
         public void register() {
-            this.registry.registryLifecycle();
+
         }
 
         @Override

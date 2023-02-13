@@ -3,24 +3,24 @@ package net.goose.lifesteal.datagen;
 import net.goose.lifesteal.LifeSteal;
 import net.goose.lifesteal.common.block.ModBlocks;
 import net.goose.lifesteal.common.item.ModItems;
-import net.minecraft.data.PackOutput;
+import net.minecraft.data.DataGenerator;
 import net.minecraft.data.recipes.FinishedRecipe;
-import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;
 
 public class RecipesProvider extends RecipeProvider {
-    public RecipesProvider(PackOutput packOutput) {
-        super(packOutput);
+    public RecipesProvider(DataGenerator dataGenerator) {
+        super(dataGenerator);
     }
 
     @Override
-    protected void buildRecipes(Consumer<FinishedRecipe> consumer) {
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.HEART_CORE.get())
+    protected void buildCraftingRecipes(@NotNull Consumer<FinishedRecipe> consumer) {
+        ShapedRecipeBuilder.shaped(ModItems.HEART_CORE.get())
                 .pattern("fff")
                 .pattern("fgf")
                 .pattern("fff")
@@ -28,7 +28,7 @@ public class RecipesProvider extends RecipeProvider {
                 .define('g', Items.GOLDEN_APPLE)
                 .unlockedBy("has_fragment", net.minecraft.data.recipes.RecipeProvider.has(ModItems.HEART_FRAGMENT.get()))
                 .save(consumer, new ResourceLocation(LifeSteal.MOD_ID, "heart_core"));
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.HEART_CORE_BLOCK.get().asItem())
+        ShapedRecipeBuilder.shaped(ModBlocks.HEART_CORE_BLOCK.get().asItem())
                 .pattern("cfc")
                 .pattern("fdf")
                 .pattern("cfc")
@@ -37,7 +37,7 @@ public class RecipesProvider extends RecipeProvider {
                 .define('d', Items.DIAMOND)
                 .unlockedBy("has_heart_core", net.minecraft.data.recipes.RecipeProvider.has(ModItems.HEART_CORE.get()))
                 .save(consumer, new ResourceLocation(LifeSteal.MOD_ID, "heart_core_block"));
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.HEART_CRYSTAL.get())
+        ShapedRecipeBuilder.shaped(ModItems.HEART_CRYSTAL.get())
                 .pattern("bhb")
                 .pattern("dcd")
                 .pattern("rbg")
@@ -49,7 +49,7 @@ public class RecipesProvider extends RecipeProvider {
                 .define('h', Items.HEART_OF_THE_SEA)
                 .unlockedBy("has_heart_of_the_sea", net.minecraft.data.recipes.RecipeProvider.has(Items.HEART_OF_THE_SEA))
                 .save(consumer, new ResourceLocation(LifeSteal.MOD_ID, "heart_crystal"));
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.REVIVE_CRYSTAL.get())
+        /*ShapedRecipeBuilder.shaped(ModItems.REVIVE_CRYSTAL.get())
                 .pattern("gcg")
                 .pattern("nhn")
                 .pattern("ctc")
@@ -59,6 +59,6 @@ public class RecipesProvider extends RecipeProvider {
                 .define('t', Items.TOTEM_OF_UNDYING)
                 .define('h', ModItems.HEART_CRYSTAL.get())
                 .unlockedBy("has_totem", net.minecraft.data.recipes.RecipeProvider.has(Items.TOTEM_OF_UNDYING))
-                .save(consumer, new ResourceLocation(LifeSteal.MOD_ID, "revive_crystal"));
+                .save(consumer, new ResourceLocation(LifeSteal.MOD_ID, "revive_crystal"));*/
     }
 }
