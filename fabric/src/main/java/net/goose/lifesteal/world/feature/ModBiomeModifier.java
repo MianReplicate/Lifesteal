@@ -1,4 +1,4 @@
-package net.goose.lifesteal.world.gen;
+package net.goose.lifesteal.world.feature;
 
 import net.fabricmc.fabric.api.biome.v1.*;
 import net.goose.lifesteal.LifeSteal;

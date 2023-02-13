@@ -8,7 +8,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.levelgen.structure.Structure;
 
 public class ModTags {
     public static TagKey<Biome> OVERWORLD_ORE = makeBiome(LifeSteal.MOD_ID, "overworld_ore");
@@ -29,10 +28,6 @@ public class ModTags {
 
     private static TagKey<EntityType<?>> makeEntityType(String domain, String path) {
         return TagKey.create(Registry.ENTITY_TYPE.key(), new ResourceLocation(domain, path));
-    }
-
-    private static TagKey<Structure> makeStructure(String domain, String path) {
-        return TagKey.create(Registry.STRUCTURE_REGISTRY, new ResourceLocation(domain, path));
     }
 
     private static TagKey<Biome> makeBiome(String domain, String path) {

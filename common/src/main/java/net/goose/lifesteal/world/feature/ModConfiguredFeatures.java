@@ -1,12 +1,7 @@
-package net.goose.lifesteal.world.gen;
+package net.goose.lifesteal.world.feature;
 
-import com.google.common.collect.ImmutableList;
-import net.goose.lifesteal.LifeSteal;
 import net.goose.lifesteal.common.block.ModBlocks;
-import net.goose.lifesteal.registry.DeferredRegistry;
-import net.goose.lifesteal.registry.RegistrySupplier;
 import net.minecraft.core.Holder;
-import net.minecraft.core.Registry;
 import net.minecraft.data.worldgen.features.FeatureUtils;
 import net.minecraft.data.worldgen.features.OreFeatures;
 import net.minecraft.tags.BlockTags;
@@ -24,21 +19,18 @@ import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvi
 import java.util.List;
 
 public class ModConfiguredFeatures {
-    public static final DeferredRegistry<ConfiguredFeature<?, ?>> CONFIGURED_FEATURES = DeferredRegistry.create(LifeSteal.MOD_ID, Registry.CONFIGURED_FEATURE_REGISTRY);
-    public static RegistrySupplier<ConfiguredFeature<?, ?>> HEART_ORE = CONFIGURED_FEATURES.register("heart_ore", () -> new ConfiguredFeature<>(
-            Feature.SCATTERED_ORE,
-            new OreConfiguration(ImmutableList.of(
-                    OreConfiguration.target(OreFeatures.STONE_ORE_REPLACEABLES, ModBlocks.HEART_ORE.get().defaultBlockState()),
-                    OreConfiguration.target(OreFeatures.DEEPSLATE_ORE_REPLACEABLES, ModBlocks.DEEPSLATE_HEART_ORE.get().defaultBlockState())),
-                    6)));
+    public static final List<OreConfiguration.TargetBlockState> OVERWORLD_HEART_ORES = List.of(
+            OreConfiguration.target(OreFeatures.STONE_ORE_REPLACEABLES, ModBlocks.HEART_ORE.get().defaultBlockState()),
+            OreConfiguration.target(OreFeatures.DEEPSLATE_ORE_REPLACEABLES, ModBlocks.DEEPSLATE_HEART_ORE.get().defaultBlockState()));
 
-    public static RegistrySupplier<ConfiguredFeature<?, ?>> NETHER_HEART_ORE = CONFIGURED_FEATURES.register("nether_heart_ore", () -> new ConfiguredFeature<>(
-            Feature.SCATTERED_ORE,
-            new OreConfiguration(ImmutableList.of(
-                    OreConfiguration.target(OreFeatures.NETHER_ORE_REPLACEABLES, ModBlocks.NETHERRACK_HEART_ORE.get().defaultBlockState()),
-                    OreConfiguration.target(OreFeatures.DEEPSLATE_ORE_REPLACEABLES, ModBlocks.DEEPSLATE_HEART_ORE.get().defaultBlockState())),
-                    7)));
-    public static final RegistrySupplier<ConfiguredFeature<?, ?>>  DEEPSLATE_HEART_GEODE = CONFIGURED_FEATURES.register("deepslate_heart_geode", () -> new ConfiguredFeature<>(
+    public static final List<OreConfiguration.TargetBlockState> NETHERRACK_HEART_ORES = List.of(
+            OreConfiguration.target(OreFeatures.NETHER_ORE_REPLACEABLES, ModBlocks.NETHERRACK_HEART_ORE.get().defaultBlockState()));
+    public static final Holder<ConfiguredFeature<OreConfiguration, ?>> HEART_ORE = FeatureUtils.register("heart_ore",
+            Feature.SCATTERED_ORE, new OreConfiguration(OVERWORLD_HEART_ORES, 6)); // Max Vein Size
+    public static final Holder<ConfiguredFeature<OreConfiguration, ?>> NETHER_HEART_ORE = FeatureUtils.register("nether_heart_ore",
+            Feature.SCATTERED_ORE, new OreConfiguration(NETHERRACK_HEART_ORES, 7)); // Max Vein Size
+
+    public static final Holder<ConfiguredFeature<GeodeConfiguration, ?>> DEEPSLATE_HEART_GEODE = FeatureUtils.register("deepslate_heart_geode",
             Feature.GEODE,
             new GeodeConfiguration(new GeodeBlockSettings(
                     BlockStateProvider.simple(Blocks.AIR),
@@ -52,8 +44,8 @@ public class ModConfiguredFeatures {
                     new GeodeCrackSettings(0.95D, 2.0D, 2), 0.35D, 0.083D,
                     true, UniformInt.of(4, 6),
                     UniformInt.of(3, 4), UniformInt.of(1, 2),
-                    -16, 16, 0.05D, 1)));
-    public static final RegistrySupplier<ConfiguredFeature<?, ?>> NETHER_HEART_GEODE = CONFIGURED_FEATURES.register("nether_heart_geode", () -> new ConfiguredFeature<>(
+                    -16, 16, 0.05D, 1));
+    public static final Holder<ConfiguredFeature<GeodeConfiguration, ?>> NETHER_HEART_GEODE = FeatureUtils.register("nether_heart_geode",
             Feature.GEODE,
             new GeodeConfiguration(new GeodeBlockSettings(
                     BlockStateProvider.simple(Blocks.AIR),
@@ -67,9 +59,7 @@ public class ModConfiguredFeatures {
                     new GeodeCrackSettings(0.95D, 2.0D, 2), 0.35D, 0.083D,
                     true, UniformInt.of(4, 6),
                     UniformInt.of(3, 4), UniformInt.of(1, 2),
-                    -16, 16, 0.05D, 1)));
-    public static void register(){
-        LifeSteal.LOGGER.debug("Registering ModConfiguredFeatures for "+LifeSteal.MOD_ID);
-        CONFIGURED_FEATURES.register();
-    }
+                    -16, 16, 0.05D, 1));
+
+
 }

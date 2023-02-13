@@ -3,6 +3,7 @@ package net.goose.lifesteal.common.item.custom;
 import net.goose.lifesteal.common.block.ModBlocks;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.PlayerHeadItem;
 import net.minecraft.world.level.block.Block;
@@ -28,7 +29,7 @@ public class ReviveHeadItem extends PlayerHeadItem {
             }
 
             if (string != null) {
-                return Component.translatable("block.lifesteal.revive_head.named", string);
+                return new TranslatableComponent("block.lifesteal.revive_head.named", string);
             }
         }
 

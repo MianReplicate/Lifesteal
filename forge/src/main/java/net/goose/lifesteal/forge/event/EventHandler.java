@@ -21,7 +21,7 @@ public class EventHandler {
 
         LivingEntity oldPlayer = event.getOriginal();
         oldPlayer.reviveCaps();
-        LivingEntity newPlayer = event.getEntity();
+        LivingEntity newPlayer = (LivingEntity) event.getEntity();
 
         HealthData.get(oldPlayer).ifPresent(oldHeartDifference -> HealthData.get(newPlayer).ifPresent(IHeartCap ->
                 {

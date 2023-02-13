@@ -14,6 +14,7 @@ import net.minecraft.advancements.critereon.InventoryChangeTrigger;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.advancements.AdvancementProvider;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -38,7 +39,7 @@ public class AdvancementsProvider extends AdvancementProvider {
 
     private static DisplayInfo display(ItemStack icon, String name, FrameType frameType, ResourceLocation background, boolean showToast, boolean announceChat, boolean hidden) {
         String expandedName = "advancement." + LifeSteal.MOD_ID + ":" + name;
-        return new DisplayInfo(icon, Component.translatable(expandedName), Component.translatable(expandedName + ".desc"), background, frameType, showToast, announceChat, hidden);
+        return new DisplayInfo(icon, new TranslatableComponent(expandedName), new TranslatableComponent(expandedName + ".desc"), background, frameType, showToast, announceChat, hidden);
     }
     @Override
     public void registerAdvancements(Consumer<Advancement> saver, ExistingFileHelper existingFileHelper) {

@@ -5,7 +5,7 @@ import net.goose.lifesteal.LifeSteal;
 import net.goose.lifesteal.configuration.ConfigHolder;
 import net.goose.lifesteal.fabric.event.CommandRegistry;
 import net.goose.lifesteal.fabric.event.ModEvents;
-import net.goose.lifesteal.world.gen.ModBiomeModifier;
+import net.goose.lifesteal.world.feature.ModBiomeModifier;
 import net.minecraftforge.api.ModLoadingContext;
 import net.minecraftforge.fml.config.ModConfig;
 

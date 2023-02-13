@@ -16,9 +16,6 @@ public class BiomeTagsProvider extends net.minecraft.data.tags.BiomeTagsProvider
 
     @Override
     protected void addTags() {
-        tag(ModTags.OVERWORLD_ORE).addTags(BiomeTags.IS_OVERWORLD, Tags.Biomes.IS_UNDERGROUND);
-        tag(ModTags.NETHER_ORE).addTags(BiomeTags.IS_NETHER, Tags.Biomes.IS_DRY_NETHER, Tags.Biomes.IS_HOT_NETHER);
-
         tag(ModTags.BASE_MINERS_LOCATION).add(Biomes.PLAINS, Biomes.SUNFLOWER_PLAINS, Biomes.SNOWY_PLAINS, Biomes.MEADOW);
 
         tag(ModTags.MINERS_LOCATION_1).add(Biomes.FOREST);

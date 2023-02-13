@@ -13,6 +13,7 @@ import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
@@ -59,7 +60,7 @@ public class LifestealCommand {
 
             if (maximumheartsLoseable >= 0) {
                 if (heartDifference.get() < startingHitPointDifference - maximumheartsLoseable) {
-                    serverPlayer.displayClientMessage(Component.translatable("gui.lifesteal.can't_withdraw_less_than_minimum"), true);
+                    serverPlayer.displayClientMessage(new TranslatableComponent("gui.lifesteal.can't_withdraw_less_than_minimum"), true);
                     return Command.SINGLE_SUCCESS;
                 }
             }
@@ -72,7 +73,7 @@ public class LifestealCommand {
             ItemStack heartCrystal = new ItemStack(ModItems.HEART_CRYSTAL.get(), amount);
             CompoundTag compoundTag = heartCrystal.getOrCreateTagElement("lifesteal");
             compoundTag.putBoolean("Unfresh", true);
-            heartCrystal.setHoverName(Component.translatable("item.lifesteal.heart_crystal.unnatural"));
+            heartCrystal.setHoverName(new TranslatableComponent("item.lifesteal.heart_crystal.unnatural"));
             if (serverPlayer.getInventory().getFreeSlot() == -1) {
                 serverPlayer.drop(heartCrystal, true);
             } else {
@@ -81,7 +82,7 @@ public class LifestealCommand {
         } else {
             String text = (String) LifeSteal.config.textUsedForRequirementOnWithdrawing.get();
             if (!text.isEmpty()) {
-                serverPlayer.displayClientMessage(Component.literal((String) LifeSteal.config.textUsedForRequirementOnWithdrawing.get()), true);
+                serverPlayer.displayClientMessage(Component.nullToEmpty((String) LifeSteal.config.textUsedForRequirementOnWithdrawing.get()), true);
             }
         }
         return Command.SINGLE_SUCCESS;
@@ -89,13 +90,13 @@ public class LifestealCommand {
 
     private static int getHitPoint(CommandSourceStack source) throws CommandSyntaxException {
         LivingEntity playerthatsentcommand = source.getPlayerOrException();
-        HealthData.get(playerthatsentcommand).ifPresent(iHeartData -> source.sendSystemMessage(Component.translatable("chat.message.lifesteal.get_hit_point_for_self", iHeartData.getHeartDifference())));
+        HealthData.get(playerthatsentcommand).ifPresent(iHeartData -> playerthatsentcommand.sendMessage(new TranslatableComponent("chat.message.lifesteal.get_hit_point_for_self", iHeartData.getHeartDifference()), playerthatsentcommand.getUUID()));
         return Command.SINGLE_SUCCESS;
     }
 
     private static int getHitPoint(CommandSourceStack source, Entity chosenentity) throws CommandSyntaxException {
         HealthData.get(chosenentity).ifPresent(iHeartData ->
-                source.sendSystemMessage(Component.translatable("chat.message.lifesteal.get_hit_point_for_player", chosenentity.getName().getString(), iHeartData.getHeartDifference()))
+                source.sendSuccess(new TranslatableComponent("chat.message.lifesteal.get_hit_point_for_player", chosenentity.getName().getString(), iHeartData.getHeartDifference()), false)
         );
         return Command.SINGLE_SUCCESS;
     }
@@ -107,7 +108,7 @@ public class LifestealCommand {
             IHeartCap.refreshHearts(false);
         });
 
-        source.sendSuccess(Component.translatable("chat.message.lifesteal.set_hit_point_for_self", amount), true);
+        source.sendSuccess(new TranslatableComponent("chat.message.lifesteal.set_hit_point_for_self", amount), true);
         return Command.SINGLE_SUCCESS;
     }
 
@@ -117,10 +118,10 @@ public class LifestealCommand {
             IHeartCap.refreshHearts(false);
         });
 
-        source.sendSuccess(Component.translatable("chat.message.lifesteal.set_hit_point_for_player", chosenentity.getName().getString(), amount), true);
+        source.sendSuccess(new TranslatableComponent("chat.message.lifesteal.set_hit_point_for_player", chosenentity.getName().getString(), amount), true);
 
         if (LifeSteal.config.tellPlayersIfHitPointChanged.get()) {
-            chosenentity.sendSystemMessage(Component.translatable("chat.message.lifesteal.set_hit_point_for_self", amount));
+            chosenentity.sendMessage(new TranslatableComponent("chat.message.lifesteal.set_hit_point_for_self", amount), chosenentity.getUUID());
         }
 
         return Command.SINGLE_SUCCESS;

@@ -6,8 +6,8 @@ import net.goose.lifesteal.common.blockentity.ModBlockEntityTypes;
 import net.goose.lifesteal.common.item.ModCreativeModeTab;
 import net.goose.lifesteal.common.item.ModItems;
 import net.goose.lifesteal.configuration.ModConfig;
-import net.goose.lifesteal.world.gen.ModConfiguredFeatures;
-import net.goose.lifesteal.world.gen.ModPlacedFeatures;
+import net.goose.lifesteal.world.feature.ModConfiguredFeatures;
+import net.goose.lifesteal.world.feature.ModPlacedFeatures;
 import net.minecraft.resources.ResourceLocation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,8 +33,6 @@ public class LifeSteal {
         ModItems.register();
         ModBlocks.register();
         ModBlockEntityTypes.register();
-        ModConfiguredFeatures.register();
-        ModPlacedFeatures.register();
         ModCriteria.init();
     }
 }

@@ -2,6 +2,7 @@ package net.goose.lifesteal.common.item.custom;
 
 import net.goose.lifesteal.LifeSteal;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -45,11 +46,11 @@ public class HeartCoreItem extends Item {
                     int tickTime = (int) ((amountThatWillBeHealed * 50) / 3) + oldDuration;
                     entity.addEffect(new MobEffectInstance(MobEffects.REGENERATION, tickTime, 2));
                 } else {
-                    serverPlayer.displayClientMessage(Component.translatable("gui.lifesteal.heart_core_at_max_health"), true);
+                    serverPlayer.displayClientMessage(new TranslatableComponent("gui.lifesteal.heart_core_at_max_health"), true);
                     success = false;
                 }
             } else {
-                serverPlayer.displayClientMessage(Component.translatable("gui.lifesteal.heart_core_disabled"), true);
+                serverPlayer.displayClientMessage(new TranslatableComponent("gui.lifesteal.heart_core_disabled"), true);
                 success = false;
             }
         }

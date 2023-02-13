@@ -10,6 +10,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.players.PlayerList;
@@ -82,15 +83,15 @@ public class ReviveCrystalItem extends Item {
             }
 
             if (!LifeSteal.config.silentlyRevivePlayer.get()) {
-                String message = ChatFormatting.YELLOW + Component.translatable("chat.message.lifesteal.revived_player", gameprofile.getName()).getString();
+                String message = ChatFormatting.YELLOW + new TranslatableComponent("chat.message.lifesteal.revived_player", gameprofile.getName()).getString();
 
                 PlayerList playerlist = level.getServer().getPlayerList();
                 List<ServerPlayer> playerList = playerlist.getPlayers();
                 for (ServerPlayer serverPlayerGuys : playerList) {
-                    serverPlayerGuys.getCamera().sendSystemMessage(Component.literal(message));
+                    serverPlayerGuys.getCamera().sendMessage(Component.nullToEmpty(message), serverPlayerGuys.getUUID());
                 }
             } else {
-                player.displayClientMessage(Component.translatable("gui.lifesteal.revived"), true);
+                player.displayClientMessage(new TranslatableComponent("gui.lifesteal.revived"), true);
             }
         }
 
@@ -104,12 +105,12 @@ public class ReviveCrystalItem extends Item {
             Player player = useOnContext.getPlayer();
 
             if (level.getServer().isSingleplayer()) {
-                player.displayClientMessage(Component.translatable("gui.lifesteal.multiplayer_only"), true);
+                player.displayClientMessage(new TranslatableComponent("gui.lifesteal.multiplayer_only"), true);
                 return super.useOn(useOnContext);
             }
 
             if (LifeSteal.config.disableReviveCrystals.get()) {
-                player.displayClientMessage(Component.translatable("gui.lifesteal.revive_crystal_disabled"), true);
+                player.displayClientMessage(new TranslatableComponent("gui.lifesteal.revive_crystal_disabled"), true);
                 return super.useOn(useOnContext);
             }
 
@@ -140,13 +141,13 @@ public class ReviveCrystalItem extends Item {
                     if (successful.get()) {
                         itemStack.shrink(1);
                     } else {
-                        player.displayClientMessage(Component.translatable("gui.lifesteal.error_revive_block"), true);
+                        player.displayClientMessage(new TranslatableComponent("gui.lifesteal.error_revive_block"), true);
                     }
                 } else {
-                    player.displayClientMessage(Component.translatable("gui.lifesteal.null_revive_block"), true);
+                    player.displayClientMessage(new TranslatableComponent("gui.lifesteal.null_revive_block"), true);
                 }
             } else {
-                player.displayClientMessage(Component.translatable("gui.lifesteal.invaild_revive_block"), true);
+                player.displayClientMessage(new TranslatableComponent("gui.lifesteal.invaild_revive_block"), true);
             }
         }
         return super.useOn(useOnContext);

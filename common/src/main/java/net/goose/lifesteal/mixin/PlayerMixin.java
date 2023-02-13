@@ -5,6 +5,7 @@ import net.goose.lifesteal.common.item.ModItems;
 import net.goose.lifesteal.data.HealthData;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -28,7 +29,7 @@ public abstract class PlayerMixin extends LivingEntity {
         CompoundTag compoundTag = itemStack.getOrCreateTagElement("lifesteal");
         compoundTag.putBoolean("dropped", true);
         compoundTag.putBoolean("Unfresh", true);
-        itemStack.setHoverName(Component.translatable("item.lifesteal.heart_crystal.named", killedPlayer.getName().getString()));
+        itemStack.setHoverName(new TranslatableComponent("item.lifesteal.heart_crystal.named", killedPlayer.getName().getString()));
 
         ServerPlayer serverPlayer = (ServerPlayer) killedPlayer;
         serverPlayer.drop(itemStack, true, false);
@@ -105,7 +106,7 @@ public abstract class PlayerMixin extends LivingEntity {
                                             if (startingHitPointDifference + HeartDifference > -maximumheartsLoseable) {
                                                 increaseHearts(killerData, amountOfHealthLostUponLoss, killedEntity);
                                             } else {
-                                                killerPlayer.sendSystemMessage(Component.translatable("chat.message.lifesteal.no_more_hearts_to_steal"));
+                                                killerPlayer.sendMessage(new TranslatableComponent("chat.message.lifesteal.no_more_hearts_to_steal"), killerPlayer.getUUID());
                                             }
 
                                         } else {

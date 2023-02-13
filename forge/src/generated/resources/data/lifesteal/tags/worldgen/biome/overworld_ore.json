@@ -1,6 +1,0 @@
-{
-  "values": [
-    "#minecraft:is_overworld",
-    "#forge:is_underground"
-  ]
-}

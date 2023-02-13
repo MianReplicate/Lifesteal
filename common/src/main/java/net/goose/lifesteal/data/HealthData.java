@@ -14,6 +14,7 @@ import net.goose.lifesteal.util.ComponentUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -94,7 +95,6 @@ public class HealthData implements IHealthData {
                     refreshHearts(true);
                     if (synchronize) {
                         serverPlayer.jumpFromGround();
-                        serverPlayer.syncPacketPositionCodec(blockPos.getX(), blockPos.getY(), blockPos.getZ());
                     }
                     ModCriteria.REVIVED.trigger(serverPlayer);
                 }
@@ -202,7 +202,7 @@ public class HealthData implements IHealthData {
                     this.heartDifference = maximumheartsGainable + defaultheartDifference;
 
                     if (LifeSteal.config.tellPlayersIfReachedMaxHearts.get()) {
-                        livingEntity.sendSystemMessage(Component.translatable("chat.message.lifesteal.reached_max_hearts"));
+                        livingEntity.sendMessage(new TranslatableComponent("chat.message.lifesteal.reached_max_hearts"), livingEntity.getUUID());
                     }
                 }
             }
@@ -260,7 +260,7 @@ public class HealthData implements IHealthData {
 
                     MinecraftServer server = livingEntity.level.getServer();
 
-                    Component bannedcomponent = Component.translatable("bannedmessage.lifesteal.lost_max_hearts");
+                    Component bannedcomponent = new TranslatableComponent("bannedmessage.lifesteal.lost_max_hearts");
                     Component fullcomponent = null;
 
                     if (!server.isSingleplayer() && LifeSteal.config.uponDeathBanned.get()) {
@@ -270,7 +270,7 @@ public class HealthData implements IHealthData {
                             if(blockPos == null){
                                 dropPlayerHead();
                             } else {
-                                Component compPos = Component.translatable("bannedmessage.lifesteal.revive_head_location", blockPos.getX(), blockPos.getY(), blockPos.getZ());
+                                Component compPos = new TranslatableComponent("bannedmessage.lifesteal.revive_head_location", blockPos.getX(), blockPos.getY(), blockPos.getZ());
                                 fullcomponent = ComponentUtil.addComponents(bannedcomponent, compPos, false);
                             }
                         }
@@ -297,7 +297,7 @@ public class HealthData implements IHealthData {
                             if(blockPos == null){
                                 dropPlayerHead();
                             } else {
-                                Component compPos = Component.translatable("bannedmessage.lifesteal.revive_head_location", blockPos.getX(), blockPos.getY(), blockPos.getZ());
+                                Component compPos = new TranslatableComponent("bannedmessage.lifesteal.revive_head_location", blockPos.getX(), blockPos.getY(), blockPos.getZ());
                                 fullcomponent = ComponentUtil.addComponents(bannedcomponent, compPos, false);
                             }
                         }
@@ -309,7 +309,7 @@ public class HealthData implements IHealthData {
                         serverPlayer.getInventory().dropAll();
 
                         serverPlayer.setGameMode(GameType.SPECTATOR);
-                        livingEntity.sendSystemMessage(fullcomponent);
+                        livingEntity.sendMessage(fullcomponent, livingEntity.getUUID());
                     }
 
                 }

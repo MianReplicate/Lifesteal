@@ -4,6 +4,7 @@ import net.goose.lifesteal.LifeSteal;
 import net.goose.lifesteal.data.HealthData;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -57,12 +58,12 @@ public class HeartCrystalItem extends Item {
             if (!droppedHeartCrystal) {
                 if (unnaturalHeartCrystal) {
                     if (LifeSteal.config.disableUnnaturalHeartCrystals.get()) {
-                        serverPlayer.displayClientMessage(Component.translatable("gui.lifesteal.unnatural_heart_crystal_disabled"), true);
+                        serverPlayer.displayClientMessage(new TranslatableComponent("gui.lifesteal.unnatural_heart_crystal_disabled"), true);
                         success.set(false);
                     }
                 } else {
                     if (LifeSteal.config.disableHeartCrystals.get()) {
-                        serverPlayer.displayClientMessage(Component.translatable("gui.lifesteal.heart_crystal_disabled"), true);
+                        serverPlayer.displayClientMessage(new TranslatableComponent("gui.lifesteal.heart_crystal_disabled"), true);
                         success.set(false);
                     }
                 }
@@ -73,7 +74,7 @@ public class HeartCrystalItem extends Item {
                 if (LifeSteal.config.maximumamountofhitpointsGainable.get() > -1 && LifeSteal.config.preventFromUsingCrystalIfMax.get()) {
                     int maximumheartDifference = LifeSteal.config.startingHeartDifference.get() + LifeSteal.config.maximumamountofhitpointsGainable.get();
                     if (IHeartCap.getHeartDifference() == maximumheartDifference) {
-                        serverPlayer.displayClientMessage(Component.translatable("gui.lifesteal.heart_crystal_reaching_max"), true);
+                        serverPlayer.displayClientMessage(new TranslatableComponent("gui.lifesteal.heart_crystal_reaching_max"), true);
                         success.set(false);
                     }
                 }

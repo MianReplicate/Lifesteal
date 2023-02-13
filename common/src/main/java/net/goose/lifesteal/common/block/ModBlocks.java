@@ -12,7 +12,7 @@ import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.DropExperienceBlock;
+import net.minecraft.world.level.block.OreBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.Material;
 import org.jetbrains.annotations.Nullable;
@@ -26,13 +26,13 @@ public class ModBlocks {
             new Block(BlockBehaviour.Properties.of(Material.METAL).strength(6f).requiresCorrectToolForDrops()), true, null);
 
     public static final RegistrySupplier<Block> HEART_ORE = registerBlock("heart_ore", () ->
-            new DropExperienceBlock(BlockBehaviour.Properties.of(Material.STONE).strength(4f).requiresCorrectToolForDrops(), UniformInt.of(3, 7)), true, null);
+            new OreBlock(BlockBehaviour.Properties.of(Material.STONE).strength(4f).requiresCorrectToolForDrops(), UniformInt.of(3, 7)), true, null);
 
     public static final RegistrySupplier<Block> DEEPSLATE_HEART_ORE = registerBlock("deepslate_heart_ore", () ->
-            new DropExperienceBlock(BlockBehaviour.Properties.of(Material.STONE).strength(5f).requiresCorrectToolForDrops(), UniformInt.of(3, 7)), true, null);
+            new OreBlock(BlockBehaviour.Properties.of(Material.STONE).strength(5f).requiresCorrectToolForDrops(), UniformInt.of(3, 7)), true, null);
 
     public static final RegistrySupplier<Block> NETHERRACK_HEART_ORE = registerBlock("netherrack_heart_ore", () ->
-            new DropExperienceBlock(BlockBehaviour.Properties.of(Material.STONE).strength(2f).requiresCorrectToolForDrops().explosionResistance(999f), UniformInt.of(5, 9)), true, null);
+            new OreBlock(BlockBehaviour.Properties.of(Material.STONE).strength(2f).requiresCorrectToolForDrops().explosionResistance(999f), UniformInt.of(5, 9)), true, null);
     public static final RegistrySupplier<Block> REVIVE_HEAD = registerBlock("revive_head", () ->
             new ReviveHeadBlock(BlockBehaviour.Properties.of(Material.DECORATION).strength(1.0F).explosionResistance(999f)), false, null);
     public static final RegistrySupplier<Block> REVIVE_WALL_HEAD = registerBlock("revive_wall_head", () ->
