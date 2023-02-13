@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:village",
+  "config": {
+    "start_pool": "lifesteal:miners_broken_portal/start_pool",
+    "size": 1
+  },
+  "biomes": "#minecraft:has_structure/ruined_portal_standard",                                 //<= biome or biome tag
+  "adapt_noise": false,
+  "spawn_overrides": {}                                         //<= override mob spawning inside the structure bounding boxes
+}

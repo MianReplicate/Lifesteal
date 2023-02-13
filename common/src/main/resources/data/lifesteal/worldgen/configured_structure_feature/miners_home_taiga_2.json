@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:village",
+  "config": {
+    "start_pool": "lifesteal:miners_home_taiga_2/start_pool",
+    "size": 1
+  },
+  "biomes": "#lifesteal:has_structure/miners_location_4",                                 //<= biome or biome tag
+  "adapt_noise": true,
+  "spawn_overrides": {}                                         //<= override mob spawning inside the structure bounding boxes
+}

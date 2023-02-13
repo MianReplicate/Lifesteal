@@ -1,5 +1,6 @@
 package net.goose.lifesteal.world.feature;
 
+import net.goose.lifesteal.LifeSteal;
 import net.goose.lifesteal.common.block.ModBlocks;
 import net.minecraft.core.Holder;
 import net.minecraft.data.worldgen.features.FeatureUtils;
@@ -61,5 +62,7 @@ public class ModConfiguredFeatures {
                     UniformInt.of(3, 4), UniformInt.of(1, 2),
                     -16, 16, 0.05D, 1));
 
-
+    public static void register(){
+        LifeSteal.LOGGER.debug("Registering ModConfiguredFeatures for "+LifeSteal.MOD_ID);
+    }
 }

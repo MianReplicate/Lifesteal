@@ -33,6 +33,8 @@ public class LifeSteal {
         ModItems.register();
         ModBlocks.register();
         ModBlockEntityTypes.register();
+        ModConfiguredFeatures.register();
+        ModPlacedFeatures.register();
         ModCriteria.init();
     }
 }

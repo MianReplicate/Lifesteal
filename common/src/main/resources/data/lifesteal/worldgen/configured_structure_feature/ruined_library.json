@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:village",
+  "config": {
+    "start_pool": "lifesteal:ruined_library/start_pool",
+    "size": 2
+  },
+  "biomes": "minecraft:dark_forest",                                 //<= biome or biome tag
+  "adapt_noise": true,
+  "spawn_overrides": {}                                         //<= override mob spawning inside the structure bounding boxes
+}

@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:village",
+  "config": {
+    "start_pool": "lifesteal:abandoned_trading_cart/start_pool",
+    "size": 1
+  },
+  "biomes": "#minecraft:is_forest",                                 //<= biome or biome tag
+  "adapt_noise": true,
+  "spawn_overrides": {}                                         //<= override mob spawning inside the structure bounding boxes
+}

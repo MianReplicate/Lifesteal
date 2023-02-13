@@ -1,5 +1,6 @@
 package net.goose.lifesteal.world.feature;
 
+import net.goose.lifesteal.LifeSteal;
 import net.minecraft.core.Holder;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
@@ -40,4 +41,7 @@ public class ModPlacedFeatures {
                     RarityFilter.onAverageOnceEvery(30), InSquarePlacement.spread(),
                     HeightRangePlacement.uniform(VerticalAnchor.absolute(10), VerticalAnchor.absolute(30)),
                     BiomeFilter.biome()));
+    public static void register(){
+        LifeSteal.LOGGER.debug("Registering ModPlacedFeatures for "+LifeSteal.MOD_ID);
+    }
 }
