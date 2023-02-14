@@ -26,7 +26,7 @@ public class PlacedFeaturesProvider {
     public static void bootstrap(BootstapContext<PlacedFeature> context) {
         HolderGetter<ConfiguredFeature<?, ?>> configuredFeatures = context.lookup(Registries.CONFIGURED_FEATURE);
 
-        register(context, DEEPSLATE_HEART_GEODE_PLACED, configuredFeatures.getOrThrow(ConfiguredFeaturesProvider.NETHER_HEART_GEODE),
+        register(context, DEEPSLATE_HEART_GEODE_PLACED, configuredFeatures.getOrThrow(ConfiguredFeaturesProvider.DEEPSLATE_HEART_GEODE),
                 List.of(RarityFilter.onAverageOnceEvery(50), InSquarePlacement.spread(),
                         HeightRangePlacement.uniform(VerticalAnchor.absolute(-45), VerticalAnchor.absolute(0)),
                         BiomeFilter.biome()));
@@ -38,7 +38,7 @@ public class PlacedFeaturesProvider {
                 List.of(RarityFilter.onAverageOnceEvery(30), InSquarePlacement.spread(),
                         HeightRangePlacement.uniform(VerticalAnchor.absolute(10), VerticalAnchor.absolute(30)),
                         BiomeFilter.biome()));
-        register(context, NETHER_HEART_ORE_PLACED, configuredFeatures.getOrThrow(ConfiguredFeaturesProvider.HEART_ORE),
+        register(context, NETHER_HEART_ORE_PLACED, configuredFeatures.getOrThrow(ConfiguredFeaturesProvider.NETHER_HEART_ORE),
                 List.copyOf(
                         commonOrePlacement(6,
                                 HeightRangePlacement.triangle(VerticalAnchor.absolute(20), VerticalAnchor.absolute(100)))));

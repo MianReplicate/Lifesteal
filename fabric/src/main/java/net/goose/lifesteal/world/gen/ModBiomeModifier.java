@@ -15,20 +15,13 @@ public class ModBiomeModifier {
     public static final ResourceKey<PlacedFeature> NETHER_HEART_ORE_PLACED = ResourceKey.create(Registries.PLACED_FEATURE, new ResourceLocation(LifeSteal.MOD_ID, "nether_heart_ore_placed"));
     public static final ResourceKey<PlacedFeature> DEEPSLATE_HEART_GEODE_PLACED = ResourceKey.create(Registries.PLACED_FEATURE, new ResourceLocation(LifeSteal.MOD_ID, "deepslate_heart_geode_placed"));
     public static final ResourceKey<PlacedFeature> NETHER_HEART_GEODE_PLACED = ResourceKey.create(Registries.PLACED_FEATURE, new ResourceLocation(LifeSteal.MOD_ID, "nether_heart_geode_placed"));
-
     private static BiConsumer<BiomeSelectionContext, BiomeModificationContext> HEART_MODIFIER() {
         return (biomeSelectionContext, biomeModificationContext) -> {
-            // here we can potentially narrow our biomes down
-            // but here we won't
             biomeModificationContext.getGenerationSettings().addFeature(
-                    // ores to ores
                     GenerationStep.Decoration.UNDERGROUND_ORES,
-                    // this is the key of the placed feature
                     HEART_ORE_PLACED);
             biomeModificationContext.getGenerationSettings().addFeature(
-                    // ores to ores
                     GenerationStep.Decoration.UNDERGROUND_ORES,
-                    // this is the key of the placed feature
                     DEEPSLATE_HEART_GEODE_PLACED);
         };
 
@@ -36,22 +29,15 @@ public class ModBiomeModifier {
 
     private static BiConsumer<BiomeSelectionContext, BiomeModificationContext> NETHER_MODIFIER() {
         return (biomeSelectionContext, biomeModificationContext) -> {
-            // here we can potentially narrow our biomes down
-            // but here we won't
             biomeModificationContext.getGenerationSettings().addFeature(
-                    // ores to ores
                     GenerationStep.Decoration.UNDERGROUND_ORES,
-                    // this is the key of the placed feature
                     NETHER_HEART_ORE_PLACED);
             biomeModificationContext.getGenerationSettings().addFeature(
-                    // ores to ores
                     GenerationStep.Decoration.UNDERGROUND_ORES,
-                    // this is the key of the placed feature
                     NETHER_HEART_GEODE_PLACED);
         };
 
     }
-
 
     public static void register() {
         LifeSteal.LOGGER.debug("Registering ModBiomeModifier for " + LifeSteal.MOD_ID);
