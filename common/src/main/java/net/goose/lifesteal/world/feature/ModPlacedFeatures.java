@@ -13,7 +13,6 @@ public class ModPlacedFeatures {
             ModConfiguredFeatures.HEART_ORE,
             commonOrePlacement(6, //VeinsPerChunk
                     HeightRangePlacement.triangle(VerticalAnchor.absolute(-50), VerticalAnchor.absolute(70))));
-
     public static final Holder<PlacedFeature> NETHER_HEART_ORE_PLACED = PlacementUtils.register("nether_heart_ore_placed",
             ModConfiguredFeatures.NETHER_HEART_ORE,
             commonOrePlacement(6, // VeinsPerChunk

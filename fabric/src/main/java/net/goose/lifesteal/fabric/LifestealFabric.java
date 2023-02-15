@@ -6,6 +6,8 @@ import net.goose.lifesteal.configuration.ConfigHolder;
 import net.goose.lifesteal.fabric.event.CommandRegistry;
 import net.goose.lifesteal.fabric.event.ModEvents;
 import net.goose.lifesteal.world.feature.ModBiomeModifier;
+import net.goose.lifesteal.world.feature.ModConfiguredFeatures;
+import net.goose.lifesteal.world.feature.ModPlacedFeatures;
 import net.minecraftforge.api.ModLoadingContext;
 import net.minecraftforge.fml.config.ModConfig;
 
@@ -18,6 +20,8 @@ public class LifestealFabric implements ModInitializer {
         LifeSteal.init();
         ModEvents.register();
         CommandRegistry.register();
+        ModConfiguredFeatures.register();
+        ModPlacedFeatures.register();
         ModBiomeModifier.register();
     }
 }
