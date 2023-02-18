@@ -89,13 +89,13 @@ public class LifestealCommand {
 
     private static int getHitPoint(CommandSourceStack source) throws CommandSyntaxException {
         LivingEntity playerthatsentcommand = source.getPlayerOrException();
-        HealthData.get(playerthatsentcommand).ifPresent(iHeartData -> source.sendSystemMessage(Component.translatable("chat.message.lifesteal.get_hit_point_for_self", iHeartData.getHeartDifference())));
+        HealthData.get(playerthatsentcommand).ifPresent(iHeartData -> source.sendSuccess(Component.translatable("chat.message.lifesteal.get_hit_point_for_self", iHeartData.getHeartDifference()), false));
         return Command.SINGLE_SUCCESS;
     }
 
     private static int getHitPoint(CommandSourceStack source, Entity chosenentity) throws CommandSyntaxException {
         HealthData.get(chosenentity).ifPresent(iHeartData ->
-                source.sendSystemMessage(Component.translatable("chat.message.lifesteal.get_hit_point_for_player", chosenentity.getName().getString(), iHeartData.getHeartDifference()))
+                source.sendSuccess(Component.translatable("chat.message.lifesteal.get_hit_point_for_player", chosenentity.getName().getString(), iHeartData.getHeartDifference()), false)
         );
         return Command.SINGLE_SUCCESS;
     }
