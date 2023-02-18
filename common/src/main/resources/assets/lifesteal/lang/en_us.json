@@ -44,8 +44,8 @@
   "itemGroup.lifesteal": "Lifesteal",
   "itemGroup.lifesteal.creativemodetab": "Lifesteal",
 
-  "advancement.lifesteal:get_fragment": "Fragment of the Past",
-  "advancement.lifesteal:get_fragment.desc": "The beginning of the end.",
+  "advancement.lifesteal:root": "Fragment of the Past",
+  "advancement.lifesteal:root.desc": "The beginning of the end.",
   "advancement.lifesteal:get_heart_core": "A Beacon of Hope",
   "advancement.lifesteal:get_heart_core.desc": "Retrieve the core of a heart crystal.",
   "advancement.lifesteal:get_heart_crystal": "Once Upon a Time..",
@@ -56,6 +56,6 @@
   "advancement.lifesteal:use_totem_while_20_max_hearts.desc": "Save yourself from death with a Totem of Undying, even at the peak of immortality.",
   "advancement.lifesteal:get_10_max_hearts_with_netherite_armor": "Challenging Death",
   "advancement.lifesteal:get_10_max_hearts_with_netherite_armor.desc": "Gain 10 extra hearts AND get a full Netherite Armor set. Truly immortal.",
-  "advancement.lifesteal:revived": "The End of Time",
-  "advancement.lifesteal:revived.desc": "Defy the meaning of death."
+  "advancement.lifesteal:revived_from_dead": "The End of Time",
+  "advancement.lifesteal:revived_from_dead.desc": "Defy the meaning of death."
 }

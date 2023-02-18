@@ -13,5 +13,6 @@
   ],
   "injectors": {
     "defaultRequire": 1
-  }
+  },
+  "refmap": "lifesteal.mixin-refmap.json"
 }
