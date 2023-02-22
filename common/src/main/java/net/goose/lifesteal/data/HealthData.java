@@ -39,6 +39,7 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -212,14 +213,16 @@ public class HealthData implements IHealthData {
             }
 
             AttributeInstance Attribute = livingEntity.getAttribute(Attributes.MAX_HEALTH);
-            Set<AttributeModifier> attributemodifiers = Attribute.getModifiers(AttributeModifier.Operation.ADDITION);
-            AtomicReference<Double> healthModifiedTotal = new AtomicReference<>((double) this.heartDifference);
+            Set<AttributeModifier> attributemodifiers = Attribute.getModifiers();
+            double healthModifiedTotal = this.heartDifference;
             String attributeModifierID = new String("LifeStealHealthModifier");
 
             if (!attributemodifiers.isEmpty()) {
+                Iterator<AttributeModifier> attributeIterator = attributemodifiers.iterator();
                 AtomicBoolean FoundAttribute = new AtomicBoolean(false);
 
-                attributemodifiers.forEach(attributeModifier -> {
+                while(attributeIterator.hasNext()){
+                    AttributeModifier attributeModifier = attributeIterator.next();
                     if(attributeModifier != null){
 
                         if (attributeModifier.getName().equals(attributeModifierID)) {
@@ -227,12 +230,16 @@ public class HealthData implements IHealthData {
                             Attribute.removeModifier(attributeModifier);
                             AttributeModifier newmodifier = new AttributeModifier(attributeModifierID, this.heartDifference, AttributeModifier.Operation.ADDITION);
                             Attribute.addPermanentModifier(newmodifier);
-                        } else {
+                        } else if (attributeModifier.getOperation() == AttributeModifier.Operation.MULTIPLY_BASE) {
                             double amount = attributeModifier.getAmount();
-                            healthModifiedTotal.set(healthModifiedTotal.get() + amount);
+                            healthModifiedTotal += amount;
+                        } else if (attributeModifier.getOperation() == AttributeModifier.Operation.MULTIPLY_TOTAL) {
+                            healthModifiedTotal += this.livingEntity.getMaxHealth() / attributeModifier.getAmount();
+                        } else if (attributeModifier.getOperation() == AttributeModifier.Operation.MULTIPLY_BASE) {
+                            healthModifiedTotal += this.livingEntity.getAttributeBaseValue(Attributes.MAX_HEALTH) * attributeModifier.getAmount();
                         }
                     }
-                });
+                }
 
                 if (!FoundAttribute.get()) {
                     AttributeModifier attributeModifier = new AttributeModifier(attributeModifierID, this.heartDifference, AttributeModifier.Operation.ADDITION);
@@ -251,7 +258,7 @@ public class HealthData implements IHealthData {
                 livingEntity.setHealth(livingEntity.getMaxHealth());
             }
 
-            if (livingEntity.getMaxHealth() <= 1 && healthModifiedTotal.get() <= -20) {
+            if (healthModifiedTotal <= -20) {
                 if (livingEntity instanceof ServerPlayer serverPlayer) {
 
                     this.heartDifference = defaultheartDifference;

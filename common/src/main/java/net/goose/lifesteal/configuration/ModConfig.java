@@ -112,7 +112,7 @@ public class ModConfig {
         builder.push("Commands");
         this.tellPlayersIfHitPointChanged = buildBoolean(builder, "Tell Players if Their HitPoint Difference Changed:", true, "This just makes it so when an admin changed a person's hitpoints, this value would determine if the game should tell the person in chat that their hitpoints was changed.");
         builder.push("Withdrawing");
-        this.advancementUsedForWithdrawing = buildString(builder, "The Advancement Needed to Unlock Withdrawing:", "lifesteal:story/get_heart_crystal", "This value determines the advancement used to unlock withdrawing. You would find the advancement you want to use by using the ID of the advancement which is found with the /advancement command. If the value is empty, withdraw will be unlocked automatically.");
+        this.advancementUsedForWithdrawing = buildString(builder, "The Advancement Needed to Unlock Withdrawing:", "lifesteal:get_heart_crystal", "This value determines the advancement used to unlock withdrawing. You would find the advancement you want to use by using the ID of the advancement which is found with the /advancement command. If the value is empty, withdraw will be unlocked automatically.");
         this.textUsedForRequirementOnWithdrawing = buildString(builder, "The Text Shown When Withdrawing Isn't Unlocked:", "You need to at least have gotten one heart crystal in this world to withdraw", "This value determines what text will pop up when a player hasn't unlocked withdrawing. If this value is empty, no text will pop up.");
         this.permissionLevelForWithdraw = buildInt(builder, "Permission Level:", Commands.LEVEL_ALL, Commands.LEVEL_ALL, Commands.LEVEL_OWNERS, null);
         builder.pop();
