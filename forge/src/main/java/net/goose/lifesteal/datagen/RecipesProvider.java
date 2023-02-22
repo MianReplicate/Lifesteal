@@ -49,7 +49,7 @@ public class RecipesProvider extends RecipeProvider {
                 .define('h', Items.HEART_OF_THE_SEA)
                 .unlockedBy("has_heart_of_the_sea", net.minecraft.data.recipes.RecipeProvider.has(Items.HEART_OF_THE_SEA))
                 .save(consumer, new ResourceLocation(LifeSteal.MOD_ID, "heart_crystal"));
-        /*ShapedRecipeBuilder.shaped(ModItems.REVIVE_CRYSTAL.get())
+        ShapedRecipeBuilder.shaped(ModItems.REVIVE_CRYSTAL.get())
                 .pattern("gcg")
                 .pattern("nhn")
                 .pattern("ctc")
@@ -59,6 +59,6 @@ public class RecipesProvider extends RecipeProvider {
                 .define('t', Items.TOTEM_OF_UNDYING)
                 .define('h', ModItems.HEART_CRYSTAL.get())
                 .unlockedBy("has_totem", net.minecraft.data.recipes.RecipeProvider.has(Items.TOTEM_OF_UNDYING))
-                .save(consumer, new ResourceLocation(LifeSteal.MOD_ID, "revive_crystal"));*/
+                .save(consumer, new ResourceLocation(LifeSteal.MOD_ID, "revive_crystal"));
     }
 }
