@@ -239,7 +239,7 @@ public class HealthData implements IHealthData {
                         } else if (attributeModifier.getOperation() == AttributeModifier.Operation.MULTIPLY_TOTAL) {
                             healthModifiedTotal += this.livingEntity.getMaxHealth() / attributeModifier.getAmount();
                         } else if (attributeModifier.getOperation() == AttributeModifier.Operation.MULTIPLY_BASE) {
-                            healthModifiedTotal += 20 * attributeModifier.getAmount();
+                            healthModifiedTotal += Attribute.getBaseValue() * attributeModifier.getAmount();
                         }
                     }
                 }
