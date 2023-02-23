@@ -31,22 +31,20 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.EntityBlock;
-import net.minecraft.world.level.block.entity.SkullBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Optional;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class HealthData implements IHealthData {
     private final LivingEntity livingEntity;
+    private final String attributeModifierID = new String("LifeStealHealthModifier");
+
     private int heartDifference = LifeSteal.config.startingHeartDifference.get();
 
     public HealthData(@Nullable final LivingEntity entity) {
@@ -65,14 +63,14 @@ public class HealthData implements IHealthData {
 
     @Override
     public void revivedTeleport(ServerLevel level, ILevelData iLevelData, boolean synchronize) {
-        if (livingEntity instanceof ServerPlayer serverPlayer) {
+        if (this.livingEntity instanceof ServerPlayer serverPlayer) {
             if (!level.isClientSide) {
                 HashMap hashMap = iLevelData.getMap();
 
-                BlockPos blockPos = (BlockPos) hashMap.get(livingEntity.getUUID());
+                BlockPos blockPos = (BlockPos) hashMap.get(this.livingEntity.getUUID());
 
                 if (blockPos != null) {
-                        iLevelData.removeUUIDanditsBlockPos(livingEntity.getUUID(), blockPos);
+                    iLevelData.removeUUIDanditsBlockPos(this.livingEntity.getUUID(), blockPos);
                     if (serverPlayer.getLevel() == level) {
                         serverPlayer.connection.teleport(blockPos.getX(), blockPos.getY(), blockPos.getZ(), serverPlayer.getXRot(), serverPlayer.getYRot());
                     } else {
@@ -83,9 +81,9 @@ public class HealthData implements IHealthData {
                     }
                     if (!LifeSteal.config.disableStatusEffects.get()) {
                         int tickTime = 600;
-                        livingEntity.addEffect(new MobEffectInstance(MobEffects.REGENERATION, tickTime, 3));
-                        livingEntity.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, tickTime, 3));
-                        livingEntity.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, tickTime, 3));
+                        this.livingEntity.addEffect(new MobEffectInstance(MobEffects.REGENERATION, tickTime, 3));
+                        this.livingEntity.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, tickTime, 3));
+                        this.livingEntity.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, tickTime, 3));
                     }
                     if (LifeSteal.config.customHeartDifferenceWhenRevived.get()) {
                         setHeartDifference(LifeSteal.config.startingHeartDifferenceFromCrystal.get());
@@ -109,7 +107,7 @@ public class HealthData implements IHealthData {
 
     @Override
     public BlockPos spawnPlayerHead() {
-        if (livingEntity instanceof ServerPlayer serverPlayer) {
+        if (this.livingEntity instanceof ServerPlayer serverPlayer) {
             Level level = serverPlayer.level;
             if (!level.isClientSide) {
                 BlockPos playerPos = serverPlayer.blockPosition();
@@ -159,7 +157,7 @@ public class HealthData implements IHealthData {
     }
     @Override
     public boolean dropPlayerHead(){
-        if (livingEntity instanceof ServerPlayer serverPlayer) {
+        if (this.livingEntity instanceof ServerPlayer serverPlayer) {
             if (!serverPlayer.level.isClientSide) {
                 CompoundTag compoundTag = new CompoundTag();
                 compoundTag.putString("SkullOwner", serverPlayer.getName().toString());
@@ -184,15 +182,111 @@ public class HealthData implements IHealthData {
 
     @Override
     public void setHeartDifference(int hearts) {
-        if (!livingEntity.level.isClientSide) {
+        if (!this.livingEntity.level.isClientSide) {
             this.heartDifference = hearts;
+        }
+    }
+
+    @Override
+    public double getHeartModifiedTotal(){
+        AttributeInstance Attribute = this.livingEntity.getAttribute(Attributes.MAX_HEALTH);
+        Set<AttributeModifier> attributemodifiers = Attribute.getModifiers();
+        double healthModifiedTotal = this.heartDifference;
+
+        if (!attributemodifiers.isEmpty()) {
+            Iterator<AttributeModifier> attributeModifierIterator = attributemodifiers.iterator();
+
+            AttributeModifier attributeModifier;
+            while(attributeModifierIterator.hasNext()){
+                attributeModifier = attributeModifierIterator.next();
+                if(attributeModifier != null){
+                    if (!attributeModifier.getName().equals(attributeModifierID)) {
+                        if (attributeModifier.getOperation() == AttributeModifier.Operation.ADDITION) {
+                            double amount = attributeModifier.getAmount();
+                            healthModifiedTotal += amount;
+                        } else if (attributeModifier.getOperation() == AttributeModifier.Operation.MULTIPLY_TOTAL) {
+                            healthModifiedTotal += this.livingEntity.getMaxHealth() / attributeModifier.getAmount();
+                        } else if (attributeModifier.getOperation() == AttributeModifier.Operation.MULTIPLY_BASE) {
+                            healthModifiedTotal += Attribute.getBaseValue() * attributeModifier.getAmount();
+                        }
+                    }
+                }
+            }
+        }
+
+        return healthModifiedTotal;
+    }
+
+    @Override
+    public void banForDeath(){
+        if(!this.livingEntity.level.isClientSide){
+            if (this.livingEntity instanceof ServerPlayer serverPlayer) {
+                this.heartDifference = LifeSteal.config.startingHeartDifference.get();
+
+                refreshHearts(true);
+
+                MinecraftServer server = this.livingEntity.level.getServer();
+
+                Component bannedcomponent = new TranslatableComponent("bannedmessage.lifesteal.lost_max_hearts");
+                Component fullcomponent = null;
+
+                if (!server.isSingleplayer() && LifeSteal.config.uponDeathBanned.get() && !server.getPlayerList().getBans().isBanned(serverPlayer.getGameProfile())) {
+
+                    if (LifeSteal.config.playersSpawnHeadUponDeath.get()) {
+                        BlockPos blockPos = spawnPlayerHead();
+                        if(blockPos == null){
+                            dropPlayerHead();
+                        } else {
+                            Component compPos = new TranslatableComponent("bannedmessage.lifesteal.revive_head_location", blockPos.getX(), blockPos.getY(), blockPos.getZ());
+                            fullcomponent = ComponentUtil.addComponents(bannedcomponent, compPos, false);
+                        }
+                    }
+
+                    if(fullcomponent == null){
+                        fullcomponent = bannedcomponent;
+                    }
+
+                    if(serverPlayer.isDeadOrDying()){serverPlayer.getInventory().dropAll();}
+
+                    UserBanList userbanlist = server.getPlayerList().getBans();
+                    serverPlayer.getGameProfile();
+                    GameProfile gameprofile = serverPlayer.getGameProfile();
+
+                    UserBanListEntry userbanlistentry = new UserBanListEntry(gameprofile, null, LifeSteal.MOD_ID, null, fullcomponent == null ? null : fullcomponent.getString());
+                    userbanlist.add(userbanlistentry);
+
+                    if (serverPlayer != null) {
+                        serverPlayer.connection.disconnect(fullcomponent);
+                    }
+                } else if (!serverPlayer.isSpectator()) {
+                    if (LifeSteal.config.playersSpawnHeadUponDeath.get() && !server.isSingleplayer()) {
+                        BlockPos blockPos = spawnPlayerHead();
+                        if(blockPos == null){
+                            dropPlayerHead();
+                        } else {
+                            Component compPos = new TranslatableComponent("bannedmessage.lifesteal.revive_head_location", blockPos.getX(), blockPos.getY(), blockPos.getZ());
+                            fullcomponent = ComponentUtil.addComponents(bannedcomponent, compPos, false);
+                        }
+                    }
+
+                    if(fullcomponent == null){
+                        fullcomponent = bannedcomponent;
+                    }
+
+                    if(serverPlayer.isDeadOrDying()){serverPlayer.getInventory().dropAll();}
+
+                    serverPlayer.setGameMode(GameType.SPECTATOR);
+                    this.livingEntity.sendMessage(fullcomponent, this.livingEntity.getUUID());
+                }
+
+            }
         }
     }
 
     @Override
     public void refreshHearts(boolean healtoMax) {
 
-        if (!livingEntity.level.isClientSide) {
+        if (!this.livingEntity.level.isClientSide) {
             final int defaultheartDifference = LifeSteal.config.startingHeartDifference.get();
             final int maximumheartsGainable = LifeSteal.config.maximumamountofhitpointsGainable.get();
             final int minimumamountofheartscanlose = LifeSteal.config.maximumamountofhitpointsLoseable.get();
@@ -202,117 +296,50 @@ public class HealthData implements IHealthData {
                     this.heartDifference = maximumheartsGainable + defaultheartDifference;
 
                     if (LifeSteal.config.tellPlayersIfReachedMaxHearts.get()) {
-                        livingEntity.sendMessage(new TranslatableComponent("chat.message.lifesteal.reached_max_hearts"), livingEntity.getUUID());
+                        this.livingEntity.sendMessage(new TranslatableComponent("chat.message.lifesteal.reached_max_hearts"), this.livingEntity.getUUID());
                     }
                 }
             }
 
             if (minimumamountofheartscanlose >= 0) {
-                this.heartDifference = this.heartDifference < defaultheartDifference - minimumamountofheartscanlose ? defaultheartDifference - minimumamountofheartscanlose : this.heartDifference;
+                this.heartDifference = Math.max(this.heartDifference, defaultheartDifference - minimumamountofheartscanlose);
             }
 
-            AttributeInstance Attribute = livingEntity.getAttribute(Attributes.MAX_HEALTH);
-            Set<AttributeModifier> attributemodifiers = Attribute.getModifiers(AttributeModifier.Operation.ADDITION);
-            AtomicReference<Double> healthModifiedTotal = new AtomicReference<>((double) this.heartDifference);
-            String attributeModifierID = new String("LifeStealHealthModifier");
+            AttributeInstance Attribute = this.livingEntity.getAttribute(Attributes.MAX_HEALTH);
+            Set<AttributeModifier> attributemodifiers = Attribute.getModifiers();
 
-            if (!attributemodifiers.isEmpty()) {
-                AtomicBoolean FoundAttribute = new AtomicBoolean(false);
+            if (attributemodifiers.isEmpty()) {
+                AttributeModifier attributeModifier = new AttributeModifier(attributeModifierID, this.heartDifference, AttributeModifier.Operation.ADDITION);
+                Attribute.addPermanentModifier(attributeModifier);
+            }else{
+                Iterator<AttributeModifier> attributeModifierIterator = attributemodifiers.iterator();
+                boolean FoundAttribute = false;
 
-                attributemodifiers.forEach(attributeModifier -> {
+                AttributeModifier attributeModifier;
+                while(attributeModifierIterator.hasNext()){
+                    attributeModifier = attributeModifierIterator.next();
                     if(attributeModifier != null){
-
                         if (attributeModifier.getName().equals(attributeModifierID)) {
-                            FoundAttribute.set(true);
+                            FoundAttribute = true;
                             Attribute.removeModifier(attributeModifier);
                             AttributeModifier newmodifier = new AttributeModifier(attributeModifierID, this.heartDifference, AttributeModifier.Operation.ADDITION);
                             Attribute.addPermanentModifier(newmodifier);
-                        } else {
-                            double amount = attributeModifier.getAmount();
-                            healthModifiedTotal.set(healthModifiedTotal.get() + amount);
                         }
                     }
-                });
+                }
 
-                if (!FoundAttribute.get()) {
-                    AttributeModifier attributeModifier = new AttributeModifier(attributeModifierID, this.heartDifference, AttributeModifier.Operation.ADDITION);
+                if (!FoundAttribute) {
+                    attributeModifier = new AttributeModifier(attributeModifierID, this.heartDifference, AttributeModifier.Operation.ADDITION);
                     Attribute.addPermanentModifier(attributeModifier);
                 }
-            } else {
-                AttributeModifier attributeModifier = new AttributeModifier(attributeModifierID, this.heartDifference, AttributeModifier.Operation.ADDITION);
-                Attribute.addPermanentModifier(attributeModifier);
             }
 
-            if (this.heartDifference >= 20 && livingEntity instanceof ServerPlayer serverPlayer) {
+            if (this.heartDifference >= 20 && this.livingEntity instanceof ServerPlayer serverPlayer) {
                 ModCriteria.GET_10_MAX_HEARTS.trigger(serverPlayer);
             }
 
-            if (livingEntity.getHealth() > livingEntity.getMaxHealth() || healtoMax) {
-                livingEntity.setHealth(livingEntity.getMaxHealth());
-            }
-
-            if (livingEntity.getMaxHealth() <= 1 && healthModifiedTotal.get() <= -20) {
-                if (livingEntity instanceof ServerPlayer serverPlayer) {
-
-                    this.heartDifference = defaultheartDifference;
-
-                    refreshHearts(true);
-
-                    MinecraftServer server = livingEntity.level.getServer();
-
-                    Component bannedcomponent = new TranslatableComponent("bannedmessage.lifesteal.lost_max_hearts");
-                    Component fullcomponent = null;
-
-                    if (!server.isSingleplayer() && LifeSteal.config.uponDeathBanned.get()) {
-
-                        if (LifeSteal.config.playersSpawnHeadUponDeath.get()) {
-                            BlockPos blockPos = spawnPlayerHead();
-                            if(blockPos == null){
-                                dropPlayerHead();
-                            } else {
-                                Component compPos = new TranslatableComponent("bannedmessage.lifesteal.revive_head_location", blockPos.getX(), blockPos.getY(), blockPos.getZ());
-                                fullcomponent = ComponentUtil.addComponents(bannedcomponent, compPos, false);
-                            }
-                        }
-
-                        if(fullcomponent == null){
-                            fullcomponent = bannedcomponent;
-                        }
-
-                        serverPlayer.getInventory().dropAll();
-
-                        UserBanList userbanlist = server.getPlayerList().getBans();
-                        serverPlayer.getGameProfile();
-                        GameProfile gameprofile = serverPlayer.getGameProfile();
-
-                        UserBanListEntry userbanlistentry = new UserBanListEntry(gameprofile, null, LifeSteal.MOD_ID, null, fullcomponent == null ? null : fullcomponent.getString());
-                        userbanlist.add(userbanlistentry);
-
-                        if (serverPlayer != null) {
-                            serverPlayer.connection.disconnect(fullcomponent);
-                        }
-                    } else if (!serverPlayer.isSpectator()) {
-                        if (LifeSteal.config.playersSpawnHeadUponDeath.get() && !server.isSingleplayer()) {
-                            BlockPos blockPos = spawnPlayerHead();
-                            if(blockPos == null){
-                                dropPlayerHead();
-                            } else {
-                                Component compPos = new TranslatableComponent("bannedmessage.lifesteal.revive_head_location", blockPos.getX(), blockPos.getY(), blockPos.getZ());
-                                fullcomponent = ComponentUtil.addComponents(bannedcomponent, compPos, false);
-                            }
-                        }
-
-                        if(fullcomponent == null){
-                            fullcomponent = bannedcomponent;
-                        }
-
-                        serverPlayer.getInventory().dropAll();
-
-                        serverPlayer.setGameMode(GameType.SPECTATOR);
-                        livingEntity.sendMessage(fullcomponent, livingEntity.getUUID());
-                    }
-
-                }
+            if (this.livingEntity.getHealth() > this.livingEntity.getMaxHealth() || healtoMax) {
+                this.livingEntity.setHealth(this.livingEntity.getMaxHealth());
             }
         }
 

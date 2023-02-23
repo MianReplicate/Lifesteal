@@ -54,6 +54,15 @@ public abstract class PlayerMixin extends LivingEntity {
         }
     }
 
+    @Inject(method = "tick", at = @At("HEAD"))
+    private void tickMethod(final CallbackInfo info){
+        HealthData.get(this).ifPresent(healthData -> {
+            if(healthData.getHeartModifiedTotal() <= -20){
+                healthData.banForDeath();
+            }
+        });
+    }
+
     @Inject(method = "dropEquipment", at = @At("HEAD"))
     private void onDeath(final CallbackInfo info) {
 
