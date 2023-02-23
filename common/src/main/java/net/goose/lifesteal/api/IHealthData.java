@@ -9,15 +9,13 @@ import net.minecraft.world.entity.LivingEntity;
 
 public interface IHealthData extends Serializable<CompoundTag> {
     void revivedTeleport(ServerLevel level, ILevelData iLevelData, boolean synchronize);
-
     void revivedTeleport(ServerLevel level, ILevelData iLevelData);
-
     BlockPos spawnPlayerHead();
     boolean dropPlayerHead();
     LivingEntity getLivingEntity();
-
     int getHeartDifference();
-
+    double getHeartModifiedTotal();
+    void banForDeath();
     void setHeartDifference(int hearts);
 
     void refreshHearts(boolean healtoMax);
