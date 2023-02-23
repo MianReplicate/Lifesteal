@@ -15,7 +15,8 @@ public interface IHealthData extends Serializable<CompoundTag> {
     BlockPos spawnPlayerHead();
     boolean dropPlayerHead();
     LivingEntity getLivingEntity();
-
+    double getHeartModifiedTotal();
+    void banForDeath();
     int getHeartDifference();
 
     void setHeartDifference(int hearts);
