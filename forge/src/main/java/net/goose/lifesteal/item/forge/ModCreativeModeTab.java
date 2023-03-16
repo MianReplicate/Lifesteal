@@ -14,7 +14,7 @@ public class ModCreativeModeTab {
         event.registerCreativeModeTab(TAB, builder ->
                 builder.title(Component.translatable("itemGroup.lifesteal"))
                         .icon(ModCreativeModeTabHelper::makeIcon)
-                        .displayItems((flags, output, isOp) ->
+                        .displayItems((itemDisplayParameters, output) ->
                                 ModItems.ITEMS.getEntries().forEach(item -> output.accept(item.get()))));
     }
 }

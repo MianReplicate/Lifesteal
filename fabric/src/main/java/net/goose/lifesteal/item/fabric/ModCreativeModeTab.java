@@ -14,7 +14,7 @@ public class ModCreativeModeTab {
         FabricItemGroup.builder(TAB)
                 .icon(ModCreativeModeTabHelper::makeIcon)
                 .title(Component.translatable("itemGroup.lifesteal"))
-                .displayItems((flags, output, isOp) -> ModItems.ITEMS.getEntries().forEach(item -> output.accept(item.get())))
+                .displayItems((itemDisplayParameters, output) -> ModItems.ITEMS.getEntries().forEach(item -> output.accept(item.get())))
                 .build();
     }
 }
