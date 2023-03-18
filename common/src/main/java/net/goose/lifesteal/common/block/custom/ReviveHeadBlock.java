@@ -40,7 +40,7 @@ public class ReviveHeadBlock extends SkullBlock implements EntityBlock {
                 }
             }
 
-            skullBlockEntity.setOwner(gameProfile);
+            skullBlockEntity.setOwner(gameProfile);d
         }
     }
 }
