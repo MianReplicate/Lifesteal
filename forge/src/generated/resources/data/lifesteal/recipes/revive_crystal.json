@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "gcg",
+    "nhn",
+    "ctc"
+  ],
+  "key": {
+    "g": {
+      "item": "minecraft:ghast_tear"
+    },
+    "n": {
+      "item": "minecraft:netherite_ingot"
+    },
+    "c": {
+      "item": "lifesteal:heart_core"
+    },
+    "t": {
+      "item": "minecraft:totem_of_undying"
+    },
+    "h": {
+      "item": "lifesteal:heart_crystal"
+    }
+  },
+  "result": {
+    "item": "lifesteal:revive_crystal"
+  }
+}

@@ -25,7 +25,7 @@ public class ModItems {
     public static final RegistrySupplier<Item> HEART_CRYSTAL = ITEMS.register("heart_crystal",
             () -> new HeartCrystalItem(new Item.Properties().stacksTo(1).fireResistant().food(HeartCrystalItem.HeartCrystal).tab(ModCreativeModeTab.creativeModeTab)));
     public static final RegistrySupplier<Item> REVIVE_CRYSTAL = ITEMS.register("revive_crystal",
-            () -> new ReviveCrystalItem(new Item.Properties().stacksTo(1).fireResistant()));
+            () -> new ReviveCrystalItem(new Item.Properties().stacksTo(1).fireResistant().tab(ModCreativeModeTab.creativeModeTab)));
     public static final RegistrySupplier<Item> REVIVE_HEAD_ITEM = ITEMS.register("revive_head",
             () -> new ReviveHeadItem(ModBlocks.REVIVE_HEAD.get(), ModBlocks.REVIVE_WALL_HEAD.get(), new Item.Properties().rarity(Rarity.UNCOMMON).stacksTo(1).fireResistant().tab(ModCreativeModeTab.creativeModeTab)));
 
