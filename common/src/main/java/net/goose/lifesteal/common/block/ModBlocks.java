@@ -13,7 +13,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.DropExperienceBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
+import net.minecraft.world.level.material.MapColor;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Supplier;
@@ -22,20 +23,20 @@ public class ModBlocks {
     public static final DeferredRegistry<Block> BLOCKS = DeferredRegistry.create(LifeSteal.MOD_ID, Registries.BLOCK);
 
     public static final RegistrySupplier<Block> HEART_CORE_BLOCK = registerBlock("heart_core_block", () ->
-            new Block(BlockBehaviour.Properties.of(Material.METAL).strength(6f).requiresCorrectToolForDrops()), true, null);
+            new Block(BlockBehaviour.Properties.of().mapColor(MapColor.METAL).strength(6f).requiresCorrectToolForDrops()), true, null);
 
     public static final RegistrySupplier<Block> HEART_ORE = registerBlock("heart_ore", () ->
-            new DropExperienceBlock(BlockBehaviour.Properties.of(Material.STONE).strength(4f).requiresCorrectToolForDrops(), UniformInt.of(3, 7)), true, null);
+            new DropExperienceBlock(BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(4f).requiresCorrectToolForDrops(), UniformInt.of(3, 7)), true, null);
 
     public static final RegistrySupplier<Block> DEEPSLATE_HEART_ORE = registerBlock("deepslate_heart_ore", () ->
-            new DropExperienceBlock(BlockBehaviour.Properties.of(Material.STONE).strength(5f).requiresCorrectToolForDrops(), UniformInt.of(3, 7)), true, null);
+            new DropExperienceBlock(BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(5f).requiresCorrectToolForDrops(), UniformInt.of(3, 7)), true, null);
 
     public static final RegistrySupplier<Block> NETHERRACK_HEART_ORE = registerBlock("netherrack_heart_ore", () ->
-            new DropExperienceBlock(BlockBehaviour.Properties.of(Material.STONE).strength(2f).requiresCorrectToolForDrops().explosionResistance(999f), UniformInt.of(5, 9)), true, null);
+            new DropExperienceBlock(BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(2f).requiresCorrectToolForDrops().explosionResistance(999f), UniformInt.of(5, 9)), true, null);
     public static final RegistrySupplier<Block> REVIVE_HEAD = registerBlock("revive_head", () ->
-            new ReviveHeadBlock(BlockBehaviour.Properties.of(Material.DECORATION).strength(1.0F).explosionResistance(999f)), false, null);
+            new ReviveHeadBlock(BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.CUSTOM_HEAD).strength(1.0F).explosionResistance(999f)), false, null);
     public static final RegistrySupplier<Block> REVIVE_WALL_HEAD = registerBlock("revive_wall_head", () ->
-            new ReviveWallHeadBlock(BlockBehaviour.Properties.of(Material.DECORATION).strength(1.0F).explosionResistance(999f).dropsLike(REVIVE_HEAD.get())), false, null);
+            new ReviveWallHeadBlock(BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.CUSTOM_HEAD).strength(1.0F).explosionResistance(999f).dropsLike(REVIVE_HEAD.get())), false, null);
 
     public static <T extends Block> RegistrySupplier<T> registerBlock(String name, Supplier<T> block, boolean registerItem, @Nullable Item.Properties properties) {
         RegistrySupplier<T> toReturn = BLOCKS.register(name, block);

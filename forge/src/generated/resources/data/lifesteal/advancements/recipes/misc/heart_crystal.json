@@ -30,5 +30,6 @@
     "recipes": [
       "lifesteal:heart_crystal"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

@@ -10,6 +10,7 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
@@ -24,7 +25,7 @@ public class ModDataGenerators {
         if (ev.includeServer()) {
             gen.addProvider(ev.includeServer(), new WorldGenProvider(packOutput, provider)); // ConfiguredFeatures&PlacedFeatures with BiomeModifiers
             gen.addProvider(ev.includeServer(), new RecipesProvider(packOutput)); // Recipes
-            gen.addProvider(ev.includeServer(), new LootProvider(packOutput, BuiltInLootTables.all(), // LootTables
+            gen.addProvider(ev.includeServer(), new LootTableProvider(packOutput, Collections.emptySet(), // LootTables
                     List.of(new LootTableProvider.SubProviderEntry(LootProvider.ModBlockLoot::new, LootContextParamSets.BLOCK),
                             new LootTableProvider.SubProviderEntry(LootProvider.ModChestLoot::new, LootContextParamSets.CHEST))));
             gen.addProvider(ev.includeServer(), new BiomeTagsProvider(packOutput, provider, efh)); // BiomeTags

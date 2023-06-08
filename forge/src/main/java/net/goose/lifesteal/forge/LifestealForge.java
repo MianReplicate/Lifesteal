@@ -26,6 +26,7 @@ public class LifestealForge {
 
         eventBus.register(EventHandler.class);
         eventBus.register(ModCapabilities.EventCapHandler.class);
-        modBus.addListener(ModCreativeModeTab::register);
+
+        ModCreativeModeTab.register();
     }
 }

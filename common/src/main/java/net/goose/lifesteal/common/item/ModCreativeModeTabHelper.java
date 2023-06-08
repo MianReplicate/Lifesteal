@@ -1,6 +1,7 @@
 package net.goose.lifesteal.common.item;
 
 import net.goose.lifesteal.LifeSteal;
+import net.goose.lifesteal.common.item.ModItems;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;

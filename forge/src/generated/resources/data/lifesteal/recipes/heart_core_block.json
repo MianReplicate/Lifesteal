@@ -19,5 +19,6 @@
   ],
   "result": {
     "item": "lifesteal:heart_core_block"
-  }
+  },
+  "show_notification": true
 }

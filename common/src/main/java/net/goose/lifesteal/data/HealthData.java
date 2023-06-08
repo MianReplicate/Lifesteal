@@ -70,7 +70,7 @@ public class HealthData implements IHealthData {
 
                 if (blockPos != null) {
                     iLevelData.removeUUIDanditsBlockPos(this.livingEntity.getUUID(), blockPos);
-                    if (serverPlayer.getLevel() == level) {
+                    if (serverPlayer.level() == level) {
                         serverPlayer.connection.teleport(blockPos.getX(), blockPos.getY(), blockPos.getZ(), serverPlayer.getXRot(), serverPlayer.getYRot());
                     } else {
                         serverPlayer.teleportTo(level, blockPos.getX(), blockPos.getY(), blockPos.getZ(), serverPlayer.getXRot(), serverPlayer.getYRot());
@@ -108,13 +108,13 @@ public class HealthData implements IHealthData {
     @Override
     public BlockPos spawnPlayerHead() {
         if (this.livingEntity instanceof ServerPlayer serverPlayer) {
-            Level level = serverPlayer.level;
+            Level level = serverPlayer.level();
             if (!level.isClientSide) {
                 BlockPos playerPos = serverPlayer.blockPosition();
 
                 int y = playerPos.getY();
 
-                if(y <= serverPlayer.getLevel().dimensionType().minY() || y >= level.getHeight())
+                if(y <= level.dimensionType().minY() || y >= level.getHeight())
                 {
                     for(int i = 1; i < level.getHeight(); i++)
                     {
@@ -158,7 +158,7 @@ public class HealthData implements IHealthData {
     @Override
     public boolean dropPlayerHead(){
         if (this.livingEntity instanceof ServerPlayer serverPlayer) {
-            if (!serverPlayer.level.isClientSide) {
+            if (!serverPlayer.level().isClientSide) {
                 CompoundTag compoundTag = new CompoundTag();
                 compoundTag.putString("SkullOwner", serverPlayer.getName().toString());
 
@@ -182,7 +182,7 @@ public class HealthData implements IHealthData {
 
     @Override
     public void setHeartDifference(int hearts) {
-        if (!this.livingEntity.level.isClientSide) {
+        if (!this.livingEntity.level().isClientSide) {
             this.heartDifference = hearts;
         }
     }
@@ -219,13 +219,13 @@ public class HealthData implements IHealthData {
 
     @Override
     public void banForDeath(){
-        if(!this.livingEntity.level.isClientSide){
+        if(!this.livingEntity.level().isClientSide){
             if (this.livingEntity instanceof ServerPlayer serverPlayer) {
                 this.heartDifference = LifeSteal.config.startingHeartDifference.get();
 
                 refreshHearts(true);
 
-                MinecraftServer server = this.livingEntity.level.getServer();
+                MinecraftServer server = this.livingEntity.level().getServer();
 
                 Component bannedcomponent = Component.translatable("bannedmessage.lifesteal.lost_max_hearts");
                 Component fullcomponent = null;
@@ -286,7 +286,7 @@ public class HealthData implements IHealthData {
     @Override
     public void refreshHearts(boolean healtoMax) {
 
-        if (!this.livingEntity.level.isClientSide) {
+        if (!this.livingEntity.level().isClientSide) {
             final int defaultheartDifference = LifeSteal.config.startingHeartDifference.get();
             final int maximumheartsGainable = LifeSteal.config.maximumamountofhitpointsGainable.get();
             final int minimumamountofheartscanlose = LifeSteal.config.maximumamountofhitpointsLoseable.get();

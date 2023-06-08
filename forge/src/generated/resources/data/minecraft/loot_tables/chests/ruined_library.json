@@ -111,5 +111,6 @@
         "min": 3.0
       }
     }
-  ]
+  ],
+  "random_sequence": "minecraft:chests/ruined_library"
 }

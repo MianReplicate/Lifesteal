@@ -33,5 +33,6 @@
     [
       "has_heart_core"
     ]
-  ]
+  ],
+  "sends_telemetry_event": true
 }

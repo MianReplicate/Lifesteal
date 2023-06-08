@@ -62,7 +62,6 @@ architectury {
     if(loomPlatform == 'fabric') fabric()
     else if(loomPlatform == 'forge') forge()
     else if(loomPlatform == 'quilt') loader(loomPlatform)
-    else throw new GradleException("Unknown 'loom.platform' value: ${loomPlatform} for project: '${project.name}' ('${project.path}')")
 }
 
 loom {
@@ -117,9 +116,12 @@ dependencies {
 }
 
 shadowJar {
-    exclude 'architectury.common.json'
-    configurations = [ project.configurations.shadowCommon ]
-    classifier 'dev-shadow'
+    exclude "fabric.mod.json"
+    exclude "architectury-common.accessWidener"
+    exclude "architectury.common.json"
+
+    configurations = [project.configurations.shadowCommon]
+    archiveClassifier = "dev-shadow"
 }
 
 remapJar {
@@ -127,13 +129,13 @@ remapJar {
         injectAccessWidener = true
     }
 
-    input.set shadowJar.archiveFile
+    inputFile = shadowJar.archiveFile
     dependsOn shadowJar
-    classifier null
+    archiveClassifier = null
 }
 
 jar {
-    classifier 'dev'
+    archiveClassifier = "dev"
 }
 
 sourcesJar {

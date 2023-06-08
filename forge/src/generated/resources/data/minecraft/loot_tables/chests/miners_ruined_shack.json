@@ -91,5 +91,6 @@
         "min": 2.0
       }
     }
-  ]
+  ],
+  "random_sequence": "minecraft:chests/miners_ruined_shack"
 }

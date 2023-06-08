@@ -28,5 +28,6 @@
   ],
   "result": {
     "item": "lifesteal:heart_crystal"
-  }
+  },
+  "show_notification": true
 }
