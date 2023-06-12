@@ -26,7 +26,7 @@ public class RecipesProvider extends RecipeProvider {
                 .pattern("fff")
                 .define('f', ModItems.HEART_FRAGMENT.get())
                 .define('g', Items.GOLDEN_APPLE)
-                .unlockedBy("has_fragment", net.minecraft.data.recipes.RecipeProvider.has(ModItems.HEART_FRAGMENT.get()))
+                .unlockedBy("has_fragment", RecipeProvider.has(ModItems.HEART_FRAGMENT.get()))
                 .save(consumer, new ResourceLocation(LifeSteal.MOD_ID, "heart_core"));
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.HEART_CORE_BLOCK.get().asItem())
                 .pattern("cfc")
@@ -35,7 +35,7 @@ public class RecipesProvider extends RecipeProvider {
                 .define('c', ModItems.HEART_CORE.get())
                 .define('f', ModItems.HEART_FRAGMENT.get())
                 .define('d', Items.DIAMOND)
-                .unlockedBy("has_heart_core", net.minecraft.data.recipes.RecipeProvider.has(ModItems.HEART_CORE.get()))
+                .unlockedBy("has_heart_core", RecipeProvider.has(ModItems.HEART_CORE.get()))
                 .save(consumer, new ResourceLocation(LifeSteal.MOD_ID, "heart_core_block"));
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.HEART_CRYSTAL.get())
                 .pattern("bhb")
@@ -47,7 +47,7 @@ public class RecipesProvider extends RecipeProvider {
                 .define('r', Items.BLAZE_ROD)
                 .define('g', Items.GOLDEN_APPLE)
                 .define('h', Items.HEART_OF_THE_SEA)
-                .unlockedBy("has_heart_of_the_sea", net.minecraft.data.recipes.RecipeProvider.has(Items.HEART_OF_THE_SEA))
+                .unlockedBy("has_heart_of_the_sea", RecipeProvider.has(Items.HEART_OF_THE_SEA))
                 .save(consumer, new ResourceLocation(LifeSteal.MOD_ID, "heart_crystal"));
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.REVIVE_CRYSTAL.get())
                 .pattern("gcg")
@@ -58,7 +58,7 @@ public class RecipesProvider extends RecipeProvider {
                 .define('c', ModItems.HEART_CORE.get())
                 .define('t', Items.TOTEM_OF_UNDYING)
                 .define('h', ModItems.HEART_CRYSTAL.get())
-                .unlockedBy("has_totem", net.minecraft.data.recipes.RecipeProvider.has(Items.TOTEM_OF_UNDYING))
+                .unlockedBy("has_totem", RecipeProvider.has(Items.TOTEM_OF_UNDYING))
                 .save(consumer, new ResourceLocation(LifeSteal.MOD_ID, "revive_crystal"));
     }
 }

@@ -116,12 +116,10 @@ dependencies {
 }
 
 shadowJar {
-    exclude "fabric.mod.json"
-    exclude "architectury-common.accessWidener"
-    exclude "architectury.common.json"
+    exclude 'architectury.common.json'
 
     configurations = [project.configurations.shadowCommon]
-    archiveClassifier = "dev-shadow"
+    archiveClassifier = 'dev-shadow'
 }
 
 remapJar {
@@ -135,7 +133,7 @@ remapJar {
 }
 
 jar {
-    archiveClassifier = "dev"
+    archiveClassifier = 'dev'
 }
 
 sourcesJar {
