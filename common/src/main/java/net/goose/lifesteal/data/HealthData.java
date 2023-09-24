@@ -321,7 +321,7 @@ public class HealthData implements IHealthData {
                     if(attributeModifier != null){
                         if (attributeModifier.getName().equals(attributeModifierID)) {
                             FoundAttribute = true;
-                            Attribute.removeModifier(attributeModifier);
+                            Attribute.removeModifier(attributeModifier.getId());
                             AttributeModifier newmodifier = new AttributeModifier(attributeModifierID, this.heartDifference, AttributeModifier.Operation.ADDITION);
                             Attribute.addPermanentModifier(newmodifier);
                         }

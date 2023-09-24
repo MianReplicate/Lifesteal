@@ -21,6 +21,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.resources.DefaultPlayerSkin;
+import net.minecraft.client.resources.SkinManager;
 import net.minecraft.core.Direction;
 import net.minecraft.core.UUIDUtil;
 import net.minecraft.resources.ResourceLocation;
@@ -37,7 +38,7 @@ import java.util.Map;
 public class ReviveHeadBER implements BlockEntityRenderer<ReviveSkullBlockEntity> {
     private final Map<SkullBlock.Type, SkullModelBase> modelByType;
     private static final Map<SkullBlock.Type, ResourceLocation> SKIN_BY_TYPE = Util.make(Maps.newHashMap(), (hashMap) -> {
-        hashMap.put(SkullBlock.Types.PLAYER, DefaultPlayerSkin.getDefaultSkin());
+        hashMap.put(SkullBlock.Types.PLAYER, DefaultPlayerSkin.getDefaultTexture());
     });
 
     public static Map<SkullBlock.Type, SkullModelBase> createSkullRenderers(EntityModelSet entityModelSet) {
@@ -85,9 +86,8 @@ public class ReviveHeadBER implements BlockEntityRenderer<ReviveSkullBlockEntity
     public static RenderType getRenderType(SkullBlock.Type type, @Nullable GameProfile gameProfile) {
         ResourceLocation resourceLocation = SKIN_BY_TYPE.get(type);
         if (type == SkullBlock.Types.PLAYER && gameProfile != null) {
-            Minecraft minecraft = Minecraft.getInstance();
-            Map<MinecraftProfileTexture.Type, MinecraftProfileTexture> map = minecraft.getSkinManager().getInsecureSkinInformation(gameProfile);
-            return map.containsKey(MinecraftProfileTexture.Type.SKIN) ? RenderType.entityTranslucent(minecraft.getSkinManager().registerTexture(map.get(MinecraftProfileTexture.Type.SKIN), MinecraftProfileTexture.Type.SKIN)) : RenderType.entityCutoutNoCull(DefaultPlayerSkin.getDefaultSkin(UUIDUtil.getOrCreatePlayerUUID(gameProfile)));
+            SkinManager skinManager = Minecraft.getInstance().getSkinManager();
+            return RenderType.entityTranslucent(skinManager.getInsecureSkin(gameProfile).texture());
         } else {
             return RenderType.entityCutoutNoCullZOffset(resourceLocation);
         }
