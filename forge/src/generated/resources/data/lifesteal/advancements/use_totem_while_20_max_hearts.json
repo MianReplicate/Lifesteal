@@ -2,7 +2,6 @@
   "parent": "lifesteal:get_10_max_hearts",
   "criteria": {
     "used_totem_while_20_max_hearts": {
-      "conditions": {},
       "trigger": "lifesteal:use_totem_while_20_max_hearts"
     }
   },

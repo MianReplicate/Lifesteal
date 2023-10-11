@@ -2,7 +2,6 @@
   "parent": "lifesteal:get_10_max_hearts",
   "criteria": {
     "has_10_max_hearts": {
-      "conditions": {},
       "trigger": "lifesteal:get_10_max_hearts"
     },
     "has_full_netherite_armor": {

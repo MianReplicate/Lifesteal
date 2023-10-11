@@ -7,6 +7,7 @@ import net.goose.lifesteal.common.block.ModBlocks;
 import net.goose.lifesteal.common.item.ModItems;
 import net.minecraft.advancements.*;
 import net.minecraft.advancements.critereon.ContextAwarePredicate;
+import net.minecraft.advancements.critereon.ImpossibleTrigger;
 import net.minecraft.advancements.critereon.InventoryChangeTrigger;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
@@ -68,7 +69,7 @@ public class AdvancementsProvider extends ForgeAdvancementProvider {
             Advancement.Builder.advancement()
                     .parent(ROOT)
                     .display(simpleDisplay(ModBlocks.REVIVE_HEAD.get(), "revived_from_dead", FrameType.CHALLENGE))
-                    .addCriterion("revived", new LSAdvancementTrigger.Instance(ContextAwarePredicate.ANY, ModCriteria.REVIVED.resourceLocation))
+                    .addCriterion("revived", LSAdvancementTrigger.Instance.REVIVED())
                     .save(saver, LifeSteal.modLoc("revived_from_dead"));
             AdvancementHolder HEART_CORE = Advancement.Builder.advancement()
                     .parent(ROOT)
@@ -83,20 +84,20 @@ public class AdvancementsProvider extends ForgeAdvancementProvider {
             AdvancementHolder GET_10_MAX_HEARTS = Advancement.Builder.advancement()
                     .parent(HEART_CRYSTAL)
                     .display(simpleDisplay(ModBlocks.HEART_CORE_BLOCK.get(), "get_10_max_hearts", FrameType.GOAL))
-                    .addCriterion("has_10_max_hearts", new LSAdvancementTrigger.Instance(ContextAwarePredicate.ANY, ModCriteria.GET_10_MAX_HEARTS.resourceLocation))
+                    .addCriterion("has_10_max_hearts", LSAdvancementTrigger.Instance.GET_10_MAX_HEARTS())
                     .rewards(AdvancementRewards.Builder.experience(500))
                     .save(saver, LifeSteal.modLoc("get_10_max_hearts"));
             Advancement.Builder.advancement()
                     .parent(GET_10_MAX_HEARTS)
                     .display(simpleDisplay(Items.TOTEM_OF_UNDYING, "use_totem_while_20_max_hearts", FrameType.CHALLENGE))
-                    .addCriterion("used_totem_while_20_max_hearts", new LSAdvancementTrigger.Instance(ContextAwarePredicate.ANY, ModCriteria.USE_TOTEM_WHILE_20_MAX_HEARTS.resourceLocation))
+                    .addCriterion("used_totem_while_20_max_hearts", LSAdvancementTrigger.Instance.USE_TOTEM_WHILE_20_MAX_HEARTS())
                     .rewards(AdvancementRewards.Builder.experience(500))
                     .save(saver, LifeSteal.modLoc("use_totem_while_20_max_hearts"));
             Advancement.Builder.advancement()
                     .parent(GET_10_MAX_HEARTS)
                     .display(simpleDisplay(Items.NETHERITE_HELMET, "get_10_max_hearts_with_netherite_armor", FrameType.CHALLENGE))
                     .addCriterion("has_full_netherite_armor", InventoryChangeTrigger.TriggerInstance.hasItems(Items.NETHERITE_HELMET, Items.NETHERITE_CHESTPLATE, Items.NETHERITE_LEGGINGS, Items.NETHERITE_BOOTS))
-                    .addCriterion("has_10_max_hearts", new LSAdvancementTrigger.Instance(ContextAwarePredicate.ANY, ModCriteria.GET_10_MAX_HEARTS.resourceLocation))
+                    .addCriterion("has_10_max_hearts", LSAdvancementTrigger.Instance.GET_10_MAX_HEARTS())
                     .rewards(AdvancementRewards.Builder.experience(500))
                     .save(saver, LifeSteal.modLoc("get_10_max_hearts_with_netherite_armor"));
         }

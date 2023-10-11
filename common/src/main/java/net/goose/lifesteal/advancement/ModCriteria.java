@@ -2,19 +2,18 @@ package net.goose.lifesteal.advancement;
 
 import net.goose.lifesteal.LifeSteal;
 import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.resources.ResourceLocation;
 
 public class ModCriteria {
 
-    public static LSAdvancementTrigger GET_10_MAX_HEARTS = new LSAdvancementTrigger(new ResourceLocation("lifesteal:get_10_max_hearts"));
-    public static LSAdvancementTrigger USE_TOTEM_WHILE_20_MAX_HEARTS = new LSAdvancementTrigger(new ResourceLocation("lifesteal:use_totem_while_20_max_hearts"));
-    public static LSAdvancementTrigger REVIVED = new LSAdvancementTrigger(new ResourceLocation("lifesteal:revived"));
+    public static LSAdvancementTrigger GET_10_MAX_HEARTS = new LSAdvancementTrigger();
+    public static LSAdvancementTrigger USE_TOTEM_WHILE_20_MAX_HEARTS = new LSAdvancementTrigger();
+    public static LSAdvancementTrigger REVIVED = new LSAdvancementTrigger();
 
     public static void init() {
         LifeSteal.LOGGER.debug("Initializing ModCriteria for " + LifeSteal.MOD_ID);
-        CriteriaTriggers.register(GET_10_MAX_HEARTS);
-        CriteriaTriggers.register(USE_TOTEM_WHILE_20_MAX_HEARTS);
-        CriteriaTriggers.register(REVIVED);
+        CriteriaTriggers.register("lifesteal:get_10_max_hearts", GET_10_MAX_HEARTS);
+        CriteriaTriggers.register("lifesteal:use_totem_while_20_max_hearts", USE_TOTEM_WHILE_20_MAX_HEARTS);
+        CriteriaTriggers.register("lifesteal:revived", REVIVED);
     }
 
 }

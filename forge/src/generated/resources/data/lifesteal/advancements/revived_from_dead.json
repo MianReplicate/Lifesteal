@@ -2,7 +2,6 @@
   "parent": "lifesteal:root",
   "criteria": {
     "revived": {
-      "conditions": {},
       "trigger": "lifesteal:revived"
     }
   },
