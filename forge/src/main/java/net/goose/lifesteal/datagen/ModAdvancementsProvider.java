@@ -2,12 +2,9 @@ package net.goose.lifesteal.datagen;
 
 import net.goose.lifesteal.LifeSteal;
 import net.goose.lifesteal.advancement.LSAdvancementTrigger;
-import net.goose.lifesteal.advancement.ModCriteria;
 import net.goose.lifesteal.common.block.ModBlocks;
 import net.goose.lifesteal.common.item.ModItems;
 import net.minecraft.advancements.*;
-import net.minecraft.advancements.critereon.ContextAwarePredicate;
-import net.minecraft.advancements.critereon.ImpossibleTrigger;
 import net.minecraft.advancements.critereon.InventoryChangeTrigger;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
@@ -24,7 +21,7 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
-public class AdvancementsProvider extends ForgeAdvancementProvider {
+public class ModAdvancementsProvider extends ForgeAdvancementProvider {
     /**
      * Constructs an advancement provider using the generators to write the
      * advancements to a file.
@@ -34,7 +31,7 @@ public class AdvancementsProvider extends ForgeAdvancementProvider {
      * @param existingFileHelper a helper used to find whether a file exists
      * @param subProviders       the generators used to create the advancements
      */
-    public AdvancementsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries, ExistingFileHelper existingFileHelper, List<AdvancementGenerator> subProviders) {
+    public ModAdvancementsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries, ExistingFileHelper existingFileHelper, List<AdvancementGenerator> subProviders) {
         super(output, registries, existingFileHelper, subProviders);
     }
 

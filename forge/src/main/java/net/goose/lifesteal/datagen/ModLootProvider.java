@@ -23,7 +23,7 @@ import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import java.util.ArrayList;
 import java.util.function.BiConsumer;
 
-public class LootProvider {
+public class ModLootProvider {
     public static class ModBlockLoot extends VanillaBlockLoot {
         @Override
         protected void generate() {

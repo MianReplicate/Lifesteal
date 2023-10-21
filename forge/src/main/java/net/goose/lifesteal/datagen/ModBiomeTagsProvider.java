@@ -12,8 +12,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.CompletableFuture;
 
-public class BiomeTagsProvider extends net.minecraft.data.tags.BiomeTagsProvider {
-    public BiomeTagsProvider(PackOutput arg, CompletableFuture<HolderLookup.Provider> completableFuture, @Nullable ExistingFileHelper existingFileHelper) {
+public class ModBiomeTagsProvider extends net.minecraft.data.tags.BiomeTagsProvider {
+    public ModBiomeTagsProvider(PackOutput arg, CompletableFuture<HolderLookup.Provider> completableFuture, @Nullable ExistingFileHelper existingFileHelper) {
         super(arg, completableFuture, LifeSteal.MOD_ID, existingFileHelper);
     }
 

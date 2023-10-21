@@ -187,11 +187,12 @@ public class HealthData implements IHealthData {
         }
     }
 
+    // Returns the real amount of hitpoints a player has, includes every other mod's effect and ours.
     @Override
-    public double getHeartModifiedTotal(){
+    public double getHeartModifiedTotal(boolean includeHeartDifference){
         AttributeInstance Attribute = this.livingEntity.getAttribute(Attributes.MAX_HEALTH);
         Set<AttributeModifier> attributemodifiers = Attribute.getModifiers();
-        double healthModifiedTotal = this.heartDifference;
+        double healthModifiedTotal = includeHeartDifference ? this.heartDifference : 0.0;
 
         if (!attributemodifiers.isEmpty()) {
             Iterator<AttributeModifier> attributeModifierIterator = attributemodifiers.iterator();
@@ -215,6 +216,13 @@ public class HealthData implements IHealthData {
         }
 
         return healthModifiedTotal;
+    }
+
+    // Returns the amount a player's HPDifference would have to be to get banned.
+    @Override
+    public double getHPDifferenceRequiredForBan(){
+        double healthModified = this.getHeartModifiedTotal(false) + this.livingEntity.getAttribute(Attributes.MAX_HEALTH).getBaseValue();
+        return -healthModified;
     }
 
     @Override

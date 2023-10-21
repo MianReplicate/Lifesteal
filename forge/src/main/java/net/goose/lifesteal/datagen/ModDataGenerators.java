@@ -22,15 +22,15 @@ public class ModDataGenerators {
         final ExistingFileHelper efh = ev.getExistingFileHelper();
 
         if (ev.includeServer()) {
-            gen.addProvider(ev.includeServer(), new WorldGenProvider(packOutput, provider)); // ConfiguredFeatures&PlacedFeatures with BiomeModifiers
-            gen.addProvider(ev.includeServer(), new RecipesProvider(packOutput)); // Recipes
+            gen.addProvider(ev.includeServer(), new ModWorldGenProvider(packOutput, provider)); // ConfiguredFeatures&PlacedFeatures with BiomeModifiers
+            gen.addProvider(ev.includeServer(), new ModRecipesProvider(packOutput)); // Recipes
             gen.addProvider(ev.includeServer(), new LootTableProvider(packOutput, Collections.emptySet(), // LootTables
-                    List.of(new LootTableProvider.SubProviderEntry(LootProvider.ModBlockLoot::new, LootContextParamSets.BLOCK),
-                            new LootTableProvider.SubProviderEntry(LootProvider.ModChestLoot::new, LootContextParamSets.CHEST))));
-            gen.addProvider(ev.includeServer(), new BiomeTagsProvider(packOutput, provider, efh)); // BiomeTags
-            gen.addProvider(ev.includeServer(), new BlockTagsProvider(packOutput, provider, efh)); // BlockTags
-            gen.addProvider(ev.includeServer(), new AdvancementsProvider(packOutput, provider, efh, // Advancements
-                    List.of(new AdvancementsProvider.AdvancementsGenerator())));
+                    List.of(new LootTableProvider.SubProviderEntry(ModLootProvider.ModBlockLoot::new, LootContextParamSets.BLOCK),
+                            new LootTableProvider.SubProviderEntry(ModLootProvider.ModChestLoot::new, LootContextParamSets.CHEST))));
+            gen.addProvider(ev.includeServer(), new ModBiomeTagsProvider(packOutput, provider, efh)); // BiomeTags
+            gen.addProvider(ev.includeServer(), new ModBlockTagsProvider(packOutput, provider, efh)); // BlockTags
+            gen.addProvider(ev.includeServer(), new ModAdvancementsProvider(packOutput, provider, efh, // Advancements
+                    List.of(new ModAdvancementsProvider.AdvancementsGenerator())));
         }
     }
 }

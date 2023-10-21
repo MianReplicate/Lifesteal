@@ -17,14 +17,14 @@ import net.minecraftforge.registries.ForgeRegistries;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
-public class WorldGenProvider extends DatapackBuiltinEntriesProvider {
+public class ModWorldGenProvider extends DatapackBuiltinEntriesProvider {
 
     public static final RegistrySetBuilder BUILDER = new RegistrySetBuilder()
             .add(Registries.CONFIGURED_FEATURE, ConfiguredFeaturesProvider::bootstrap)
             .add(Registries.PLACED_FEATURE, PlacedFeaturesProvider::bootstrap)
             .add(ForgeRegistries.Keys.BIOME_MODIFIERS, BiomeModifiersProvider::bootstrap);
 
-    public WorldGenProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider) {
+    public ModWorldGenProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider) {
         super(output, lookupProvider, BUILDER, Set.of(LifeSteal.MOD_ID));
     }
 

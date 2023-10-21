@@ -8,10 +8,8 @@ import net.minecraft.data.recipes.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
 
-import java.util.function.Consumer;
-
-public class RecipesProvider extends RecipeProvider {
-    public RecipesProvider(PackOutput packOutput) {
+public class ModRecipesProvider extends RecipeProvider {
+    public ModRecipesProvider(PackOutput packOutput) {
         super(packOutput);
     }
 

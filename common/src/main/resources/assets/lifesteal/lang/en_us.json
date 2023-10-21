@@ -28,6 +28,7 @@
   "gui.lifesteal.revived": "This player has successfully been revived!",
   "gui.lifesteal.multiplayer_only": "This item can only be used in multiplayer!",
   "gui.lifesteal.withdrawing_disabled": "Withdrawing is disabled in the configurations",
+  "gui.lifesteal.can't_withdraw_less_than_amount_have": "You don't have enough hearts to justify this withdrawal",
 
   "bannedmessage.lifesteal.lost_max_hearts": "You have lost all your max hearts, you are now permanently banned till further notice.",
   "bannedmessage.lifesteal.revive_head_location": "Your revive head is located at [%s, %s, %s]",

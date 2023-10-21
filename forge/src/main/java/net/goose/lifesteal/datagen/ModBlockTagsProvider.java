@@ -10,9 +10,9 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.CompletableFuture;
 
-public class BlockTagsProvider extends net.minecraftforge.common.data.BlockTagsProvider {
+public class ModBlockTagsProvider extends net.minecraftforge.common.data.BlockTagsProvider {
 
-    public BlockTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, @Nullable ExistingFileHelper existingFileHelper) {
+    public ModBlockTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, @Nullable ExistingFileHelper existingFileHelper) {
         super(output, lookupProvider, LifeSteal.MOD_ID, existingFileHelper);
     }
 

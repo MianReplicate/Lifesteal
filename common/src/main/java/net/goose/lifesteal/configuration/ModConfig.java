@@ -58,6 +58,7 @@ public class ModConfig {
 
         builder.comment("This category is for how players should lose hearts. If you want players to not be able to lose hearts at all, disable all the config options below.");
         builder.comment("Settings for when/how hearts are lost");
+        builder.push("Losing Hearts");
         this.loseHeartsWhenKilledByPlayer = buildBoolean(builder, "Lose heart(s) when killed by a player:", true, "Determines if players should lose hearts when killed by another player.");
         this.loseHeartsWhenKilledByMob = buildBoolean(builder, "Lose heart(s) when killed by a mob:", true, "Determines if players should lose hearts when killed by mobs");
         this.loseHeartsWhenKilledByEnvironment = buildBoolean(builder, "Lose heart(s) when killed by the environment:", true, "Determines if players lose hearts when killed by the environment. (Lava, fall damage, etc)");
@@ -91,7 +92,7 @@ public class ModConfig {
 
         builder.pop();
         builder.pop();
-        builder.comment("Lifesteal settings.");
+        builder.comment("Lifesteal Settings");
         builder.push("Lifesteal Related");
         this.disableLifesteal = buildBoolean(builder, "Disable Lifesteal:", false, "Disables gaining hearts from killing players. (Does not affect losing hearts)");
         this.playersGainHeartsifKillednoHeart = buildBoolean(builder, "Players gain Hearts from killing players at minimum HP:", false, "Determines if killing a player with the minimum hp will still give heart(s)");

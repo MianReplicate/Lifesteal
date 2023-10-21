@@ -56,7 +56,8 @@ public abstract class PlayerMixin extends LivingEntity {
     @Inject(method = "tick", at = @At("HEAD"))
     private void tickMethod(final CallbackInfo info){
         HealthData.get(this).ifPresent(healthData -> {
-            if(healthData.getHeartModifiedTotal() <= -20){
+            // Are we at the amount where player should be banned based on their stats?
+            if(healthData.getHeartDifference() <= healthData.getHPDifferenceRequiredForBan()){
                 healthData.banForDeath();
             }
         });
