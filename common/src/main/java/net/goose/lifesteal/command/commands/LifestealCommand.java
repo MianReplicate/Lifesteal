@@ -54,21 +54,22 @@ public class LifestealCommand {
         String advancementUsed = (String) LifeSteal.config.advancementUsedForWithdrawing.get();
 
         if (serverPlayer.getAdvancements().getOrStartProgress(Advancement.Builder.advancement().build(new ResourceLocation(advancementUsed))).isDone() || advancementUsed.isEmpty() || serverPlayer.isCreative()) {
-            AtomicInteger heartDifference = new AtomicInteger();
-            HealthData.get(serverPlayer).ifPresent(IHeartCap ->
-                    heartDifference.set(IHeartCap.getHeartDifference() - (LifeSteal.config.heartCrystalAmountGain.get() * amount)));
+            HealthData IHeartCap = HealthData.get(serverPlayer).get();
+
+            int heartDifference = IHeartCap.getHeartDifference() - (LifeSteal.config.heartCrystalAmountGain.get() * amount);
 
             if (maximumheartsLoseable >= 0) {
-                if (heartDifference.get() < startingHitPointDifference - maximumheartsLoseable) {
+                if (heartDifference < startingHitPointDifference - maximumheartsLoseable) {
                     serverPlayer.displayClientMessage(Component.translatable("gui.lifesteal.can't_withdraw_less_than_minimum"), true);
                     return Command.SINGLE_SUCCESS;
                 }
+            }else if(heartDifference <= IHeartCap.getHPDifferenceRequiredForBan()) {
+                serverPlayer.displayClientMessage(Component.translatable("gui.lifesteal.can't_withdraw_less_than_amount_have"), true);
+                return Command.SINGLE_SUCCESS;
             }
-            HealthData.get(serverPlayer).ifPresent(IHeartCap ->
-            {
-                IHeartCap.setHeartDifference(heartDifference.get());
-                IHeartCap.refreshHearts(false);
-            });
+
+            IHeartCap.setHeartDifference(heartDifference);
+            IHeartCap.refreshHearts(false);
 
             ItemStack heartCrystal = new ItemStack(ModItems.HEART_CRYSTAL.get(), amount);
             CompoundTag compoundTag = heartCrystal.getOrCreateTagElement("lifesteal");
