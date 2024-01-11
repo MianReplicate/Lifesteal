@@ -1,55 +1,55 @@
 package net.goose.lifesteal.configuration;
 
 import net.minecraft.commands.Commands;
-import net.minecraftforge.common.ForgeConfigSpec;
+import net.neoforged.neoforge.common.ModConfigSpec;
 import org.jetbrains.annotations.Nullable;
 
 public class ModConfig {
 
-    public final ForgeConfigSpec.IntValue startingHeartDifference;
-    public final ForgeConfigSpec.BooleanValue shouldAllMobsGiveHearts;
-    public final ForgeConfigSpec.BooleanValue loseHeartsWhenKilledByPlayer;
-    public final ForgeConfigSpec.BooleanValue loseHeartsWhenKilledByMob;
-    public final ForgeConfigSpec.BooleanValue loseHeartsWhenKilledByEnvironment;
-    public final ForgeConfigSpec.IntValue amountOfHealthLostUponLoss;
-    public final ForgeConfigSpec.IntValue maximumamountofhitpointsGainable;
-    public final ForgeConfigSpec.IntValue maximumamountofhitpointsLoseable;
-    public final ForgeConfigSpec.BooleanValue disableLifesteal;
-    public final ForgeConfigSpec.BooleanValue preventFromUsingCrystalIfMax;
-    public final ForgeConfigSpec.BooleanValue preventFromUsingCoreIfMax;
-    public final ForgeConfigSpec.BooleanValue disableHeartCrystals;
-    public final ForgeConfigSpec.BooleanValue disableUnnaturalHeartCrystals;
-    public final ForgeConfigSpec.BooleanValue disableHeartCores;
-    public final ForgeConfigSpec.BooleanValue disableReviveCrystals;
-    public final ForgeConfigSpec.BooleanValue playersGainHeartsifKillednoHeart;
-    public final ForgeConfigSpec.IntValue heartCrystalAmountGain;
-    public final ForgeConfigSpec.BooleanValue crystalInstantUse;
-    public final ForgeConfigSpec.DoubleValue heartCoreHeal;
-    public final ForgeConfigSpec.BooleanValue coreInstantUse;
-    public final ForgeConfigSpec.BooleanValue disableStatusEffects;
-    public final ForgeConfigSpec.BooleanValue disableLightningEffect;
-    public final ForgeConfigSpec.BooleanValue customHeartDifferenceWhenRevived;
-    public final ForgeConfigSpec.IntValue startingHeartDifferenceFromCrystal;
-    public final ForgeConfigSpec.BooleanValue tellPlayersIfHitPointChanged;
-    public final ForgeConfigSpec.ConfigValue advancementUsedForWithdrawing;
-    public final ForgeConfigSpec.ConfigValue textUsedForRequirementOnWithdrawing;
-    public final ForgeConfigSpec.BooleanValue tellPlayersIfReachedMaxHearts;
-    public final ForgeConfigSpec.BooleanValue silentlyRevivePlayer;
-    public final ForgeConfigSpec.BooleanValue playersSpawnHeadUponDeath;
-    public final ForgeConfigSpec.BooleanValue playerDropsHeartCrystalWhenKilled;
-    public final ForgeConfigSpec.BooleanValue playerDropsHeartCrystalWhenKillerHasMax;
-    public final ForgeConfigSpec.BooleanValue uponDeathBanned;
-    public final ForgeConfigSpec.IntValue permissionLevelForWithdraw;
-    public final ForgeConfigSpec.IntValue permissionLevelForSettingHitPoints;
-    public final ForgeConfigSpec.IntValue permissionLevelForGettingHitPoints;
-    public final ForgeConfigSpec.BooleanValue unbreakableReviveHeads;
+    public final ModConfigSpec.IntValue startingHealthDifference;
+    public final ModConfigSpec.BooleanValue shouldAllMobsGiveHearts;
+    public final ModConfigSpec.BooleanValue loseHeartsWhenKilledByPlayer;
+    public final ModConfigSpec.BooleanValue loseHeartsWhenKilledByMob;
+    public final ModConfigSpec.BooleanValue loseHeartsWhenKilledByEnvironment;
+    public final ModConfigSpec.IntValue amountOfHealthLostUponLoss;
+    public final ModConfigSpec.IntValue maximumHealthGainable;
+    public final ModConfigSpec.IntValue maximumHealthLoseable;
+    public final ModConfigSpec.BooleanValue disableLifesteal;
+    public final ModConfigSpec.BooleanValue preventFromUsingCrystalIfMax;
+    public final ModConfigSpec.BooleanValue preventFromUsingCoreIfMax;
+    public final ModConfigSpec.BooleanValue disableHeartCrystals;
+    public final ModConfigSpec.BooleanValue disableUnnaturalHeartCrystals;
+    public final ModConfigSpec.BooleanValue disableHeartCores;
+    public final ModConfigSpec.BooleanValue disableReviveCrystals;
+    public final ModConfigSpec.BooleanValue playersGainHeartsifKillednoHeart;
+    public final ModConfigSpec.IntValue heartCrystalAmountGain;
+    public final ModConfigSpec.BooleanValue crystalInstantUse;
+    public final ModConfigSpec.DoubleValue heartCoreHeal;
+    public final ModConfigSpec.BooleanValue coreInstantUse;
+    public final ModConfigSpec.BooleanValue disableStatusEffects;
+    public final ModConfigSpec.BooleanValue disableLightningEffect;
+    public final ModConfigSpec.BooleanValue customHeartDifferenceWhenRevived;
+    public final ModConfigSpec.IntValue startingHeartDifferenceFromCrystal;
+    public final ModConfigSpec.BooleanValue tellPlayersIfHitPointChanged;
+    public final ModConfigSpec.ConfigValue advancementUsedForWithdrawing;
+    public final ModConfigSpec.ConfigValue textUsedForRequirementOnWithdrawing;
+    public final ModConfigSpec.BooleanValue tellPlayersIfReachedMaxHearts;
+    public final ModConfigSpec.BooleanValue silentlyRevivePlayer;
+    public final ModConfigSpec.BooleanValue playersSpawnHeadUponDeath;
+    public final ModConfigSpec.BooleanValue playerDropsHeartCrystalWhenKilled;
+    public final ModConfigSpec.BooleanValue playerDropsHeartCrystalWhenKillerHasMax;
+    public final ModConfigSpec.BooleanValue uponDeathBanned;
+    public final ModConfigSpec.IntValue permissionLevelForWithdraw;
+    public final ModConfigSpec.IntValue permissionLevelForSettingHitPoints;
+    public final ModConfigSpec.IntValue permissionLevelForGettingHitPoints;
+    public final ModConfigSpec.BooleanValue unbreakableReviveHeads;
 
-    public ModConfig(final ForgeConfigSpec.Builder builder) {
+    public ModConfig(final ModConfigSpec.Builder builder) {
         builder.comment("IMPORTANT NOTE: 2 Hitpoints = 1 Heart");
         builder.comment("We recommend editting the config BEFORE starting Minecraft. Most configs will work fine, even if changed in-game, but some require restarting Minecraft to work correctly.");
         builder.comment("This category holds general values that most people will want to change.");
         builder.push("General Settings");
-        this.startingHeartDifference = buildInt(builder, "Starting additional Hitpoints:", 0, -19, Integer.MAX_VALUE, "Determines the number of additional Hitpoints beyond the 20 you should start with.");
+        this.startingHealthDifference = buildInt(builder, "Starting additional Hitpoints:", 0, -19, Integer.MAX_VALUE, "Determines the number of additional Hitpoints beyond the 20 you should start with.");
         this.amountOfHealthLostUponLoss = buildInt(builder, "Number of HitPoints lost/given upon death/kill:", 2, 1, Integer.MAX_VALUE, "How many Hitpoints are lost/gained upon death or being killed.");
         this.playersSpawnHeadUponDeath = buildBoolean(builder, "Spawn Revive Head upon player elimination:", true, "Determines if Revive Heads should spawn upon a player being eliminated (no more hearts). NOTE: Always false in Singleplayer");
         this.uponDeathBanned = buildBoolean(builder, "Ban players upon losing all hearts:", true, "Determines if players who have lost all hearts get banned, or simply go into Spectator mode. Singleplayer will always go into Spectator");
@@ -100,8 +100,8 @@ public class ModConfig {
         builder.pop();
         builder.comment("Contains various maximum values.");
         builder.push("Maximums");
-        this.maximumamountofhitpointsGainable = buildInt(builder, "Maximum number of additional Hitpoints:", -1, -1, Integer.MAX_VALUE, "Determines the maximum Hitpoints beyond 20. (Remember, 2 Hitpoints = 1 Heart.) Set to -1 to disable.");
-        this.maximumamountofhitpointsLoseable = buildInt(builder, "Maximum number of Hitpoints you can Lose:", -1, -1, Integer.MAX_VALUE, "Determines the maximum number of Hitpoints a player can lose before being eliminated. Set to -1 to disable.");
+        this.maximumHealthGainable = buildInt(builder, "Maximum number of additional Hitpoints:", -1, -1, Integer.MAX_VALUE, "Determines the maximum Hitpoints beyond 20. (Remember, 2 Hitpoints = 1 Heart.) Set to -1 to disable.");
+        this.maximumHealthLoseable = buildInt(builder, "Maximum number of Hitpoints you can Lose:", -1, -1, Integer.MAX_VALUE, "Determines the maximum number of Hitpoints a player can lose before being eliminated. Set to -1 to disable.");
         this.tellPlayersIfReachedMaxHearts = buildBoolean(builder, "Notify players if they have max HP:", true, "Determines if players attempting to use a Heart Crystal should be notified if they are already at the maximum.");
         this.playerDropsHeartCrystalWhenKillerHasMax = buildBoolean(builder, "Players drop a Heart Crystal when killer has max HP", false, "Determines players should drop a Heart Crystal even if the killer has the maximum HP. NOTE: This requires Maximum Hitpoints to be enabled.");
         builder.pop();
@@ -127,23 +127,23 @@ public class ModConfig {
         builder.pop();
     }
 
-    private static ForgeConfigSpec.IntValue buildInt(ForgeConfigSpec.Builder builder, String name, int defaultValue, int min, int max, @Nullable String comment) {
+    private static ModConfigSpec.IntValue buildInt(ModConfigSpec.Builder builder, String name, int defaultValue, int min, int max, @Nullable String comment) {
         return comment == null ? builder.translation(name).defineInRange(name, defaultValue, min, max) : builder.comment(comment).translation(name).defineInRange(name, defaultValue, min, max);
     }
 
-    private static ForgeConfigSpec.DoubleValue buildDouble(ForgeConfigSpec.Builder builder, String name, double defaultValue, double min, double max, String comment) {
+    private static ModConfigSpec.DoubleValue buildDouble(ModConfigSpec.Builder builder, String name, double defaultValue, double min, double max, String comment) {
         return builder.comment(comment).translation(name).defineInRange(name, defaultValue, min, max);
     }
 
-    private static ForgeConfigSpec.ConfigValue buildString(ForgeConfigSpec.Builder builder, String name, String defaultValue, String comment) {
+    private static ModConfigSpec.ConfigValue buildString(ModConfigSpec.Builder builder, String name, String defaultValue, String comment) {
         return builder.comment(comment).translation(name).define(name, defaultValue);
     }
 
-    private static ForgeConfigSpec.BooleanValue buildBoolean(ForgeConfigSpec.Builder builder, String name, boolean defaultValue, String comment) {
+    private static ModConfigSpec.BooleanValue buildBoolean(ModConfigSpec.Builder builder, String name, boolean defaultValue, String comment) {
         return builder.comment(comment).translation(name).define(name, defaultValue);
     }
 
-    private static ForgeConfigSpec.EnumValue buildEnum(ForgeConfigSpec.Builder builder, String name, Enum defaultValue, String comment) {
+    private static ModConfigSpec.EnumValue buildEnum(ModConfigSpec.Builder builder, String name, Enum defaultValue, String comment) {
         return builder.comment(comment).translation(name).defineEnum(name, defaultValue);
     }
 

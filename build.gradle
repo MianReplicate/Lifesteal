@@ -1,6 +1,6 @@
 plugins {
     id "architectury-plugin" version "3.4-SNAPSHOT"
-    id "dev.architectury.loom" version "1.3-SNAPSHOT" apply false
+    id "dev.architectury.loom" version "1.4-SNAPSHOT" apply false
     id "io.github.pacifistmc.forgix" version "1.2.6"
     id 'org.jetbrains.gradle.plugin.idea-ext' version '1.1' apply false
     id 'com.github.johnrengelman.shadow' version '7.1.2' apply false
@@ -11,14 +11,14 @@ forgix {
     mergedJarName = "${mod_id}-${mod_version}+${minecraft_version}.jar" // This is the name of the merged jar. If this property is not defined then by default it'll fetch the "archives_base_name" property with the "mod_version" property in your gradle.properties.
     outputDir = "build/libs/Merged" // This is the output directory of the merged jar from the root project. If this property is not defined then by default it's set to "Merged".
 
-    forge {
-        projectName = "forge" // This is the name of the forge project. If this property is not defined then by default it'll set to "forge" since that's the name the Architectury Template uses.
-        jarLocation = "build/libs/lifesteal-${mod_version}.jar" // This is the location of the forge jar from the forge project. If this property is not defined then by default it fetches the jar with the shortest name.
-    }
-
     fabric {
         projectName = "fabric" // This is the name of the fabric project. If this property is not defined then by default it'll set to "fabric" since that's the name the Architectury Template uses.
         jarLocation = "build/libs/lifesteal-${mod_version}.jar" // This is the location of the fabric jar from the fabric project. If this property is not defined then by default it fetches the jar with the shortest name.
+    }
+
+    custom {
+        projectName = "neoForge"
+        jarLocation = "build/libs/lifesteal-${mod_version}.jar" // This is the location of the forge jar from the forge project. If this property is not defined then by default it fetches the jar with the shortest name.
     }
 
 }
@@ -68,6 +68,7 @@ subprojects {
             url 'https://api.modrinth.com/maven'
             content { includeGroup 'maven.modrinth' }
         }
+        maven { url "https://maven.neoforged.net/releases/" }
         maven { url 'https://jitpack.io' }
     }
 

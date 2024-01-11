@@ -19,9 +19,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.Supplier;
-
 public class LifestealCommand {
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(
@@ -49,14 +46,14 @@ public class LifestealCommand {
     private static int withdraw(CommandSourceStack source, int amount) throws CommandSyntaxException {
         ServerPlayer serverPlayer = source.getPlayerOrException();
 
-        final int maximumheartsLoseable = LifeSteal.config.maximumamountofhitpointsLoseable.get();
-        final int startingHitPointDifference = LifeSteal.config.startingHeartDifference.get();
+        final int maximumheartsLoseable = LifeSteal.config.maximumHealthLoseable.get();
+        final int startingHitPointDifference = LifeSteal.config.startingHealthDifference.get();
         String advancementUsed = (String) LifeSteal.config.advancementUsedForWithdrawing.get();
 
         if (serverPlayer.getAdvancements().getOrStartProgress(Advancement.Builder.advancement().build(new ResourceLocation(advancementUsed))).isDone() || advancementUsed.isEmpty() || serverPlayer.isCreative()) {
             HealthData IHeartCap = HealthData.get(serverPlayer).get();
 
-            int heartDifference = IHeartCap.getHeartDifference() - (LifeSteal.config.heartCrystalAmountGain.get() * amount);
+            int heartDifference = IHeartCap.getHealthDifference() - (LifeSteal.config.heartCrystalAmountGain.get() * amount);
 
             if (maximumheartsLoseable >= 0) {
                 if (heartDifference < startingHitPointDifference - maximumheartsLoseable) {
@@ -68,7 +65,7 @@ public class LifestealCommand {
                 return Command.SINGLE_SUCCESS;
             }
 
-            IHeartCap.setHeartDifference(heartDifference);
+            IHeartCap.setHealthDifference(heartDifference);
             IHeartCap.refreshHearts(false);
 
             ItemStack heartCrystal = new ItemStack(ModItems.HEART_CRYSTAL.get(), amount);
@@ -91,13 +88,13 @@ public class LifestealCommand {
 
     private static int getHitPoint(CommandSourceStack source) throws CommandSyntaxException {
         LivingEntity playerthatsentcommand = source.getPlayerOrException();
-        HealthData.get(playerthatsentcommand).ifPresent(iHeartData -> source.sendSuccess(() -> Component.translatable("chat.message.lifesteal.get_hit_point_for_self", iHeartData.getHeartDifference()), false));
+        HealthData.get(playerthatsentcommand).ifPresent(iHeartData -> source.sendSuccess(() -> Component.translatable("chat.message.lifesteal.get_hit_point_for_self", iHeartData.getHealthDifference()), false));
         return Command.SINGLE_SUCCESS;
     }
 
     private static int getHitPoint(CommandSourceStack source, Entity chosenentity) throws CommandSyntaxException {
         HealthData.get(chosenentity).ifPresent(iHeartData ->
-                source.sendSuccess(() -> Component.translatable("chat.message.lifesteal.get_hit_point_for_player", chosenentity.getName().getString(), iHeartData.getHeartDifference()), false)
+                source.sendSuccess(() -> Component.translatable("chat.message.lifesteal.get_hit_point_for_player", chosenentity.getName().getString(), iHeartData.getHealthDifference()), false)
         );
         return Command.SINGLE_SUCCESS;
     }
@@ -105,7 +102,7 @@ public class LifestealCommand {
     private static int setHitPoint(CommandSourceStack source, int amount) throws CommandSyntaxException {
         LivingEntity playerthatsentcommand = (LivingEntity) source.getEntityOrException();
         HealthData.get(playerthatsentcommand).ifPresent(IHeartCap -> {
-            IHeartCap.setHeartDifference(amount);
+            IHeartCap.setHealthDifference(amount);
             IHeartCap.refreshHearts(false);
         });
 
@@ -115,7 +112,7 @@ public class LifestealCommand {
 
     private static int setHitPoint(CommandSourceStack source, Entity chosenentity, int amount) throws CommandSyntaxException {
         HealthData.get(chosenentity).ifPresent(IHeartCap -> {
-            IHeartCap.setHeartDifference(amount);
+            IHeartCap.setHealthDifference(amount);
             IHeartCap.refreshHearts(false);
         });
 

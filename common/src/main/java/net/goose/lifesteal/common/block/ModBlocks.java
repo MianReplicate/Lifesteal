@@ -26,13 +26,13 @@ public class ModBlocks {
             new Block(BlockBehaviour.Properties.of().mapColor(MapColor.METAL).strength(6f).requiresCorrectToolForDrops()), true, null);
 
     public static final RegistrySupplier<Block> HEART_ORE = registerBlock("heart_ore", () ->
-            new DropExperienceBlock(BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(4f).requiresCorrectToolForDrops(), UniformInt.of(3, 7)), true, null);
+            new DropExperienceBlock(UniformInt.of(3, 7), BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(4f).requiresCorrectToolForDrops()), true, null);
 
     public static final RegistrySupplier<Block> DEEPSLATE_HEART_ORE = registerBlock("deepslate_heart_ore", () ->
-            new DropExperienceBlock(BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(5f).requiresCorrectToolForDrops(), UniformInt.of(3, 7)), true, null);
+            new DropExperienceBlock(UniformInt.of(3, 7), BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(5f).requiresCorrectToolForDrops()), true, null);
 
     public static final RegistrySupplier<Block> NETHERRACK_HEART_ORE = registerBlock("netherrack_heart_ore", () ->
-            new DropExperienceBlock(BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(2f).requiresCorrectToolForDrops().explosionResistance(999f), UniformInt.of(5, 9)), true, null);
+            new DropExperienceBlock(UniformInt.of(5, 9), BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(2f).requiresCorrectToolForDrops().explosionResistance(999f)), true, null);
     public static final RegistrySupplier<Block> REVIVE_HEAD = registerBlock("revive_head", () ->
             new ReviveHeadBlock(BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.CUSTOM_HEAD).strength(1.0F).explosionResistance(999f)), false, null);
     public static final RegistrySupplier<Block> REVIVE_WALL_HEAD = registerBlock("revive_wall_head", () ->

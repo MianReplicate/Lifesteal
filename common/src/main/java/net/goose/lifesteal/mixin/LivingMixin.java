@@ -26,7 +26,7 @@ public abstract class LivingMixin {
             if (livingEntity instanceof ServerPlayer serverPlayer) {
                 HealthData.get(livingEntity).ifPresent(healthData ->
                 {
-                    if (healthData.getHeartDifference() >= 20) {
+                    if (healthData.getHealthDifference() >= 20) {
                         ModCriteria.USE_TOTEM_WHILE_20_MAX_HEARTS.trigger(serverPlayer);
                     }
                 });
@@ -41,7 +41,7 @@ public abstract class LivingMixin {
             if (entity instanceof ServerPlayer serverPlayer) {
                 HealthData.get(serverPlayer).ifPresent(healthData ->
                 {
-                    healthData.setHeartDifference(healthData.getHeartDifference() + LifeSteal.config.amountOfHealthLostUponLoss.get());
+                    healthData.setHealthDifference(healthData.getHealthDifference() + LifeSteal.config.amountOfHealthLostUponLoss.get());
                     healthData.refreshHearts(false);
                 });
             }

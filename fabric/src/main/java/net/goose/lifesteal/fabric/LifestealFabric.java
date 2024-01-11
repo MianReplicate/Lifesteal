@@ -1,16 +1,25 @@
 package net.goose.lifesteal.fabric;
 
-import fuzs.forgeconfigapiport.api.config.v2.ForgeConfigRegistry;
+import fuzs.forgeconfigapiport.api.config.v3.ForgeConfigRegistry;
 import net.fabricmc.api.ModInitializer;
 import net.goose.lifesteal.LifeSteal;
 import net.goose.lifesteal.configuration.ConfigHolder;
 import net.goose.lifesteal.fabric.event.CommandRegistry;
 import net.goose.lifesteal.fabric.event.ModEvents;
 import net.goose.lifesteal.world.gen.ModBiomeModifier;
-import net.minecraftforge.fml.config.ModConfig;
+import net.minecraft.advancements.CriteriaTriggers;
+import net.neoforged.fml.config.ModConfig;
+
+import static net.goose.lifesteal.advancement.ModCriteria.*;
 
 public class LifestealFabric implements ModInitializer {
 
+    public static void registerCriteria(){
+        LifeSteal.LOGGER.debug("Initializing ModCriteria for " + LifeSteal.MOD_ID);
+        CriteriaTriggers.register("lifesteal:get_10_max_hearts", GET_10_MAX_HEARTS);
+        CriteriaTriggers.register("lifesteal:use_totem_while_20_max_hearts", USE_TOTEM_WHILE_20_MAX_HEARTS);
+        CriteriaTriggers.register("lifesteal:revived", REVIVED);
+    }
     @Override
     public void onInitialize() {
         ForgeConfigRegistry.INSTANCE.register(LifeSteal.MOD_ID, ModConfig.Type.COMMON, ConfigHolder.SERVER_SPEC);
@@ -19,5 +28,6 @@ public class LifestealFabric implements ModInitializer {
         ModEvents.register();
         CommandRegistry.register();
         ModBiomeModifier.register();
+        registerCriteria();
     }
 }

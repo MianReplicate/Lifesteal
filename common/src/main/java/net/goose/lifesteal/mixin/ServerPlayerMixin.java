@@ -20,12 +20,8 @@ public abstract class ServerPlayerMixin extends LivingEntity {
     @Inject(method = "initInventoryMenu", at = @At("HEAD"))
     private void onSpawn(final CallbackInfo info) {
         HealthData.get(this).ifPresent(healthData -> {
-            healthData.refreshHearts(false);
-            this.getServer().getAllLevels().forEach((level) ->
-                    LevelData.get(level).ifPresent(iLevelData ->
-                            healthData.revivedTeleport(level, iLevelData)
-                    )
-            );
+            healthData.refreshHearts(true);
+            healthData.revivedTeleport(LevelData.getServerState(this.getServer()));
         });
     }
 }

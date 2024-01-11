@@ -1,6 +1,7 @@
 package net.goose.lifesteal.data.fabric;
 
 import dev.onyxstudios.cca.api.v3.component.ComponentV3;
+import net.goose.lifesteal.LifeSteal;
 import net.goose.lifesteal.data.HealthData;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.Entity;
@@ -10,6 +11,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 public class HealthDataImpl extends HealthData implements ComponentV3 {
+    private int healthDifference = LifeSteal.config.startingHealthDifference.get();
     public HealthDataImpl(LivingEntity livingEntity) {
         super(livingEntity);
     }
@@ -28,6 +30,14 @@ public class HealthDataImpl extends HealthData implements ComponentV3 {
         } catch (Exception e) {
             return Optional.empty();
         }
+    }
+
+    public static int getHealthDifference(HealthData healthData) {
+        return ((HealthDataImpl) healthData).healthDifference;
+    }
+
+    public static void setHealthDifference(HealthData healthData, int health) {
+        ((HealthDataImpl) healthData).healthDifference = health;
     }
 
     @Override

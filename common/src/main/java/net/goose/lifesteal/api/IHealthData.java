@@ -3,14 +3,13 @@ package net.goose.lifesteal.api;
 import net.goose.lifesteal.util.Serializable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
 
 
 public interface IHealthData extends Serializable<CompoundTag> {
-    void revivedTeleport(ServerLevel level, ILevelData iLevelData, boolean synchronize);
+    void revivedTeleport(ILevelData iLevelData, boolean synchronize);
 
-    void revivedTeleport(ServerLevel level, ILevelData iLevelData);
+    void revivedTeleport(ILevelData iLevelData);
 
     BlockPos spawnPlayerHead();
     boolean dropPlayerHead();
@@ -18,9 +17,9 @@ public interface IHealthData extends Serializable<CompoundTag> {
     double getHeartModifiedTotal(boolean includeHeartDifference);
     double getHPDifferenceRequiredForBan();
     void banForDeath();
-    int getHeartDifference();
+    int getHealthDifference();
 
-    void setHeartDifference(int hearts);
+    void setHealthDifference(int hearts);
 
     void refreshHearts(boolean healtoMax);
 }

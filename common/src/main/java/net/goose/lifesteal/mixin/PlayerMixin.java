@@ -35,11 +35,11 @@ public abstract class PlayerMixin extends LivingEntity {
     }
 
     public void increaseHearts(HealthData data, int hitpoint, LivingEntity killedPlayer) {
-        final int maximumhitpointsGainable = LifeSteal.config.maximumamountofhitpointsGainable.get();
+        final int maximumhitpointsGainable = LifeSteal.config.maximumHealthGainable.get();
         boolean alreadyGiven = false;
 
         if (maximumhitpointsGainable > -1 && LifeSteal.config.playerDropsHeartCrystalWhenKillerHasMax.get() && !LifeSteal.config.playerDropsHeartCrystalWhenKilled.get()) {
-            if (data.getHeartDifference() + hitpoint > LifeSteal.config.startingHeartDifference.get() + maximumhitpointsGainable) {
+            if (data.getHealthDifference() + hitpoint > LifeSteal.config.startingHealthDifference.get() + maximumhitpointsGainable) {
                 dropKilledHeartCrystal(killedPlayer);
                 alreadyGiven = true;
             }
@@ -47,7 +47,7 @@ public abstract class PlayerMixin extends LivingEntity {
 
         if (!alreadyGiven) {
             if (!LifeSteal.config.playerDropsHeartCrystalWhenKilled.get()) {
-                data.setHeartDifference(data.getHeartDifference() + hitpoint);
+                data.setHealthDifference(data.getHealthDifference() + hitpoint);
                 data.refreshHearts(false);
             }
         }
@@ -57,7 +57,7 @@ public abstract class PlayerMixin extends LivingEntity {
     private void tickMethod(final CallbackInfo info){
         HealthData.get(this).ifPresent(healthData -> {
             // Are we at the amount where player should be banned based on their stats?
-            if(healthData.getHeartDifference() <= healthData.getHPDifferenceRequiredForBan()){
+            if(healthData.getHealthDifference() <= healthData.getHPDifferenceRequiredForBan()){
                 healthData.banForDeath();
             }
         });
@@ -65,8 +65,8 @@ public abstract class PlayerMixin extends LivingEntity {
     @Inject(method = "dropEquipment", at = @At("HEAD"))
     private void onDeath(final CallbackInfo info) {
 
-        final int maximumheartsLoseable = LifeSteal.config.maximumamountofhitpointsLoseable.get();
-        final int startingHitPointDifference = LifeSteal.config.startingHeartDifference.get();
+        final int maximumheartsLoseable = LifeSteal.config.maximumHealthLoseable.get();
+        final int startingHitPointDifference = LifeSteal.config.startingHealthDifference.get();
         final int amountOfHealthLostUponLossConfig = LifeSteal.config.amountOfHealthLostUponLoss.get();
         final boolean playersGainHeartsifKillednoHeart = LifeSteal.config.playersGainHeartsifKillednoHeart.get();
         final boolean disableLifesteal = LifeSteal.config.disableLifesteal.get();
@@ -79,7 +79,7 @@ public abstract class PlayerMixin extends LivingEntity {
         HealthData.get(killedEntity).ifPresent(healthData -> {
             if (killedEntity instanceof ServerPlayer) {
                 if (!killedEntity.isAlive()) {
-                    int HeartDifference = healthData.getHeartDifference();
+                    int HeartDifference = healthData.getHealthDifference();
 
                     LivingEntity killerEntity = killedEntity.getLastHurtByMob();
                     boolean killerEntityIsPlayer = killerEntity instanceof ServerPlayer;
@@ -149,7 +149,7 @@ public abstract class PlayerMixin extends LivingEntity {
                         return;
                     }
 
-                    healthData.setHeartDifference(healthData.getHeartDifference() - amountOfHealthLostUponLoss);
+                    healthData.setHealthDifference(healthData.getHealthDifference() - amountOfHealthLostUponLoss);
                     healthData.refreshHearts(false);
                     if (LifeSteal.config.playerDropsHeartCrystalWhenKilled.get()) {
                         dropKilledHeartCrystal(killedEntity);

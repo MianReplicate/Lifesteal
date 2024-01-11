@@ -1,0 +1,34 @@
+apply from: '../loader.gradle'
+
+loom {
+    runs {
+        client {
+            programArgs "--username", "DevGoose###"
+        }
+
+        /*data {
+            arg "--existing", project(":common").file("src/main/resources/").absolutePath
+        }*/
+    }
+    accessWidenerPath = project(":common").loom.accessWidenerPath
+
+    mods {
+        forge {
+            sourceSet project(":neoforge").sourceSets.main
+        }
+    }
+//    forge {
+//        if(accessWidenerFile.exists()) {
+//            convertAccessWideners = true
+//            extraAccessWideners.add accessWidenerFile.name
+//        }
+//
+//        if(file("src/main/resources/${mod_id}.mixins.json").exists()) {
+//            mixinConfig "${mod_id}.mixins.json"
+//        }
+//
+//        if(getRootProject().file("common/src/main/resources/${mod_id}-common.mixins.json").exists()) {
+//            mixinConfig "${mod_id}-common.mixins.json"
+//        }
+//    }
+}

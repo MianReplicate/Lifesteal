@@ -10,6 +10,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.players.PlayerList;
@@ -38,39 +39,38 @@ public class ReviveCrystalItem extends Item {
         super(properties);
     }
 
-    public AtomicBoolean revivePlayer(Level level, BlockPos blockPos, GameProfile gameprofile, Player player, @Nullable UserBanList userBanList) {
+    public AtomicBoolean revivePlayer(ServerLevel level, BlockPos blockPos, GameProfile gameprofile, Player player, @Nullable UserBanList userBanList) {
         AtomicBoolean successful = new AtomicBoolean(false);
 
-        LevelData.get(level).ifPresent(iLevelData ->
-        {
-            ServerPlayer serverPlayer = (ServerPlayer) level.getPlayerByUUID(gameprofile.getId());
+        LevelData levelData = LevelData.getServerState(level.getServer());
 
-            if (serverPlayer == null) {
+        ServerPlayer serverPlayer = (ServerPlayer) level.getPlayerByUUID(gameprofile.getId());
 
-                if (userBanList != null) {
-                    if (userBanList.isBanned(gameprofile)) {
-                        if (userBanList.get(gameprofile).getSource().matches(LifeSteal.MOD_ID)) {
-                            iLevelData.setUUIDanditsBlockPos(gameprofile.getId(), blockPos);
-                            successful.set(true);
-                            userBanList.remove(gameprofile);
-                        }
-                    } else {
-                        iLevelData.setUUIDanditsBlockPos(gameprofile.getId(), blockPos);
+        if (serverPlayer == null) {
+
+            if (userBanList != null) {
+                if (userBanList.isBanned(gameprofile)) {
+                    if (userBanList.get(gameprofile).getSource().matches(LifeSteal.MOD_ID)) {
+                        levelData.addTeleportTo(level, gameprofile.getId(), blockPos);
                         successful.set(true);
+                        userBanList.remove(gameprofile);
                     }
-                }
-            } else {
-                iLevelData.setUUIDanditsBlockPos(gameprofile.getId(), blockPos);
-
-                LivingEntity livingEntity = (LivingEntity) serverPlayer.getCamera();
-
-                if (livingEntity != null) {
+                } else {
+                    levelData.addTeleportTo(level, gameprofile.getId(), blockPos);
                     successful.set(true);
-                    HealthData.get(livingEntity).ifPresent(healthData ->
-                            healthData.revivedTeleport((ServerLevel) level, iLevelData));
                 }
             }
-        });
+        } else {
+            levelData.addTeleportTo(level, gameprofile.getId(), blockPos);
+
+            LivingEntity livingEntity = (LivingEntity) serverPlayer.getCamera();
+
+            if (livingEntity != null) {
+                successful.set(true);
+                HealthData.get(livingEntity).ifPresent(healthData ->
+                        healthData.revivedTeleport(levelData));
+            }
+        }
 
         if (successful.get()) {
             level.removeBlock(blockPos, true);
@@ -136,7 +136,7 @@ public class ReviveCrystalItem extends Item {
                 if (gameprofile != null) {
                     UserBanList userBanList = level.getServer().getPlayerList().getBans();
 
-                    AtomicBoolean successful = revivePlayer(level, blockPos, gameprofile, player, userBanList);
+                    AtomicBoolean successful = revivePlayer((ServerLevel) level, blockPos, gameprofile, player, userBanList);
                     if (successful.get()) {
                         itemStack.shrink(1);
                     } else {

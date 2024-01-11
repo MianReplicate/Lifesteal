@@ -1,43 +1,39 @@
 package net.goose.lifesteal.advancement;
 
-import com.google.gson.JsonObject;
-import net.minecraft.advancements.CriteriaTriggers;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.advancements.Criterion;
-import net.minecraft.advancements.CriterionTriggerInstance;
-import net.minecraft.advancements.critereon.*;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.advancements.critereon.ContextAwarePredicate;
+import net.minecraft.advancements.critereon.EntityPredicate;
+import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.util.ExtraCodecs;
 
 import java.util.Optional;
 
-public class LSAdvancementTrigger extends SimpleCriterionTrigger<LSAdvancementTrigger.Instance> {
+public class LSAdvancementTrigger extends SimpleCriterionTrigger<LSAdvancementTrigger.TriggerInstance> {
     public LSAdvancementTrigger() {
     }
-
     @Override
-    protected Instance createInstance(JsonObject jsonObject, Optional<ContextAwarePredicate> optional, DeserializationContext arg) {
-        return new Instance(optional);
+    public Codec<LSAdvancementTrigger.TriggerInstance> codec() {
+        return LSAdvancementTrigger.TriggerInstance.CODEC;
     }
 
     public void trigger(ServerPlayer serverPlayer) {
         this.trigger(serverPlayer, (testTrigger) -> true);
     }
 
+    public record TriggerInstance(Optional<ContextAwarePredicate> player) implements SimpleInstance {
+        public static final Codec<TriggerInstance> CODEC = RecordCodecBuilder.create(instance -> instance.group(ExtraCodecs.strictOptionalField(EntityPredicate.ADVANCEMENT_CODEC, "player").forGetter(TriggerInstance::player)).apply(instance, TriggerInstance::new));
 
-    public static class Instance extends AbstractCriterionTriggerInstance {
-        public Instance(Optional<ContextAwarePredicate> optional){
-            super(optional);
+        public static Criterion<LSAdvancementTrigger.TriggerInstance> GET_10_MAX_HEARTS() {
+            return ModCriteria.GET_10_MAX_HEARTS.createCriterion(new LSAdvancementTrigger.TriggerInstance(Optional.empty()));
         }
-
-        public static Criterion<LSAdvancementTrigger.Instance> GET_10_MAX_HEARTS() {
-            return ModCriteria.GET_10_MAX_HEARTS.createCriterion(new LSAdvancementTrigger.Instance(Optional.empty()));
+        public static Criterion<LSAdvancementTrigger.TriggerInstance> USE_TOTEM_WHILE_20_MAX_HEARTS() {
+            return ModCriteria.USE_TOTEM_WHILE_20_MAX_HEARTS.createCriterion(new LSAdvancementTrigger.TriggerInstance(Optional.empty()));
         }
-        public static Criterion<LSAdvancementTrigger.Instance> USE_TOTEM_WHILE_20_MAX_HEARTS() {
-            return ModCriteria.USE_TOTEM_WHILE_20_MAX_HEARTS.createCriterion(new LSAdvancementTrigger.Instance(Optional.empty()));
-        }
-        public static Criterion<LSAdvancementTrigger.Instance> REVIVED() {
-            return ModCriteria.REVIVED.createCriterion(new LSAdvancementTrigger.Instance(Optional.empty()));
+        public static Criterion<LSAdvancementTrigger.TriggerInstance> REVIVED() {
+            return ModCriteria.REVIVED.createCriterion(new LSAdvancementTrigger.TriggerInstance(Optional.empty()));
         }
     }
 }

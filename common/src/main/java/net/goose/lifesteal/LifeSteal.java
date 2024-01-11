@@ -25,12 +25,15 @@ public class LifeSteal {
         return new ResourceLocation(MOD_ID, name);
     }
 
+    public static String modLocString(String name) {
+        return new ResourceLocation(MOD_ID, name).toString();
+    }
+
     public static void init() {
         LOGGER.info("Lifestealers are on the loose!");
         ModItems.register();
         ModBlocks.register();
         ModBlockEntityTypes.register();
         ModTabs.register();
-        ModCriteria.init();
     }
 }

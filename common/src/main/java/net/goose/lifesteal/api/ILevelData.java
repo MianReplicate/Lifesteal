@@ -1,16 +1,16 @@
 package net.goose.lifesteal.api;
 
-import net.goose.lifesteal.util.Serializable;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.level.Level;
 
 import java.util.HashMap;
 import java.util.UUID;
 
-public interface ILevelData extends Serializable<CompoundTag> {
-    HashMap getMap();
+public interface ILevelData {
+    HashMap<ResourceKey<Level>, HashMap<UUID, BlockPos>> getMap();
 
-    void setUUIDanditsBlockPos(UUID uuid, BlockPos blockPos);
+    void addTeleportTo(Level level, UUID uuid, BlockPos blockPos);
 
-    void removeUUIDanditsBlockPos(UUID uuid, BlockPos blockPos);
+    void removeTeleport(Level level, UUID uuid, BlockPos blockPos);
 }
