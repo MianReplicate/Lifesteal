@@ -1,0 +1,26 @@
+{
+  "parent": "lifesteal:root",
+  "criteria": {
+    "revived": {
+      "trigger": "lifesteal:revived"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.lifesteal:revived_from_dead.desc"
+    },
+    "frame": "challenge",
+    "icon": {
+      "item": "lifesteal:revive_head"
+    },
+    "title": {
+      "translate": "advancement.lifesteal:revived_from_dead"
+    }
+  },
+  "requirements": [
+    [
+      "revived"
+    ]
+  ],
+  "sends_telemetry_event": true
+}
