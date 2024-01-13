@@ -48,9 +48,11 @@ public class ReviveCrystalItem extends Item {
             if (userBanList != null) {
                 if (userBanList.isBanned(gameProfile)) {
                     if (userBanList.get(gameProfile).getSource().matches(LifeSteal.MOD_ID)) {
-                        PlayerLocationData.saveNewLocation(level.getServer(), gameProfile, blockPos, level);
-                        successful.set(true);
-                        userBanList.remove(gameProfile);
+                        if(PlayerLocationData.saveNewLocation(level.getServer(), gameProfile, blockPos, level))
+                        {
+                            successful.set(true);
+                            userBanList.remove(gameProfile);
+                        }
                     }
                 }
             }

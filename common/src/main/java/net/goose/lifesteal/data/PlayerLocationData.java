@@ -29,7 +29,7 @@ public class PlayerLocationData
 
         return listTag;
     }
-    public static void saveNewLocation(MinecraftServer server, GameProfile gameProfile, BlockPos respawnPos, Level respawnLevel)
+    public static boolean saveNewLocation(MinecraftServer server, GameProfile gameProfile, BlockPos respawnPos, Level respawnLevel)
     {
         try
         {
@@ -59,6 +59,7 @@ public class PlayerLocationData
                 Util.safeReplaceFile(path3, path2, path4);
 
                 LifeSteal.LOGGER.info("Successfully saved new location data for " + gameProfile.getName());
+                return true;
             } else
             {
                 LifeSteal.LOGGER.warn(gameProfile.getName() + " doesn't have any data to grab?? This may be a bug.. oh no");
@@ -67,5 +68,6 @@ public class PlayerLocationData
         {
             LifeSteal.LOGGER.warn("Failed to save new location onto " + gameProfile.getName());
         }
+        return false;
     }
 }

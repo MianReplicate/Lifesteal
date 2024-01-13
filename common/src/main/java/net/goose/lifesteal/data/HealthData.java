@@ -253,8 +253,7 @@ public class HealthData implements IHealthData {
                         serverPlayer.connection.disconnect(fullcomponent);
                     }
                 } else if (!serverPlayer.isSpectator()) {
-                    // && !server.isSingleplayer()
-                    if (LifeSteal.config.playersSpawnHeadUponDeath.get()) {
+                    if (LifeSteal.config.playersSpawnHeadUponDeath.get() && !server.isSingleplayer()) {
                         BlockPos blockPos = spawnPlayerHead();
                         if(blockPos == null){
                             dropPlayerHead();
