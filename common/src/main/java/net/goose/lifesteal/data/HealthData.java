@@ -5,19 +5,16 @@ import dev.architectury.injectables.annotations.ExpectPlatform;
 import net.goose.lifesteal.LifeSteal;
 import net.goose.lifesteal.advancement.ModCriteria;
 import net.goose.lifesteal.api.IHealthData;
-import net.goose.lifesteal.api.ILevelData;
+import net.goose.lifesteal.api.PlayerImpl;
 import net.goose.lifesteal.common.block.ModBlocks;
 import net.goose.lifesteal.common.block.custom.ReviveHeadBlock;
 import net.goose.lifesteal.common.blockentity.custom.ReviveSkullBlockEntity;
 import net.goose.lifesteal.common.item.ModItems;
 import net.goose.lifesteal.util.ComponentUtil;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.players.UserBanList;
 import net.minecraft.server.players.UserBanListEntry;
@@ -56,54 +53,33 @@ public class HealthData implements IHealthData {
     }
 
     @Override
-    public void revivedTeleport(ILevelData iLevelData, boolean synchronize) {
+    public void revivedTeleport() {
         if (this.livingEntity instanceof ServerPlayer serverPlayer) {
-            HashMap<ResourceKey<Level>, HashMap<UUID, BlockPos>> hashMap = iLevelData.getMap();
-
-            hashMap.forEach((levelResourceKey, uuidBlockPosHashMap) -> {
-                // Generally a player shouldn't be revived by multiple revive heads but if they are, buggy shit will happen lol
-                if(uuidBlockPosHashMap.containsKey(this.livingEntity.getUUID()))
-                {
-                    Level level = this.livingEntity.getServer().overworld().registryAccess().registryOrThrow(Registries.DIMENSION).get(levelResourceKey);
-                    if (!level.isClientSide) {
-                        BlockPos blockPos = uuidBlockPosHashMap.get(this.livingEntity.getUUID());
-                        if (blockPos != null) {
-                            iLevelData.removeTeleport(level, this.livingEntity.getUUID(), blockPos);
-                            if (serverPlayer.level() == level) {
-                                serverPlayer.connection.teleport(blockPos.getX(), blockPos.getY(), blockPos.getZ(), serverPlayer.getXRot(), serverPlayer.getYRot());
-                            } else {
-                                serverPlayer.teleportTo((ServerLevel) level, blockPos.getX(), blockPos.getY(), blockPos.getZ(), serverPlayer.getXRot(), serverPlayer.getYRot());
-                            }
-                            if (serverPlayer.isSpectator()) {
-                                serverPlayer.setGameMode(GameType.SURVIVAL);
-                            }
-                            if (!LifeSteal.config.disableStatusEffects.get()) {
-                                int tickTime = 600;
-                                this.livingEntity.addEffect(new MobEffectInstance(MobEffects.REGENERATION, tickTime, 3));
-                                this.livingEntity.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, tickTime, 3));
-                                this.livingEntity.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, tickTime, 3));
-                            }
-                            if (LifeSteal.config.customHeartDifferenceWhenRevived.get()) {
-                                setHealthDifference(LifeSteal.config.startingHeartDifferenceFromCrystal.get());
-                            } else {
-                                setHealthDifference(LifeSteal.config.startingHealthDifference.get());
-                            }
-                            refreshHearts(true);
-                            if (synchronize) {
-                                serverPlayer.jumpFromGround();
-                                serverPlayer.syncPacketPositionCodec(blockPos.getX(), blockPos.getY(), blockPos.getZ());
-                            }
-                            ModCriteria.REVIVED.trigger(serverPlayer);
-                        }
+            PlayerImpl playerImpl = ((PlayerImpl) serverPlayer);
+            if(playerImpl.getRevived())
+            {
+                Level level = this.livingEntity.level();
+                if (!level.isClientSide) {
+                    if (serverPlayer.isSpectator()) {
+                        serverPlayer.setGameMode(GameType.SURVIVAL);
                     }
+                    if (!LifeSteal.config.disableStatusEffects.get()) {
+                        int tickTime = 600;
+                        this.livingEntity.addEffect(new MobEffectInstance(MobEffects.REGENERATION, tickTime, 3));
+                        this.livingEntity.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, tickTime, 3));
+                        this.livingEntity.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, tickTime, 3));
+                    }
+                    if (LifeSteal.config.customHeartDifferenceWhenRevived.get()) {
+                        setHealthDifference(LifeSteal.config.startingHeartDifferenceFromCrystal.get());
+                    } else {
+                        setHealthDifference(LifeSteal.config.startingHealthDifference.get());
+                    }
+                    refreshHearts(true);
+                    ModCriteria.REVIVED.trigger(serverPlayer);
+                    playerImpl.setRevived(false);
                 }
-            });
+            }
         }
-    }
-
-    @Override
-    public void revivedTeleport(ILevelData iLevelData) {
-        revivedTeleport(iLevelData, true);
     }
 
     @Override
@@ -277,7 +253,8 @@ public class HealthData implements IHealthData {
                         serverPlayer.connection.disconnect(fullcomponent);
                     }
                 } else if (!serverPlayer.isSpectator()) {
-                    if (LifeSteal.config.playersSpawnHeadUponDeath.get() && !server.isSingleplayer()) {
+                    // && !server.isSingleplayer()
+                    if (LifeSteal.config.playersSpawnHeadUponDeath.get()) {
                         BlockPos blockPos = spawnPlayerHead();
                         if(blockPos == null){
                             dropPlayerHead();
@@ -291,7 +268,8 @@ public class HealthData implements IHealthData {
                         fullcomponent = bannedcomponent;
                     }
 
-                    if(serverPlayer.isDeadOrDying()){serverPlayer.getInventory().dropAll();}
+                    if(serverPlayer.isDeadOrDying())
+                        serverPlayer.getInventory().dropAll();
 
                     serverPlayer.setGameMode(GameType.SPECTATOR);
                     this.livingEntity.sendSystemMessage(fullcomponent);

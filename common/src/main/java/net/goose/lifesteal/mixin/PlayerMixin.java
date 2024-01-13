@@ -1,6 +1,7 @@
 package net.goose.lifesteal.mixin;
 
 import net.goose.lifesteal.LifeSteal;
+import net.goose.lifesteal.api.PlayerImpl;
 import net.goose.lifesteal.common.item.ModItems;
 import net.goose.lifesteal.data.HealthData;
 import net.minecraft.nbt.CompoundTag;
@@ -17,8 +18,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(value = Player.class, priority = 1)
-public abstract class PlayerMixin extends LivingEntity {
-
+public abstract class PlayerMixin extends LivingEntity implements PlayerImpl {
+    private boolean revived;
     protected PlayerMixin(EntityType<? extends LivingEntity> entityType, Level level) {
         super(entityType, level);
     }
@@ -157,5 +158,25 @@ public abstract class PlayerMixin extends LivingEntity {
                 }
             }
         });
+    }
+
+    @Inject(method = "addAdditionalSaveData", at = @At("HEAD"))
+    private void addOurDataTooLol(CompoundTag compoundTag, final CallbackInfo info){
+        compoundTag.putBoolean("Revived", this.getRevived());
+    }
+
+    @Inject(method = "readAdditionalSaveData", at = @At("HEAD"))
+    private void loadOurDataTooLol(CompoundTag compoundTag, final CallbackInfo info){
+       this.setRevived(compoundTag.getBoolean("Revived"));
+    }
+
+    @Override
+    public void setRevived(boolean bool) {
+        this.revived = bool;
+    }
+
+    @Override
+    public boolean getRevived() {
+        return this.revived;
     }
 }

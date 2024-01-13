@@ -4,12 +4,10 @@ evaluationDependsOn(':common')
 
 def loomPlatform = project.property('loom.platform')
 
-def generatedResources = file("src/generated")
+def generatedResources = file("src/generated/resources")
 
 sourceSets.main.resources.srcDirs = [ 'src/main/resources', {
-    if(loomPlatform != 'neoforge'){
-        project(':neoforge').file('src/generated/resources').absolutePath
-    }
+    project(':neoforge').file('src/generated/resources').absolutePath
 }
 ]
 

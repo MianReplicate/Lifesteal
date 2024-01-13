@@ -1,7 +1,6 @@
 package net.goose.lifesteal.mixin;
 
 import net.goose.lifesteal.data.HealthData;
-import net.goose.lifesteal.data.LevelData;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -21,7 +20,7 @@ public abstract class ServerPlayerMixin extends LivingEntity {
     private void onSpawn(final CallbackInfo info) {
         HealthData.get(this).ifPresent(healthData -> {
             healthData.refreshHearts(true);
-            healthData.revivedTeleport(LevelData.getServerState(this.getServer()));
+            healthData.revivedTeleport();
         });
     }
 }
