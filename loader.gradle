@@ -24,6 +24,20 @@ loom {
                 programArgs "--all", "--mod", "${mod_id}"
                 programArgs "--output", generatedResources.absolutePath
             }
+            client {
+                programArgs "--username", "DevGoose###"
+            }
+        }
+
+        accessWidenerPath = project(":common").loom.accessWidenerPath
+        remapJar {
+            atAccessWideners.add('lifesteal.accesswidener')
+        }
+
+        mods {
+            forge {
+                sourceSet project(":neoForge").sourceSets.main
+            }
         }
     }
 }
