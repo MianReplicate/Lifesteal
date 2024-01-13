@@ -14,7 +14,7 @@ loom {
 
     mods {
         forge {
-            sourceSet project(":neoforge").sourceSets.main
+            sourceSet project(":neoForge").sourceSets.main
         }
     }
 //    forge {

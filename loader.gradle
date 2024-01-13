@@ -3,11 +3,16 @@ apply plugin: 'com.github.johnrengelman.shadow'
 evaluationDependsOn(':common')
 
 def loomPlatform = project.property('loom.platform')
+def projectName;
+if(loomPlatform == 'neoforge')
+    projectName = 'NeoForge'
+else
+    projectName = 'Fabric'
 
 def generatedResources = file("src/generated/resources")
 
 sourceSets.main.resources.srcDirs = [ 'src/main/resources', {
-    project(':neoforge').file('src/generated/resources').absolutePath
+    project(':neoForge').file('src/generated/resources').absolutePath
 }
 ]
 
@@ -63,8 +68,7 @@ configurations {
     shadowCommon
     compileClasspath.extendsFrom common
     runtimeClasspath.extendsFrom common
-    developmentNeoForge.extendsFrom common
-    create("development${loomPlatform.capitalize()}") {
+    create("development${projectName}") {
         extendsFrom common
     }
 }
@@ -100,7 +104,7 @@ dependencies {
     }
 
     common(project(path: ':common', configuration: 'namedElements')) { transitive false }
-    shadowCommon(project(path: ':common', configuration: "transformProduction${loomPlatform.capitalize()}")) { transitive false }
+    shadowCommon(project(path: ':common', configuration: "transformProduction${projectName}")) { transitive false }
 }
 
 shadowJar {
@@ -111,7 +115,7 @@ shadowJar {
 }
 
 remapJar {
-    if(loomPlatform == 'fabric' || loomPlatform == 'quilt') {
+    if(loomPlatform == 'fabric') {
         injectAccessWidener = true
     }
 

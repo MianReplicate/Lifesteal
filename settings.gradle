@@ -13,6 +13,6 @@ plugins {
 
 include("common")
 include("fabric")
-include("neoforge")
+include("neoForge")
 
 rootProject.name = "${mod_name}-${minecraft_version}"
