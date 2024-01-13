@@ -236,9 +236,6 @@ public class HealthData implements IHealthData {
                     }
                 }
 
-                System.out.println(fullcomponent);
-                System.out.println(fullcomponent.getString());
-
                 if (!server.isSingleplayer() && LifeSteal.config.uponDeathBanned.get() && !server.getPlayerList().getBans().isBanned(serverPlayer.getGameProfile())) {
                     UserBanList userbanlist = server.getPlayerList().getBans();
                     serverPlayer.getGameProfile();

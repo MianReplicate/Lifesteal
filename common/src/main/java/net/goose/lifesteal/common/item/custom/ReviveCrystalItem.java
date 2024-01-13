@@ -78,7 +78,7 @@ public class ReviveCrystalItem extends Item {
 
             if (!LifeSteal.config.silentlyRevivePlayer.get()) {
                 Component component = Component.translatable("chat.message.lifesteal.revived_player", gameProfile.getName()).withStyle(ChatFormatting.YELLOW);
-                level.getServer().getPlayerList().broadcastSystemMessage(component, true);
+                level.getServer().getPlayerList().broadcastSystemMessage(component, false);
             } else {
                 player.displayClientMessage(Component.translatable("gui.lifesteal.revived"), true);
             }
