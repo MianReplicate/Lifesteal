@@ -78,12 +78,7 @@ public class ReviveCrystalItem extends Item {
 
             if (!LifeSteal.config.silentlyRevivePlayer.get()) {
                 Component component = Component.translatable("chat.message.lifesteal.revived_player", gameProfile.getName()).withStyle(ChatFormatting.YELLOW);
-
-                PlayerList playerlist = level.getServer().getPlayerList();
-                List<ServerPlayer> playerList = playerlist.getPlayers();
-                for (ServerPlayer serverPlayerGuys : playerList) {
-                    serverPlayerGuys.getCamera().sendSystemMessage(component);
-                }
+                level.getServer().getPlayerList().broadcastSystemMessage(component, true);
             } else {
                 player.displayClientMessage(Component.translatable("gui.lifesteal.revived"), true);
             }
@@ -116,17 +111,13 @@ public class ReviveCrystalItem extends Item {
                 BlockEntity blockEntity = level.getBlockEntity(blockPos);
                 CompoundTag compoundTag = blockEntity.getUpdateTag();
 
-                GameProfile gameprofile;
+                GameProfile gameprofile = null;
                 if (compoundTag != null) {
                     if (compoundTag.contains("SkullOwner", 10)) {
                         gameprofile = NbtUtils.readGameProfile(compoundTag.getCompound("SkullOwner"));
                     } else if (compoundTag.contains("SkullOwner", 8) && !StringUtils.isBlank(compoundTag.getString("SkullOwner"))) {
                         gameprofile = new GameProfile(null, compoundTag.getString("SkullOwner"));
-                    } else {
-                        gameprofile = null;
                     }
-                } else {
-                    gameprofile = null;
                 }
                 if (gameprofile != null) {
                     UserBanList userBanList = level.getServer().getPlayerList().getBans();

@@ -14,6 +14,7 @@ import net.goose.lifesteal.util.ComponentUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.players.UserBanList;
@@ -216,32 +217,29 @@ public class HealthData implements IHealthData {
         if(!this.livingEntity.level().isClientSide){
             if (this.livingEntity instanceof ServerPlayer serverPlayer) {
                 setHealthDifference(LifeSteal.config.startingHealthDifference.get());
-
                 refreshHearts(true);
-
                 MinecraftServer server = this.livingEntity.level().getServer();
 
-                Component bannedcomponent = Component.translatable("bannedmessage.lifesteal.lost_max_hearts");
-                Component fullcomponent = null;
+                MutableComponent bannedcomponent = Component.translatable("bannedmessage.lifesteal.lost_max_hearts");
+                MutableComponent fullcomponent = bannedcomponent;
+
+                if(serverPlayer.isDeadOrDying())
+                    serverPlayer.getInventory().dropAll();
+
+                if (LifeSteal.config.playersSpawnHeadUponDeath.get() && !server.isSingleplayer()) {
+                    BlockPos blockPos = spawnPlayerHead();
+                    if(blockPos == null){
+                        dropPlayerHead();
+                    } else {
+                        MutableComponent compPos = Component.translatable("bannedmessage.lifesteal.revive_head_location", blockPos.getX(), blockPos.getY(), blockPos.getZ());
+                        fullcomponent = ComponentUtil.addComponents(bannedcomponent, compPos);
+                    }
+                }
+
+                System.out.println(fullcomponent);
+                System.out.println(fullcomponent.getString());
 
                 if (!server.isSingleplayer() && LifeSteal.config.uponDeathBanned.get() && !server.getPlayerList().getBans().isBanned(serverPlayer.getGameProfile())) {
-
-                    if (LifeSteal.config.playersSpawnHeadUponDeath.get()) {
-                        BlockPos blockPos = spawnPlayerHead();
-                        if(blockPos == null){
-                            dropPlayerHead();
-                        } else {
-                            Component compPos = Component.translatable("bannedmessage.lifesteal.revive_head_location", blockPos.getX(), blockPos.getY(), blockPos.getZ());
-                            fullcomponent = ComponentUtil.addComponents(bannedcomponent, compPos, false);
-                        }
-                    }
-
-                    if(fullcomponent == null){
-                        fullcomponent = bannedcomponent;
-                    }
-
-                    if(serverPlayer.isDeadOrDying()){serverPlayer.getInventory().dropAll();}
-
                     UserBanList userbanlist = server.getPlayerList().getBans();
                     serverPlayer.getGameProfile();
                     GameProfile gameprofile = serverPlayer.getGameProfile();
@@ -253,23 +251,6 @@ public class HealthData implements IHealthData {
                         serverPlayer.connection.disconnect(fullcomponent);
                     }
                 } else if (!serverPlayer.isSpectator()) {
-                    if (LifeSteal.config.playersSpawnHeadUponDeath.get() && !server.isSingleplayer()) {
-                        BlockPos blockPos = spawnPlayerHead();
-                        if(blockPos == null){
-                            dropPlayerHead();
-                        } else {
-                            Component compPos = Component.translatable("bannedmessage.lifesteal.revive_head_location", blockPos.getX(), blockPos.getY(), blockPos.getZ());
-                            fullcomponent = ComponentUtil.addComponents(bannedcomponent, compPos, false);
-                        }
-                    }
-
-                    if(fullcomponent == null){
-                        fullcomponent = bannedcomponent;
-                    }
-
-                    if(serverPlayer.isDeadOrDying())
-                        serverPlayer.getInventory().dropAll();
-
                     serverPlayer.setGameMode(GameType.SPECTATOR);
                     this.livingEntity.sendSystemMessage(fullcomponent);
                 }

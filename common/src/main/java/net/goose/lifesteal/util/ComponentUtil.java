@@ -1,17 +1,15 @@
 package net.goose.lifesteal.util;
 
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 
 public class ComponentUtil {
-    public static Component addComponents(Component component, Component component1, boolean includeSemi){
-        if(includeSemi){
-            return Component.literal(component.getString() + " " + component1.getString());
-        }else {
-            return Component.literal(component.getString() + "; " + component1.getString());
+    public static MutableComponent addComponents(MutableComponent... components){
+        MutableComponent currentComponent = components[0];
+        for(int index = 1; index < components.length; index++) {
+            if(index == components.length - 1)
+                currentComponent.append(components[index]);
         }
-    }
-
-    public static Component addComponents(Component component, Component component1){
-        return addComponents(component, component1, true);
+        return currentComponent;
     }
 }
