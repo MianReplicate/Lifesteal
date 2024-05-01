@@ -3,7 +3,7 @@ apply plugin: 'com.github.johnrengelman.shadow'
 evaluationDependsOn(':common')
 
 def loomPlatform = project.property('loom.platform')
-def projectName;
+def projectName
 if(loomPlatform == 'neoforge')
     projectName = 'NeoForge'
 else
@@ -12,11 +12,12 @@ else
 def generatedResources = file("src/generated/resources")
 
 sourceSets.main.resources.srcDirs = [ 'src/main/resources', {
-    project(':neoForge').file('src/generated/resources').absolutePath
+    project(':neoforge').file('src/generated/resources').absolutePath
 }
 ]
 
 loom {
+    accessWidenerPath.set(project(":common").loom.accessWidenerPath)
     if(loomPlatform == 'neoforge'){
         runs {
             data {
@@ -29,14 +30,9 @@ loom {
             }
         }
 
-        accessWidenerPath = project(":common").loom.accessWidenerPath
-        remapJar {
-            atAccessWideners.add('lifesteal.accesswidener')
-        }
-
         mods {
             forge {
-                sourceSet project(":neoForge").sourceSets.main
+                sourceSet project(":neoforge").sourceSets.main
             }
         }
     }
@@ -129,14 +125,24 @@ shadowJar {
 }
 
 remapJar {
-    if(loomPlatform == 'fabric') {
-        injectAccessWidener = true
-    }
-
-    inputFile = shadowJar.archiveFile
-    dependsOn shadowJar
-    archiveClassifier = null
+    injectAccessWidener.set(true)
+    inputFile.set(tasks.shadowJar.archiveFile)
+    dependsOn(tasks.shadowJar)
+    archiveClassifier.set(null)
+    atAccessWideners.add('lifesteal.accesswidener')
 }
+
+//remapJar {
+//    if(loomPlatform == 'fabric') {
+//        injectAccessWidener = true
+//    }
+//
+//    inputFile = shadowJar.archiveFile
+//    dependsOn shadowJar
+//    archiveClassifier = null
+//}
+
+
 
 jar {
     archiveClassifier = 'dev'

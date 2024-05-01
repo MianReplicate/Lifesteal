@@ -22,7 +22,7 @@ dependencies {
 }
 
 loom {
-    accessWidenerPath = file("src/main/resources/lifesteal.accesswidener")
+    accessWidenerPath.set(file("src/main/resources/lifesteal.accesswidener"))
 }
 
 idea.module {

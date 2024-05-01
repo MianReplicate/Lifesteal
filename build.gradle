@@ -1,6 +1,6 @@
 plugins {
     id "architectury-plugin" version "3.4-SNAPSHOT"
-    id "dev.architectury.loom" version "1.4-SNAPSHOT" apply false
+    id "dev.architectury.loom" version "1.6.+" apply false
     id "io.github.pacifistmc.forgix" version "1.2.6"
     id 'org.jetbrains.gradle.plugin.idea-ext' version '1.1' apply false
     id 'com.github.johnrengelman.shadow' version '7.1.2' apply false
@@ -17,7 +17,7 @@ forgix {
     }
 
     custom {
-        projectName = "neoForge"
+        projectName = "neoforge"
         jarLocation = "build/libs/lifesteal-${mod_version}.jar" // This is the location of the forge jar from the forge project. If this property is not defined then by default it fetches the jar with the shortest name.
     }
 
@@ -34,10 +34,6 @@ subprojects {
     apply plugin: 'architectury-plugin'
     apply plugin: "dev.architectury.loom"
     apply plugin: 'org.jetbrains.gradle.plugin.idea-ext'
-
-    project.ext {
-        accessWidenerFile = file("common/src/main/resources/${mod_id}.accesswidener")
-    }
 
     archivesBaseName = mod_id
     version = mod_version
@@ -105,13 +101,10 @@ subprojects {
         minecraft = "${minecraft_version}"
     }
 
-    loom {
-        silentMojangMappingsLicense()
-
-        if(accessWidenerFile.exists()) {
-            accessWidenerPath = accessWidenerFile
-        }
-    }
+//    loom {
+//        accessWidenerPath.set(project(':common').loom.accessWidenerPath)
+//        silentMojangMappingsLicense()
+//    }
 
     dependencies {
         minecraft "com.mojang:minecraft:${rootProject.minecraft_version}"
