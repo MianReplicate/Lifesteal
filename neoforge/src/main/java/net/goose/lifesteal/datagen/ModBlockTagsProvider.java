@@ -19,7 +19,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
 
     @Override
     protected void addTags(HolderLookup.Provider provider) {
-        tag(BlockTags.MINEABLE_WITH_PICKAXE).add(ModBlocks.HEART_ORE.get(), ModBlocks.DEEPSLATE_HEART_ORE.get(), ModBlocks.NETHERRACK_HEART_ORE.get());
+        tag(BlockTags.MINEABLE_WITH_PICKAXE).add(ModBlocks.HEART_ORE.get(), ModBlocks.DEEPSLATE_HEART_ORE.get(), ModBlocks.NETHERRACK_HEART_ORE.get(), ModBlocks.HEART_CORE_BLOCK.get());
         tag(BlockTags.NEEDS_IRON_TOOL).add(ModBlocks.HEART_ORE.get(), ModBlocks.DEEPSLATE_HEART_ORE.get());
     }
 }
