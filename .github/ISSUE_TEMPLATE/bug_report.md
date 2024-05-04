@@ -9,8 +9,9 @@ assignees: ''
 
 **Versions**
 Minecraft Version:
-Forge Version:
+Loader Version:
 Mod Version:
+*If you are using Fabric, please also specify the Fabric API version*
 
 **Describe the bug**
 A clear and concise description of what the bug is.
