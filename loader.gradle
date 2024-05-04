@@ -125,24 +125,14 @@ shadowJar {
 }
 
 remapJar {
-    injectAccessWidener.set(true)
-    inputFile.set(tasks.shadowJar.archiveFile)
-    dependsOn(tasks.shadowJar)
-    archiveClassifier.set(null)
-    atAccessWideners.add('lifesteal.accesswidener')
+    if(loomPlatform == 'fabric') {
+        injectAccessWidener = true
+    }
+
+    inputFile = shadowJar.archiveFile
+    dependsOn shadowJar
+    archiveClassifier = null
 }
-
-//remapJar {
-//    if(loomPlatform == 'fabric') {
-//        injectAccessWidener = true
-//    }
-//
-//    inputFile = shadowJar.archiveFile
-//    dependsOn shadowJar
-//    archiveClassifier = null
-//}
-
-
 
 jar {
     archiveClassifier = 'dev'

@@ -1,7 +1,7 @@
 plugins {
     id "architectury-plugin" version "3.4-SNAPSHOT"
     id "dev.architectury.loom" version "1.6.+" apply false
-    id "io.github.pacifistmc.forgix" version "1.2.6"
+    id "io.github.pacifistmc.forgix" version "1.2.9"
     id 'org.jetbrains.gradle.plugin.idea-ext' version '1.1' apply false
     id 'com.github.johnrengelman.shadow' version '7.1.2' apply false
 }
@@ -16,7 +16,7 @@ forgix {
         jarLocation = "build/libs/lifesteal-${mod_version}.jar" // This is the location of the fabric jar from the fabric project. If this property is not defined then by default it fetches the jar with the shortest name.
     }
 
-    custom {
+    neoforge {
         projectName = "neoforge"
         jarLocation = "build/libs/lifesteal-${mod_version}.jar" // This is the location of the forge jar from the forge project. If this property is not defined then by default it fetches the jar with the shortest name.
     }

@@ -1,6 +1,6 @@
 package net.goose.lifesteal.fabric;
 
-import fuzs.forgeconfigapiport.api.config.v3.ForgeConfigRegistry;
+import fuzs.forgeconfigapiport.fabric.api.neoforge.v4.NeoForgeConfigRegistry;
 import net.fabricmc.api.ModInitializer;
 import net.goose.lifesteal.LifeSteal;
 import net.goose.lifesteal.configuration.ConfigHolder;
@@ -22,7 +22,7 @@ public class LifestealFabric implements ModInitializer {
     }
     @Override
     public void onInitialize() {
-        ForgeConfigRegistry.INSTANCE.register(LifeSteal.MOD_ID, ModConfig.Type.COMMON, ConfigHolder.SERVER_SPEC);
+        NeoForgeConfigRegistry.INSTANCE.register(LifeSteal.MOD_ID, ModConfig.Type.COMMON, ConfigHolder.SERVER_SPEC);
         LifeSteal.config = ConfigHolder.SERVER;
         LifeSteal.init();
         ModEvents.register();
