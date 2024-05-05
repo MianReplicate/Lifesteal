@@ -29,7 +29,7 @@ public class LifestealCommand {
                         .then(Commands.literal("withdraw")
                                 .requires((commandSource) -> commandSource.hasPermission(LifeSteal.config.permissionLevelForWithdraw.get()))
                                 .executes((command) -> withdraw(command.getSource(), 1))
-                                .then(Commands.argument("Amount", IntegerArgumentType.integer())
+                                .then(Commands.argument("Amount", IntegerArgumentType.integer(1))
                                         .executes((command) -> withdraw(command.getSource(), IntegerArgumentType.getInteger(command, "Amount")))))
                         .then(Commands.literal("get-hitpoints")
                                 .requires((commandSource) -> commandSource.hasPermission(LifeSteal.config.permissionLevelForGettingHitPoints.get()))
