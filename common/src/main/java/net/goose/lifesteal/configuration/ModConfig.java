@@ -88,7 +88,7 @@ public class ModConfig {
         this.startingHeartDifferenceFromCrystal = buildInt(builder, "Number of additional Hitpoints upon revival:", 0, -19, Integer.MAX_VALUE, "Determines the number of additional Hitpoints revived players should have. (2 Hitpoints = 1 Heart, use a negative number to start them with <20)");
         builder.pop();
         builder.push("Revive Heads");
-        this.unbreakableReviveHeads = buildBoolean(builder, "Indestructible Revive Heads:", false, "Determines if Revive Heads should be indestructible. WARNING: This setting is highly destructive, and makes Revive Heads truly un-removable, even with /setblock and creative mode!");
+        this.unbreakableReviveHeads = buildBoolean(builder, "Indestructible Revive Heads:", false, "When this value is true, Revive Heads are indestructible to anything except creative users/using a revive crystal!");
 
         builder.pop();
         builder.pop();
