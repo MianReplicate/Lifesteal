@@ -39,7 +39,7 @@ public class ReviveHeadBlock extends SkullBlock implements EntityBlock {
                 if (compoundTag.contains("SkullOwner", 10)) {
                     gameProfile = NbtUtils.readGameProfile(compoundTag.getCompound("SkullOwner"));
                 } else if (compoundTag.contains("SkullOwner", 8) && !StringUtils.isBlank(compoundTag.getString("SkullOwner"))) {
-                    gameProfile = new GameProfile(null, compoundTag.getString("SkullOwner"));
+                    gameProfile = level.getServer().getProfileCache().get(compoundTag.getString("SkullOwner")).orElse(null);
                 }
             }
 
