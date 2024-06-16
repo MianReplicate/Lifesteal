@@ -16,7 +16,7 @@ import net.minecraft.world.level.Level;
 
 public class HeartCoreItem extends Item {
 
-    public static final FoodProperties HeartCore = (new FoodProperties.Builder()).alwaysEat().build();
+    public static final FoodProperties HeartCore = (new FoodProperties.Builder()).alwaysEdible().build();
 
     public HeartCoreItem(Properties pProperties) {
         super(pProperties);
@@ -24,7 +24,7 @@ public class HeartCoreItem extends Item {
 
     public boolean runHeartCoreCode(Level level, LivingEntity entity) {
         boolean success = true;
-
+        this.
         if (entity instanceof ServerPlayer serverPlayer) {
             if (!LifeSteal.config.disableHeartCores.get()) {
                 if (Math.round(entity.getHealth()) < entity.getMaxHealth() || !LifeSteal.config.preventFromUsingCoreIfMax.get()) {
@@ -81,17 +81,17 @@ public class HeartCoreItem extends Item {
         return super.use(level, player, interactionHand);
     }
 
-    @Override
-    public boolean isEdible() {
-        return !LifeSteal.config.coreInstantUse.get();
-    }
-
-    @Override
-    public FoodProperties getFoodProperties() {
-        if (LifeSteal.config.coreInstantUse.get()) {
-            return null;
-        } else {
-            return HeartCore;
-        }
-    }
+//    @Override
+//    public boolean isEdible() {
+//        return !LifeSteal.config.coreInstantUse.get();
+//    }
+//
+//    @Override
+//    public FoodProperties getFoodProperties() {
+//        if (LifeSteal.config.coreInstantUse.get()) {
+//            return null;
+//        } else {
+//            return HeartCore;
+//        }
+//    }
 }

@@ -19,12 +19,14 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.client.renderer.blockentity.SkullBlockRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.resources.DefaultPlayerSkin;
 import net.minecraft.client.resources.SkinManager;
 import net.minecraft.core.Direction;
 import net.minecraft.core.UUIDUtil;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.component.ResolvableProfile;
 import net.minecraft.world.level.block.AbstractSkullBlock;
 import net.minecraft.world.level.block.SkullBlock;
 import net.minecraft.world.level.block.WallSkullBlock;
@@ -83,11 +85,11 @@ public class ReviveHeadBER implements BlockEntityRenderer<ReviveSkullBlockEntity
     }
 
 
-    public static RenderType getRenderType(SkullBlock.Type type, @Nullable GameProfile gameProfile) {
+    public static RenderType getRenderType(SkullBlock.Type type, @Nullable ResolvableProfile profile) {
         ResourceLocation resourceLocation = SKIN_BY_TYPE.get(type);
-        if (type == SkullBlock.Types.PLAYER && gameProfile != null) {
+        if (type == SkullBlock.Types.PLAYER && profile.gameProfile() != null) {
             SkinManager skinManager = Minecraft.getInstance().getSkinManager();
-            return RenderType.entityTranslucent(skinManager.getInsecureSkin(gameProfile).texture());
+            return RenderType.entityTranslucent(skinManager.getInsecureSkin(profile.gameProfile()).texture());
         } else {
             return RenderType.entityCutoutNoCullZOffset(resourceLocation);
         }

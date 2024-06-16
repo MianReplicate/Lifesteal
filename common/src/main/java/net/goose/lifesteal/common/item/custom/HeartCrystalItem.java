@@ -20,7 +20,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class HeartCrystalItem extends Item {
 
-    public static final FoodProperties HeartCrystal = (new FoodProperties.Builder()).alwaysEat().build();
+    public static final FoodProperties HeartCrystal = (new FoodProperties.Builder()).alwaysEdible().build();
 
     public HeartCrystalItem(Properties pProperties) {
         super(pProperties);

@@ -3,6 +3,8 @@ package net.goose.lifesteal.common.block.custom;
 import com.mojang.authlib.GameProfile;
 import net.goose.lifesteal.common.blockentity.custom.ReviveSkullBlockEntity;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.component.DataComponentMap;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.world.entity.LivingEntity;
@@ -31,6 +33,7 @@ public class ReviveHeadBlock extends SkullBlock implements EntityBlock {
         BlockEntity blockEntity = level.getBlockEntity(blockPos);
         if (blockEntity instanceof ReviveSkullBlockEntity skullBlockEntity) {
             GameProfile gameProfile = null;
+            DataComponentMap components = itemStack.get(DataComponents.ITEM);
             if (itemStack.hasTag()) {
                 CompoundTag compoundTag = itemStack.getTag();
                 if (compoundTag.contains("SkullOwner", 10)) {
