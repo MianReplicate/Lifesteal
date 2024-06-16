@@ -10,7 +10,7 @@ import java.util.UUID;
 public interface ILevelData extends Serializable<CompoundTag> {
     HashMap getMap();
 
-    void setUUIDanditsBlockPos(UUID uuid, BlockPos blockPos);
+    void setUUIDandBlockPos(UUID uuid, BlockPos blockPos);
 
-    void removeUUIDanditsBlockPos(UUID uuid, BlockPos blockPos);
+    void removeUUIDandBlockPos(UUID uuid, BlockPos blockPos);
 }

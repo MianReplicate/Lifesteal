@@ -33,14 +33,14 @@ public class LevelData implements ILevelData {
     }
 
     @Override
-    public void setUUIDanditsBlockPos(UUID uuid, BlockPos blockPos) {
+    public void setUUIDandBlockPos(UUID uuid, BlockPos blockPos) {
         if (!bannedMap.containsKey(uuid)) {
             bannedMap.put(uuid, blockPos);
         }
     }
 
     @Override
-    public void removeUUIDanditsBlockPos(UUID uuid, BlockPos blockPos) {
+    public void removeUUIDandBlockPos(UUID uuid, BlockPos blockPos) {
         if (bannedMap.containsKey(uuid)) {
             bannedMap.remove(uuid, blockPos);
         }
@@ -73,7 +73,7 @@ public class LevelData implements ILevelData {
             UUID uuid = compoundTag.getUUID("Key");
             BlockPos blockPos = NbtUtils.readBlockPos(compoundTag.getCompound("Value"));
 
-            setUUIDanditsBlockPos(uuid, blockPos);
+            setUUIDandBlockPos(uuid, blockPos);
         });
     }
 }

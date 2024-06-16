@@ -69,7 +69,7 @@ public class HealthData implements IHealthData {
                 BlockPos blockPos = (BlockPos) hashMap.get(this.livingEntity.getUUID());
 
                 if (blockPos != null) {
-                    iLevelData.removeUUIDanditsBlockPos(this.livingEntity.getUUID(), blockPos);
+                    iLevelData.removeUUIDandBlockPos(this.livingEntity.getUUID(), blockPos);
                     if (serverPlayer.level() == level) {
                         serverPlayer.connection.teleport(blockPos.getX(), blockPos.getY(), blockPos.getZ(), serverPlayer.getXRot(), serverPlayer.getYRot());
                     } else {

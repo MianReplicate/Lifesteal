@@ -90,7 +90,7 @@ public class ModConfig {
 
         builder.pop();
         builder.push("Revive Heads");
-        this.unbreakableReviveHeads = buildBoolean(builder, "Indestructible Revive Heads:", false, "When this value is true, Revive Heads are indestructible! WARNING: This config is quite destructive, THE BLOCK IS LITERALLY INDESTRUCTIBLE. NOTHING (and I mean nothing!) can DESTROY IT. Not even /setblock or a person in creative.");
+        this.unbreakableReviveHeads = buildBoolean(builder, "Indestructible Revive Heads:", false, "When this value is true, Revive Heads are indestructible to anything except creative users/using a revive crystal!");
 
         builder.pop();
         builder.pop();

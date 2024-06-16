@@ -3,6 +3,7 @@ package net.goose.lifesteal.common.item.custom;
 import com.mojang.authlib.GameProfile;
 import net.goose.lifesteal.LifeSteal;
 import net.goose.lifesteal.common.block.ModBlocks;
+import net.goose.lifesteal.common.blockentity.custom.ReviveSkullBlockEntity;
 import net.goose.lifesteal.data.HealthData;
 import net.goose.lifesteal.data.LevelData;
 import net.minecraft.ChatFormatting;
@@ -50,17 +51,17 @@ public class ReviveCrystalItem extends Item {
                 if (userBanList != null) {
                     if (userBanList.isBanned(gameprofile)) {
                         if (userBanList.get(gameprofile).getSource().matches(LifeSteal.MOD_ID)) {
-                            iLevelData.setUUIDanditsBlockPos(gameprofile.getId(), blockPos);
+                            iLevelData.setUUIDandBlockPos(gameprofile.getId(), blockPos);
                             successful.set(true);
                             userBanList.remove(gameprofile);
                         }
                     } else {
-                        iLevelData.setUUIDanditsBlockPos(gameprofile.getId(), blockPos);
+                        iLevelData.setUUIDandBlockPos(gameprofile.getId(), blockPos);
                         successful.set(true);
                     }
                 }
             } else {
-                iLevelData.setUUIDanditsBlockPos(gameprofile.getId(), blockPos);
+                iLevelData.setUUIDandBlockPos(gameprofile.getId(), blockPos);
 
                 LivingEntity livingEntity = (LivingEntity) serverPlayer.getCamera();
 
@@ -73,6 +74,7 @@ public class ReviveCrystalItem extends Item {
         });
 
         if (successful.get()) {
+            ((ReviveSkullBlockEntity) level.getBlockEntity(blockPos)).setDestroyed(true);
             level.removeBlock(blockPos, true);
             if (!LifeSteal.config.disableLightningEffect.get()) {
                 Entity entity = new LightningBolt(EntityType.LIGHTNING_BOLT, level);
