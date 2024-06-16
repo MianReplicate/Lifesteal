@@ -118,7 +118,7 @@ public class ReviveCrystalItem extends Item {
                     if (compoundTag.contains("SkullOwner", 10)) {
                         gameprofile = NbtUtils.readGameProfile(compoundTag.getCompound("SkullOwner"));
                     } else if (compoundTag.contains("SkullOwner", 8) && !StringUtils.isBlank(compoundTag.getString("SkullOwner"))) {
-                        gameprofile = new GameProfile(null, compoundTag.getString("SkullOwner"));
+                        gameProfile = level.getServer().getProfileCache().get(compoundTag.getString("SkullOwner")).orElse(null);
                     }
                 }
                 if (gameprofile != null) {

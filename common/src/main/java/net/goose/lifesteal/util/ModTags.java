@@ -20,22 +20,22 @@ public class ModTags {
     public static TagKey<Biome> MINERS_LOCATION_4 = makeBiome(LifeSteal.MOD_ID, "has_structure/miners_location_4");
 
     private static TagKey<Item> makeItem(String domain, String path) {
-        return TagKey.create(Registries.ITEM, new ResourceLocation(domain, path));
+        return TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(domain, path));
     }
 
     private static TagKey<Block> makeBlock(String domain, String path) {
-        return TagKey.create(Registries.BLOCK, new ResourceLocation(domain, path));
+        return TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(domain, path));
     }
 
     private static TagKey<EntityType<?>> makeEntityType(String domain, String path) {
-        return TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation(domain, path));
+        return TagKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(domain, path));
     }
 
     private static TagKey<Structure> makeStructure(String domain, String path) {
-        return TagKey.create(Registries.STRUCTURE, new ResourceLocation(domain, path));
+        return TagKey.create(Registries.STRUCTURE, ResourceLocation.fromNamespaceAndPath(domain, path));
     }
 
     private static TagKey<Biome> makeBiome(String domain, String path) {
-        return TagKey.create(Registries.BIOME, new ResourceLocation(domain, path));
+        return TagKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath(domain, path));
     }
 }
