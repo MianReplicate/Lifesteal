@@ -1,6 +1,7 @@
 package net.goose.lifesteal.common.item.custom;
 
 import net.goose.lifesteal.LifeSteal;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -24,7 +25,6 @@ public class HeartCoreItem extends Item {
 
     public boolean runHeartCoreCode(Level level, LivingEntity entity) {
         boolean success = true;
-        this.
         if (entity instanceof ServerPlayer serverPlayer) {
             if (!LifeSteal.config.disableHeartCores.get()) {
                 if (Math.round(entity.getHealth()) < entity.getMaxHealth() || !LifeSteal.config.preventFromUsingCoreIfMax.get()) {
