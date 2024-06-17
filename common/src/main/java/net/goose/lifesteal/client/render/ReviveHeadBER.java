@@ -87,7 +87,7 @@ public class ReviveHeadBER implements BlockEntityRenderer<ReviveSkullBlockEntity
 
     public static RenderType getRenderType(SkullBlock.Type type, @Nullable ResolvableProfile profile) {
         ResourceLocation resourceLocation = SKIN_BY_TYPE.get(type);
-        if (type == SkullBlock.Types.PLAYER && profile.gameProfile() != null) {
+        if (type == SkullBlock.Types.PLAYER && profile != null) {
             SkinManager skinManager = Minecraft.getInstance().getSkinManager();
             return RenderType.entityTranslucent(skinManager.getInsecureSkin(profile.gameProfile()).texture());
         } else {

@@ -59,8 +59,12 @@ public class HeartCoreItem extends Item {
     @Override
     public ItemStack finishUsingItem(ItemStack item, Level level, LivingEntity entity) {
         boolean success = false;
-        if (!level.isClientSide) {
-            success = runHeartCoreCode(level, entity);
+        if (!LifeSteal.config.coreInstantUse.get()) {
+            if (!level.isClientSide) {
+                success = runHeartCoreCode(level, entity);
+            }
+        } else {
+            item.set(DataComponents.FOOD, null);
         }
 
         return success ? super.finishUsingItem(item, level, entity) : item;
@@ -68,30 +72,19 @@ public class HeartCoreItem extends Item {
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionHand) {
-        if (!this.isEdible()) {
-            ItemStack item = player.getItemInHand(interactionHand);
+        ItemStack item = player.getItemInHand(interactionHand);
+        if (LifeSteal.config.coreInstantUse.get()) {
+            item.set(DataComponents.FOOD, null);
             boolean success = runHeartCoreCode(level, player);
 
             if (success) {
                 item.shrink(1);
                 player.containerMenu.broadcastChanges();
             }
+        } else {
+            item.set(DataComponents.FOOD, HeartCore);
         }
 
         return super.use(level, player, interactionHand);
     }
-
-//    @Override
-//    public boolean isEdible() {
-//        return !LifeSteal.config.coreInstantUse.get();
-//    }
-//
-//    @Override
-//    public FoodProperties getFoodProperties() {
-//        if (LifeSteal.config.coreInstantUse.get()) {
-//            return null;
-//        } else {
-//            return HeartCore;
-//        }
-//    }
 }

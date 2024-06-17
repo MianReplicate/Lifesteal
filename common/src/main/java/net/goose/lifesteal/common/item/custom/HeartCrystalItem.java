@@ -1,7 +1,9 @@
 package net.goose.lifesteal.common.item.custom;
 
 import net.goose.lifesteal.LifeSteal;
+import net.goose.lifesteal.common.component.ModDataComponents;
 import net.goose.lifesteal.data.HealthData;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -36,23 +38,9 @@ public class HeartCrystalItem extends Item {
         AtomicBoolean success = new AtomicBoolean(false);
 
         if (!level.isClientSide() && entity instanceof ServerPlayer serverPlayer) {
-            CompoundTag compoundTag = item.getTagElement("lifesteal");
-            boolean compoundTagExists;
-            boolean droppedHeartCrystal;
-            boolean unnaturalHeartCrystal;
-
+            boolean droppedHeartCrystal = item.get(ModDataComponents.DROPPED.get()) != null && (boolean) item.get(ModDataComponents.DROPPED.get());
+            boolean unnaturalHeartCrystal = item.get(ModDataComponents.UNFRESH.get()) != null && (boolean) item.get(ModDataComponents.UNFRESH.get());
             success.set(true);
-
-            if (compoundTag != null) {
-                compoundTagExists = true;
-                droppedHeartCrystal = compoundTag.getBoolean("dropped");
-
-                unnaturalHeartCrystal = compoundTag.getBoolean("Unfresh");
-            } else {
-                unnaturalHeartCrystal = false;
-                droppedHeartCrystal = false;
-                compoundTagExists = false;
-            }
 
             if (!droppedHeartCrystal) {
                 if (unnaturalHeartCrystal) {
@@ -85,9 +73,7 @@ public class HeartCrystalItem extends Item {
                     IHeartCap.refreshHearts(false);
 
                     // Formula, for every hit point, increase duration of the regeneration by 50 ticks: TickDuration = MaxHealth * 50
-                    if (!compoundTagExists) {
-                        applyCrystalEffect(entity);
-                    } else if (!unnaturalHeartCrystal) {
+                    if (!unnaturalHeartCrystal) {
                         applyCrystalEffect(entity);
                     }
                 }
@@ -98,36 +84,30 @@ public class HeartCrystalItem extends Item {
 
     @Override
     public ItemStack finishUsingItem(ItemStack item, Level level, LivingEntity entity) {
-        boolean success = runHeartCrystalCode(item, level, entity);
+        boolean success = false;
+        if (!LifeSteal.config.crystalInstantUse.get()) {
+            success = runHeartCrystalCode(item, level, entity);
+        } else {
+            item.set(DataComponents.FOOD, null);
+        }
         return success ? super.finishUsingItem(item, level, entity) : item;
     }
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionHand) {
-        if (!this.isEdible()) {
-            ItemStack item = player.getItemInHand(interactionHand);
+        ItemStack item = player.getItemInHand(interactionHand);
+        if (LifeSteal.config.crystalInstantUse.get()) {
+            item.set(DataComponents.FOOD, null);
             boolean success = runHeartCrystalCode(item, level, player);
 
             if (success) {
                 item.shrink(1);
                 player.containerMenu.broadcastChanges();
             }
+        } else {
+            item.set(DataComponents.FOOD, HeartCrystal);
         }
 
         return super.use(level, player, interactionHand);
-    }
-
-    @Override
-    public boolean isEdible() {
-        return !LifeSteal.config.crystalInstantUse.get();
-    }
-
-    @Override
-    public FoodProperties getFoodProperties() {
-        if (LifeSteal.config.crystalInstantUse.get()) {
-            return null;
-        } else {
-            return HeartCrystal;
-        }
     }
 }

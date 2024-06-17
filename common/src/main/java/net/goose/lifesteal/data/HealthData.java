@@ -31,6 +31,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.ResolvableProfile;
 import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -124,7 +125,7 @@ public class HealthData implements IHealthData {
                         return null;
                     }
                     ReviveSkullBlockEntity playerHeadEntity = (ReviveSkullBlockEntity) ((ReviveHeadBlock)playerHeadState.getBlock()).newBlockEntity(targetPos, playerHeadState);
-                    playerHeadEntity.setOwner(serverPlayer.getGameProfile());
+                    playerHeadEntity.setOwner(new ResolvableProfile(serverPlayer.getGameProfile()));
                     level.setBlockEntity(playerHeadEntity);
 
                     BlockPos currentPos = playerHeadEntity.getBlockPos();
@@ -141,7 +142,7 @@ public class HealthData implements IHealthData {
         if (this.livingEntity instanceof ServerPlayer serverPlayer) {
             if (!serverPlayer.level().isClientSide) {
                 ItemStack itemStack = new ItemStack(ModItems.REVIVE_HEAD_ITEM.get());
-                itemStack.set(DataComponents.PROFILE, serverPlayer.)
+                itemStack.set(DataComponents.PROFILE, new ResolvableProfile(serverPlayer.getGameProfile()));
                 serverPlayer.drop(itemStack, true, false);
                 return true;
             }

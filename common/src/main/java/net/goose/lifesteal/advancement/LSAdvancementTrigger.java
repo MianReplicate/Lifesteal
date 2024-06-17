@@ -25,7 +25,7 @@ public class LSAdvancementTrigger extends SimpleCriterionTrigger<LSAdvancementTr
 
     public record TriggerInstance(Optional<ContextAwarePredicate> player) implements SimpleInstance {
         public static final Codec<TriggerInstance> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-                ExtraCodecs.strictOptionalField(EntityPredicate.ADVANCEMENT_CODEC, "player")
+                EntityPredicate.ADVANCEMENT_CODEC.optionalFieldOf("player")
                         .forGetter(TriggerInstance::player)).apply(instance, TriggerInstance::new));
 
         public static Criterion<LSAdvancementTrigger.TriggerInstance> GET_10_MAX_HEARTS() {

@@ -5,6 +5,7 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.goose.lifesteal.LifeSteal;
+import net.goose.lifesteal.common.component.ModDataComponents;
 import net.goose.lifesteal.common.item.ModItems;
 import net.goose.lifesteal.data.HealthData;
 import net.minecraft.advancements.Advancement;
@@ -70,9 +71,8 @@ public class LifestealCommand {
             IHeartCap.refreshHearts(false);
 
             ItemStack heartCrystal = new ItemStack(ModItems.HEART_CRYSTAL.get(), amount);
-            CompoundTag compoundTag = heartCrystal.getOrCreateTagElement("lifesteal");
-            compoundTag.putBoolean("Unfresh", true);
-            heartCrystal.set(DataComponents.ITEM_NAME, Component.translatable("item.lifesteal.heart_crystal.unnatural"));
+            heartCrystal.set(ModDataComponents.UNFRESH.get(), true);
+            heartCrystal.set(DataComponents.CUSTOM_NAME, Component.translatable("item.lifesteal.heart_crystal.unnatural"));
             if (serverPlayer.getInventory().getFreeSlot() == -1) {
                 serverPlayer.drop(heartCrystal, true);
             } else {

@@ -24,6 +24,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.ResolvableProfile;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -110,21 +111,13 @@ public class ReviveCrystalItem extends Item {
             Block block = level.getBlockState(blockPos).getBlock();
 
             if (block == ModBlocks.REVIVE_HEAD.get() || block == ModBlocks.REVIVE_WALL_HEAD.get()) {
-                BlockEntity blockEntity = level.getBlockEntity(blockPos);
-                CompoundTag compoundTag = blockEntity.getUpdateTag();
+                ReviveSkullBlockEntity blockEntity = (ReviveSkullBlockEntity) level.getBlockEntity(blockPos);
+                ResolvableProfile gameprofile = blockEntity.getOwnerProfile();
 
-                GameProfile gameprofile = null;
-                if (compoundTag != null) {
-                    if (compoundTag.contains("SkullOwner", 10)) {
-                        gameprofile = NbtUtils.readGameProfile(compoundTag.getCompound("SkullOwner"));
-                    } else if (compoundTag.contains("SkullOwner", 8) && !StringUtils.isBlank(compoundTag.getString("SkullOwner"))) {
-                        gameProfile = level.getServer().getProfileCache().get(compoundTag.getString("SkullOwner")).orElse(null);
-                    }
-                }
                 if (gameprofile != null) {
                     UserBanList userBanList = level.getServer().getPlayerList().getBans();
 
-                    AtomicBoolean successful = revivePlayer((ServerLevel) level, blockPos, gameprofile, player, userBanList);
+                    AtomicBoolean successful = revivePlayer((ServerLevel) level, blockPos, gameprofile.gameProfile(), player, userBanList);
                     if (successful.get()) {
                         itemStack.shrink(1);
                     } else {
