@@ -6,6 +6,7 @@ import net.goose.lifesteal.LifeSteal;
 import net.goose.lifesteal.configuration.ConfigHolder;
 import net.goose.lifesteal.fabric.event.CommandRegistry;
 import net.goose.lifesteal.fabric.event.ModEvents;
+import net.goose.lifesteal.util.ModResources;
 import net.goose.lifesteal.world.gen.ModBiomeModifier;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.neoforged.fml.config.ModConfig;
@@ -16,9 +17,9 @@ public class LifestealFabric implements ModInitializer {
 
     public static void registerCriteria(){
         LifeSteal.LOGGER.debug("Initializing ModCriteria for " + LifeSteal.MOD_ID);
-        CriteriaTriggers.register("lifesteal:get_10_max_hearts", GET_10_MAX_HEARTS);
-        CriteriaTriggers.register("lifesteal:use_totem_while_20_max_hearts", USE_TOTEM_WHILE_20_MAX_HEARTS);
-        CriteriaTriggers.register("lifesteal:revived", REVIVED);
+        CriteriaTriggers.register(ModResources.GET_10_MAX_HEARTS.toString(), GET_10_MAX_HEARTS);
+        CriteriaTriggers.register(ModResources.USE_TOTEM_WHILE_20_MAX_HEARTS.toString(), USE_TOTEM_WHILE_20_MAX_HEARTS);
+        CriteriaTriggers.register(ModResources.REVIVED.toString(), REVIVED);
     }
     @Override
     public void onInitialize() {

@@ -5,12 +5,9 @@ import net.goose.lifesteal.datagen.level.BiomeModifiersProvider;
 import net.goose.lifesteal.datagen.level.ConfiguredFeaturesProvider;
 import net.goose.lifesteal.datagen.level.PlacedFeaturesProvider;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.RegistrySetBuilder;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
-import net.minecraft.data.registries.VanillaRegistries;
 import net.neoforged.neoforge.common.data.DatapackBuiltinEntriesProvider;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
 

@@ -2,11 +2,9 @@ package net.goose.lifesteal.neoforge.event;
 
 import net.goose.lifesteal.command.ModCommands;
 import net.goose.lifesteal.common.blockentity.custom.ReviveSkullBlockEntity;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
-import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.level.BlockEvent;
 
 @SuppressWarnings("unused")

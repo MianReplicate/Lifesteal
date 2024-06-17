@@ -14,11 +14,7 @@ public class ModTabs {
     public static final DeferredRegistry<CreativeModeTab> TABS = DeferredRegistry.create(LifeSteal.MOD_ID, Registries.CREATIVE_MODE_TAB);
     public static final RegistrySupplier<CreativeModeTab> LIFESTEAL = TABS.register("lifesteal", ModTabs::createTab);
     public static ItemStack makeIcon() {
-        ItemStack stack = new ItemStack(ModItems.HEART_CRYSTAL.get());
-        CompoundTag tag = new CompoundTag();
-        tag.putBoolean("IsCreativeTab", true);
-        stack.setTag(tag);
-        return stack;
+        return new ItemStack(ModItems.HEART_CRYSTAL.get());
     }
     @ExpectPlatform
     public static CreativeModeTab createTab(){

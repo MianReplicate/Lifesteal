@@ -1,4 +1,3 @@
 accessWidener   v2  named
-accessible field net/minecraft/world/entity/ai/attributes/AttributeModifier name Ljava/lang/String;
 accessible field net/minecraft/server/MinecraftServer storageSource Lnet/minecraft/world/level/storage/LevelStorageSource$LevelStorageAccess;
 accessible class net/minecraft/world/level/block/entity/BlockEntityType$BlockEntitySupplier

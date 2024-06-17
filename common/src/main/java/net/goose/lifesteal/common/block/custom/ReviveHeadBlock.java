@@ -9,6 +9,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.ResolvableProfile;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.SkullBlock;
@@ -32,18 +33,7 @@ public class ReviveHeadBlock extends SkullBlock implements EntityBlock {
         super.setPlacedBy(level, blockPos, blockState, livingEntity, itemStack);
         BlockEntity blockEntity = level.getBlockEntity(blockPos);
         if (blockEntity instanceof ReviveSkullBlockEntity skullBlockEntity) {
-            GameProfile gameProfile = null;
-            DataComponentMap components = itemStack.get(DataComponents.ITEM);
-            if (itemStack.hasTag()) {
-                CompoundTag compoundTag = itemStack.getTag();
-                if (compoundTag.contains("SkullOwner", 10)) {
-                    gameProfile = NbtUtils.readGameProfile(compoundTag.getCompound("SkullOwner"));
-                } else if (compoundTag.contains("SkullOwner", 8) && !StringUtils.isBlank(compoundTag.getString("SkullOwner"))) {
-                    gameProfile = level.getServer().getProfileCache().get(compoundTag.getString("SkullOwner")).orElse(null);
-                }
-            }
-
-            skullBlockEntity.setOwner(gameProfile);
+            skullBlockEntity.setOwner(itemStack.get(DataComponents.PROFILE));
         }
     }
 }

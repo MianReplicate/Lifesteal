@@ -6,8 +6,8 @@ import net.goose.lifesteal.data.neoforge.ModCapabilities;
 import net.goose.lifesteal.data.neoforge.ModDataAttachments;
 import net.goose.lifesteal.datagen.ModDataGenerators;
 import net.goose.lifesteal.neoforge.event.EventHandler;
+import net.goose.lifesteal.util.ModResources;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModLoadingContext;
@@ -26,7 +26,7 @@ public class LifestealNeoForge {
         modEventBus.addListener(this::registerEvent);
         IEventBus eventBus = NeoForge.EVENT_BUS;
 
-        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, ConfigHolder.SERVER_SPEC);
+        ModLoadingContext.get().getActiveContainer().registerConfig(ModConfig.Type.COMMON, ConfigHolder.SERVER_SPEC);
         LifeSteal.config = ConfigHolder.SERVER;
         LifeSteal.init();
 
@@ -39,9 +39,9 @@ public class LifestealNeoForge {
 
     public static void registerCriteria(RegisterEvent registerEvent){
         LifeSteal.LOGGER.debug("Initializing ModCriteria for " + LifeSteal.MOD_ID);
-        registerEvent.register(BuiltInRegistries.TRIGGER_TYPES.key(), new ResourceLocation("lifesteal:get_10_max_hearts"), () -> GET_10_MAX_HEARTS);
-        registerEvent.register(BuiltInRegistries.TRIGGER_TYPES.key(), new ResourceLocation("lifesteal:use_totem_while_20_max_hearts"), () -> USE_TOTEM_WHILE_20_MAX_HEARTS);
-        registerEvent.register(BuiltInRegistries.TRIGGER_TYPES.key(), new ResourceLocation("lifesteal:revived"), () -> REVIVED);
+        registerEvent.register(BuiltInRegistries.TRIGGER_TYPES.key(), ModResources.GET_10_MAX_HEARTS, () -> GET_10_MAX_HEARTS);
+        registerEvent.register(BuiltInRegistries.TRIGGER_TYPES.key(), ModResources.USE_TOTEM_WHILE_20_MAX_HEARTS, () -> USE_TOTEM_WHILE_20_MAX_HEARTS);
+        registerEvent.register(BuiltInRegistries.TRIGGER_TYPES.key(), ModResources.REVIVED, () -> REVIVED);
     }
     @SubscribeEvent
     public void registerEvent(RegisterEvent registerEvent){

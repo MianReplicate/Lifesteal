@@ -68,19 +68,19 @@ public class ReviveHeadBER implements BlockEntityRenderer<ReviveSkullBlockEntity
         renderSkull(direction, degrees, animation, poseStack, multiBufferSource, pPackedLight, skullModelBase, renderType);
     }
 
-    public static void renderSkull(@Nullable Direction direction, float degrees, float animation, PoseStack poseStack, MultiBufferSource multiBufferSource, int i, SkullModelBase skullModelBase, RenderType renderType) {
+    public static void renderSkull(@Nullable Direction direction, float yRot, float mouthAnimation, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, SkullModelBase model, RenderType renderType) {
         poseStack.pushPose();
         if (direction == null) {
             poseStack.translate(0.5F, 0.0F, 0.5F);
         } else {
-            float h = 0.25F;
-            poseStack.translate(0.5F - (float) direction.getStepX() * 0.25F, 0.25F, 0.5F - (float) direction.getStepZ() * 0.25F);
+            float f = 0.25F;
+            poseStack.translate(0.5F - (float)direction.getStepX() * 0.25F, 0.25F, 0.5F - (float)direction.getStepZ() * 0.25F);
         }
 
         poseStack.scale(-1.0F, -1.0F, 1.0F);
-        VertexConsumer vertexConsumer = multiBufferSource.getBuffer(renderType);
-        skullModelBase.setupAnim(animation, degrees, 0.0F);
-        skullModelBase.renderToBuffer(poseStack, vertexConsumer, i, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+        VertexConsumer vertexConsumer = bufferSource.getBuffer(renderType);
+        model.setupAnim(mouthAnimation, yRot, 0.0F);
+        model.renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY);
         poseStack.popPose();
     }
 

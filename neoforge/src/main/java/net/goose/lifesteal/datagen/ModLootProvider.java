@@ -4,19 +4,21 @@ import net.goose.lifesteal.LifeSteal;
 import net.goose.lifesteal.common.block.ModBlocks;
 import net.goose.lifesteal.common.item.ModItems;
 import net.goose.lifesteal.registry.RegistrySupplier;
+import net.goose.lifesteal.util.ModResources;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.data.loot.LootTableSubProvider;
 import net.minecraft.data.loot.packs.VanillaBlockLoot;
-import net.minecraft.data.loot.packs.VanillaChestLoot;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
-import net.minecraft.world.level.storage.loot.functions.CopyNbtFunction;
+import net.minecraft.world.level.storage.loot.functions.CopyComponentsFunction;
 import net.minecraft.world.level.storage.loot.functions.EnchantWithLevelsFunction;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceCondition;
-import net.minecraft.world.level.storage.loot.providers.nbt.ContextNbtProvider;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 
@@ -25,12 +27,18 @@ import java.util.function.BiConsumer;
 
 public class ModLootProvider {
     public static class ModBlockLoot extends VanillaBlockLoot {
+        public ModBlockLoot(HolderLookup.Provider arg) {
+            super(arg);
+        }
+
         @Override
         protected void generate() {
             this.add(ModBlocks.HEART_ORE.get(), (block) -> createOreDrop(block, ModItems.HEART_FRAGMENT.get()));
             this.add(ModBlocks.DEEPSLATE_HEART_ORE.get(), (block) -> createOreDrop(block, ModItems.HEART_FRAGMENT.get()));
             this.add(ModBlocks.NETHERRACK_HEART_ORE.get(), (block) -> createOreDrop(block, ModItems.HEART_FRAGMENT.get()));
-            this.add(ModBlocks.REVIVE_HEAD.get(), (block) -> LootTable.lootTable().withPool((LootPool.lootPool().add(LootItem.lootTableItem(ModItems.REVIVE_HEAD_ITEM.get()).apply(CopyNbtFunction.copyData(ContextNbtProvider.BLOCK_ENTITY).copy("SkullOwner", "SkullOwner").copy("note_block_sound", "BlockEntityTag.note_block_sound"))))));
+            this.add(ModBlocks.REVIVE_HEAD.get(), (block) -> LootTable.lootTable().withPool((LootPool.lootPool().add(LootItem.lootTableItem(ModItems.REVIVE_HEAD_ITEM.get())
+                    .apply(CopyComponentsFunction.copyComponents(CopyComponentsFunction.Source.BLOCK_ENTITY)
+                            .include(DataComponents.PROFILE).include(DataComponents.NOTE_BLOCK_SOUND))))));
             dropSelf(ModBlocks.HEART_CORE_BLOCK.get());
         }
 
@@ -44,11 +52,11 @@ public class ModLootProvider {
         }
     }
 
-    public static class ModChestLoot extends VanillaChestLoot {
+    public record ModChestLoot(HolderLookup.Provider registries) implements LootTableSubProvider {
 
         @Override
-        public void generate(BiConsumer<ResourceLocation, LootTable.Builder> biConsumer) {
-            biConsumer.accept(LifeSteal.BARREL_1, LootTable.lootTable()
+        public void generate(BiConsumer<ResourceKey<LootTable>, LootTable.Builder> biConsumer) {
+            biConsumer.accept(ModResources.BARREL_1, LootTable.lootTable()
                     .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(4.0F))
                             .add(LootItem.lootTableItem(Items.STRING).setWeight(10)
                                     .apply(SetItemCountFunction.setCount(UniformGenerator.between(3.0F, 24.0F))))
@@ -56,7 +64,7 @@ public class ModLootProvider {
                                     .apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 6.0F))))
                             .add(LootItem.lootTableItem(Items.BOOK).setWeight(5)
                                     .apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 3.0F))))));
-            biConsumer.accept(LifeSteal.MINERS_HOME_TABLE, LootTable.lootTable()
+            biConsumer.accept(ModResources.MINERS_HOME_TABLE, LootTable.lootTable()
                     .withPool(LootPool.lootPool().setRolls(UniformGenerator.between(1F, 4F))
                             .add(LootItem.lootTableItem(ModItems.HEART_FRAGMENT.get()).setWeight(55)
                                     .apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 7.0F))))
@@ -83,10 +91,9 @@ public class ModLootProvider {
                     .withPool(LootPool.lootPool().setRolls(UniformGenerator.between(0F, 1F))
                             .add(LootItem.lootTableItem(Items.STONE_PICKAXE).setWeight(75))
                             .add(LootItem.lootTableItem(Items.IRON_PICKAXE).setWeight(20)
-                                    .apply(EnchantWithLevelsFunction.enchantWithLevels(UniformGenerator.between(1.0F, 10.0F))
-                                            .allowTreasure()
+                                    .apply(EnchantWithLevelsFunction.enchantWithLevels(this.registries, UniformGenerator.between(1.0F, 10.0F))
                                             .when(LootItemRandomChanceCondition.randomChance(0.10F))))));
-            biConsumer.accept(LifeSteal.MINERS_RUINED_SHACK_TABLE, LootTable.lootTable()
+            biConsumer.accept(ModResources.MINERS_RUINED_SHACK_TABLE, LootTable.lootTable()
                     .withPool(LootPool.lootPool().setRolls(UniformGenerator.between(2.0F, 3.0F))
                             .add(LootItem.lootTableItem(Items.IRON_INGOT).setWeight(50)
                                     .apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 5.0F))))
@@ -98,7 +105,7 @@ public class ModLootProvider {
                                     .apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 2.0F))))
                             .add(LootItem.lootTableItem(Items.GOLD_INGOT).setWeight(35)
                                     .apply(SetItemCountFunction.setCount(UniformGenerator.between(2.0F, 4.0F))))));
-            biConsumer.accept(LifeSteal.RICH_CART_TABLE, LootTable.lootTable()
+            biConsumer.accept(ModResources.RICH_CART_TABLE, LootTable.lootTable()
                     .withPool(LootPool.lootPool().setRolls(UniformGenerator.between(3.0F, 7.0F)).setBonusRolls(ConstantValue.exactly(5))
                             .add(LootItem.lootTableItem(Items.IRON_ORE).setWeight(5000)
                                     .apply(SetItemCountFunction.setCount(UniformGenerator.between(2.0F, 7.0F))))
@@ -143,14 +150,13 @@ public class ModLootProvider {
                             .add(LootItem.lootTableItem(Items.NETHERITE_SCRAP).setWeight(1)
                                     .apply(SetItemCountFunction.setCount(UniformGenerator.between(3.0F, 12.0F))))
                             .when(LootItemRandomChanceCondition.randomChance(0.01F))));
-            biConsumer.accept(LifeSteal.RUINED_LIBRARY_TABLE, LootTable.lootTable()
+            biConsumer.accept(ModResources.RUINED_LIBRARY_TABLE, LootTable.lootTable()
                     .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(2.0F))
                             .add(LootItem.lootTableItem(Items.PAPER).setWeight(10)
                                     .apply(SetItemCountFunction.setCount(UniformGenerator.between(3.0F, 18.0F))))
                             .add(LootItem.lootTableItem(Items.BOOK).setWeight(5)
                                     .apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 6.0F)))
-                                    .apply(EnchantWithLevelsFunction.enchantWithLevels(UniformGenerator.between(1.0F, 24.0F))
-                                            .allowTreasure()
+                                    .apply(EnchantWithLevelsFunction.enchantWithLevels(registries, UniformGenerator.between(1.0F, 24.0F))
                                             .when(LootItemRandomChanceCondition.randomChance(0.10F)))))
                     .withPool(LootPool.lootPool().setRolls(UniformGenerator.between(3.0F, 4.0F))
                             .add(LootItem.lootTableItem(ModItems.HEART_CORE.get()).setWeight(35))

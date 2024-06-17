@@ -1,16 +1,15 @@
 package net.goose.lifesteal.data.fabric;
 
-import dev.onyxstudios.cca.api.v3.component.ComponentKey;
-import dev.onyxstudios.cca.api.v3.component.ComponentRegistryV3;
-import dev.onyxstudios.cca.api.v3.entity.EntityComponentFactoryRegistry;
-import dev.onyxstudios.cca.api.v3.entity.EntityComponentInitializer;
-import dev.onyxstudios.cca.api.v3.entity.RespawnCopyStrategy;
-import net.goose.lifesteal.LifeSteal;
-import net.minecraft.resources.ResourceLocation;
+import net.goose.lifesteal.util.ModResources;
+import org.ladysnake.cca.api.v3.component.ComponentKey;
+import org.ladysnake.cca.api.v3.component.ComponentRegistryV3;
+import org.ladysnake.cca.api.v3.entity.EntityComponentFactoryRegistry;
+import org.ladysnake.cca.api.v3.entity.EntityComponentInitializer;
+import org.ladysnake.cca.api.v3.entity.RespawnCopyStrategy;
 
 public class ModComponents implements EntityComponentInitializer {
     public static final ComponentKey<HealthDataImpl> HEALTH_DATA =
-            ComponentRegistryV3.INSTANCE.getOrCreate(new ResourceLocation(LifeSteal.MOD_ID, "healthdata"), HealthDataImpl.class);
+            ComponentRegistryV3.INSTANCE.getOrCreate(ModResources.modLoc("healthdata"), HealthDataImpl.class);
 
     @Override
     public void registerEntityComponentFactories(EntityComponentFactoryRegistry registry) {

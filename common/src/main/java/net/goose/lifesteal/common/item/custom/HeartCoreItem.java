@@ -1,7 +1,6 @@
 package net.goose.lifesteal.common.item.custom;
 
 import net.goose.lifesteal.LifeSteal;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;

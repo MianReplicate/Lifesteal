@@ -11,6 +11,7 @@ import net.minecraft.advancements.Advancement;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.EntityArgument;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -50,7 +51,7 @@ public class LifestealCommand {
         final int startingHitPointDifference = LifeSteal.config.startingHealthDifference.get();
         String advancementUsed = (String) LifeSteal.config.advancementUsedForWithdrawing.get();
 
-        if (serverPlayer.getAdvancements().getOrStartProgress(Advancement.Builder.advancement().build(new ResourceLocation(advancementUsed))).isDone() || advancementUsed.isEmpty() || serverPlayer.isCreative()) {
+        if (serverPlayer.getAdvancements().getOrStartProgress(Advancement.Builder.advancement().build(ResourceLocation.tryParse(advancementUsed))).isDone() || advancementUsed.isEmpty() || serverPlayer.isCreative()) {
             HealthData IHeartCap = HealthData.get(serverPlayer).get();
 
             int heartDifference = IHeartCap.getHealthDifference() - (LifeSteal.config.heartCrystalAmountGain.get() * amount);
@@ -71,7 +72,7 @@ public class LifestealCommand {
             ItemStack heartCrystal = new ItemStack(ModItems.HEART_CRYSTAL.get(), amount);
             CompoundTag compoundTag = heartCrystal.getOrCreateTagElement("lifesteal");
             compoundTag.putBoolean("Unfresh", true);
-            heartCrystal.setHoverName(Component.translatable("item.lifesteal.heart_crystal.unnatural"));
+            heartCrystal.set(DataComponents.ITEM_NAME, Component.translatable("item.lifesteal.heart_crystal.unnatural"));
             if (serverPlayer.getInventory().getFreeSlot() == -1) {
                 serverPlayer.drop(heartCrystal, true);
             } else {

@@ -2,6 +2,7 @@ package net.goose.lifesteal.registry.fabric;
 
 import net.goose.lifesteal.registry.DeferredRegistry;
 import net.goose.lifesteal.registry.RegistrySupplier;
+import net.goose.lifesteal.util.ModResources;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
@@ -38,7 +39,7 @@ public class DeferredRegistryImpl {
 
         @Override
         public <R extends T> RegistrySupplier<R> register(String id, Supplier<R> supplier) {
-            ResourceLocation registeredId = new ResourceLocation(this.modid, id);
+            ResourceLocation registeredId = ResourceLocation.fromNamespaceAndPath(this.modid, id);
             RegistrySupplier<R> registrySupplier = new RegistrySupplier<>(registeredId, Registry.register(this.registry, registeredId, supplier.get()));
             this.entries.add((RegistrySupplier<T>) registrySupplier);
             return registrySupplier;

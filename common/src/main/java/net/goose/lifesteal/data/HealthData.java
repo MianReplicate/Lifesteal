@@ -11,10 +11,13 @@ import net.goose.lifesteal.common.block.custom.ReviveHeadBlock;
 import net.goose.lifesteal.common.blockentity.custom.ReviveSkullBlockEntity;
 import net.goose.lifesteal.common.item.ModItems;
 import net.goose.lifesteal.util.ComponentUtil;
+import net.goose.lifesteal.util.ModResources;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.players.UserBanList;
@@ -38,7 +41,7 @@ import java.util.*;
 
 public class HealthData implements IHealthData {
     private final LivingEntity livingEntity;
-    private final String attributeModifierIdentifier = new String("LifeStealHealthModifier");
+    private final ResourceLocation health_modifier_id = ModResources.modLoc("health_modifier");
     public HealthData(final LivingEntity entity) {
         this.livingEntity = entity;
     }
@@ -137,11 +140,8 @@ public class HealthData implements IHealthData {
     public boolean dropPlayerHead(){
         if (this.livingEntity instanceof ServerPlayer serverPlayer) {
             if (!serverPlayer.level().isClientSide) {
-                CompoundTag compoundTag = new CompoundTag();
-                compoundTag.putString("SkullOwner", serverPlayer.getName().toString());
-
                 ItemStack itemStack = new ItemStack(ModItems.REVIVE_HEAD_ITEM.get());
-                itemStack.setTag(compoundTag);
+                itemStack.set(DataComponents.PROFILE, serverPlayer.)
                 serverPlayer.drop(itemStack, true, false);
                 return true;
             }
@@ -188,14 +188,14 @@ public class HealthData implements IHealthData {
             while(attributeModifierIterator.hasNext()){
                 attributeModifier = attributeModifierIterator.next();
                 if(attributeModifier != null){
-                    if (!attributeModifier.name.equals(attributeModifierIdentifier)) {
-                        if (attributeModifier.getOperation() == AttributeModifier.Operation.ADDITION) {
-                            double amount = attributeModifier.getAmount();
+                    if (!attributeModifier.is(health_modifier_id)) {
+                        if (attributeModifier.operation() == AttributeModifier.Operation.ADD_VALUE) {
+                            double amount = attributeModifier.amount();
                             healthModifiedTotal += amount;
-                        } else if (attributeModifier.getOperation() == AttributeModifier.Operation.MULTIPLY_TOTAL) {
-                            healthModifiedTotal += this.livingEntity.getMaxHealth() / attributeModifier.getAmount();
-                        } else if (attributeModifier.getOperation() == AttributeModifier.Operation.MULTIPLY_BASE) {
-                            healthModifiedTotal += Attribute.getBaseValue() * attributeModifier.getAmount();
+                        } else if (attributeModifier.operation() == AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL) {
+                            healthModifiedTotal += this.livingEntity.getMaxHealth() / attributeModifier.amount();
+                        } else if (attributeModifier.operation() == AttributeModifier.Operation.ADD_MULTIPLIED_BASE) {
+                            healthModifiedTotal += Attribute.getBaseValue() * attributeModifier.amount();
                         }
                     }
                 }
@@ -283,33 +283,9 @@ public class HealthData implements IHealthData {
             setHealthDifference(healthDifference);
 
             AttributeInstance Attribute = this.livingEntity.getAttribute(Attributes.MAX_HEALTH);
-            Set<AttributeModifier> attributemodifiers = Attribute.getModifiers();
-
-            if (attributemodifiers.isEmpty()) {
-                AttributeModifier attributeModifier = new AttributeModifier(attributeModifierIdentifier, healthDifference, AttributeModifier.Operation.ADDITION);
-                Attribute.addPermanentModifier(attributeModifier);
-            }else{
-                Iterator<AttributeModifier> attributeModifierIterator = attributemodifiers.iterator();
-                boolean FoundAttribute = false;
-
-                AttributeModifier attributeModifier;
-                while(attributeModifierIterator.hasNext()){
-                    attributeModifier = attributeModifierIterator.next();
-                    if(attributeModifier != null){
-                        if (attributeModifier.name.equals(attributeModifierIdentifier)) {
-                            FoundAttribute = true;
-                            Attribute.removeModifier(attributeModifier.getId());
-                            AttributeModifier newmodifier = new AttributeModifier(attributeModifierIdentifier, healthDifference, AttributeModifier.Operation.ADDITION);
-                            Attribute.addPermanentModifier(newmodifier);
-                        }
-                    }
-                }
-
-                if (!FoundAttribute) {
-                    attributeModifier = new AttributeModifier(attributeModifierIdentifier, healthDifference, AttributeModifier.Operation.ADDITION);
-                    Attribute.addPermanentModifier(attributeModifier);
-                }
-            }
+            Attribute.removeModifier(health_modifier_id);
+            AttributeModifier newmodifier = new AttributeModifier(health_modifier_id, healthDifference, AttributeModifier.Operation.ADD_VALUE);
+            Attribute.addPermanentModifier(newmodifier);
 
             if (healthDifference >= 20 && this.livingEntity instanceof ServerPlayer serverPlayer) {
                 ModCriteria.GET_10_MAX_HEARTS.trigger(serverPlayer);

@@ -26,7 +26,8 @@ public class ModDataGenerators {
             gen.addProvider(ev.includeServer(), new ModRecipesProvider(packOutput, provider)); // Recipes
             gen.addProvider(ev.includeServer(), new LootTableProvider(packOutput, Collections.emptySet(), // LootTables
                     List.of(new LootTableProvider.SubProviderEntry(ModLootProvider.ModBlockLoot::new, LootContextParamSets.BLOCK),
-                            new LootTableProvider.SubProviderEntry(ModLootProvider.ModChestLoot::new, LootContextParamSets.CHEST))));
+                            new LootTableProvider.SubProviderEntry(ModLootProvider.ModChestLoot::new, LootContextParamSets.CHEST)),
+                    provider));
             gen.addProvider(ev.includeServer(), new ModBiomeTagsProvider(packOutput, provider, efh)); // BiomeTags
             gen.addProvider(ev.includeServer(), new ModBlockTagsProvider(packOutput, provider, efh)); // BlockTags
             gen.addProvider(ev.includeServer(), new ModAdvancementsProvider(packOutput, provider, efh, // Advancements
