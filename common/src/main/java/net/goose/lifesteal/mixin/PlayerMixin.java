@@ -4,6 +4,8 @@ import net.goose.lifesteal.LifeSteal;
 import net.goose.lifesteal.api.PlayerImpl;
 import net.goose.lifesteal.common.item.ModItems;
 import net.goose.lifesteal.data.HealthData;
+import net.minecraft.core.component.DataComponentType;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -26,10 +28,11 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerImpl {
 
     public void dropKilledHeartCrystal(LivingEntity killedPlayer) {
         ItemStack itemStack = new ItemStack(ModItems.HEART_CRYSTAL.get());
+        itemStack.get(DataComponents.)
         CompoundTag compoundTag = itemStack.getOrCreateTagElement("lifesteal");
         compoundTag.putBoolean("dropped", true);
         compoundTag.putBoolean("Unfresh", true);
-        itemStack.setHoverName(Component.translatable("item.lifesteal.heart_crystal.named", killedPlayer.getName().getString()));
+        itemStack.set(DataComponents.ITEM_NAME, Component.translatable("item.lifesteal.heart_crystal.named", killedPlayer.getName().getString()));
 
         ServerPlayer serverPlayer = (ServerPlayer) killedPlayer;
         serverPlayer.drop(itemStack, true, false);
