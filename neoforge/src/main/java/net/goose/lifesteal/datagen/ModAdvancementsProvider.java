@@ -59,7 +59,7 @@ public class ModAdvancementsProvider extends AdvancementProvider {
                             ModItems.HEART_FRAGMENT.get().getDefaultInstance(),
                             "root",
                             AdvancementType.TASK,
-                            ModResources.modLoc("textures/block/heart_core_block.png"),
+                            ModResources.modLoc("textures/block/crystal_block.png"),
                             false,
                             false,
                             false))
@@ -70,19 +70,19 @@ public class ModAdvancementsProvider extends AdvancementProvider {
                     .display(simpleDisplay(ModBlocks.REVIVE_HEAD.get(), ModResources.REVIVED.getPath(), AdvancementType.CHALLENGE))
                     .addCriterion("revived_from_dead", LSAdvancementTrigger.TriggerInstance.REVIVED())
                     .save(saver, ModResources.REVIVED.toString());
-            AdvancementHolder HEART_CORE = Advancement.Builder.advancement()
+            AdvancementHolder CRYSTAL_CORE = Advancement.Builder.advancement()
                     .parent(ROOT)
-                    .display(simpleDisplay(ModItems.HEART_CORE.get(), ModResources.GET_HEART_CORE.getPath(), AdvancementType.TASK))
-                    .addCriterion("has_heart_core", InventoryChangeTrigger.TriggerInstance.hasItems(ModItems.HEART_CORE.get()))
-                    .save(saver, ModResources.GET_HEART_CORE.toString());
+                    .display(simpleDisplay(ModItems.CRYSTAL_CORE.get(), ModResources.GET_CRYSTAL_CORE.getPath(), AdvancementType.TASK))
+                    .addCriterion("has_crystal_core", InventoryChangeTrigger.TriggerInstance.hasItems(ModItems.CRYSTAL_CORE.get()))
+                    .save(saver, ModResources.GET_CRYSTAL_CORE.toString());
             AdvancementHolder HEART_CRYSTAL = Advancement.Builder.advancement()
-                    .parent(HEART_CORE)
+                    .parent(CRYSTAL_CORE)
                     .display(simpleDisplay(ModItems.HEART_CRYSTAL.get(), ModResources.GET_HEART_CRYSTAL.getPath(), AdvancementType.TASK))
                     .addCriterion("has_heart_crystal", InventoryChangeTrigger.TriggerInstance.hasItems(ModItems.HEART_CRYSTAL.get()))
                     .save(saver, ModResources.GET_HEART_CRYSTAL.toString());
             AdvancementHolder GET_10_MAX_HEARTS = Advancement.Builder.advancement()
                     .parent(HEART_CRYSTAL)
-                    .display(simpleDisplay(ModBlocks.HEART_CORE_BLOCK.get(), ModResources.GET_10_MAX_HEARTS.getPath(), AdvancementType.GOAL))
+                    .display(simpleDisplay(ModBlocks.CRYSTAL_BLOCK.get(), ModResources.GET_10_MAX_HEARTS.getPath(), AdvancementType.GOAL))
                     .addCriterion("has_10_max_hearts", LSAdvancementTrigger.TriggerInstance.GET_10_MAX_HEARTS())
                     .rewards(AdvancementRewards.Builder.experience(500))
                     .save(saver, ModResources.GET_10_MAX_HEARTS.toString());

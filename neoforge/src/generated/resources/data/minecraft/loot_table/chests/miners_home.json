@@ -81,7 +81,7 @@
         },
         {
           "type": "minecraft:item",
-          "name": "lifesteal:heart_core_block",
+          "name": "lifesteal:crystal_block",
           "weight": 25
         }
       ],

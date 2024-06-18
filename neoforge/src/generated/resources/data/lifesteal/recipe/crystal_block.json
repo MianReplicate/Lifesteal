@@ -2,20 +2,23 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
+    "c": {
+      "item": "lifesteal:crystal_core"
+    },
+    "d": {
+      "item": "minecraft:diamond"
+    },
     "f": {
       "item": "lifesteal:heart_fragment"
-    },
-    "g": {
-      "item": "minecraft:golden_apple"
     }
   },
   "pattern": [
-    "fff",
-    "fgf",
-    "fff"
+    "cfc",
+    "fdf",
+    "cfc"
   ],
   "result": {
     "count": 1,
-    "id": "lifesteal:heart_core"
+    "id": "lifesteal:crystal_block"
   }
 }

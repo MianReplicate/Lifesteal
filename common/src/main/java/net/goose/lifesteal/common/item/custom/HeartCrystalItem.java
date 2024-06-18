@@ -67,7 +67,7 @@ public class HeartCrystalItem extends Item {
                     int newheartDifference = IHeartCap.getHealthDifference() + LifeSteal.config.heartCrystalAmountGain.get();
 
                     IHeartCap.setHealthDifference(newheartDifference);
-                    IHeartCap.refreshHearts(false);
+                    IHeartCap.refreshHealth(false);
 
                     // Formula, for every hit point, increase duration of the regeneration by 50 ticks: TickDuration = MaxHealth * 50
                     if (!unnaturalHeartCrystal) {

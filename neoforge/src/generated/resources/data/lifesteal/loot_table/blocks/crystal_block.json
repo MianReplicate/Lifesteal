@@ -11,11 +11,11 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "lifesteal:heart_core_block"
+          "name": "lifesteal:crystal_block"
         }
       ],
       "rolls": 1.0
     }
   ],
-  "random_sequence": "lifesteal:blocks/heart_core_block"
+  "random_sequence": "lifesteal:blocks/crystal_block"
 }

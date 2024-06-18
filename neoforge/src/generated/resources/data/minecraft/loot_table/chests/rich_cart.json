@@ -255,7 +255,7 @@
               "function": "minecraft:set_count"
             }
           ],
-          "name": "lifesteal:heart_core",
+          "name": "lifesteal:crystal_core",
           "weight": 1000
         },
         {
@@ -299,7 +299,7 @@
               "function": "minecraft:set_count"
             }
           ],
-          "name": "lifesteal:heart_core_block",
+          "name": "lifesteal:crystal_block",
           "weight": 100
         },
         {

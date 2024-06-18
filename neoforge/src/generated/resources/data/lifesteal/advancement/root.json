@@ -13,7 +13,7 @@
   },
   "display": {
     "announce_to_chat": false,
-    "background": "lifesteal:textures/block/heart_core_block.png",
+    "background": "lifesteal:textures/block/crystal_block.png",
     "description": {
       "translate": "advancement.lifesteal:root.desc"
     },

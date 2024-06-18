@@ -12,14 +12,14 @@ public interface IHealthData extends Serializable<CompoundTag> {
     BlockPos spawnPlayerHead();
     boolean dropPlayerHead();
     LivingEntity getLivingEntity();
-    double getHeartModifiedTotal(boolean includeHeartDifference);
+    double getHealthModifiedTotal(boolean includeHeartDifference);
     double getHPDifferenceRequiredForBan();
-    void banForDeath();
+    void removePlayer();
     int getHealthDifference();
 
     void setHealthDifference(int hearts);
 
-    void refreshHearts(boolean healtoMax);
+    void refreshHealth(boolean healtoMax);
 }
 
 

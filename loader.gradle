@@ -109,8 +109,20 @@ dependencies {
         // Includes Cardinal Components API as a Jar-in-Jar dependency (optional)
         include "dev.onyxstudios.cardinal-components-api:cardinal-components-base:${cardinal_components_api_version}"
         include "dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${cardinal_components_api_version}"
+
+        modRuntimeOnly("mezz.jei:jei-${minecraft_version}-fabric:${jei_version}")
+        modRuntimeOnly("maven.modrinth:sodium:${sodium_version}")
+        modRuntimeOnly("curse.maven:modernfix-${modern_fix_id}:${modern_fix_fabric}")
+        modRuntimeOnly("curse.maven:ferritecore-${ferritecore_fabric_id}:${ferritecore_fabric}")
+        modRuntimeOnly("curse.maven:mousetweaks-${mouse_tweaks_id}:${mouse_tweaks_fabric}")
     } else if(loomPlatform == 'neoforge'){
         neoForge "net.neoforged:neoforge:${neo_version}"
+
+        runtimeOnly("mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}")
+//        runtimeOnly("curse.maven:embeddium-${embeddium_id}:${embeddium_version}")
+        runtimeOnly("curse.maven:modernfix-${modern_fix_id}:${modern_fix_forge}")
+        runtimeOnly("curse.maven:ferritecore-${ferritecore_forge_id}:${ferritecore_forge}")
+//        runtimeOnly("curse.maven:mousetweaks-${mouse_tweaks_id}:${mouse_tweaks_forge}")
     }
 
     common(project(path: ':common', configuration: 'namedElements')) { transitive false }

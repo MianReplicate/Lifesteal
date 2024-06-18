@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_heart_core": {
+    "has_fragment": {
       "conditions": {
         "items": [
           {
-            "items": "lifesteal:heart_core"
+            "items": "lifesteal:heart_fragment"
           }
         ]
       },
@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "lifesteal:heart_core_block"
+        "recipe": "lifesteal:crystal_core"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -21,12 +21,12 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_heart_core"
+      "has_fragment"
     ]
   ],
   "rewards": {
     "recipes": [
-      "lifesteal:heart_core_block"
+      "lifesteal:crystal_core"
     ]
   }
 }
