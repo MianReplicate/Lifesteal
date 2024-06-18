@@ -64,41 +64,41 @@ public class ModAdvancementsProvider extends AdvancementProvider {
                             false,
                             false))
                     .addCriterion("has_heart_fragment", InventoryChangeTrigger.TriggerInstance.hasItems(ModItems.HEART_FRAGMENT.get()))
-                    .save(saver, ModResources.modLocString("root"));
+                    .save(saver, ModResources.ROOT.toString());
             Advancement.Builder.advancement()
                     .parent(ROOT)
-                    .display(simpleDisplay(ModBlocks.REVIVE_HEAD.get(), "revived_from_dead", AdvancementType.CHALLENGE))
-                    .addCriterion("revived", LSAdvancementTrigger.TriggerInstance.REVIVED())
-                    .save(saver, ModResources.modLocString("revived_from_dead"));
+                    .display(simpleDisplay(ModBlocks.REVIVE_HEAD.get(), ModResources.REVIVED.getPath(), AdvancementType.CHALLENGE))
+                    .addCriterion("revived_from_dead", LSAdvancementTrigger.TriggerInstance.REVIVED())
+                    .save(saver, ModResources.REVIVED.toString());
             AdvancementHolder HEART_CORE = Advancement.Builder.advancement()
                     .parent(ROOT)
-                    .display(simpleDisplay(ModItems.HEART_CORE.get(), "get_heart_core", AdvancementType.TASK))
+                    .display(simpleDisplay(ModItems.HEART_CORE.get(), ModResources.GET_HEART_CORE.getPath(), AdvancementType.TASK))
                     .addCriterion("has_heart_core", InventoryChangeTrigger.TriggerInstance.hasItems(ModItems.HEART_CORE.get()))
-                    .save(saver, ModResources.modLocString("get_heart_core"));
+                    .save(saver, ModResources.GET_HEART_CORE.toString());
             AdvancementHolder HEART_CRYSTAL = Advancement.Builder.advancement()
                     .parent(HEART_CORE)
-                    .display(simpleDisplay(ModItems.HEART_CRYSTAL.get(), "get_heart_crystal", AdvancementType.TASK))
+                    .display(simpleDisplay(ModItems.HEART_CRYSTAL.get(), ModResources.GET_HEART_CRYSTAL.getPath(), AdvancementType.TASK))
                     .addCriterion("has_heart_crystal", InventoryChangeTrigger.TriggerInstance.hasItems(ModItems.HEART_CRYSTAL.get()))
-                    .save(saver, ModResources.modLocString("get_heart_crystal"));
+                    .save(saver, ModResources.GET_HEART_CRYSTAL.toString());
             AdvancementHolder GET_10_MAX_HEARTS = Advancement.Builder.advancement()
                     .parent(HEART_CRYSTAL)
-                    .display(simpleDisplay(ModBlocks.HEART_CORE_BLOCK.get(), "get_10_max_hearts", AdvancementType.GOAL))
+                    .display(simpleDisplay(ModBlocks.HEART_CORE_BLOCK.get(), ModResources.GET_10_MAX_HEARTS.getPath(), AdvancementType.GOAL))
                     .addCriterion("has_10_max_hearts", LSAdvancementTrigger.TriggerInstance.GET_10_MAX_HEARTS())
                     .rewards(AdvancementRewards.Builder.experience(500))
                     .save(saver, ModResources.GET_10_MAX_HEARTS.toString());
             Advancement.Builder.advancement()
                     .parent(GET_10_MAX_HEARTS)
-                    .display(simpleDisplay(Items.TOTEM_OF_UNDYING, "use_totem_while_20_max_hearts", AdvancementType.CHALLENGE))
+                    .display(simpleDisplay(Items.TOTEM_OF_UNDYING, ModResources.USE_TOTEM_WHILE_20_MAX_HEARTS.getPath(), AdvancementType.CHALLENGE))
                     .addCriterion("used_totem_while_20_max_hearts", LSAdvancementTrigger.TriggerInstance.USE_TOTEM_WHILE_20_MAX_HEARTS())
                     .rewards(AdvancementRewards.Builder.experience(500))
                     .save(saver, ModResources.USE_TOTEM_WHILE_20_MAX_HEARTS.toString());
             Advancement.Builder.advancement()
                     .parent(GET_10_MAX_HEARTS)
-                    .display(simpleDisplay(Items.NETHERITE_HELMET, "get_10_max_hearts_with_netherite_armor", AdvancementType.CHALLENGE))
+                    .display(simpleDisplay(Items.NETHERITE_HELMET, ModResources.GET_10_MAX_HEARTS_WITH_NETHERITE_ARMOR.getPath(), AdvancementType.CHALLENGE))
                     .addCriterion("has_full_netherite_armor", InventoryChangeTrigger.TriggerInstance.hasItems(Items.NETHERITE_HELMET, Items.NETHERITE_CHESTPLATE, Items.NETHERITE_LEGGINGS, Items.NETHERITE_BOOTS))
                     .addCriterion("has_10_max_hearts", LSAdvancementTrigger.TriggerInstance.GET_10_MAX_HEARTS())
                     .rewards(AdvancementRewards.Builder.experience(500))
-                    .save(saver, ModResources.modLocString("get_10_max_hearts_with_netherite_armor"));
+                    .save(saver, ModResources.GET_10_MAX_HEARTS_WITH_NETHERITE_ARMOR.toString());
         }
     }
 }

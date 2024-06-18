@@ -39,6 +39,7 @@ public class ModConfig {
     public final ModConfigSpec.BooleanValue playerDropsHeartCrystalWhenKilled;
     public final ModConfigSpec.BooleanValue playerDropsHeartCrystalWhenKillerHasMax;
     public final ModConfigSpec.BooleanValue uponDeathBanned;
+    public final ModConfigSpec.IntValue permissionLevelForRevival;
     public final ModConfigSpec.IntValue permissionLevelForWithdraw;
     public final ModConfigSpec.IntValue permissionLevelForSettingHitPoints;
     public final ModConfigSpec.IntValue permissionLevelForGettingHitPoints;
@@ -118,6 +119,9 @@ public class ModConfig {
         builder.pop();
         builder.push("Get-Hitpoints");
         this.permissionLevelForGettingHitPoints = buildInt(builder, "Permission Level:", Commands.LEVEL_GAMEMASTERS, Commands.LEVEL_ALL, Commands.LEVEL_OWNERS, null);
+        builder.pop();
+        builder.push("Reviving Players");
+        this.permissionLevelForRevival = buildInt(builder, "Permission Level:", Commands.LEVEL_GAMEMASTERS, Commands.LEVEL_ALL, Commands.LEVEL_OWNERS, null);
         builder.pop();
 
         builder.pop();

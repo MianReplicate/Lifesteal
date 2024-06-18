@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:copy_components",
+              "include": [
+                "minecraft:profile",
+                "minecraft:note_block_sound"
+              ],
+              "source": "block_entity"
+            }
+          ],
+          "name": "lifesteal:revive_head"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "lifesteal:blocks/revive_head"
+}

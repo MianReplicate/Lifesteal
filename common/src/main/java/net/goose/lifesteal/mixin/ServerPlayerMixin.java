@@ -20,7 +20,7 @@ public abstract class ServerPlayerMixin extends LivingEntity {
     private void onSpawn(final CallbackInfo info) {
         HealthData.get(this).ifPresent(healthData -> {
             healthData.refreshHearts(true);
-            healthData.revivedTeleport();
+            healthData.tryRevivalEffects();
         });
     }
 }

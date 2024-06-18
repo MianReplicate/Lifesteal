@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "c": {
+      "item": "lifesteal:heart_core"
+    },
+    "d": {
+      "item": "minecraft:diamond"
+    },
+    "f": {
+      "item": "lifesteal:heart_fragment"
+    }
+  },
+  "pattern": [
+    "cfc",
+    "fdf",
+    "cfc"
+  ],
+  "result": {
+    "count": 1,
+    "id": "lifesteal:heart_core_block"
+  }
+}

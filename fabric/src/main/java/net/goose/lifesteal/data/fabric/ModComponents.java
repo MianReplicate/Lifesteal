@@ -9,7 +9,7 @@ import org.ladysnake.cca.api.v3.entity.RespawnCopyStrategy;
 
 public class ModComponents implements EntityComponentInitializer {
     public static final ComponentKey<HealthDataImpl> HEALTH_DATA =
-            ComponentRegistryV3.INSTANCE.getOrCreate(ModResources.modLoc("healthdata"), HealthDataImpl.class);
+            ComponentRegistryV3.INSTANCE.getOrCreate(ModResources.HEALTH_DATA, HealthDataImpl.class);
 
     @Override
     public void registerEntityComponentFactories(EntityComponentFactoryRegistry registry) {

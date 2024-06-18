@@ -10,14 +10,13 @@ import net.goose.lifesteal.common.block.ModBlocks;
 import net.goose.lifesteal.common.block.custom.ReviveHeadBlock;
 import net.goose.lifesteal.common.blockentity.custom.ReviveSkullBlockEntity;
 import net.goose.lifesteal.common.item.ModItems;
-import net.goose.lifesteal.util.ComponentUtil;
 import net.goose.lifesteal.util.ModResources;
+import net.goose.lifesteal.util.ModUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.players.UserBanList;
@@ -42,7 +41,6 @@ import java.util.*;
 
 public class HealthData implements IHealthData {
     private final LivingEntity livingEntity;
-    private final ResourceLocation health_modifier_id = ModResources.modLoc("health_modifier");
     public HealthData(final LivingEntity entity) {
         this.livingEntity = entity;
     }
@@ -58,7 +56,7 @@ public class HealthData implements IHealthData {
     }
 
     @Override
-    public void revivedTeleport() {
+    public void tryRevivalEffects() {
         if (this.livingEntity instanceof ServerPlayer serverPlayer) {
             PlayerImpl playerImpl = ((PlayerImpl) serverPlayer);
             if(playerImpl.getRevived())
@@ -178,29 +176,19 @@ public class HealthData implements IHealthData {
     // Returns the real amount of hitpoints a player has, includes every other mod's effect and ours.
     @Override
     public double getHeartModifiedTotal(boolean includeHeartDifference){
-        AttributeInstance Attribute = this.livingEntity.getAttribute(Attributes.MAX_HEALTH);
-        Set<AttributeModifier> attributemodifiers = Attribute.getModifiers();
+        AttributeInstance attribute = this.livingEntity.getAttribute(Attributes.MAX_HEALTH);
         double healthModifiedTotal = includeHeartDifference ? getHealthDifference() : 0.0;
 
-        if (!attributemodifiers.isEmpty()) {
-            Iterator<AttributeModifier> attributeModifierIterator = attributemodifiers.iterator();
-
-            AttributeModifier attributeModifier;
-            while(attributeModifierIterator.hasNext()){
-                attributeModifier = attributeModifierIterator.next();
-                if(attributeModifier != null){
-                    if (!attributeModifier.is(health_modifier_id)) {
-                        if (attributeModifier.operation() == AttributeModifier.Operation.ADD_VALUE) {
-                            double amount = attributeModifier.amount();
-                            healthModifiedTotal += amount;
-                        } else if (attributeModifier.operation() == AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL) {
-                            healthModifiedTotal += this.livingEntity.getMaxHealth() / attributeModifier.amount();
-                        } else if (attributeModifier.operation() == AttributeModifier.Operation.ADD_MULTIPLIED_BASE) {
-                            healthModifiedTotal += Attribute.getBaseValue() * attributeModifier.amount();
-                        }
-                    }
-                }
-            }
+        AttributeModifier attributeModifier = attribute.getModifier(ModResources.HEALTH_MODIFIER);
+        if(attributeModifier != null){
+            if (attributeModifier.operation() == AttributeModifier.Operation.ADD_VALUE) {
+                double amount = attributeModifier.amount();
+                healthModifiedTotal += amount;
+            } else if (attributeModifier.operation() == AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL) {
+                healthModifiedTotal += this.livingEntity.getMaxHealth() / attributeModifier.amount();
+            } else if (attributeModifier.operation() == AttributeModifier.Operation.ADD_MULTIPLIED_BASE) {
+                healthModifiedTotal += attribute.getBaseValue() * attributeModifier.amount();
+            }   
         }
 
         return healthModifiedTotal;
@@ -233,7 +221,7 @@ public class HealthData implements IHealthData {
                         dropPlayerHead();
                     } else {
                         MutableComponent compPos = Component.translatable("bannedmessage.lifesteal.revive_head_location", blockPos.getX(), blockPos.getY(), blockPos.getZ());
-                        fullcomponent = ComponentUtil.addComponents(bannedcomponent, compPos);
+                        fullcomponent = ModUtil.addComponents(bannedcomponent, compPos);
                     }
                 }
 
@@ -283,10 +271,9 @@ public class HealthData implements IHealthData {
 
             setHealthDifference(healthDifference);
 
-            AttributeInstance Attribute = this.livingEntity.getAttribute(Attributes.MAX_HEALTH);
-            Attribute.removeModifier(health_modifier_id);
-            AttributeModifier newmodifier = new AttributeModifier(health_modifier_id, healthDifference, AttributeModifier.Operation.ADD_VALUE);
-            Attribute.addPermanentModifier(newmodifier);
+            AttributeInstance attribute = this.livingEntity.getAttribute(Attributes.MAX_HEALTH);
+            AttributeModifier modifier = new AttributeModifier(ModResources.HEALTH_MODIFIER, healthDifference, AttributeModifier.Operation.ADD_VALUE);
+            attribute.addOrReplacePermanentModifier(modifier);
 
             if (healthDifference >= 20 && this.livingEntity instanceof ServerPlayer serverPlayer) {
                 ModCriteria.GET_10_MAX_HEARTS.trigger(serverPlayer);
@@ -302,12 +289,12 @@ public class HealthData implements IHealthData {
     @Override
     public CompoundTag serializeNBT() {
         CompoundTag tag = new CompoundTag();
-        tag.putInt("heartdifference", getHealthDifference());
+        tag.putInt("health_difference", getHealthDifference());
         return tag;
     }
 
     @Override
     public void deserializeNBT(CompoundTag tag) {
-        setHealthDifference(tag.getInt("heartdifference"));
+        setHealthDifference(tag.getInt("health_difference"));
     }
 }

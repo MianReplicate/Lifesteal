@@ -129,7 +129,7 @@ subprojects {
             inputs.property "${it.key}", "${it.value}"
         }
 
-        filesMatching([ '*.mixins.json', 'pack.mcmeta', 'META-INF/mods.toml', 'fabric.mod.json', 'architectury.common.json' ]) {
+        filesMatching([ '*.mixins.json', 'pack.mcmeta', 'META-INF/neoforge.mods.toml', 'fabric.mod.json', 'architectury.common.json' ]) {
             expand project.properties
         }
     }

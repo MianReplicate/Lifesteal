@@ -38,7 +38,7 @@ loom {
     }
 }
 
-def resourceTargets = ['fabric.mod.json', 'mods.toml']
+def resourceTargets = ['fabric.mod.json', 'neoforge.mods.toml']
 def intoTargets = ["$rootDir/out/production/resources/", "$rootDir/out/production/${project.name}.main/", "$rootDir/bin/main/"]
 def replaceProperties = [mod_id                 : mod_id, mod_name: mod_name, mod_version: mod_version,
                          mod_authors            : mod_authors, mod_credits:mod_credits, mod_description: mod_description,

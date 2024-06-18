@@ -41,6 +41,8 @@
   "chat.message.lifesteal.get_hit_point_for_player": "%s's HitPoint difference is %s.",
   "chat.message.lifesteal.set_hit_point_for_self": "Your HitPoint difference has been set to %s.",
   "chat.message.lifesteal.set_hit_point_for_player": "Set %s's HitPoint difference to %s.",
+  "chat.message.lifesteal.revived_player_command_success": "Successfully revived %s.",
+  "chat.message.lifesteal.revived_player_command_failed": "Failed to revive due to no position being given.",
 
   "itemGroup.lifesteal": "Lifesteal",
 
@@ -56,6 +58,8 @@
   "advancement.lifesteal:use_totem_while_20_max_hearts.desc": "Save yourself from death with a Totem of Undying, even at the peak of immortality.",
   "advancement.lifesteal:get_10_max_hearts_with_netherite_armor": "Challenging Death",
   "advancement.lifesteal:get_10_max_hearts_with_netherite_armor.desc": "Gain 10 extra hearts AND get a full Netherite Armor set. Truly immortal.",
-  "advancement.lifesteal:revived_from_dead": "The End of Time",
-  "advancement.lifesteal:revived_from_dead.desc": "Defy the meaning of death."
+  "advancement.lifesteal:revived": "The End of Time",
+  "advancement.lifesteal:revived.desc": "Defy the meaning of death.",
+
+  "tag.item.origins.ignore_diet": "Ignore Diet"
 }

@@ -1,6 +1,7 @@
 package net.goose.lifesteal.common.item.custom;
 
 import net.goose.lifesteal.LifeSteal;
+import net.goose.lifesteal.common.item.ModItems;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -10,20 +11,17 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
 public class HeartCoreItem extends Item {
 
-    public static final FoodProperties HeartCore = (new FoodProperties.Builder()).alwaysEdible().build();
-
     public HeartCoreItem(Properties pProperties) {
         super(pProperties);
     }
 
-    public boolean runHeartCoreCode(Level level, LivingEntity entity) {
+    public boolean useHeartCore(LivingEntity entity) {
         boolean success = true;
         if (entity instanceof ServerPlayer serverPlayer) {
             if (!LifeSteal.config.disableHeartCores.get()) {
@@ -59,30 +57,34 @@ public class HeartCoreItem extends Item {
     @Override
     public ItemStack finishUsingItem(ItemStack item, Level level, LivingEntity entity) {
         boolean success = false;
-        if (!LifeSteal.config.coreInstantUse.get()) {
-            if (!level.isClientSide) {
-                success = runHeartCoreCode(level, entity);
+        if(!level.isClientSide){
+            if (!LifeSteal.config.coreInstantUse.get()) {
+                if (!level.isClientSide) {
+                    success = useHeartCore(entity);
+                }
+            } else {
+                item.set(DataComponents.FOOD, null);
             }
-        } else {
-            item.set(DataComponents.FOOD, null);
         }
 
-        return success ? super.finishUsingItem(item, level, entity) : item;
+        return success && !LifeSteal.config.coreInstantUse.get() ? super.finishUsingItem(item, level, entity) : item;
     }
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionHand) {
-        ItemStack item = player.getItemInHand(interactionHand);
-        if (LifeSteal.config.coreInstantUse.get()) {
-            item.set(DataComponents.FOOD, null);
-            boolean success = runHeartCoreCode(level, player);
+        if(!level.isClientSide){
+            ItemStack item = player.getItemInHand(interactionHand);
+            if (LifeSteal.config.coreInstantUse.get()) {
+                item.set(DataComponents.FOOD, null);
+                boolean success = useHeartCore(player);
 
-            if (success) {
-                item.shrink(1);
-                player.containerMenu.broadcastChanges();
+                if (success) {
+                    item.shrink(1);
+                    player.containerMenu.broadcastChanges();
+                }
+            } else {
+                item.set(DataComponents.FOOD, ModItems.alwaysEdible);
             }
-        } else {
-            item.set(DataComponents.FOOD, HeartCore);
         }
 
         return super.use(level, player, interactionHand);

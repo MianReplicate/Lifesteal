@@ -7,7 +7,7 @@ import net.minecraft.world.entity.LivingEntity;
 
 
 public interface IHealthData extends Serializable<CompoundTag> {
-    void revivedTeleport();
+    void tryRevivalEffects();
 
     BlockPos spawnPlayerHead();
     boolean dropPlayerHead();
