@@ -1,13 +1,10 @@
 package net.goose.lifesteal.datagen;
 
-import net.goose.lifesteal.LifeSteal;
 import net.goose.lifesteal.common.block.ModBlocks;
 import net.goose.lifesteal.common.item.ModItems;
-import net.goose.lifesteal.util.ModResources;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
 
 import java.util.concurrent.CompletableFuture;
@@ -19,30 +16,30 @@ public class ModRecipesProvider extends RecipeProvider {
 
     @Override
     protected void buildRecipes(RecipeOutput consumer) {
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.HEART_CORE.get())
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.CRYSTAL_CORE.get())
                 .pattern("fff")
                 .pattern("fgf")
                 .pattern("fff")
                 .define('f', ModItems.HEART_FRAGMENT.get())
                 .define('g', Items.GOLDEN_APPLE)
                 .unlockedBy("has_fragment", RecipeProvider.has(ModItems.HEART_FRAGMENT.get()))
-                .save(consumer, ModItems.HEART_CORE.getId());
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.HEART_CORE_BLOCK.get().asItem())
+                .save(consumer, ModItems.CRYSTAL_CORE.getId());
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.CRYSTAL_BLOCK.get().asItem())
                 .pattern("cfc")
                 .pattern("fdf")
                 .pattern("cfc")
-                .define('c', ModItems.HEART_CORE.get())
+                .define('c', ModItems.CRYSTAL_CORE.get())
                 .define('f', ModItems.HEART_FRAGMENT.get())
                 .define('d', Items.DIAMOND)
-                .unlockedBy("has_heart_core", RecipeProvider.has(ModItems.HEART_CORE.get()))
-                .save(consumer, ModBlocks.HEART_CORE_BLOCK.getId());
+                .unlockedBy("has_crystal_core", RecipeProvider.has(ModItems.CRYSTAL_CORE.get()))
+                .save(consumer, ModBlocks.CRYSTAL_BLOCK.getId());
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.HEART_CRYSTAL.get())
                 .pattern("bhb")
                 .pattern("dcd")
                 .pattern("rbg")
-                .define('b', ModBlocks.HEART_CORE_BLOCK.get())
+                .define('b', ModBlocks.CRYSTAL_BLOCK.get())
                 .define('d', Items.DIAMOND)
-                .define('c', ModItems.HEART_CORE.get())
+                .define('c', ModItems.CRYSTAL_CORE.get())
                 .define('r', Items.BLAZE_ROD)
                 .define('g', Items.GOLDEN_APPLE)
                 .define('h', Items.HEART_OF_THE_SEA)
@@ -54,7 +51,7 @@ public class ModRecipesProvider extends RecipeProvider {
                 .pattern("ctc")
                 .define('g', Items.GHAST_TEAR)
                 .define('n', Items.NETHERITE_INGOT)
-                .define('c', ModItems.HEART_CORE.get())
+                .define('c', ModItems.CRYSTAL_CORE.get())
                 .define('t', Items.TOTEM_OF_UNDYING)
                 .define('h', ModItems.HEART_CRYSTAL.get())
                 .unlockedBy("has_totem", RecipeProvider.has(Items.TOTEM_OF_UNDYING))

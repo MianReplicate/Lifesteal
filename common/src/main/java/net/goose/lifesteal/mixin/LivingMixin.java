@@ -42,7 +42,7 @@ public abstract class LivingMixin {
                 HealthData.get(serverPlayer).ifPresent(healthData ->
                 {
                     healthData.setHealthDifference(healthData.getHealthDifference() + LifeSteal.config.amountOfHealthLostUponLoss.get());
-                    healthData.refreshHearts(false);
+                    healthData.refreshHealth(false);
                 });
             }
         }

@@ -4,10 +4,13 @@ import com.mojang.authlib.GameProfile;
 import net.goose.lifesteal.LifeSteal;
 import net.goose.lifesteal.api.PlayerImpl;
 import net.goose.lifesteal.common.blockentity.custom.ReviveSkullBlockEntity;
+import net.goose.lifesteal.common.component.ModDataComponents;
+import net.goose.lifesteal.common.item.ModItems;
 import net.goose.lifesteal.data.HealthData;
 import net.goose.lifesteal.data.PlayerLocationData;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerLevel;
@@ -18,6 +21,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;
@@ -81,5 +85,15 @@ public class ModUtil {
         }
 
         return successful;
+    }
+
+    public static void ripHeartCrystalFromPlayer(LivingEntity killedPlayer) {
+        ItemStack itemStack = new ItemStack(ModItems.HEART_CRYSTAL.get());
+        itemStack.set(ModDataComponents.RIPPED.get(), true);
+        itemStack.set(ModDataComponents.UNFRESH.get(), true);
+        itemStack.set(DataComponents.CUSTOM_NAME, Component.translatable("item.lifesteal.heart_crystal.named", killedPlayer.getName().getString()));
+
+        ServerPlayer serverPlayer = (ServerPlayer) killedPlayer;
+        serverPlayer.drop(itemStack, true, false);
     }
 }

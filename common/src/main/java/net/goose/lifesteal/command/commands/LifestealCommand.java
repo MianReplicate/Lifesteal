@@ -16,27 +16,20 @@ import net.minecraft.commands.Commands;
 import net.minecraft.commands.SharedSuggestionProvider;
 import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.commands.arguments.GameProfileArgument;
-import net.minecraft.commands.arguments.coordinates.Coordinates;
 import net.minecraft.commands.arguments.coordinates.Vec3Argument;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Position;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.players.UserBanList;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.stream.Stream;
 
 public class LifestealCommand {
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
@@ -123,7 +116,7 @@ public class LifestealCommand {
             }
 
             IHeartCap.setHealthDifference(heartDifference);
-            IHeartCap.refreshHearts(false);
+            IHeartCap.refreshHealth(false);
 
             ItemStack heartCrystal = new ItemStack(ModItems.HEART_CRYSTAL.get(), amount);
             heartCrystal.set(ModDataComponents.UNFRESH.get(), true);
@@ -159,7 +152,7 @@ public class LifestealCommand {
         LivingEntity player = source.getPlayerOrException();
         HealthData.get(player).ifPresent(IHeartCap -> {
             IHeartCap.setHealthDifference(amount);
-            IHeartCap.refreshHearts(false);
+            IHeartCap.refreshHealth(false);
         });
 
         source.sendSuccess(() -> Component.translatable("chat.message.lifesteal.set_hit_point_for_self", amount), true);
@@ -169,7 +162,7 @@ public class LifestealCommand {
     private static int setHitPoint(CommandSourceStack source, ServerPlayer chosenPlayer, int amount) throws CommandSyntaxException {
         HealthData.get(chosenPlayer).ifPresent(IHeartCap -> {
             IHeartCap.setHealthDifference(amount);
-            IHeartCap.refreshHearts(false);
+            IHeartCap.refreshHealth(false);
         });
 
         source.sendSuccess(() -> Component.translatable("chat.message.lifesteal.set_hit_point_for_player", chosenPlayer.getName().getString(), amount), true);

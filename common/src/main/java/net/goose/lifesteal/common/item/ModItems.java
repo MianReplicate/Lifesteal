@@ -2,7 +2,7 @@ package net.goose.lifesteal.common.item;
 
 import net.goose.lifesteal.LifeSteal;
 import net.goose.lifesteal.common.block.ModBlocks;
-import net.goose.lifesteal.common.item.custom.HeartCoreItem;
+import net.goose.lifesteal.common.item.custom.CrystalCoreItem;
 import net.goose.lifesteal.common.item.custom.HeartCrystalItem;
 import net.goose.lifesteal.common.item.custom.ReviveCrystalItem;
 import net.goose.lifesteal.registry.DeferredRegistry;
@@ -20,8 +20,8 @@ public class ModItems {
 
     public static final RegistrySupplier<Item> HEART_FRAGMENT = ITEMS.register("heart_fragment",
             () -> new Item(new Item.Properties()));
-    public static final RegistrySupplier<Item> HEART_CORE = ITEMS.register("heart_core",
-            () -> new HeartCoreItem(new Item.Properties().food(alwaysEdible)));
+    public static final RegistrySupplier<Item> CRYSTAL_CORE = ITEMS.register("crystal_core",
+            () -> new CrystalCoreItem(new Item.Properties().food(alwaysEdible)));
     public static final RegistrySupplier<Item> HEART_CRYSTAL = ITEMS.register("heart_crystal",
             () -> new HeartCrystalItem(new Item.Properties().stacksTo(1).fireResistant().food(alwaysEdible)));
     public static final RegistrySupplier<Item> REVIVE_CRYSTAL = ITEMS.register("revive_crystal",

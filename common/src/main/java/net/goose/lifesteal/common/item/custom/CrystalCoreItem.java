@@ -15,19 +15,19 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
-public class HeartCoreItem extends Item {
+public class CrystalCoreItem extends Item {
 
-    public HeartCoreItem(Properties pProperties) {
+    public CrystalCoreItem(Properties pProperties) {
         super(pProperties);
     }
 
-    public boolean useHeartCore(LivingEntity entity) {
+    public boolean useCrystalCore(LivingEntity entity) {
         boolean success = true;
         if (entity instanceof ServerPlayer serverPlayer) {
-            if (!LifeSteal.config.disableHeartCores.get()) {
+            if (!LifeSteal.config.disableCores.get()) {
                 if (Math.round(entity.getHealth()) < entity.getMaxHealth() || !LifeSteal.config.preventFromUsingCoreIfMax.get()) {
                     float maxHealth = entity.getMaxHealth();
-                    float amountThatWillBeHealed = (float) (maxHealth * LifeSteal.config.heartCoreHeal.get());
+                    float amountThatWillBeHealed = (float) (maxHealth * LifeSteal.config.coreHeal.get());
                     float differenceInHealth = entity.getMaxHealth() - entity.getHealth();
                     if (differenceInHealth <= amountThatWillBeHealed) {
                         amountThatWillBeHealed = differenceInHealth;
@@ -43,11 +43,11 @@ public class HeartCoreItem extends Item {
                     int tickTime = (int) ((amountThatWillBeHealed * 50) / 3) + oldDuration;
                     entity.addEffect(new MobEffectInstance(MobEffects.REGENERATION, tickTime, 2));
                 } else {
-                    serverPlayer.displayClientMessage(Component.translatable("gui.lifesteal.heart_core_at_max_health"), true);
+                    serverPlayer.displayClientMessage(Component.translatable("gui.lifesteal.crystal_core_at_max_health"), true);
                     success = false;
                 }
             } else {
-                serverPlayer.displayClientMessage(Component.translatable("gui.lifesteal.heart_core_disabled"), true);
+                serverPlayer.displayClientMessage(Component.translatable("gui.lifesteal.crystal_core_disabled"), true);
                 success = false;
             }
         }
@@ -60,7 +60,7 @@ public class HeartCoreItem extends Item {
         if(!level.isClientSide){
             if (!LifeSteal.config.coreInstantUse.get()) {
                 if (!level.isClientSide) {
-                    success = useHeartCore(entity);
+                    success = useCrystalCore(entity);
                 }
             } else {
                 item.set(DataComponents.FOOD, null);
@@ -76,7 +76,7 @@ public class HeartCoreItem extends Item {
             ItemStack item = player.getItemInHand(interactionHand);
             if (LifeSteal.config.coreInstantUse.get()) {
                 item.set(DataComponents.FOOD, null);
-                boolean success = useHeartCore(player);
+                boolean success = useCrystalCore(player);
 
                 if (success) {
                     item.shrink(1);

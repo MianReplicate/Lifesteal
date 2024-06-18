@@ -77,7 +77,7 @@ public class HealthData implements IHealthData {
                     } else {
                         setHealthDifference(LifeSteal.config.startingHealthDifference.get());
                     }
-                    refreshHearts(true);
+                    refreshHealth(true);
                     ModCriteria.REVIVED.trigger(serverPlayer);
                     playerImpl.setRevived(false);
                 }
@@ -175,9 +175,9 @@ public class HealthData implements IHealthData {
 
     // Returns the real amount of hitpoints a player has, includes every other mod's effect and ours.
     @Override
-    public double getHeartModifiedTotal(boolean includeHeartDifference){
+    public double getHealthModifiedTotal(boolean includeHealthDifference){
         AttributeInstance attribute = this.livingEntity.getAttribute(Attributes.MAX_HEALTH);
-        double healthModifiedTotal = includeHeartDifference ? getHealthDifference() : 0.0;
+        double healthModifiedTotal = includeHealthDifference ? getHealthDifference() : 0.0;
 
         AttributeModifier attributeModifier = attribute.getModifier(ModResources.HEALTH_MODIFIER);
         if(attributeModifier != null){
@@ -197,16 +197,16 @@ public class HealthData implements IHealthData {
     // Returns the amount a player's HPDifference would have to be to get banned.
     @Override
     public double getHPDifferenceRequiredForBan(){
-        double healthModified = this.getHeartModifiedTotal(false) + this.livingEntity.getAttribute(Attributes.MAX_HEALTH).getBaseValue();
+        double healthModified = this.getHealthModifiedTotal(false) + this.livingEntity.getAttribute(Attributes.MAX_HEALTH).getBaseValue();
         return -healthModified;
     }
 
     @Override
-    public void banForDeath(){
+    public void removePlayer(){
         if(!this.livingEntity.level().isClientSide){
             if (this.livingEntity instanceof ServerPlayer serverPlayer) {
                 setHealthDifference(LifeSteal.config.startingHealthDifference.get());
-                refreshHearts(true);
+                refreshHealth(true);
                 MinecraftServer server = this.livingEntity.level().getServer();
 
                 MutableComponent bannedcomponent = Component.translatable("bannedmessage.lifesteal.lost_max_hearts");
@@ -246,7 +246,7 @@ public class HealthData implements IHealthData {
     }
 
     @Override
-    public void refreshHearts(boolean healtoMax) {
+    public void refreshHealth(boolean healtoMax) {
 
         if (!this.livingEntity.level().isClientSide) {
             final int defaultHealthDifference = LifeSteal.config.startingHealthDifference.get();

@@ -1,11 +1,11 @@
 {
   "parent": "lifesteal:root",
   "criteria": {
-    "has_heart_core": {
+    "has_crystal_core": {
       "conditions": {
         "items": [
           {
-            "items": "lifesteal:heart_core"
+            "items": "lifesteal:crystal_core"
           }
         ]
       },
@@ -14,19 +14,19 @@
   },
   "display": {
     "description": {
-      "translate": "advancement.lifesteal:get_heart_core.desc"
+      "translate": "advancement.lifesteal:get_crystal_core.desc"
     },
     "icon": {
       "count": 1,
-      "id": "lifesteal:heart_core"
+      "id": "lifesteal:crystal_core"
     },
     "title": {
-      "translate": "advancement.lifesteal:get_heart_core"
+      "translate": "advancement.lifesteal:get_crystal_core"
     }
   },
   "requirements": [
     [
-      "has_heart_core"
+      "has_crystal_core"
     ]
   ],
   "sends_telemetry_event": true

@@ -19,12 +19,12 @@ public class ModConfig {
     public final ModConfigSpec.BooleanValue preventFromUsingCoreIfMax;
     public final ModConfigSpec.BooleanValue disableHeartCrystals;
     public final ModConfigSpec.BooleanValue disableUnnaturalHeartCrystals;
-    public final ModConfigSpec.BooleanValue disableHeartCores;
+    public final ModConfigSpec.BooleanValue disableCores;
     public final ModConfigSpec.BooleanValue disableReviveCrystals;
     public final ModConfigSpec.BooleanValue playersGainHeartsifKillednoHeart;
     public final ModConfigSpec.IntValue heartCrystalAmountGain;
     public final ModConfigSpec.BooleanValue crystalInstantUse;
-    public final ModConfigSpec.DoubleValue heartCoreHeal;
+    public final ModConfigSpec.DoubleValue coreHeal;
     public final ModConfigSpec.BooleanValue coreInstantUse;
     public final ModConfigSpec.BooleanValue disableStatusEffects;
     public final ModConfigSpec.BooleanValue disableLightningEffect;
@@ -67,11 +67,11 @@ public class ModConfig {
 
         builder.comment("Settings for Items and Blocks");
         builder.push("Items and Blocks");
-        builder.push("Heart Cores");
-        this.disableHeartCores = buildBoolean(builder, "Disable Heart Cores:", false, "Determines if Heart Cores are disabled.");
-        this.heartCoreHeal = buildDouble(builder, "Percentage of max health recovered from Heart Cores", 0.33, 0.01, 1, "The percentage of health recovered when a Heart Core is used.");
-        this.preventFromUsingCoreIfMax = buildBoolean(builder, "Prevent players at max hp from using Heart Cores:", true, "Determines if Heart Cores can be used by players already at maximum health");
-        this.coreInstantUse = buildBoolean(builder, "Instantly use Heart Cores:", false, "Determines if heart cores should be used instantly, or eaten.");
+        builder.push("Crystal Cores");
+        this.disableCores = buildBoolean(builder, "Disable Crystal Cores:", false, "Determines if Heart Cores are disabled.");
+        this.coreHeal = buildDouble(builder, "Percentage of max health recovered from Crystal Cores", 0.33, 0.01, 1, "The percentage of health recovered when a Heart Core is used.");
+        this.preventFromUsingCoreIfMax = buildBoolean(builder, "Prevent players at max hp from using Crystal Cores:", true, "Determines if Heart Cores can be used by players already at maximum health");
+        this.coreInstantUse = buildBoolean(builder, "Instantly use Crystal Cores:", false, "Determines if heart cores should be used instantly, or eaten.");
         builder.pop();
         builder.push("Heart Crystals");
         this.disableHeartCrystals = buildBoolean(builder, "Disable Heart Crystals:", false, "Determines if Natural Heart Cores should be disabled. (Doesn't affect Unnatural Heart Cores)");

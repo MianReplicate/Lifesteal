@@ -22,7 +22,7 @@ import java.util.function.Supplier;
 public class ModBlocks {
     public static final DeferredRegistry<Block> BLOCKS = DeferredRegistry.create(LifeSteal.MOD_ID, Registries.BLOCK);
 
-    public static final RegistrySupplier<Block> HEART_CORE_BLOCK = registerBlock("heart_core_block", () ->
+    public static final RegistrySupplier<Block> CRYSTAL_BLOCK = registerBlock("crystal_block", () ->
             new Block(BlockBehaviour.Properties.of().mapColor(MapColor.METAL).strength(6f).requiresCorrectToolForDrops()), true, null);
 
     public static final RegistrySupplier<Block> HEART_ORE = registerBlock("heart_ore", () ->

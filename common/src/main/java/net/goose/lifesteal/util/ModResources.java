@@ -34,7 +34,7 @@ public class ModResources {
     // Advancements
     public static final ResourceLocation GET_10_MAX_HEARTS_WITH_NETHERITE_ARMOR = modLoc("get_10_max_hearts_with_netherite_armor");
     public static final ResourceLocation GET_HEART_CRYSTAL = modLoc("get_heart_crystal");
-    public static final ResourceLocation GET_HEART_CORE = modLoc("get_heart_core");
+    public static final ResourceLocation GET_CRYSTAL_CORE = modLoc("get_crystal_core");
     public static final ResourceLocation ROOT = modLoc("root");
 
     // Configured Features

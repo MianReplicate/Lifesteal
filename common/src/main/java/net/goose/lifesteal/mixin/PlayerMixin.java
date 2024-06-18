@@ -2,17 +2,14 @@ package net.goose.lifesteal.mixin;
 
 import net.goose.lifesteal.LifeSteal;
 import net.goose.lifesteal.api.PlayerImpl;
-import net.goose.lifesteal.common.component.ModDataComponents;
-import net.goose.lifesteal.common.item.ModItems;
 import net.goose.lifesteal.data.HealthData;
-import net.minecraft.core.component.DataComponents;
+import net.goose.lifesteal.util.ModUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -26,23 +23,13 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerImpl {
         super(entityType, level);
     }
 
-    public void dropKilledHeartCrystal(LivingEntity killedPlayer) {
-        ItemStack itemStack = new ItemStack(ModItems.HEART_CRYSTAL.get());
-        itemStack.set(ModDataComponents.RIPPED.get(), true);
-        itemStack.set(ModDataComponents.UNFRESH.get(), true);
-        itemStack.set(DataComponents.CUSTOM_NAME, Component.translatable("item.lifesteal.heart_crystal.named", killedPlayer.getName().getString()));
-
-        ServerPlayer serverPlayer = (ServerPlayer) killedPlayer;
-        serverPlayer.drop(itemStack, true, false);
-    }
-
-    public void increaseHearts(HealthData data, int hitpoint, LivingEntity killedPlayer) {
+    public void increaseHealth(HealthData data, int hitpoint, LivingEntity killedPlayer) {
         final int maximumhitpointsGainable = LifeSteal.config.maximumHealthGainable.get();
         boolean alreadyGiven = false;
 
         if (maximumhitpointsGainable > -1 && LifeSteal.config.playerDropsHeartCrystalWhenKillerHasMax.get() && !LifeSteal.config.playerDropsHeartCrystalWhenKilled.get()) {
             if (data.getHealthDifference() + hitpoint > LifeSteal.config.startingHealthDifference.get() + maximumhitpointsGainable) {
-                dropKilledHeartCrystal(killedPlayer);
+                ModUtil.ripHeartCrystalFromPlayer(killedPlayer);
                 alreadyGiven = true;
             }
         }
@@ -50,7 +37,7 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerImpl {
         if (!alreadyGiven) {
             if (!LifeSteal.config.playerDropsHeartCrystalWhenKilled.get()) {
                 data.setHealthDifference(data.getHealthDifference() + hitpoint);
-                data.refreshHearts(false);
+                data.refreshHealth(false);
             }
         }
     }
@@ -60,7 +47,7 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerImpl {
         HealthData.get(this).ifPresent(healthData -> {
             // Are we at the amount where player should be banned based on their stats?
             if(healthData.getHealthDifference() <= healthData.getHPDifferenceRequiredForBan()){
-                healthData.banForDeath();
+                healthData.removePlayer();
             }
         });
     }
@@ -110,17 +97,17 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerImpl {
                             if (killerEntityIsPlayer && !disableLifesteal) {
                                 HealthData.get(killerEntity).ifPresent(killerData -> {
                                     if (playersGainHeartsifKillednoHeart) {
-                                        increaseHearts(killerData, amountOfHealthLostUponLoss, killedEntity);
+                                        increaseHealth(killerData, amountOfHealthLostUponLoss, killedEntity);
                                     } else {
                                         if (maximumheartsLoseable > -1) {
                                             if (startingHitPointDifference + HeartDifference > -maximumheartsLoseable) {
-                                                increaseHearts(killerData, amountOfHealthLostUponLoss, killedEntity);
+                                                increaseHealth(killerData, amountOfHealthLostUponLoss, killedEntity);
                                             } else {
                                                 killerPlayer.sendSystemMessage(Component.translatable("chat.message.lifesteal.no_more_hearts_to_steal"));
                                             }
 
                                         } else {
-                                            increaseHearts(killerData, amountOfHealthLostUponLoss, killedEntity);
+                                            increaseHealth(killerData, amountOfHealthLostUponLoss, killedEntity);
                                         }
                                     }
 
@@ -152,9 +139,9 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerImpl {
                     }
 
                     healthData.setHealthDifference(healthData.getHealthDifference() - amountOfHealthLostUponLoss);
-                    healthData.refreshHearts(false);
+                    healthData.refreshHealth(false);
                     if (LifeSteal.config.playerDropsHeartCrystalWhenKilled.get()) {
-                        dropKilledHeartCrystal(killedEntity);
+                        ModUtil.ripHeartCrystalFromPlayer(killedEntity);
                     }
                 }
             }

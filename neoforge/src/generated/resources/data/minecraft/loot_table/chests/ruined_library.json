@@ -59,7 +59,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "lifesteal:heart_core",
+          "name": "lifesteal:crystal_core",
           "weight": 35
         },
         {
@@ -91,7 +91,7 @@
               "function": "minecraft:set_count"
             }
           ],
-          "name": "lifesteal:heart_core_block",
+          "name": "lifesteal:crystal_block",
           "weight": 5
         },
         {

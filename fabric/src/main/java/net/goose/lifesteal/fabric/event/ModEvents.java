@@ -12,7 +12,7 @@ public class ModEvents {
         ServerPlayerEvents.COPY_FROM.register(((oldPlayer, newPlayer, alive) -> HealthData.get(oldPlayer).ifPresent(oldData -> HealthData.get(newPlayer).ifPresent(newData ->
         {
             newData.setHealthDifference(oldData.getHealthDifference());
-            newData.refreshHearts(true);
+            newData.refreshHealth(true);
         }))));
 
         PlayerBlockBreakEvents.BEFORE.register(((world, player, pos, state, blockEntity) -> {
