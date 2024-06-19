@@ -43,7 +43,15 @@ public class ReviveCrystalItem extends Item {
                 if (gameprofile != null) {
                     UserBanList userBanList = level.getServer().getPlayerList().getBans();
 
-                    boolean successful = ModUtil.revivePlayer((ServerLevel) level, blockPos, gameprofile.gameProfile(), player, userBanList);
+                    boolean successful = ModUtil.revivePlayer(
+                            (ServerLevel) level,
+                            blockPos,
+                            gameprofile.gameProfile(),
+                            LifeSteal.config.disableLightningEffect.get(),
+                            LifeSteal.config.silentlyRevivePlayer.get(),
+                            player,
+                            userBanList);
+
                     if (successful) {
                         itemStack.shrink(1);
                     } else {

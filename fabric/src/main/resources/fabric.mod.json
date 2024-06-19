@@ -2,7 +2,6 @@
   "schemaVersion": 1,
   "id": "lifesteal",
   "version": "${mod_version}",
-
   "custom": {
     "cardinal-components": [
       "lifesteal:health_data"

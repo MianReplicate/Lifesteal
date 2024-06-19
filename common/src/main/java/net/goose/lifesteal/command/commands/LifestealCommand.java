@@ -3,6 +3,7 @@ package net.goose.lifesteal.command.commands;
 import com.mojang.authlib.GameProfile;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.goose.lifesteal.LifeSteal;
@@ -48,9 +49,13 @@ public class LifestealCommand {
                                             });
                                             return SharedSuggestionProvider.suggest(suggestList, suggestionsBuilder);
                                         })
-                                        .executes((command) -> revivePlayer(command.getSource(), GameProfileArgument.getGameProfiles(command, "players"), null))
+                                        .executes((command) -> revivePlayer(command.getSource(), GameProfileArgument.getGameProfiles(command, "players"), null, true, false))
                                         .then(Commands.argument("location", Vec3Argument.vec3())
-                                                .executes((command) -> revivePlayer(command.getSource(), GameProfileArgument.getGameProfiles(command, "players"), Vec3Argument.getVec3(command, "location"))))))
+                                                .executes((command) -> revivePlayer(command.getSource(), GameProfileArgument.getGameProfiles(command, "players"),Vec3Argument.getVec3(command, "location"), true, false))
+                                                .then(Commands.argument("enableLightning", BoolArgumentType.bool())
+                                                        .executes((command) -> revivePlayer(command.getSource(), GameProfileArgument.getGameProfiles(command, "players"),Vec3Argument.getVec3(command, "location"), BoolArgumentType.getBool(command, "enableLightning"), false))
+                                                        .then(Commands.argument("silentlyRevive", BoolArgumentType.bool())
+                                                                .executes((command) -> revivePlayer(command.getSource(), GameProfileArgument.getGameProfiles(command, "players"),Vec3Argument.getVec3(command, "location"), BoolArgumentType.getBool(command, "enableLightning"), BoolArgumentType.getBool(command, "silentlyRevive"))))))))
                         .then(Commands.literal("withdraw")
                                 .requires((commandSource) -> commandSource.hasPermission(LifeSteal.config.permissionLevelForWithdraw.get()))
                                 .executes((command) -> withdraw(command.getSource(), 1))
@@ -71,7 +76,7 @@ public class LifestealCommand {
                                                 .executes((command) -> setHitPoint(command.getSource(), EntityArgument.getPlayer(command, "player"), IntegerArgumentType.getInteger(command, "amount")))))));
     }
 
-    private static int revivePlayer(CommandSourceStack source, Collection<GameProfile> gameProfiles, @Nullable Vec3 position){
+    private static int revivePlayer(CommandSourceStack source, Collection<GameProfile> gameProfiles, @Nullable Vec3 position, boolean enableLightningEffect, boolean silentRevive){
         if(position == null && !source.isPlayer()){
             source.sendFailure(Component.translatable("chat.message.lifesteal.revived_player_command_failed"));
         } else{
@@ -83,6 +88,8 @@ public class LifestealCommand {
                             source.getLevel(),
                             new BlockPos((int) finalPosition.x, (int) finalPosition.y, (int) finalPosition.z),
                             gameProfile,
+                            enableLightningEffect,
+                            silentRevive,
                             null,
                             source.getServer().getPlayerList().getBans());
                     if(success)

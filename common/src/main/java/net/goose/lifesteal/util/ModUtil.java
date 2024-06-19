@@ -36,7 +36,7 @@ public class ModUtil {
         return currentComponent;
     }
 
-    public static boolean revivePlayer(ServerLevel level, BlockPos reviveAt, GameProfile profileToUnban, @Nullable Player optionalReviver, @Nullable UserBanList userbanList) {
+    public static boolean revivePlayer(ServerLevel level, BlockPos reviveAt, GameProfile profileToUnban, boolean enableLightningEffect, boolean silentRevive, @Nullable Player optionalReviver, @Nullable UserBanList userbanList) {
         boolean successful = false;
 
         ServerPlayer serverPlayer = (ServerPlayer) level.getPlayerByUUID(profileToUnban.getId());
@@ -69,14 +69,14 @@ public class ModUtil {
                 skullBlockEntity.setDestroyed(true);
                 level.removeBlock(reviveAt, true);
             }
-            if (!LifeSteal.config.disableLightningEffect.get()) {
+            if (enableLightningEffect) {
                 Entity entity = new LightningBolt(EntityType.LIGHTNING_BOLT, level);
                 Vec3 vec3 = new Vec3(reviveAt.getX(), reviveAt.getY(), reviveAt.getZ());
                 entity.setPos(vec3);
                 level.addFreshEntity(entity);
             }
 
-            if (!LifeSteal.config.silentlyRevivePlayer.get()) {
+            if (!silentRevive) {
                 Component component = Component.translatable("chat.message.lifesteal.revived_player", profileToUnban.getName()).withStyle(ChatFormatting.YELLOW);
                 level.getServer().getPlayerList().broadcastSystemMessage(component, false);
             } else if(optionalReviver != null) {
