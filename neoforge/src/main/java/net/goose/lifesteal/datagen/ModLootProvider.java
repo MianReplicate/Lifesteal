@@ -147,8 +147,8 @@ public class ModLootProvider {
                             .add(LootItem.lootTableItem(ModItems.HEART_CRYSTAL.get()).setWeight(100)
                                     .when(LootItemRandomChanceCondition.randomChance(0.05F)))
                             .add(LootItem.lootTableItem(Items.NETHERITE_SCRAP).setWeight(1)
-                                    .apply(SetItemCountFunction.setCount(UniformGenerator.between(3.0F, 12.0F))))
-                            .when(LootItemRandomChanceCondition.randomChance(0.01F))));
+                                    .apply(SetItemCountFunction.setCount(UniformGenerator.between(3.0F, 12.0F)))
+                                    .when(LootItemRandomChanceCondition.randomChance(0.01F)))));
             biConsumer.accept(ModResources.RUINED_LIBRARY_TABLE, LootTable.lootTable()
                     .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(2.0F))
                             .add(LootItem.lootTableItem(Items.PAPER).setWeight(10)

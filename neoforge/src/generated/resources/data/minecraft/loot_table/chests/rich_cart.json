@@ -3,12 +3,6 @@
   "pools": [
     {
       "bonus_rolls": 5.0,
-      "conditions": [
-        {
-          "chance": 0.01,
-          "condition": "minecraft:random_chance"
-        }
-      ],
       "entries": [
         {
           "type": "minecraft:item",
@@ -315,6 +309,12 @@
         },
         {
           "type": "minecraft:item",
+          "conditions": [
+            {
+              "chance": 0.01,
+              "condition": "minecraft:random_chance"
+            }
+          ],
           "functions": [
             {
               "add": false,
