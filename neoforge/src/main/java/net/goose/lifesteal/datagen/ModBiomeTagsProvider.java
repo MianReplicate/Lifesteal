@@ -25,11 +25,9 @@ public class ModBiomeTagsProvider extends BiomeTagsProvider {
 
         tag(ModTags.BASE_MINERS_LOCATION).add(Biomes.PLAINS, Biomes.SUNFLOWER_PLAINS, Biomes.SNOWY_PLAINS, Biomes.MEADOW);
 
-        tag(ModTags.MINERS_LOCATION_1).add(Biomes.FOREST);
-        tag(ModTags.MINERS_LOCATION_1).addTag(ModTags.BASE_MINERS_LOCATION);
+        tag(ModTags.MINERS_LOCATION_1).add(Biomes.FOREST).addTag(ModTags.BASE_MINERS_LOCATION);
 
-        tag(ModTags.MINERS_LOCATION_2).add(Biomes.TAIGA);
-        tag(ModTags.MINERS_LOCATION_2).addTag(ModTags.BASE_MINERS_LOCATION);
+        tag(ModTags.MINERS_LOCATION_2).add(Biomes.TAIGA).addTag(ModTags.BASE_MINERS_LOCATION);
 
         tag(ModTags.MINERS_LOCATION_3).addTags(ModTags.BASE_MINERS_LOCATION, ModTags.MINERS_LOCATION_2, ModTags.MINERS_LOCATION_1);
 

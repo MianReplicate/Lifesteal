@@ -78,7 +78,7 @@ public class HealthData implements IHealthData {
                         setHealthDifference(LifeSteal.config.startingHealthDifference.get());
                     }
                     refreshHealth(true);
-                    ModCriteria.REVIVED.trigger(serverPlayer);
+                    ModCriteria.BACK_FROM_THE_DEAD.trigger(serverPlayer);
                     playerImpl.setRevived(false);
                 }
             }

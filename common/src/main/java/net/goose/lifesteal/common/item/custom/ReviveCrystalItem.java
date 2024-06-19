@@ -1,11 +1,13 @@
 package net.goose.lifesteal.common.item.custom;
 
 import net.goose.lifesteal.LifeSteal;
+import net.goose.lifesteal.advancement.ModCriteria;
 import net.goose.lifesteal.common.blockentity.custom.ReviveSkullBlockEntity;
 import net.goose.lifesteal.util.ModUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.players.UserBanList;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -47,13 +49,14 @@ public class ReviveCrystalItem extends Item {
                             (ServerLevel) level,
                             blockPos,
                             gameprofile.gameProfile(),
-                            LifeSteal.config.disableLightningEffect.get(),
+                            !LifeSteal.config.disableLightningEffect.get(),
                             LifeSteal.config.silentlyRevivePlayer.get(),
                             player,
                             userBanList);
 
                     if (successful) {
                         itemStack.shrink(1);
+                        ModCriteria.REVIVED.trigger((ServerPlayer) player);
                     } else {
                         player.displayClientMessage(Component.translatable("gui.lifesteal.error_revive_block"), true);
                     }

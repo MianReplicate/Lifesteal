@@ -1,0 +1,54 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "salt": 1542327653,
+    "separation": 15,
+    "spacing": 40
+  },
+  "structures": [
+    {
+      "structure": "lifesteal:ore_cart",
+      "weight": 80
+    },
+    {
+      "structure": "lifesteal:ore_cart_1",
+      "weight": 10
+    },
+    {
+      "structure": "lifesteal:ore_cart_2",
+      "weight": 20
+    },
+    {
+      "structure": "lifesteal:ore_cart_3",
+      "weight": 1
+    },
+    {
+      "structure": "lifesteal:ore_cart_4",
+      "weight": 100
+    },
+    {
+      "structure": "lifesteal:ore_cart_5",
+      "weight": 90
+    },
+    {
+      "structure": "lifesteal:ore_cart_1",
+      "weight": 10
+    },
+    {
+      "structure": "lifesteal:abandoned_trading_cart",
+      "weight": 40
+    },
+    {
+      "structure": "lifesteal:robbed_cart",
+      "weight": 150
+    },
+    {
+      "structure": "lifesteal:robbed_cart_1",
+      "weight": 150
+    },
+    {
+      "structure": "lifesteal:robbed_cart_2",
+      "weight": 150
+    }
+  ]
+}

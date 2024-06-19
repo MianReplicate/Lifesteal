@@ -7,7 +7,6 @@ import net.minecraft.advancements.critereon.ContextAwarePredicate;
 import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.util.ExtraCodecs;
 
 import java.util.Optional;
 
@@ -33,6 +32,9 @@ public class LSAdvancementTrigger extends SimpleCriterionTrigger<LSAdvancementTr
         }
         public static Criterion<LSAdvancementTrigger.TriggerInstance> USE_TOTEM_WHILE_20_MAX_HEARTS() {
             return ModCriteria.USE_TOTEM_WHILE_20_MAX_HEARTS.createCriterion(new LSAdvancementTrigger.TriggerInstance(Optional.empty()));
+        }
+        public static Criterion<LSAdvancementTrigger.TriggerInstance> BACK_FROM_THE_DEAD() {
+            return ModCriteria.BACK_FROM_THE_DEAD.createCriterion(new LSAdvancementTrigger.TriggerInstance(Optional.empty()));
         }
         public static Criterion<LSAdvancementTrigger.TriggerInstance> REVIVED() {
             return ModCriteria.REVIVED.createCriterion(new LSAdvancementTrigger.TriggerInstance(Optional.empty()));

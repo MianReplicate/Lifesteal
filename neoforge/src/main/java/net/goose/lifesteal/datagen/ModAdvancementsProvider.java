@@ -67,9 +67,9 @@ public class ModAdvancementsProvider extends AdvancementProvider {
                     .save(saver, ModResources.ROOT.toString());
             Advancement.Builder.advancement()
                     .parent(ROOT)
-                    .display(simpleDisplay(ModBlocks.REVIVE_HEAD.get(), ModResources.REVIVED.getPath(), AdvancementType.CHALLENGE))
-                    .addCriterion("revived_from_dead", LSAdvancementTrigger.TriggerInstance.REVIVED())
-                    .save(saver, ModResources.REVIVED.toString());
+                    .display(simpleDisplay(ModBlocks.REVIVE_HEAD.get(), ModResources.BACK_FROM_THE_DEAD.getPath(), AdvancementType.CHALLENGE))
+                    .addCriterion("back_from_the_dead", LSAdvancementTrigger.TriggerInstance.BACK_FROM_THE_DEAD())
+                    .save(saver, ModResources.BACK_FROM_THE_DEAD.toString());
             AdvancementHolder CRYSTAL_CORE = Advancement.Builder.advancement()
                     .parent(ROOT)
                     .display(simpleDisplay(ModItems.CRYSTAL_CORE.get(), ModResources.GET_CRYSTAL_CORE.getPath(), AdvancementType.TASK))
@@ -86,6 +86,18 @@ public class ModAdvancementsProvider extends AdvancementProvider {
                     .addCriterion("has_10_max_hearts", LSAdvancementTrigger.TriggerInstance.GET_10_MAX_HEARTS())
                     .rewards(AdvancementRewards.Builder.experience(500))
                     .save(saver, ModResources.GET_10_MAX_HEARTS.toString());
+            AdvancementHolder REVIVE_CRYSTAL = Advancement.Builder.advancement()
+                    .parent(HEART_CRYSTAL)
+                    .display(simpleDisplay(ModItems.REVIVE_CRYSTAL.get(), ModResources.GET_REVIVE_CRYSTAL.getPath(), AdvancementType.CHALLENGE))
+                    .addCriterion("has_revive_crystal", InventoryChangeTrigger.TriggerInstance.hasItems(ModItems.REVIVE_CRYSTAL.get()))
+                    .rewards(AdvancementRewards.Builder.experience(500))
+                    .save(saver, ModResources.GET_REVIVE_CRYSTAL.toString());
+            Advancement.Builder.advancement()
+                    .parent(REVIVE_CRYSTAL)
+                    .display(simpleDisplay(Items.DIRT, ModResources.REVIVED.getPath(), AdvancementType.CHALLENGE))
+                    .addCriterion("revived_player", LSAdvancementTrigger.TriggerInstance.REVIVED())
+                    .rewards(AdvancementRewards.Builder.experience(1000))
+                    .save(saver, ModResources.REVIVED.toString());
             Advancement.Builder.advancement()
                     .parent(GET_10_MAX_HEARTS)
                     .display(simpleDisplay(Items.TOTEM_OF_UNDYING, ModResources.USE_TOTEM_WHILE_20_MAX_HEARTS.getPath(), AdvancementType.CHALLENGE))

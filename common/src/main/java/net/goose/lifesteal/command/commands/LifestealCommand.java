@@ -78,7 +78,7 @@ public class LifestealCommand {
 
     private static int revivePlayer(CommandSourceStack source, Collection<GameProfile> gameProfiles, @Nullable Vec3 position, boolean enableLightningEffect, boolean silentRevive){
         if(position == null && !source.isPlayer()){
-            source.sendFailure(Component.translatable("chat.message.lifesteal.revived_player_command_failed"));
+            source.sendFailure(Component.translatable("chat.message.lifesteal.revived_player_failed"));
         } else{
             position = position == null ? source.getPlayer().position() : position;
             Vec3 finalPosition = position;
@@ -93,7 +93,7 @@ public class LifestealCommand {
                             null,
                             source.getServer().getPlayerList().getBans());
                     if(success)
-                        source.sendSuccess(() -> Component.translatable("chat.message.lifesteal.revived_player_command_success", gameProfile.getName()), true);
+                        source.sendSuccess(() -> Component.translatable("chat.message.lifesteal.revived_player_success", gameProfile.getName()), true);
             });
         }
 
@@ -114,11 +114,11 @@ public class LifestealCommand {
 
             if (maximumheartsLoseable >= 0) {
                 if (heartDifference < startingHitPointDifference - maximumheartsLoseable) {
-                    serverPlayer.displayClientMessage(Component.translatable("gui.lifesteal.can't_withdraw_less_than_minimum"), true);
+                    serverPlayer.displayClientMessage(Component.translatable("gui.lifesteal.cant_withdraw_less_than_maximum"), true);
                     return Command.SINGLE_SUCCESS;
                 }
             }else if(heartDifference <= IHeartCap.getHPDifferenceRequiredForBan()) {
-                serverPlayer.displayClientMessage(Component.translatable("gui.lifesteal.can't_withdraw_less_than_amount_have"), true);
+                serverPlayer.displayClientMessage(Component.translatable("gui.lifesteal.cant_withdraw_less_than_amount_have"), true);
                 return Command.SINGLE_SUCCESS;
             }
 

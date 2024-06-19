@@ -1,6 +1,7 @@
 package net.goose.lifesteal.neoforge;
 
 import net.goose.lifesteal.LifeSteal;
+import net.goose.lifesteal.advancement.ModCriteria;
 import net.goose.lifesteal.configuration.ConfigHolder;
 import net.goose.lifesteal.data.neoforge.ModCapabilities;
 import net.goose.lifesteal.data.neoforge.ModDataAttachments;
@@ -41,6 +42,7 @@ public class LifestealNeoForge {
         LifeSteal.LOGGER.debug("Initializing ModCriteria for " + LifeSteal.MOD_ID);
         registerEvent.register(BuiltInRegistries.TRIGGER_TYPES.key(), ModResources.GET_10_MAX_HEARTS, () -> GET_10_MAX_HEARTS);
         registerEvent.register(BuiltInRegistries.TRIGGER_TYPES.key(), ModResources.USE_TOTEM_WHILE_20_MAX_HEARTS, () -> USE_TOTEM_WHILE_20_MAX_HEARTS);
+        registerEvent.register(BuiltInRegistries.TRIGGER_TYPES.key(), ModResources.BACK_FROM_THE_DEAD, () -> BACK_FROM_THE_DEAD);
         registerEvent.register(BuiltInRegistries.TRIGGER_TYPES.key(), ModResources.REVIVED, () -> REVIVED);
     }
     @SubscribeEvent

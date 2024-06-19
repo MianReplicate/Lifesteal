@@ -55,7 +55,7 @@ public class ModLootProvider {
 
         @Override
         public void generate(BiConsumer<ResourceKey<LootTable>, LootTable.Builder> biConsumer) {
-            biConsumer.accept(ModResources.BARREL_1, LootTable.lootTable()
+            biConsumer.accept(ModResources.BARREL_1_TABLE, LootTable.lootTable()
                     .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(4.0F))
                             .add(LootItem.lootTableItem(Items.STRING).setWeight(10)
                                     .apply(SetItemCountFunction.setCount(UniformGenerator.between(3.0F, 24.0F))))

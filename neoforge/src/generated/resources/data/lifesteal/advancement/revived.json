@@ -1,7 +1,7 @@
 {
-  "parent": "lifesteal:root",
+  "parent": "lifesteal:get_revive_crystal",
   "criteria": {
-    "revived_from_dead": {
+    "revived_player": {
       "trigger": "lifesteal:revived"
     }
   },
@@ -12,7 +12,7 @@
     "frame": "challenge",
     "icon": {
       "count": 1,
-      "id": "lifesteal:revive_head"
+      "id": "minecraft:dirt"
     },
     "title": {
       "translate": "advancement.lifesteal:revived"
@@ -20,8 +20,11 @@
   },
   "requirements": [
     [
-      "revived_from_dead"
+      "revived_player"
     ]
   ],
+  "rewards": {
+    "experience": 1000
+  },
   "sends_telemetry_event": true
 }
