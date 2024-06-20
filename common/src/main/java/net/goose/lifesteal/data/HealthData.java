@@ -202,15 +202,19 @@ public class HealthData implements IHealthData {
     }
 
     @Override
-    public void removePlayer(){
+    public void killPlayerPermanently(){
         if(!this.livingEntity.level().isClientSide){
             if (this.livingEntity instanceof ServerPlayer serverPlayer) {
                 setHealthDifference(LifeSteal.config.startingHealthDifference.get());
                 refreshHealth(true);
                 MinecraftServer server = this.livingEntity.level().getServer();
+                GameProfile gameProfile = serverPlayer.getGameProfile();
+                CompoundTag compoundTag = ModUtil.getPlayerData(server, gameProfile);
+                compoundTag.putLong("TimeKilled", System.currentTimeMillis());
+                ModUtil.savePlayerData(server, gameProfile, compoundTag);
 
-                MutableComponent bannedcomponent = Component.translatable("bannedmessage.lifesteal.lost_max_hearts");
-                MutableComponent fullcomponent = bannedcomponent;
+                MutableComponent deadcomponent = Component.translatable("bannedmessage.lifesteal.lost_max_hearts");
+                MutableComponent fullcomponent = deadcomponent;
 
                 if(serverPlayer.isDeadOrDying())
                     serverPlayer.getInventory().dropAll();
@@ -221,7 +225,7 @@ public class HealthData implements IHealthData {
                         dropPlayerHead();
                     } else {
                         MutableComponent compPos = Component.translatable("bannedmessage.lifesteal.revive_head_location", blockPos.getX(), blockPos.getY(), blockPos.getZ());
-                        fullcomponent = ModUtil.addComponents(bannedcomponent, compPos);
+                        fullcomponent = ModUtil.addComponents(deadcomponent, compPos);
                     }
                 }
 
@@ -240,7 +244,6 @@ public class HealthData implements IHealthData {
                     serverPlayer.setGameMode(GameType.SPECTATOR);
                     this.livingEntity.sendSystemMessage(fullcomponent);
                 }
-
             }
         }
     }

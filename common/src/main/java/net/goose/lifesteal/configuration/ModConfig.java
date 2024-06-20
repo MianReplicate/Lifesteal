@@ -11,6 +11,7 @@ public class ModConfig {
     public final ModConfigSpec.BooleanValue loseHeartsWhenKilledByPlayer;
     public final ModConfigSpec.BooleanValue loseHeartsWhenKilledByMob;
     public final ModConfigSpec.BooleanValue loseHeartsWhenKilledByEnvironment;
+    public final ModConfigSpec.IntValue deathDuration;
     public final ModConfigSpec.IntValue amountOfHealthLostUponLoss;
     public final ModConfigSpec.IntValue maximumHealthGainable;
     public final ModConfigSpec.IntValue maximumHealthLoseable;
@@ -55,6 +56,7 @@ public class ModConfig {
         this.playersSpawnHeadUponDeath = buildBoolean(builder, "Spawn Revive Head upon player elimination:", true, "Determines if Revive Heads should spawn upon a player being eliminated (no more hearts). NOTE: Always false in Singleplayer");
         this.uponDeathBanned = buildBoolean(builder, "Ban players upon losing all hearts:", true, "Determines if players who have lost all hearts get banned, or simply go into Spectator mode. Singleplayer will always go into Spectator");
         this.playerDropsHeartCrystalWhenKilled = buildBoolean(builder, "Players drop a Heart Crystal on death:", false, "Determines if players should drop a heart crystal upon death.");
+        this.deathDuration = buildInt(builder, "How long player is dead for:", 0, 0, Integer.MAX_VALUE, "How long (seconds) until a player is automatically revived. Set to 0 to disable this feature.");
         builder.pop();
 
         builder.comment("This category is for how players should lose hearts. If you want players to not be able to lose hearts at all, disable all the config options below.");

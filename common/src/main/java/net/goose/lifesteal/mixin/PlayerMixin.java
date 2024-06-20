@@ -47,7 +47,7 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerImpl {
         HealthData.get(this).ifPresent(healthData -> {
             // Are we at the amount where player should be banned based on their stats?
             if(healthData.getHealthDifference() <= healthData.getHPDifferenceRequiredForBan()){
-                healthData.removePlayer();
+                healthData.killPlayerPermanently();
             }
         });
     }

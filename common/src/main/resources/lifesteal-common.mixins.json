@@ -4,10 +4,11 @@
   "package": "net.goose.lifesteal.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "LevelChunkMixin",
     "LivingMixin",
     "PlayerMixin",
-    "ServerPlayerMixin",
-    "LevelChunkMixin"
+    "ServerLevelMixin",
+    "ServerPlayerMixin"
   ],
   "client": [
   ],

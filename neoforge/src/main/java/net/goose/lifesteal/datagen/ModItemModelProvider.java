@@ -14,7 +14,7 @@ public class ModItemModelProvider extends ItemModelProvider {
 
     @Override
     protected void registerModels() {
-        basicItem(ModItems.HEART_FRAGMENT.get());
+        basicItem(ModItems.CRYSTAL_FRAGMENT.get());
         basicItem(ModItems.CRYSTAL_CORE.get());
         basicItem(ModItems.HEART_CRYSTAL.get());
         basicItem(ModItems.REVIVE_CRYSTAL.get());

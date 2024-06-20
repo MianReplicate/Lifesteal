@@ -39,7 +39,7 @@ public class ModConfiguredFeaturesProvider {
                         new GeodeBlockSettings(
                                 BlockStateProvider.simple(Blocks.AIR),
                                 BlockStateProvider.simple(Blocks.DEEPSLATE),
-                                BlockStateProvider.simple(ModBlocks.DEEPSLATE_HEART_ORE.get()),
+                                BlockStateProvider.simple(ModBlocks.DEEPSLATE_CRYSTAL_ORE.get()),
                                 BlockStateProvider.simple(Blocks.CALCITE),
                                 BlockStateProvider.simple(Blocks.SMOOTH_BASALT),
                                 List.of(Blocks.GRAVEL.defaultBlockState()),
@@ -54,7 +54,7 @@ public class ModConfiguredFeaturesProvider {
                         new GeodeBlockSettings(
                                 BlockStateProvider.simple(Blocks.AIR),
                                 BlockStateProvider.simple(Blocks.NETHERRACK),
-                                BlockStateProvider.simple(ModBlocks.NETHERRACK_HEART_ORE.get()),
+                                BlockStateProvider.simple(ModBlocks.NETHERRACK_CRYSTAL_ORE.get()),
                                 BlockStateProvider.simple(Blocks.MAGMA_BLOCK),
                                 BlockStateProvider.simple(Blocks.BLACKSTONE),
                                 List.of(Blocks.NETHER_GOLD_ORE.defaultBlockState(), Blocks.SOUL_SAND.defaultBlockState(), Blocks.GRAVEL.defaultBlockState()),
@@ -67,12 +67,12 @@ public class ModConfiguredFeaturesProvider {
         register(context, ModResources.HEART_ORE_CONFIGURED, Feature.SCATTERED_ORE,
                 new OreConfiguration(
                         ImmutableList.of(
-                                OreConfiguration.target(stoneReplaceable, ModBlocks.HEART_ORE.get().defaultBlockState()),
-                                OreConfiguration.target(deepslateReplaceable, ModBlocks.DEEPSLATE_HEART_ORE.get().defaultBlockState())), 6));
+                                OreConfiguration.target(stoneReplaceable, ModBlocks.CRYSTAL_ORE.get().defaultBlockState()),
+                                OreConfiguration.target(deepslateReplaceable, ModBlocks.DEEPSLATE_CRYSTAL_ORE.get().defaultBlockState())), 6));
         register(context, ModResources.NETHER_HEART_ORE_CONFIGURED, Feature.SCATTERED_ORE,
                 new OreConfiguration(
                         ImmutableList.of(
-                                OreConfiguration.target(netherReplaceable, ModBlocks.NETHERRACK_HEART_ORE.get().defaultBlockState())), 7));
+                                OreConfiguration.target(netherReplaceable, ModBlocks.NETHERRACK_CRYSTAL_ORE.get().defaultBlockState())), 7));
     }
 
     public static void register(BootstrapContext<ConfiguredFeature<?, ?>> context, ResourceKey<ConfiguredFeature<?, ?>> key, Feature<NoneFeatureConfiguration> feature) {

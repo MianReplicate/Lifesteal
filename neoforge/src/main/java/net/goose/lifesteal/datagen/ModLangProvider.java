@@ -3,7 +3,6 @@ package net.goose.lifesteal.datagen;
 import net.goose.lifesteal.LifeSteal;
 import net.goose.lifesteal.common.block.ModBlocks;
 import net.goose.lifesteal.common.item.ModItems;
-import net.goose.lifesteal.neoforge.LifestealNeoForge;
 import net.goose.lifesteal.util.ModResources;
 import net.goose.lifesteal.util.ModTags;
 import net.minecraft.data.PackOutput;
@@ -37,16 +36,16 @@ public class ModLangProvider extends LanguageProvider {
     protected void addTranslations() {
         addTag(() -> ModTags.ORIGINS_IGNORE_DIET, "Ignore Diet");
 
-        addItem(ModItems.HEART_FRAGMENT, "Heart Fragment");
+        addItem(ModItems.CRYSTAL_FRAGMENT, "Crystal Fragment");
         addItem(ModItems.CRYSTAL_CORE, "Crystal Core");
         addItem(ModItems.HEART_CRYSTAL, "Heart Crystal");
         addItem(ModItems.REVIVE_CRYSTAL, "Revive Crystal");
 
         addBlock(ModBlocks.CRYSTAL_BLOCK, "Crystal Block");
         addBlock(ModBlocks.REVIVE_HEAD, "Revive Head");
-        addBlock(ModBlocks.HEART_ORE, "Heart Ore");
-        addBlock(ModBlocks.NETHERRACK_HEART_ORE, "Netherrack Heart Ore");
-        addBlock(ModBlocks.DEEPSLATE_HEART_ORE, "Deepslate Heart Ore");
+        addBlock(ModBlocks.CRYSTAL_ORE, "Crystal Ore");
+        addBlock(ModBlocks.NETHERRACK_CRYSTAL_ORE, "Netherrack Crystal Ore");
+        addBlock(ModBlocks.DEEPSLATE_CRYSTAL_ORE, "Deepslate Crystal Ore");
         add("block.lifesteal.revive_wall_head", "Revive Wall Head"); // idk why but we cant use addBlock on this one
 
         addAdvancement(ModResources.ROOT, "Fragment of the Past", "The beginning of the end.");

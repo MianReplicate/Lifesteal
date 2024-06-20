@@ -18,7 +18,7 @@ public class ModItems {
 
     public static FoodProperties alwaysEdible = (new FoodProperties.Builder()).alwaysEdible().build();
 
-    public static final RegistrySupplier<Item> HEART_FRAGMENT = ITEMS.register("heart_fragment",
+    public static final RegistrySupplier<Item> CRYSTAL_FRAGMENT = ITEMS.register("crystal_fragment",
             () -> new Item(new Item.Properties()));
     public static final RegistrySupplier<Item> CRYSTAL_CORE = ITEMS.register("crystal_core",
             () -> new CrystalCoreItem(new Item.Properties().food(alwaysEdible)));

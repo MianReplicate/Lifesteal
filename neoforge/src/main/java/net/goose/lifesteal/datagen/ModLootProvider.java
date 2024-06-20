@@ -32,9 +32,9 @@ public class ModLootProvider {
 
         @Override
         protected void generate() {
-            this.add(ModBlocks.HEART_ORE.get(), (block) -> createOreDrop(block, ModItems.HEART_FRAGMENT.get()));
-            this.add(ModBlocks.DEEPSLATE_HEART_ORE.get(), (block) -> createOreDrop(block, ModItems.HEART_FRAGMENT.get()));
-            this.add(ModBlocks.NETHERRACK_HEART_ORE.get(), (block) -> createOreDrop(block, ModItems.HEART_FRAGMENT.get()));
+            this.add(ModBlocks.CRYSTAL_ORE.get(), (block) -> createOreDrop(block, ModItems.CRYSTAL_FRAGMENT.get()));
+            this.add(ModBlocks.DEEPSLATE_CRYSTAL_ORE.get(), (block) -> createOreDrop(block, ModItems.CRYSTAL_FRAGMENT.get()));
+            this.add(ModBlocks.NETHERRACK_CRYSTAL_ORE.get(), (block) -> createOreDrop(block, ModItems.CRYSTAL_FRAGMENT.get()));
             this.add(ModBlocks.REVIVE_HEAD.get(), (block) -> LootTable.lootTable().withPool((LootPool.lootPool().add(LootItem.lootTableItem(ModItems.REVIVE_HEAD_ITEM.get())
                     .apply(CopyComponentsFunction.copyComponents(CopyComponentsFunction.Source.BLOCK_ENTITY)
                             .include(DataComponents.PROFILE).include(DataComponents.NOTE_BLOCK_SOUND))))));
@@ -65,13 +65,13 @@ public class ModLootProvider {
                                     .apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 3.0F))))));
             biConsumer.accept(ModResources.MINERS_HOME_TABLE, LootTable.lootTable()
                     .withPool(LootPool.lootPool().setRolls(UniformGenerator.between(1F, 4F))
-                            .add(LootItem.lootTableItem(ModItems.HEART_FRAGMENT.get()).setWeight(55)
+                            .add(LootItem.lootTableItem(ModItems.CRYSTAL_FRAGMENT.get()).setWeight(55)
                                     .apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 7.0F))))
-                            .add(LootItem.lootTableItem(ModBlocks.HEART_ORE.get().asItem()).setWeight(35)
+                            .add(LootItem.lootTableItem(ModBlocks.CRYSTAL_ORE.get().asItem()).setWeight(35)
                                     .apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 8.0F))))
-                            .add(LootItem.lootTableItem(ModBlocks.DEEPSLATE_HEART_ORE.get().asItem()).setWeight(25)
+                            .add(LootItem.lootTableItem(ModBlocks.DEEPSLATE_CRYSTAL_ORE.get().asItem()).setWeight(25)
                                     .apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 5.0F))))
-                            .add(LootItem.lootTableItem(ModBlocks.NETHERRACK_HEART_ORE.get()).setWeight(35)
+                            .add(LootItem.lootTableItem(ModBlocks.NETHERRACK_CRYSTAL_ORE.get()).setWeight(35)
                                     .apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 14.0F))))
                             .add(LootItem.lootTableItem(ModItems.HEART_CRYSTAL.get()).setWeight(2)
                                     .when(LootItemRandomChanceCondition.randomChance(0.01F)))
@@ -120,35 +120,27 @@ public class ModLootProvider {
                                     .apply(SetItemCountFunction.setCount(UniformGenerator.between(3.0F, 7.0F))))
                             .add(LootItem.lootTableItem(Items.EMERALD).setWeight(4000)
                                     .apply(SetItemCountFunction.setCount(UniformGenerator.between(2.0F, 11.0F))))
-                            .add(LootItem.lootTableItem(ModItems.HEART_FRAGMENT.get()).setWeight(4000)
+                            .add(LootItem.lootTableItem(ModItems.CRYSTAL_FRAGMENT.get()).setWeight(4000)
                                     .apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 24.0F))))
                             .add(LootItem.lootTableItem(Items.DIAMOND).setWeight(2500)
-                                    .apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 9.0F)))
-                                    .when(LootItemRandomChanceCondition.randomChance(0.25F)))
+                                    .apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 9.0F))))
                             .add(LootItem.lootTableItem(Items.EMERALD_ORE).setWeight(2500)
                                     .apply(SetItemCountFunction.setCount(UniformGenerator.between(2.0F, 8.0F))))
-                            .add(LootItem.lootTableItem(ModBlocks.HEART_ORE.get().asItem()).setWeight(2500)
+                            .add(LootItem.lootTableItem(ModBlocks.CRYSTAL_ORE.get().asItem()).setWeight(2500)
                                     .apply(SetItemCountFunction.setCount(UniformGenerator.between(3.0F, 14.0F))))
                             .add(LootItem.lootTableItem(Items.DIAMOND_ORE).setWeight(1000)
-                                    .apply(SetItemCountFunction.setCount(UniformGenerator.between(2.0F, 5.0F)))
-                                    .when(LootItemRandomChanceCondition.randomChance(0.10F)))
+                                    .apply(SetItemCountFunction.setCount(UniformGenerator.between(2.0F, 5.0F))))
                             .add(LootItem.lootTableItem(Items.EMERALD).setWeight(1000)
-                                    .apply(SetItemCountFunction.setCount(UniformGenerator.between(3.0F, 27.0F)))
-                                    .when(LootItemRandomChanceCondition.randomChance(0.10F)))
+                                    .apply(SetItemCountFunction.setCount(UniformGenerator.between(3.0F, 27.0F))))
                             .add(LootItem.lootTableItem(ModItems.CRYSTAL_CORE.get()).setWeight(1000)
-                                    .apply(SetItemCountFunction.setCount(UniformGenerator.between(5.0F, 7.0F)))
-                                    .when(LootItemRandomChanceCondition.randomChance(0.10F)))
+                                    .apply(SetItemCountFunction.setCount(UniformGenerator.between(2.0F, 4.0F))))
                             .add(LootItem.lootTableItem(Items.DIAMOND_BLOCK).setWeight(100)
-                                    .apply(SetItemCountFunction.setCount(UniformGenerator.between(6.0F, 18.0F)))
-                                    .when(LootItemRandomChanceCondition.randomChance(0.05F)))
+                                    .apply(SetItemCountFunction.setCount(UniformGenerator.between(2.0F, 4.0F))))
                             .add(LootItem.lootTableItem(ModBlocks.CRYSTAL_BLOCK.get()).setWeight(100)
-                                    .apply(SetItemCountFunction.setCount(UniformGenerator.between(6.0F, 10.0F)))
-                                    .when(LootItemRandomChanceCondition.randomChance(0.05F)))
-                            .add(LootItem.lootTableItem(ModItems.HEART_CRYSTAL.get()).setWeight(100)
-                                    .when(LootItemRandomChanceCondition.randomChance(0.05F)))
-                            .add(LootItem.lootTableItem(Items.NETHERITE_SCRAP).setWeight(1)
-                                    .apply(SetItemCountFunction.setCount(UniformGenerator.between(3.0F, 12.0F)))
-                                    .when(LootItemRandomChanceCondition.randomChance(0.01F)))));
+                                    .apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 3.0F))))
+                            .add(LootItem.lootTableItem(ModItems.HEART_CRYSTAL.get()).setWeight(100))
+                            .add(LootItem.lootTableItem(Items.NETHERITE_SCRAP).setWeight(10)
+                                    .apply(SetItemCountFunction.setCount(UniformGenerator.between(4.0F, 12.0F))))));
             biConsumer.accept(ModResources.RUINED_LIBRARY_TABLE, LootTable.lootTable()
                     .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(2.0F))
                             .add(LootItem.lootTableItem(Items.PAPER).setWeight(10)
@@ -159,7 +151,7 @@ public class ModLootProvider {
                                             .when(LootItemRandomChanceCondition.randomChance(0.10F)))))
                     .withPool(LootPool.lootPool().setRolls(UniformGenerator.between(3.0F, 4.0F))
                             .add(LootItem.lootTableItem(ModItems.CRYSTAL_CORE.get()).setWeight(35))
-                            .add(LootItem.lootTableItem(ModItems.HEART_FRAGMENT.get()).setWeight(60)
+                            .add(LootItem.lootTableItem(ModItems.CRYSTAL_FRAGMENT.get()).setWeight(60)
                                     .apply(SetItemCountFunction.setCount(UniformGenerator.between(3.0F, 15.0F))))
                             .add(LootItem.lootTableItem(ModBlocks.CRYSTAL_BLOCK.get().asItem()).setWeight(5)
                                     .apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 2.0F))))

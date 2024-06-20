@@ -14,7 +14,7 @@ public interface IHealthData extends Serializable<CompoundTag> {
     LivingEntity getLivingEntity();
     double getHealthModifiedTotal(boolean includeHeartDifference);
     double getHPDifferenceRequiredForBan();
-    void removePlayer();
+    void killPlayerPermanently();
     int getHealthDifference();
 
     void setHealthDifference(int hearts);
