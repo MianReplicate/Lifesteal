@@ -28,7 +28,6 @@
   "block.lifesteal.revive_head.named": "%s's Revive Head",
   "block.lifesteal.revive_wall_head": "Revive Wall Head",
   "chat.message.lifesteal.get_hit_point_for_player": "%s's HitPoint difference is %s.",
-  "chat.message.lifesteal.get_hit_point_for_self": "Your HitPoint difference is %s.",
   "chat.message.lifesteal.lost_max_hearts": "You have lost all your max hearts. You are now permanently dead.",
   "chat.message.lifesteal.no_more_hearts_to_steal": "This player doesn't have any hearts you can steal.",
   "chat.message.lifesteal.reached_max_hearts": "You have reached max hearts.",

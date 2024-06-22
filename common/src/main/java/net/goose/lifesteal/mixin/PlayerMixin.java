@@ -22,6 +22,7 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerImpl {
     private boolean revived;
     protected PlayerMixin(EntityType<? extends LivingEntity> entityType, Level level) {
         super(entityType, level);
+        LifestealData.get(this).ifPresent(iLifestealData -> iLifestealData.refreshHealth(false));
     }
 
     public void increaseHealth(LifestealData data, int hitpoint, LivingEntity killedPlayer) {

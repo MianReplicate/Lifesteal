@@ -38,9 +38,8 @@ import javax.annotation.Nullable;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.List;
+import java.util.*;
 import java.util.function.BiFunction;
-import java.util.function.Function;
 
 public class ModUtil {
     public enum KilledType{
@@ -91,6 +90,25 @@ public class ModUtil {
     @ExpectPlatform
     public static <T> T getLifestealDataFromTag(CompoundTag tag, String key, BiFunction<CompoundTag, String, T> function){
         throw new AssertionError("i just fucked your mom hewehhehehehehhehe");
+    }
+
+    public static List<GameProfile> getGameProfiles(MinecraftServer server, boolean includedSaved){
+        ArrayList<GameProfile> gameProfiles = new ArrayList<>();
+        server.getPlayerList().getPlayers().forEach(player -> {
+            gameProfiles.add(player.getGameProfile());
+        });
+        if(includedSaved){
+            LevelStorageSource.LevelStorageAccess levelStorageAccess = server.storageSource;
+            File playerDir = levelStorageAccess.getLevelPath(LevelResource.PLAYER_DATA_DIR).toFile();
+            Arrays.stream(playerDir.listFiles()).toList().forEach(file -> {
+                String[] splitString = file.getName().split(".dat");
+                GameProfile gameProfile = server.getProfileCache().get(UUID.fromString(splitString[0])).get();
+                if(!gameProfiles.contains(gameProfile)){
+                    gameProfiles.add(gameProfile);
+                }
+            });
+        }
+        return gameProfiles;
     }
 
     public static CompoundTag getPlayerData(MinecraftServer server, GameProfile gameProfile){

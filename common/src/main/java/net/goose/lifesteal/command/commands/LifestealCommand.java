@@ -17,15 +17,14 @@ import net.minecraft.advancements.Advancement;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.SharedSuggestionProvider;
-import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.commands.arguments.GameProfileArgument;
 import net.minecraft.commands.arguments.coordinates.Vec3Argument;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 
@@ -60,17 +59,29 @@ public class LifestealCommand {
                                         .executes((command) -> withdraw(command.getSource(), IntegerArgumentType.getInteger(command, "amount")))))
                         .then(Commands.literal("gethitpoints")
                                 .requires((commandSource) -> commandSource.hasPermission(LifeSteal.config.permissionLevelForGettingHitPoints.get()))
-                                .executes((command) -> getHitPoint(command.getSource()))
-                                .then(Commands.argument("players", EntityArgument.players())
-                                        .executes((command) -> getHitPoint(command.getSource(), EntityArgument.getPlayers(command, "players"))))
+                                .executes((command) -> getHitPoint(command.getSource(), List.of(Objects.requireNonNull(command.getSource().getPlayer()).getGameProfile())))
+                                .then(Commands.argument("players", GameProfileArgument.gameProfile())
+                                        .suggests(((context, builder) -> {
+                                            ArrayList<String> suggestList = new ArrayList<>();
+                                            List<GameProfile> gameProfiles = ModUtil.getGameProfiles(context.getSource().getServer(), true);
+                                            gameProfiles.forEach(gameProfile -> suggestList.add(gameProfile.getName()));
+                                            return SharedSuggestionProvider.suggest(suggestList, builder);
+                                        }))
+                                        .executes((command) -> getHitPoint(command.getSource(), GameProfileArgument.getGameProfiles(command, "players"))))
                         )
                         .then(Commands.literal("sethitpoints")
                                 .requires((commandSource) -> commandSource.hasPermission(LifeSteal.config.permissionLevelForSettingHitPoints.get()))
                                 .then(Commands.argument("amount", IntegerArgumentType.integer())
-                                        .executes((command) -> setHitPoint(command.getSource(), IntegerArgumentType.getInteger(command, "amount"))))
-                                .then(Commands.argument("players", EntityArgument.players())
+                                        .executes((command) -> setHitPoint(command.getSource(), List.of(Objects.requireNonNull(command.getSource().getPlayer()).getGameProfile()), IntegerArgumentType.getInteger(command, "amount"))))
+                                .then(Commands.argument("players", GameProfileArgument.gameProfile())
+                                        .suggests(((context, builder) -> {
+                                            ArrayList<String> suggestList = new ArrayList<>();
+                                            List<GameProfile> gameProfiles = ModUtil.getGameProfiles(context.getSource().getServer(), true);
+                                            gameProfiles.forEach(gameProfile -> suggestList.add(gameProfile.getName()));
+                                            return SharedSuggestionProvider.suggest(suggestList, builder);
+                                        }))
                                         .then(Commands.argument("amount", IntegerArgumentType.integer())
-                                                .executes((command) -> setHitPoint(command.getSource(), EntityArgument.getPlayers(command, "players"), IntegerArgumentType.getInteger(command, "amount")))))));
+                                                .executes((command) -> setHitPoint(command.getSource(), GameProfileArgument.getGameProfiles(command, "players"), IntegerArgumentType.getInteger(command, "amount")))))));
     }
 
     private static int revivePlayer(CommandSourceStack source, Collection<GameProfile> gameProfiles, @Nullable Vec3 position, boolean enableLightningEffect, boolean silentRevive){
@@ -138,42 +149,54 @@ public class LifestealCommand {
         return Command.SINGLE_SUCCESS;
     }
 
-    private static int getHitPoint(CommandSourceStack source) throws CommandSyntaxException {
-        LivingEntity playerthatsentcommand = source.getPlayerOrException();
-        LifestealData.get(playerthatsentcommand).ifPresent(iLifestealData -> source.sendSuccess(() -> Component.translatable("chat.message.lifesteal.get_hit_point_for_self", iLifestealData.getValue(ModResources.HEALTH_DIFFERENCE)), false));
-        return Command.SINGLE_SUCCESS;
-    }
-
-    private static int getHitPoint(CommandSourceStack source, Collection<ServerPlayer> chosenPlayers) throws CommandSyntaxException {
-        chosenPlayers.forEach(chosenPlayer -> LifestealData.get(chosenPlayer).ifPresent(iLifestealData ->
-                source.sendSuccess(() -> Component.translatable("chat.message.lifesteal.get_hit_point_for_player", chosenPlayer.getName().getString(), iLifestealData.getValue(ModResources.HEALTH_DIFFERENCE)), false)
-        ));
-
-        return Command.SINGLE_SUCCESS;
-    }
-
-    private static int setHitPoint(CommandSourceStack source, int amount) throws CommandSyntaxException {
-        LivingEntity player = source.getPlayerOrException();
-        LifestealData.get(player).ifPresent(iLifestealData -> {
-            iLifestealData.setValue(ModResources.HEALTH_DIFFERENCE,amount);
-            iLifestealData.refreshHealth(false);
+    private static int getHitPoint(CommandSourceStack source, Collection<GameProfile> gameProfiles) throws CommandSyntaxException {
+        gameProfiles.forEach(gameProfile -> {
+            ServerPlayer chosenPlayer = source.getServer().getPlayerList().getPlayer(gameProfile.getId());
+            if(chosenPlayer != null){
+                LifestealData.get(chosenPlayer).ifPresent(iLifestealData ->
+                        source.sendSuccess(() -> Component.translatable("chat.message.lifesteal.get_hit_point_for_player", gameProfile.getName(), iLifestealData.getValue(ModResources.HEALTH_DIFFERENCE)), false)
+                );
+            } else {
+                source.sendSuccess(() ->
+                        Component.translatable(
+                                "chat.message.lifesteal.get_hit_point_for_player",
+                                gameProfile.getName(),
+                                ModUtil.getLifestealDataFromTag(ModUtil.getPlayerData(source.getServer(), gameProfile), ModResources.HEALTH_DIFFERENCE.getPath(), CompoundTag::getInt)),
+                        false);
+            }
         });
 
-        source.sendSuccess(() -> Component.translatable("chat.message.lifesteal.set_hit_point_for_self", amount), true);
         return Command.SINGLE_SUCCESS;
     }
 
-    private static int setHitPoint(CommandSourceStack source, Collection<ServerPlayer> chosenPlayers, int amount) throws CommandSyntaxException {
-        chosenPlayers.forEach(chosenPlayer -> {
-            LifestealData.get(chosenPlayer).ifPresent(iLifestealData -> {
-                iLifestealData.setValue(ModResources.HEALTH_DIFFERENCE,amount);
-                iLifestealData.refreshHealth(false);
-            });
+    private static int setHitPoint(CommandSourceStack source, Collection<GameProfile> gameProfiles, int amount) throws CommandSyntaxException {
+        gameProfiles.forEach(gameProfile -> {
+            ServerPlayer chosenPlayer = source.getServer().getPlayerList().getPlayer(gameProfile.getId());
+            if(chosenPlayer != null){
+                LifestealData.get(chosenPlayer).ifPresent(iLifestealData ->
+                {
+                    iLifestealData.setValue(ModResources.HEALTH_DIFFERENCE,amount);
+                    iLifestealData.refreshHealth(false);
+                });
+                source.sendSuccess(() -> Component.translatable("chat.message.lifesteal.set_hit_point_for_player", chosenPlayer.getName().getString(), amount), true);
 
-            source.sendSuccess(() -> Component.translatable("chat.message.lifesteal.set_hit_point_for_player", chosenPlayer.getName().getString(), amount), true);
-
-            if (LifeSteal.config.tellPlayersIfHitPointChanged.get()) {
-                chosenPlayer.sendSystemMessage(Component.translatable("chat.message.lifesteal.set_hit_point_for_self", amount));
+                if (LifeSteal.config.tellPlayersIfHitPointChanged.get() && chosenPlayer != source.getPlayer()) {
+                    chosenPlayer.sendSystemMessage(Component.translatable("chat.message.lifesteal.set_hit_point_for_self", amount));
+                }
+            } else {
+                CompoundTag playerTag = ModUtil.getPlayerData(source.getServer(), gameProfile);
+                playerTag = ModUtil.setLifestealDataFromTag(playerTag, ModResources.HEALTH_DIFFERENCE.getPath(), (attachmentsTag, key) ->
+                {
+                    attachmentsTag.putInt(key, amount);
+                    return attachmentsTag;
+                });
+                ModUtil.savePlayerData(source.getServer(), gameProfile, playerTag);
+                source.sendSuccess(() ->
+                                Component.translatable(
+                                        "chat.message.lifesteal.set_hit_point_for_player",
+                                        gameProfile.getName(),
+                                        amount),
+                        false);
             }
         });
 

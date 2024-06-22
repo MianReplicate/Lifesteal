@@ -62,7 +62,6 @@ public class ModLangProvider extends LanguageProvider {
         addChatMessage("lost_max_hearts", "You have lost all your max hearts. You are now permanently dead.");
         addChatMessage("no_more_hearts_to_steal", "This player doesn't have any hearts you can steal.");
         addChatMessage("revived_player", "%s has been revived from the dead!");
-        addChatMessage("get_hit_point_for_self", "Your HitPoint difference is %s.");
         addChatMessage("get_hit_point_for_player", "%s's HitPoint difference is %s.");
         addChatMessage("set_hit_point_for_self", "Your HitPoint difference has been set to %s.");
         addChatMessage("set_hit_point_for_player", "Set %s's HitPoint difference to %s.");
