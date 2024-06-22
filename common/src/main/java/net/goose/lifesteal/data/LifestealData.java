@@ -38,8 +38,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 
-import java.sql.Time;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class LifestealData implements ILifestealData {
     private final LivingEntity livingEntity;
@@ -186,21 +186,24 @@ public class LifestealData implements ILifestealData {
     @Override
     public int getHealthModifiedTotal(boolean includeHealthDifference){
         AttributeInstance attribute = this.livingEntity.getAttribute(Attributes.MAX_HEALTH);
-        int healthModifiedTotal = includeHealthDifference ? getValue(ModResources.HEALTH_DIFFERENCE) : 0;
+        AtomicInteger healthModifiedTotal = includeHealthDifference ?
+                new AtomicInteger(getValue(ModResources.HEALTH_DIFFERENCE)) :
+                new AtomicInteger(0);
 
-        AttributeModifier attributeModifier = attribute.getModifier(ModResources.HEALTH_MODIFIER);
-        if(attributeModifier != null){
-            if (attributeModifier.operation() == AttributeModifier.Operation.ADD_VALUE) {
-                double amount = attributeModifier.amount();
-                healthModifiedTotal += amount;
-            } else if (attributeModifier.operation() == AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL) {
-                healthModifiedTotal += this.livingEntity.getMaxHealth() / attributeModifier.amount();
-            } else if (attributeModifier.operation() == AttributeModifier.Operation.ADD_MULTIPLIED_BASE) {
-                healthModifiedTotal += attribute.getBaseValue() * attributeModifier.amount();
-            }   
-        }
+        attribute.getModifiers().forEach(modifier -> {
+            if(!modifier.is(ModResources.HEALTH_MODIFIER)){
+                if (modifier.operation() == AttributeModifier.Operation.ADD_VALUE) {
+                    double amount = modifier.amount();
+                    healthModifiedTotal.addAndGet((int) Math.round(amount));
+                } else if (modifier.operation() == AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL) {
+                    healthModifiedTotal.addAndGet((int) Math.round(this.livingEntity.getMaxHealth() * modifier.amount()));
+                } else if (modifier.operation() == AttributeModifier.Operation.ADD_MULTIPLIED_BASE) {
+                    healthModifiedTotal.addAndGet((int) Math.round(attribute.getBaseValue() * modifier.amount()));
+                }
+            }
+        });
 
-        return healthModifiedTotal;
+        return healthModifiedTotal.get();
     }
 
     // Returns the amount a player's HPDifference would have to be to get banned.
