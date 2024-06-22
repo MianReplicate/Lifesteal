@@ -129,17 +129,11 @@
               "function": "minecraft:set_count"
             }
           ],
-          "name": "lifesteal:heart_fragment",
+          "name": "lifesteal:crystal_fragment",
           "weight": 4000
         },
         {
           "type": "minecraft:item",
-          "conditions": [
-            {
-              "chance": 0.25,
-              "condition": "minecraft:random_chance"
-            }
-          ],
           "functions": [
             {
               "add": false,
@@ -183,17 +177,11 @@
               "function": "minecraft:set_count"
             }
           ],
-          "name": "lifesteal:heart_ore",
+          "name": "lifesteal:crystal_ore",
           "weight": 2500
         },
         {
           "type": "minecraft:item",
-          "conditions": [
-            {
-              "chance": 0.1,
-              "condition": "minecraft:random_chance"
-            }
-          ],
           "functions": [
             {
               "add": false,
@@ -210,12 +198,6 @@
         },
         {
           "type": "minecraft:item",
-          "conditions": [
-            {
-              "chance": 0.1,
-              "condition": "minecraft:random_chance"
-            }
-          ],
           "functions": [
             {
               "add": false,
@@ -232,19 +214,13 @@
         },
         {
           "type": "minecraft:item",
-          "conditions": [
-            {
-              "chance": 0.1,
-              "condition": "minecraft:random_chance"
-            }
-          ],
           "functions": [
             {
               "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "max": 7.0,
-                "min": 5.0
+                "max": 4.0,
+                "min": 2.0
               },
               "function": "minecraft:set_count"
             }
@@ -254,19 +230,13 @@
         },
         {
           "type": "minecraft:item",
-          "conditions": [
-            {
-              "chance": 0.05,
-              "condition": "minecraft:random_chance"
-            }
-          ],
           "functions": [
             {
               "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "max": 18.0,
-                "min": 6.0
+                "max": 4.0,
+                "min": 2.0
               },
               "function": "minecraft:set_count"
             }
@@ -276,19 +246,13 @@
         },
         {
           "type": "minecraft:item",
-          "conditions": [
-            {
-              "chance": 0.05,
-              "condition": "minecraft:random_chance"
-            }
-          ],
           "functions": [
             {
               "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "max": 10.0,
-                "min": 6.0
+                "max": 3.0,
+                "min": 1.0
               },
               "function": "minecraft:set_count"
             }
@@ -298,35 +262,24 @@
         },
         {
           "type": "minecraft:item",
-          "conditions": [
-            {
-              "chance": 0.05,
-              "condition": "minecraft:random_chance"
-            }
-          ],
           "name": "lifesteal:heart_crystal",
           "weight": 100
         },
         {
           "type": "minecraft:item",
-          "conditions": [
-            {
-              "chance": 0.01,
-              "condition": "minecraft:random_chance"
-            }
-          ],
           "functions": [
             {
               "add": false,
               "count": {
                 "type": "minecraft:uniform",
                 "max": 12.0,
-                "min": 3.0
+                "min": 4.0
               },
               "function": "minecraft:set_count"
             }
           ],
-          "name": "minecraft:netherite_scrap"
+          "name": "minecraft:netherite_scrap",
+          "weight": 10
         }
       ],
       "rolls": {

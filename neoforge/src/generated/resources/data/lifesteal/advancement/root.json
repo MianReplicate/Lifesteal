@@ -1,10 +1,10 @@
 {
   "criteria": {
-    "has_heart_fragment": {
+    "has_fragment": {
       "conditions": {
         "items": [
           {
-            "items": "lifesteal:heart_fragment"
+            "items": "lifesteal:crystal_fragment"
           }
         ]
       },
@@ -19,7 +19,7 @@
     },
     "icon": {
       "count": 1,
-      "id": "lifesteal:heart_fragment"
+      "id": "lifesteal:crystal_fragment"
     },
     "show_toast": false,
     "title": {
@@ -28,7 +28,7 @@
   },
   "requirements": [
     [
-      "has_heart_fragment"
+      "has_fragment"
     ]
   ],
   "sends_telemetry_event": true

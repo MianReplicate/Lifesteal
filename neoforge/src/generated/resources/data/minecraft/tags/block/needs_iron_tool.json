@@ -1,7 +1,7 @@
 {
   "values": [
-    "lifesteal:heart_ore",
-    "lifesteal:deepslate_heart_ore",
+    "lifesteal:crystal_ore",
+    "lifesteal:deepslate_crystal_ore",
     "lifesteal:crystal_block"
   ]
 }

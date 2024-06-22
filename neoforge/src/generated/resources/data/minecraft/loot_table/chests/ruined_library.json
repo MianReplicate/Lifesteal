@@ -75,7 +75,7 @@
               "function": "minecraft:set_count"
             }
           ],
-          "name": "lifesteal:heart_fragment",
+          "name": "lifesteal:crystal_fragment",
           "weight": 60
         },
         {

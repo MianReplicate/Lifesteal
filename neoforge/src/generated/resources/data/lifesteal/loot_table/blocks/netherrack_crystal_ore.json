@@ -26,7 +26,7 @@
                   }
                 }
               ],
-              "name": "lifesteal:deepslate_heart_ore"
+              "name": "lifesteal:netherrack_crystal_ore"
             },
             {
               "type": "minecraft:item",
@@ -40,7 +40,7 @@
                   "function": "minecraft:explosion_decay"
                 }
               ],
-              "name": "lifesteal:heart_fragment"
+              "name": "lifesteal:crystal_fragment"
             }
           ]
         }
@@ -48,5 +48,5 @@
       "rolls": 1.0
     }
   ],
-  "random_sequence": "lifesteal:blocks/deepslate_heart_ore"
+  "random_sequence": "lifesteal:blocks/netherrack_crystal_ore"
 }

@@ -5,9 +5,7 @@ import net.goose.lifesteal.util.ModTags;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.AncientCityStructurePieces;
 import net.minecraft.data.worldgen.BootstrapContext;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Biomes;
@@ -15,32 +13,17 @@ import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
 import net.minecraft.world.level.levelgen.heightproviders.ConstantHeight;
-import net.minecraft.world.level.levelgen.structure.BuiltinStructures;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
 import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
 import net.minecraft.world.level.levelgen.structure.structures.JigsawStructure;
 
-import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 public class ModStructureProvider {
     public static void bootstrap(BootstrapContext<Structure> context){
         HolderGetter<Biome> biomeGetter = context.lookup(Registries.BIOME);
         HolderGetter<StructureTemplatePool> poolGetter = context.lookup(Registries.TEMPLATE_POOL);
-
-        context.register(BuiltinStructures.ANCIENT_CITY, new JigsawStructure((new Structure.StructureSettings.Builder(biomeGetter.getOrThrow(BiomeTags.HAS_ANCIENT_CITY))
-        ).generationStep(GenerationStep.Decoration.UNDERGROUND_DECORATION)
-                .terrainAdapation(TerrainAdjustment.BEARD_BOX).build(),
-                poolGetter.getOrThrow(AncientCityStructurePieces.START),
-                Optional.of(ResourceLocation.withDefaultNamespace("city_anchor")),
-                7,
-                ConstantHeight.of(VerticalAnchor.absolute(-27)),
-                false,
-                Optional.empty(),
-                116, List.of(), JigsawStructure.DEFAULT_DIMENSION_PADDING, JigsawStructure.DEFAULT_LIQUID_SETTINGS));
-
 
         context.register(
                 ModResources.ABANDONED_TRADING_CART,

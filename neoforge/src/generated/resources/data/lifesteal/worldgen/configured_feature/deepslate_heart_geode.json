@@ -5,7 +5,7 @@
       "alternate_inner_layer_provider": {
         "type": "minecraft:simple_state_provider",
         "state": {
-          "Name": "lifesteal:deepslate_heart_ore"
+          "Name": "lifesteal:deepslate_crystal_ore"
         }
       },
       "cannot_replace": "#minecraft:features_cannot_replace",

@@ -2,7 +2,8 @@ package net.goose.lifesteal.mixin;
 
 import net.goose.lifesteal.LifeSteal;
 import net.goose.lifesteal.advancement.ModCriteria;
-import net.goose.lifesteal.data.HealthData;
+import net.goose.lifesteal.data.LifestealData;
+import net.goose.lifesteal.util.ModResources;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
@@ -24,9 +25,9 @@ public abstract class LivingMixin {
         if (!cir.isCancelled() && cir.getReturnValue()) { // The return value is if there's a totem or not.
             LivingEntity livingEntity = ((LivingEntity) (Object) this);
             if (livingEntity instanceof ServerPlayer serverPlayer) {
-                HealthData.get(livingEntity).ifPresent(healthData ->
+                LifestealData.get(livingEntity).ifPresent(lifestealData ->
                 {
-                    if (healthData.getHealthDifference() >= 20) {
+                    if ((int)lifestealData.getValue(ModResources.HEALTH_DIFFERENCE) >= 20) {
                         ModCriteria.USE_TOTEM_WHILE_20_MAX_HEARTS.trigger(serverPlayer);
                     }
                 });
@@ -39,10 +40,10 @@ public abstract class LivingMixin {
         if (LifeSteal.config.shouldAllMobsGiveHearts.get()) {
             LivingEntity entity = this.getAttacker();
             if (entity instanceof ServerPlayer serverPlayer) {
-                HealthData.get(serverPlayer).ifPresent(healthData ->
+                LifestealData.get(serverPlayer).ifPresent(lifestealData ->
                 {
-                    healthData.setHealthDifference(healthData.getHealthDifference() + LifeSteal.config.amountOfHealthLostUponLoss.get());
-                    healthData.refreshHealth(false);
+                    lifestealData.setValue(ModResources.HEALTH_DIFFERENCE,(int)lifestealData.getValue(ModResources.HEALTH_DIFFERENCE) + LifeSteal.config.amountOfHealthLostUponLoss.get());
+                    lifestealData.refreshHealth(false);
                 });
             }
         }

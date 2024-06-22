@@ -2,7 +2,8 @@ package net.goose.lifesteal.mixin;
 
 import net.goose.lifesteal.LifeSteal;
 import net.goose.lifesteal.api.PlayerImpl;
-import net.goose.lifesteal.data.HealthData;
+import net.goose.lifesteal.data.LifestealData;
+import net.goose.lifesteal.util.ModResources;
 import net.goose.lifesteal.util.ModUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -23,12 +24,12 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerImpl {
         super(entityType, level);
     }
 
-    public void increaseHealth(HealthData data, int hitpoint, LivingEntity killedPlayer) {
+    public void increaseHealth(LifestealData data, int hitpoint, LivingEntity killedPlayer) {
         final int maximumhitpointsGainable = LifeSteal.config.maximumHealthGainable.get();
         boolean alreadyGiven = false;
 
         if (maximumhitpointsGainable > -1 && LifeSteal.config.playerDropsHeartCrystalWhenKillerHasMax.get() && !LifeSteal.config.playerDropsHeartCrystalWhenKilled.get()) {
-            if (data.getHealthDifference() + hitpoint > LifeSteal.config.startingHealthDifference.get() + maximumhitpointsGainable) {
+            if ((int)data.getValue(ModResources.HEALTH_DIFFERENCE) + hitpoint > LifeSteal.config.startingHealthDifference.get() + maximumhitpointsGainable) {
                 ModUtil.ripHeartCrystalFromPlayer(killedPlayer);
                 alreadyGiven = true;
             }
@@ -36,7 +37,7 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerImpl {
 
         if (!alreadyGiven) {
             if (!LifeSteal.config.playerDropsHeartCrystalWhenKilled.get()) {
-                data.setHealthDifference(data.getHealthDifference() + hitpoint);
+                data.setValue(ModResources.HEALTH_DIFFERENCE,(int)data.getValue(ModResources.HEALTH_DIFFERENCE) + hitpoint);
                 data.refreshHealth(false);
             }
         }
@@ -44,10 +45,10 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerImpl {
 
     @Inject(method = "tick", at = @At("HEAD"))
     private void tickMethod(final CallbackInfo info){
-        HealthData.get(this).ifPresent(healthData -> {
+        LifestealData.get(this).ifPresent(lifestealData -> {
             // Are we at the amount where player should be banned based on their stats?
-            if(healthData.getHealthDifference() <= healthData.getHPDifferenceRequiredForBan()){
-                healthData.removePlayer();
+            if((int) lifestealData.getValue(ModResources.HEALTH_DIFFERENCE) <= lifestealData.getHPDifferenceRequiredForBan()){
+                lifestealData.killPlayerPermanently();
             }
         });
     }
@@ -65,10 +66,10 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerImpl {
 
         LivingEntity killedEntity = this;
 
-        HealthData.get(killedEntity).ifPresent(healthData -> {
+        LifestealData.get(killedEntity).ifPresent(lifestealData -> {
             if (killedEntity instanceof ServerPlayer) {
                 if (!killedEntity.isAlive()) {
-                    int HeartDifference = healthData.getHealthDifference();
+                    int HeartDifference = lifestealData.getValue(ModResources.HEALTH_DIFFERENCE);
 
                     LivingEntity killerEntity = killedEntity.getLastHurtByMob();
                     boolean killerEntityIsPlayer = killerEntity instanceof ServerPlayer;
@@ -95,7 +96,7 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerImpl {
                         if (killerEntity != killedEntity) { // IF IT'S NOT THEMSELVES (Shooting themselves with an arrow lol)
                             // EVERYTHING BELOW THIS COMMENT IS CODE FOR MAKING THE KILLER PERSON'S HEART DIFFERENCE GO UP.
                             if (killerEntityIsPlayer && !disableLifesteal) {
-                                HealthData.get(killerEntity).ifPresent(killerData -> {
+                                LifestealData.get(killerEntity).ifPresent(killerData -> {
                                     if (playersGainHeartsifKillednoHeart) {
                                         increaseHealth(killerData, amountOfHealthLostUponLoss, killedEntity);
                                     } else {
@@ -138,8 +139,8 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerImpl {
                         return;
                     }
 
-                    healthData.setHealthDifference(healthData.getHealthDifference() - amountOfHealthLostUponLoss);
-                    healthData.refreshHealth(false);
+                    lifestealData.setValue(ModResources.HEALTH_DIFFERENCE,(int)lifestealData.getValue(ModResources.HEALTH_DIFFERENCE) - amountOfHealthLostUponLoss);
+                    lifestealData.refreshHealth(false);
                     if (LifeSteal.config.playerDropsHeartCrystalWhenKilled.get()) {
                         ModUtil.ripHeartCrystalFromPlayer(killedEntity);
                     }

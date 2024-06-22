@@ -1,6 +1,6 @@
 package net.goose.lifesteal.mixin;
 
-import net.goose.lifesteal.data.HealthData;
+import net.goose.lifesteal.data.LifestealData;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -18,9 +18,9 @@ public abstract class ServerPlayerMixin extends LivingEntity {
 
     @Inject(method = "initInventoryMenu", at = @At("HEAD"))
     private void onSpawn(final CallbackInfo info) {
-        HealthData.get(this).ifPresent(healthData -> {
-            healthData.refreshHealth(true);
-            healthData.tryRevivalEffects();
+        LifestealData.get(this).ifPresent(lifestealData -> {
+            lifestealData.refreshHealth(true);
+            lifestealData.tryRevivalEffects();
         });
     }
 }

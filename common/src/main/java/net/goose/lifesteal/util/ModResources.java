@@ -69,8 +69,10 @@ public class ModResources {
     public static final ResourceKey<Structure> ROBBED_CART_2 = createStructure(LifeSteal.MOD_ID, "robbed_cart_2");
     public static final ResourceKey<Structure> RUINED_LIBRARY = createStructure(LifeSteal.MOD_ID, "ruined_library");
 
-    // Health Data
-    public static final ResourceLocation HEALTH_DATA = modLoc("health_data");
+    // Lifesteal Data
+    public static final ResourceLocation LIFESTEAL_DATA = modLoc("lifesteal_data");
+    public static final ResourceLocation HEALTH_DIFFERENCE = modLoc("health_difference");
+    public static final ResourceLocation TIME_KILLED = modLoc("time_killed");
     public static final ResourceLocation HEALTH_MODIFIER = modLoc("health_modifier");
 
     // Loot Tables

@@ -1,0 +1,109 @@
+#This category is for how players should lose hearts. If you want players to not be able to lose hearts at all, disable all the config options below.
+#Settings for when/how hearts are lost
+["Losing Hearts"]
+	#Determines if players should lose hearts when killed by another player.
+	"Lose heart(s) when killed by a player:" = true
+	#Determines if players should lose hearts when killed by mobs
+	"Lose heart(s) when killed by a mob:" = true
+	#Determines if players lose hearts when killed by the environment. (Lava, fall damage, etc)
+	"Lose heart(s) when killed by the environment:" = true
+#Settings for Items and Blocks
+["Items and Blocks"]
+	["Items and Blocks"."Revive Heads"]
+		#When this value is true, Revive Heads are indestructible to anything except creative users/using a revive crystal!
+		"Indestructible Revive Heads:" = true
+	["Items and Blocks"."Crystal Cores"]
+		#Determines if Heart Cores can be used by players already at maximum health
+		"Prevent players at max hp from using Crystal Cores:" = true
+		#Determines if Heart Cores are disabled.
+		"Disable Crystal Cores:" = false
+		#The percentage of health recovered when a Heart Core is used.
+		#Range: 0.01 ~ 1.0
+		"Percentage of max health recovered from Crystal Cores" = 0.33
+		#Determines if heart cores should be used instantly, or eaten.
+		"Instantly use Crystal Cores:" = false
+	["Items and Blocks"."Revive Crystals"]
+		#Determines if a chat message should NOT be sent when a player is revived.
+		"Silently Revive Players:" = false
+		#Determines if lightning should be summoned upon player revive.
+		"Disable Lightning Effect:" = false
+		#Determines the number of additional Hitpoints revived players should have. (2 Hitpoints = 1 Heart, use a negative number to start them with <20)
+		#Range: > -19
+		"Number of additional Hitpoints upon revival:" = 0
+		#Determines if revived players receiving status effects should be disabled. (Leave enabled if you plan to keep the lightning effect)
+		"Disable Status Effects:" = false
+		#Determines if the custom Hitpoint value should be used for revived players.
+		"Use custom additional Hitpoint value:" = false
+		#Determines if Revive Crystals should be disabled. (Always disabled in Singleplayer)
+		"Disable Revive Crystals:" = false
+	["Items and Blocks"."Heart Crystals"]
+		#Determines if Natural Heart Cores should be disabled. (Doesn't affect Unnatural Heart Cores)
+		"Disable Heart Crystals:" = false
+		#Determines if Unnatural Heart Cores should be disabled. (Doesn't affect Natural Heart Cores)
+		"Disable Unnatural Heart Crystals:" = false
+		#Determines if Heart Crystals can be used by players at maximum health (if a max is set)
+		"Prevent players at max Hitpoints from using Heart Crystals:" = true
+		#Determines if Heart Cores should be used instantly or eaten.
+		"Instantly use Heart Crystals:" = false
+		#Determines how many Hitpoints are given when a Heart Crystal is used.
+		#Range: > 1
+		"Number of Hitpoints Heart Crystal(s) Permanently Give:" = 2
+#Lifesteal Settings
+["Lifesteal Related"]
+	#Disables gaining hearts from killing players. (Does not affect losing hearts)
+	"Disable Lifesteal:" = false
+	#Determines if killing a player with the minimum hp will still give heart(s)
+	"Players gain Hearts from killing players at minimum HP:" = false
+#Contains various maximum values.
+[Maximums]
+	#Determines if players attempting to use a Heart Crystal should be notified if they are already at the maximum.
+	"Notify players if they have max HP:" = true
+	#Determines the maximum Hitpoints beyond 20. (Remember, 2 Hitpoints = 1 Heart.) Set to -1 to disable.
+	#Range: > -1
+	"Maximum number of additional Hitpoints:" = -1
+	#Determines players should drop a Heart Crystal even if the killer has the maximum HP. NOTE: This requires Maximum Hitpoints to be enabled.
+	"Players drop a Heart Crystal when killer has max HP" = false
+	#Determines the maximum number of Hitpoints a player can lose before being eliminated. Set to -1 to disable.
+	#Range: > -1
+	"Maximum number of Hitpoints you can Lose:" = -1
+#Settings related to commands. Permission Levels range from 0 to 4, 0: Everyone, 1: Moderators, 2: Gamemasters, 3: Admins, 4: Owners
+[Commands]
+	#Notify players when their HP has been changed by an admin.
+	"Notify players if their HP is changed:" = true
+
+	[Commands.Withdrawing]
+		#Determines which achievement must be obtained before the player may use the withdraw command. Leave the quotations empty to have the feature unlocked by default. You can use /advancement to figure out advancement IDs.
+		"Advancement needed to unlock Withdrawing:" = "lifesteal:get_heart_crystal"
+		#Determines the message sent to players who try using the withdraw command before they have unlocked it.
+		"Text to display if Withdrawing isn't unlocked:" = "You need to at least have gotten one heart crystal in this world to withdraw"
+		#Range: 0 ~ 4
+		"Permission Level:" = 0
+	[Commands."Reviving Players"]
+		#Range: 0 ~ 4
+		"Permission Level:" = 2
+	[Commands.Set-Hitpoints]
+		#Range: 0 ~ 4
+		"Permission Level:" = 2
+	[Commands.Get-Hitpoints]
+		#Range: 0 ~ 4
+		"Permission Level:" = 2
+#Settings which don't fit anywhere else, or add non-standard gameplay mechanics
+["Misc/Fun"]
+	#Determines if killing mobs will give Hearts.
+	"Killing mobs gives hearts:" = false
+#IMPORTANT NOTE: 2 Hitpoints = 1 Heart
+#We recommend editting the config BEFORE starting Minecraft. Most configs will work fine, even if changed in-game, but some require restarting Minecraft to work correctly.
+#This category holds general values that most people will want to change.
+["General Settings"]
+	#How many Hitpoints are lost/gained upon death or being killed.
+	#Range: > 1
+	"Number of HitPoints lost/given upon death/kill:" = 2
+	#Determines the number of additional Hitpoints beyond the 20 you should start with.
+	#Range: > -19
+	"Starting additional Hitpoints:" = 0
+	#Determines if players should drop a heart crystal upon death.
+	"Players drop a Heart Crystal on death:" = false
+	#Determines if players who have lost all hearts get banned, or simply go into Spectator mode. Singleplayer will always go into Spectator
+	"Ban players upon losing all hearts:" = true
+	#Determines if Revive Heads should spawn upon a player being eliminated (no more hearts). NOTE: Always false in Singleplayer
+	"Spawn Revive Head upon player elimination:" = true

@@ -25,13 +25,13 @@ public class ModBlocks {
     public static final RegistrySupplier<Block> CRYSTAL_BLOCK = registerBlock("crystal_block", () ->
             new Block(BlockBehaviour.Properties.of().mapColor(MapColor.METAL).strength(6f).requiresCorrectToolForDrops()), true, null);
 
-    public static final RegistrySupplier<Block> HEART_ORE = registerBlock("heart_ore", () ->
+    public static final RegistrySupplier<Block> CRYSTAL_ORE = registerBlock("crystal_ore", () ->
             new DropExperienceBlock(UniformInt.of(3, 7), BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(4f).requiresCorrectToolForDrops()), true, null);
 
-    public static final RegistrySupplier<Block> DEEPSLATE_HEART_ORE = registerBlock("deepslate_heart_ore", () ->
+    public static final RegistrySupplier<Block> DEEPSLATE_CRYSTAL_ORE = registerBlock("deepslate_crystal_ore", () ->
             new DropExperienceBlock(UniformInt.of(3, 7), BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(5f).requiresCorrectToolForDrops()), true, null);
 
-    public static final RegistrySupplier<Block> NETHERRACK_HEART_ORE = registerBlock("netherrack_heart_ore", () ->
+    public static final RegistrySupplier<Block> NETHERRACK_CRYSTAL_ORE = registerBlock("netherrack_crystal_ore", () ->
             new DropExperienceBlock(UniformInt.of(5, 9), BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(2f).requiresCorrectToolForDrops().explosionResistance(999f)), true, null);
     public static final RegistrySupplier<Block> REVIVE_HEAD = registerBlock("revive_head", () ->
             new ReviveHeadBlock(BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.CUSTOM_HEAD).strength(1.0F).explosionResistance(999f)), false, null);

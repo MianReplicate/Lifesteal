@@ -56,14 +56,14 @@ public class ModAdvancementsProvider extends AdvancementProvider {
         public void generate(HolderLookup.Provider registries, Consumer<AdvancementHolder> saver, ExistingFileHelper existingFileHelper) {
             AdvancementHolder ROOT = Advancement.Builder.advancement()
                     .display(display(
-                            ModItems.HEART_FRAGMENT.get().getDefaultInstance(),
+                            ModItems.CRYSTAL_FRAGMENT.get().getDefaultInstance(),
                             "root",
                             AdvancementType.TASK,
                             ModResources.modLoc("textures/block/crystal_block.png"),
                             false,
                             false,
                             false))
-                    .addCriterion("has_heart_fragment", InventoryChangeTrigger.TriggerInstance.hasItems(ModItems.HEART_FRAGMENT.get()))
+                    .addCriterion("has_fragment", InventoryChangeTrigger.TriggerInstance.hasItems(ModItems.CRYSTAL_FRAGMENT.get()))
                     .save(saver, ModResources.ROOT.toString());
             Advancement.Builder.advancement()
                     .parent(ROOT)

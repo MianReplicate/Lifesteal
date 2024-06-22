@@ -11,6 +11,8 @@ import java.util.function.Supplier;
 
 public class ModDataAttachments {
     public static final DeferredRegister<AttachmentType<?>> ATTACHMENT_TYPES = DeferredRegister.create(NeoForgeRegistries.Keys.ATTACHMENT_TYPES, LifeSteal.MOD_ID);
-    public static final Supplier<AttachmentType<Integer>> HEALTH_DATA = ATTACHMENT_TYPES.register(
-            ModResources.HEALTH_DATA.getPath(), () -> AttachmentType.builder(() -> LifeSteal.config.startingHealthDifference.get()).serialize(Codec.INT).copyOnDeath().build());
+    public static final Supplier<AttachmentType<Integer>> HEALTH_DIFFERENCE = ATTACHMENT_TYPES.register(
+            ModResources.HEALTH_DIFFERENCE.getPath(), () -> AttachmentType.builder(() -> LifeSteal.config.startingHealthDifference.get()).serialize(Codec.INT).copyOnDeath().build());
+    public static final Supplier<AttachmentType<Long>> TIME_KILLED = ATTACHMENT_TYPES.register(
+            ModResources.TIME_KILLED.getPath(), () -> AttachmentType.builder(() -> 0L).serialize(Codec.LONG).copyOnDeath().build());
 }

@@ -1,5 +1,6 @@
 package net.goose.lifesteal.command.commands;
 
+import com.google.common.collect.ImmutableMap;
 import com.mojang.authlib.GameProfile;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
@@ -9,7 +10,8 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.goose.lifesteal.LifeSteal;
 import net.goose.lifesteal.common.component.ModDataComponents;
 import net.goose.lifesteal.common.item.ModItems;
-import net.goose.lifesteal.data.HealthData;
+import net.goose.lifesteal.data.LifestealData;
+import net.goose.lifesteal.util.ModResources;
 import net.goose.lifesteal.util.ModUtil;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.commands.CommandSourceStack;
@@ -23,14 +25,12 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.server.players.UserBanList;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.*;
 
 public class LifestealCommand {
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
@@ -40,13 +40,10 @@ public class LifestealCommand {
                                 .requires((commandSource -> commandSource.hasPermission(LifeSteal.config.permissionLevelForRevival.get())))
                                 .then(Commands.argument("players", GameProfileArgument.gameProfile())
                                         .suggests((commandContext, suggestionsBuilder) -> {
-                                            UserBanList userBanList = commandContext.getSource().getServer().getPlayerList().getBans();
                                             ArrayList<String> suggestList = new ArrayList<>();
-                                            userBanList.getEntries().forEach(entry -> {
-                                                if(entry.getSource().matches(LifeSteal.MOD_ID)){
-                                                    suggestList.add(entry.getUser().getName());
-                                                }
-                                            });
+                                            ImmutableMap<GameProfile, ModUtil.KilledType> bannedProfiles = ModUtil.getDeadPlayers(commandContext.getSource().getServer());
+                                            bannedProfiles.forEach((profile, killedType) -> suggestList.add(profile.getName()));
+
                                             return SharedSuggestionProvider.suggest(suggestList, suggestionsBuilder);
                                         })
                                         .executes((command) -> revivePlayer(command.getSource(), GameProfileArgument.getGameProfiles(command, "players"), null, true, false))
@@ -64,16 +61,16 @@ public class LifestealCommand {
                         .then(Commands.literal("gethitpoints")
                                 .requires((commandSource) -> commandSource.hasPermission(LifeSteal.config.permissionLevelForGettingHitPoints.get()))
                                 .executes((command) -> getHitPoint(command.getSource()))
-                                .then(Commands.argument("player", EntityArgument.player())
-                                        .executes((command) -> getHitPoint(command.getSource(), EntityArgument.getPlayer(command, "player"))))
+                                .then(Commands.argument("players", EntityArgument.players())
+                                        .executes((command) -> getHitPoint(command.getSource(), EntityArgument.getPlayers(command, "players"))))
                         )
                         .then(Commands.literal("sethitpoints")
                                 .requires((commandSource) -> commandSource.hasPermission(LifeSteal.config.permissionLevelForSettingHitPoints.get()))
                                 .then(Commands.argument("amount", IntegerArgumentType.integer())
                                         .executes((command) -> setHitPoint(command.getSource(), IntegerArgumentType.getInteger(command, "amount"))))
-                                .then(Commands.argument("player", EntityArgument.player())
+                                .then(Commands.argument("players", EntityArgument.players())
                                         .then(Commands.argument("amount", IntegerArgumentType.integer())
-                                                .executes((command) -> setHitPoint(command.getSource(), EntityArgument.getPlayer(command, "player"), IntegerArgumentType.getInteger(command, "amount")))))));
+                                                .executes((command) -> setHitPoint(command.getSource(), EntityArgument.getPlayers(command, "players"), IntegerArgumentType.getInteger(command, "amount")))))));
     }
 
     private static int revivePlayer(CommandSourceStack source, Collection<GameProfile> gameProfiles, @Nullable Vec3 position, boolean enableLightningEffect, boolean silentRevive){
@@ -90,8 +87,7 @@ public class LifestealCommand {
                             gameProfile,
                             enableLightningEffect,
                             silentRevive,
-                            null,
-                            source.getServer().getPlayerList().getBans());
+                            null);
                     if(success)
                         source.sendSuccess(() -> Component.translatable("chat.message.lifesteal.revived_player_success", gameProfile.getName()), true);
             });
@@ -108,22 +104,22 @@ public class LifestealCommand {
         String advancementUsed = (String) LifeSteal.config.advancementUsedForWithdrawing.get();
 
         if (serverPlayer.getAdvancements().getOrStartProgress(Advancement.Builder.advancement().build(ResourceLocation.tryParse(advancementUsed))).isDone() || advancementUsed.isEmpty() || serverPlayer.isCreative()) {
-            HealthData IHeartCap = HealthData.get(serverPlayer).get();
+            LifestealData lifestealData = LifestealData.get(serverPlayer).get();
 
-            int heartDifference = IHeartCap.getHealthDifference() - (LifeSteal.config.heartCrystalAmountGain.get() * amount);
+            int heartDifference = (int) lifestealData.getValue(ModResources.HEALTH_DIFFERENCE) - (LifeSteal.config.heartCrystalAmountGain.get() * amount);
 
             if (maximumheartsLoseable >= 0) {
                 if (heartDifference < startingHitPointDifference - maximumheartsLoseable) {
                     serverPlayer.displayClientMessage(Component.translatable("gui.lifesteal.cant_withdraw_less_than_maximum"), true);
                     return Command.SINGLE_SUCCESS;
                 }
-            }else if(heartDifference <= IHeartCap.getHPDifferenceRequiredForBan()) {
+            }else if(heartDifference <= lifestealData.getHPDifferenceRequiredForBan()) {
                 serverPlayer.displayClientMessage(Component.translatable("gui.lifesteal.cant_withdraw_less_than_amount_have"), true);
                 return Command.SINGLE_SUCCESS;
             }
 
-            IHeartCap.setHealthDifference(heartDifference);
-            IHeartCap.refreshHealth(false);
+            lifestealData.setValue(ModResources.HEALTH_DIFFERENCE,heartDifference);
+            lifestealData.refreshHealth(false);
 
             ItemStack heartCrystal = new ItemStack(ModItems.HEART_CRYSTAL.get(), amount);
             heartCrystal.set(ModDataComponents.UNFRESH.get(), true);
@@ -144,39 +140,42 @@ public class LifestealCommand {
 
     private static int getHitPoint(CommandSourceStack source) throws CommandSyntaxException {
         LivingEntity playerthatsentcommand = source.getPlayerOrException();
-        HealthData.get(playerthatsentcommand).ifPresent(iHeartData -> source.sendSuccess(() -> Component.translatable("chat.message.lifesteal.get_hit_point_for_self", iHeartData.getHealthDifference()), false));
+        LifestealData.get(playerthatsentcommand).ifPresent(iLifestealData -> source.sendSuccess(() -> Component.translatable("chat.message.lifesteal.get_hit_point_for_self", iLifestealData.getValue(ModResources.HEALTH_DIFFERENCE)), false));
         return Command.SINGLE_SUCCESS;
     }
 
-    private static int getHitPoint(CommandSourceStack source, ServerPlayer chosenPlayer) throws CommandSyntaxException {
-        HealthData.get(chosenPlayer).ifPresent(iHeartData ->
-                source.sendSuccess(() -> Component.translatable("chat.message.lifesteal.get_hit_point_for_player", chosenPlayer.getName().getString(), iHeartData.getHealthDifference()), false)
-        );
+    private static int getHitPoint(CommandSourceStack source, Collection<ServerPlayer> chosenPlayers) throws CommandSyntaxException {
+        chosenPlayers.forEach(chosenPlayer -> LifestealData.get(chosenPlayer).ifPresent(iLifestealData ->
+                source.sendSuccess(() -> Component.translatable("chat.message.lifesteal.get_hit_point_for_player", chosenPlayer.getName().getString(), iLifestealData.getValue(ModResources.HEALTH_DIFFERENCE)), false)
+        ));
+
         return Command.SINGLE_SUCCESS;
     }
 
     private static int setHitPoint(CommandSourceStack source, int amount) throws CommandSyntaxException {
         LivingEntity player = source.getPlayerOrException();
-        HealthData.get(player).ifPresent(IHeartCap -> {
-            IHeartCap.setHealthDifference(amount);
-            IHeartCap.refreshHealth(false);
+        LifestealData.get(player).ifPresent(iLifestealData -> {
+            iLifestealData.setValue(ModResources.HEALTH_DIFFERENCE,amount);
+            iLifestealData.refreshHealth(false);
         });
 
         source.sendSuccess(() -> Component.translatable("chat.message.lifesteal.set_hit_point_for_self", amount), true);
         return Command.SINGLE_SUCCESS;
     }
 
-    private static int setHitPoint(CommandSourceStack source, ServerPlayer chosenPlayer, int amount) throws CommandSyntaxException {
-        HealthData.get(chosenPlayer).ifPresent(IHeartCap -> {
-            IHeartCap.setHealthDifference(amount);
-            IHeartCap.refreshHealth(false);
+    private static int setHitPoint(CommandSourceStack source, Collection<ServerPlayer> chosenPlayers, int amount) throws CommandSyntaxException {
+        chosenPlayers.forEach(chosenPlayer -> {
+            LifestealData.get(chosenPlayer).ifPresent(iLifestealData -> {
+                iLifestealData.setValue(ModResources.HEALTH_DIFFERENCE,amount);
+                iLifestealData.refreshHealth(false);
+            });
+
+            source.sendSuccess(() -> Component.translatable("chat.message.lifesteal.set_hit_point_for_player", chosenPlayer.getName().getString(), amount), true);
+
+            if (LifeSteal.config.tellPlayersIfHitPointChanged.get()) {
+                chosenPlayer.sendSystemMessage(Component.translatable("chat.message.lifesteal.set_hit_point_for_self", amount));
+            }
         });
-
-        source.sendSuccess(() -> Component.translatable("chat.message.lifesteal.set_hit_point_for_player", chosenPlayer.getName().getString(), amount), true);
-
-        if (LifeSteal.config.tellPlayersIfHitPointChanged.get()) {
-            chosenPlayer.sendSystemMessage(Component.translatable("chat.message.lifesteal.set_hit_point_for_self", amount));
-        }
 
         return Command.SINGLE_SUCCESS;
     }

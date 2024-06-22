@@ -1,5 +1,7 @@
 package net.goose.lifesteal.datagen;
 
+import net.goose.lifesteal.common.block.ModBlocks;
+import net.goose.lifesteal.common.item.ModItems;
 import net.goose.lifesteal.util.ModResources;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
@@ -50,28 +52,28 @@ public class ModDataGenerators {
 
     private static void addVirtualPackContents(ExistingFileHelper existingFileHelper) {
         existingFileHelper.trackGenerated(
-                ModResources.modLoc("crystal_block"), PackType.CLIENT_RESOURCES, PATH_SUFFIX, PATH_BLOCK_PREFIX
+                ModResources.modLoc(ModBlocks.CRYSTAL_BLOCK.getId().getPath()), PackType.CLIENT_RESOURCES, PATH_SUFFIX, PATH_BLOCK_PREFIX
         );
         existingFileHelper.trackGenerated(
-                ModResources.modLoc("deepslate_heart_ore"), PackType.CLIENT_RESOURCES, PATH_SUFFIX, PATH_BLOCK_PREFIX
+                ModResources.modLoc(ModBlocks.DEEPSLATE_CRYSTAL_ORE.getId().getPath()), PackType.CLIENT_RESOURCES, PATH_SUFFIX, PATH_BLOCK_PREFIX
         );
         existingFileHelper.trackGenerated(
-                ModResources.modLoc("heart_ore"), PackType.CLIENT_RESOURCES, PATH_SUFFIX, PATH_BLOCK_PREFIX
+                ModResources.modLoc(ModBlocks.CRYSTAL_ORE.getId().getPath()), PackType.CLIENT_RESOURCES, PATH_SUFFIX, PATH_BLOCK_PREFIX
         );
         existingFileHelper.trackGenerated(
-                ModResources.modLoc("netherrack_heart_ore"), PackType.CLIENT_RESOURCES, PATH_SUFFIX, PATH_BLOCK_PREFIX
+                ModResources.modLoc(ModBlocks.NETHERRACK_CRYSTAL_ORE.getId().getPath()), PackType.CLIENT_RESOURCES, PATH_SUFFIX, PATH_BLOCK_PREFIX
         );
         existingFileHelper.trackGenerated(
-                ModResources.modLoc("crystal_core"), PackType.CLIENT_RESOURCES, PATH_SUFFIX, PATH_ITEM_PREFIX
+                ModResources.modLoc(ModItems.CRYSTAL_CORE.getId().getPath()), PackType.CLIENT_RESOURCES, PATH_SUFFIX, PATH_ITEM_PREFIX
         );
         existingFileHelper.trackGenerated(
-                ModResources.modLoc("heart_crystal"), PackType.CLIENT_RESOURCES, PATH_SUFFIX, PATH_ITEM_PREFIX
+                ModResources.modLoc(ModItems.HEART_CRYSTAL.getId().getPath()), PackType.CLIENT_RESOURCES, PATH_SUFFIX, PATH_ITEM_PREFIX
         );
         existingFileHelper.trackGenerated(
-                ModResources.modLoc("heart_fragment"), PackType.CLIENT_RESOURCES, PATH_SUFFIX, PATH_ITEM_PREFIX
+                ModResources.modLoc(ModItems.CRYSTAL_FRAGMENT.getId().getPath()), PackType.CLIENT_RESOURCES, PATH_SUFFIX, PATH_ITEM_PREFIX
         );
         existingFileHelper.trackGenerated(
-                ModResources.modLoc("revive_crystal"), PackType.CLIENT_RESOURCES, PATH_SUFFIX, PATH_ITEM_PREFIX
+                ModResources.modLoc(ModItems.REVIVE_CRYSTAL.getId().getPath()), PackType.CLIENT_RESOURCES, PATH_SUFFIX, PATH_ITEM_PREFIX
         );
     }
 }
