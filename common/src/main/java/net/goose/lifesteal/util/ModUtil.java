@@ -1,12 +1,14 @@
 package net.goose.lifesteal.util;
 
+import com.google.common.collect.ImmutableMap;
 import com.mojang.authlib.GameProfile;
+import dev.architectury.injectables.annotations.ExpectPlatform;
 import net.goose.lifesteal.LifeSteal;
 import net.goose.lifesteal.api.PlayerImpl;
 import net.goose.lifesteal.common.blockentity.custom.ReviveSkullBlockEntity;
 import net.goose.lifesteal.common.component.ModDataComponents;
 import net.goose.lifesteal.common.item.ModItems;
-import net.goose.lifesteal.data.HealthData;
+import net.goose.lifesteal.data.LifestealData;
 import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
@@ -36,9 +38,9 @@ import javax.annotation.Nullable;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 
 public class ModUtil {
     public enum KilledType{
@@ -58,50 +60,48 @@ public class ModUtil {
         return listTag;
     }
 
-    public static HashMap<GameProfile, KilledType> getDeadPlayers(MinecraftServer server, boolean includeBanned, boolean includeSpectators){
-        HashMap<GameProfile, KilledType> map = new HashMap<>(Integer.MAX_VALUE);
+    public static ImmutableMap<GameProfile, KilledType> getDeadPlayers(MinecraftServer server){
+        ImmutableMap.Builder<GameProfile, KilledType> builder = ImmutableMap.builder();
         PlayerList playerList = server.getPlayerList();
         List<ServerPlayer> serverPlayers = playerList.getPlayers();
 
-        if(includeBanned){
-            UserBanList userBanList = playerList.getBans();
-            userBanList.getEntries().forEach(entry -> {
-                if(entry.getSource().matches(LifeSteal.MOD_ID)){
-                    map.put(entry.getUser(), KilledType.BANNED);
-                }
-            });
-        }
+        UserBanList userBanList = playerList.getBans();
+        userBanList.getEntries().forEach(entry -> {
+            if(entry.getSource().matches(LifeSteal.MOD_ID)){
+                builder.put(entry.getUser(), KilledType.BANNED);
+            }
+        });
 
-        if(includeSpectators){
-            serverPlayers.forEach(entry -> {
-                if(entry.gameMode.getGameModeForPlayer() == GameType.SPECTATOR){
-                    CompoundTag tag = ModUtil.getPlayerData(server, entry.getGameProfile());
-                    if(tag != null && tag.getLong("TimeKilled") > 0){
-                        map.put(entry.getGameProfile(), KilledType.SPECTATOR);
-                    }
+        serverPlayers.forEach(entry -> {
+            if(entry.gameMode.getGameModeForPlayer() == GameType.SPECTATOR){
+                if((long) LifestealData.get(entry).get().getValue(ModResources.TIME_KILLED) > 0L){
+                    builder.put(entry.getGameProfile(), KilledType.SPECTATOR);
                 }
-            });
-        }
-
+            }
+        });
+        ImmutableMap<GameProfile, KilledType> map = builder.build();
         return map;
+    }
+
+    @ExpectPlatform
+    public static CompoundTag setLifestealDataFromTag(CompoundTag tag, String key, BiFunction<CompoundTag, String, CompoundTag> function){
+        throw new AssertionError("i just fucked your mom hewehhehehehehhehe");
+    }
+
+    @ExpectPlatform
+    public static <T> T getLifestealDataFromTag(CompoundTag tag, String key, BiFunction<CompoundTag, String, T> function){
+        throw new AssertionError("i just fucked your mom hewehhehehehehhehe");
     }
 
     public static CompoundTag getPlayerData(MinecraftServer server, GameProfile gameProfile){
         try{
-            LifeSteal.LOGGER.info(1);
             LevelStorageSource.LevelStorageAccess levelStorageAccess = server.storageSource;
-            LifeSteal.LOGGER.info(2);
             File playerDir = levelStorageAccess.getLevelPath(LevelResource.PLAYER_DATA_DIR).toFile();
-            LifeSteal.LOGGER.info(3);
             String uuidString = gameProfile.getId().toString();
-            LifeSteal.LOGGER.info(4);
             File file = new File(playerDir, uuidString + ".dat");
-            LifeSteal.LOGGER.info(5);
             if (file.exists() && file.isFile())
             {
-                LifeSteal.LOGGER.info(6);
                 CompoundTag tag = NbtIo.readCompressed(file.toPath(), NbtAccounter.unlimitedHeap());
-                LifeSteal.LOGGER.info(7);
                 return tag;
             } else {
                 throw new Exception("Soooo we couldn't get their data whomp whomp");
@@ -141,7 +141,6 @@ public class ModUtil {
             int i = NbtUtils.getDataVersion(compoundTag, -1);
             compoundTag = DataFixTypes.PLAYER.updateToCurrentVersion(server.getFixerUpper(), compoundTag, i);
 
-            compoundTag.remove("TimeKilled");
             compoundTag.putBoolean("Revived", true);
             compoundTag.put("Pos", newDoubleList(respawnPos.getX(), respawnPos.getY(), respawnPos.getZ()));
             compoundTag.putString("Dimension", respawnLevel.dimension().location().getPath());
@@ -162,8 +161,10 @@ public class ModUtil {
     public static MutableComponent addComponents(MutableComponent... components){
         MutableComponent currentComponent = components[0];
         for(int index = 1; index < components.length; index++) {
-            if(index == components.length - 1)
+            if(index == components.length - 1) {
+                currentComponent.append(" ");
                 currentComponent.append(components[index]);
+            }
         }
         return currentComponent;
     }
@@ -171,8 +172,9 @@ public class ModUtil {
     public static boolean revivePlayer(ServerLevel level, BlockPos reviveAt, GameProfile profileToUnban, boolean enableLightningEffect, boolean silentRevive, @Nullable Player optionalReviver) {
         boolean successful = false;
 
-        ServerPlayer serverPlayer = (ServerPlayer) level.getPlayerByUUID(profileToUnban.getId());
-        UserBanList userBanList = level.getServer().getPlayerList().getBans();
+        MinecraftServer server = level.getServer();
+        ServerPlayer serverPlayer = server.getPlayerList().getPlayer(profileToUnban.getId());
+        UserBanList userBanList = server.getPlayerList().getBans();
 
         if(userBanList.isBanned(profileToUnban)){
             userBanList.remove(profileToUnban);
@@ -190,7 +192,7 @@ public class ModUtil {
 
             if (livingEntity != null) {
                 successful = true;
-                HealthData.get(livingEntity).ifPresent(HealthData::tryRevivalEffects);
+                LifestealData.get(livingEntity).ifPresent(LifestealData::tryRevivalEffects);
             }
         }
 

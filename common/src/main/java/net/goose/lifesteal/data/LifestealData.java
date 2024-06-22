@@ -4,7 +4,7 @@ import com.mojang.authlib.GameProfile;
 import dev.architectury.injectables.annotations.ExpectPlatform;
 import net.goose.lifesteal.LifeSteal;
 import net.goose.lifesteal.advancement.ModCriteria;
-import net.goose.lifesteal.api.IHealthData;
+import net.goose.lifesteal.api.ILifestealData;
 import net.goose.lifesteal.api.PlayerImpl;
 import net.goose.lifesteal.common.block.ModBlocks;
 import net.goose.lifesteal.common.block.custom.ReviveHeadBlock;
@@ -17,6 +17,7 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.players.UserBanList;
@@ -37,21 +38,17 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 
+import java.sql.Time;
 import java.util.*;
 
-public class HealthData implements IHealthData {
+public class LifestealData implements ILifestealData {
     private final LivingEntity livingEntity;
-    public HealthData(final LivingEntity entity) {
+    public LifestealData(final LivingEntity entity) {
         this.livingEntity = entity;
     }
 
     @ExpectPlatform
-    public static Optional<HealthData> get(LivingEntity livingEntity) {
-        throw new AssertionError();
-    }
-
-    @ExpectPlatform
-    public static Optional<HealthData> get(Entity entity) {
+    public static Optional<LifestealData> get(Entity entity) {
         throw new AssertionError();
     }
 
@@ -73,10 +70,11 @@ public class HealthData implements IHealthData {
                         this.livingEntity.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, tickTime, 3));
                     }
                     if (LifeSteal.config.customHeartDifferenceWhenRevived.get()) {
-                        setHealthDifference(LifeSteal.config.startingHeartDifferenceFromCrystal.get());
+                        setValue(ModResources.HEALTH_DIFFERENCE, LifeSteal.config.startingHeartDifferenceFromCrystal.get());
                     } else {
-                        setHealthDifference(LifeSteal.config.startingHealthDifference.get());
+                        setValue(ModResources.HEALTH_DIFFERENCE, LifeSteal.config.startingHealthDifference.get());
                     }
+                    setValue(ModResources.TIME_KILLED, 0L);
                     refreshHealth(true);
                     ModCriteria.BACK_FROM_THE_DEAD.trigger(serverPlayer);
                     playerImpl.setRevived(false);
@@ -153,31 +151,42 @@ public class HealthData implements IHealthData {
     }
 
     @ExpectPlatform
-    public static int getHealthDifference(HealthData healthData) {
-        throw new AssertionError();
+    public static Collection<ResourceLocation> getKeys(LifestealData lifestealData){
+        throw new AssertionError("i just fucked your DAD hehehHAHAHAHAH");
     }
 
     @ExpectPlatform
-    public static void setHealthDifference(HealthData healthData, int health) {
-        throw new AssertionError();
+    public static <T> T getValue(LifestealData lifestealData, ResourceLocation key) {
+        throw new AssertionError("i just fucked your MOM MNAUDHAIUWHDIUAWHDIAUWD");
+    }
+
+    @ExpectPlatform
+    public static <T> void setValue(LifestealData lifestealData, ResourceLocation key, T value) {
+        throw new AssertionError("joe mama");
     }
     @Override
-    public int getHealthDifference() {
-        return getHealthDifference(this);
+    public <T> T getValue(ResourceLocation key) {
+        return getValue(this, key);
     }
 
     @Override
-    public void setHealthDifference(int health) {
+    public <T> void setValue(ResourceLocation key, T value) {
         if (!this.livingEntity.level().isClientSide) {
-            setHealthDifference(this, health);
+            setValue(this, key, value);
         }
+    }
+
+    // this is untested, i have no idea if it fuckin works at all lol. It works on Fabric (at least it seems) but idk about Neo cuz Neo no need it
+    @Override
+    public Collection<ResourceLocation> getKeys() {
+        return getKeys(this);
     }
 
     // Returns the real amount of hitpoints a player has, includes every other mod's effect and ours.
     @Override
-    public double getHealthModifiedTotal(boolean includeHealthDifference){
+    public int getHealthModifiedTotal(boolean includeHealthDifference){
         AttributeInstance attribute = this.livingEntity.getAttribute(Attributes.MAX_HEALTH);
-        double healthModifiedTotal = includeHealthDifference ? getHealthDifference() : 0.0;
+        int healthModifiedTotal = includeHealthDifference ? getValue(ModResources.HEALTH_DIFFERENCE) : 0;
 
         AttributeModifier attributeModifier = attribute.getModifier(ModResources.HEALTH_MODIFIER);
         if(attributeModifier != null){
@@ -196,8 +205,8 @@ public class HealthData implements IHealthData {
 
     // Returns the amount a player's HPDifference would have to be to get banned.
     @Override
-    public double getHPDifferenceRequiredForBan(){
-        double healthModified = this.getHealthModifiedTotal(false) + this.livingEntity.getAttribute(Attributes.MAX_HEALTH).getBaseValue();
+    public int getHPDifferenceRequiredForBan(){
+        int healthModified = this.getHealthModifiedTotal(false) + (int) this.livingEntity.getAttribute(Attributes.MAX_HEALTH).getBaseValue();
         return -healthModified;
     }
 
@@ -205,16 +214,12 @@ public class HealthData implements IHealthData {
     public void killPlayerPermanently(){
         if(!this.livingEntity.level().isClientSide){
             if (this.livingEntity instanceof ServerPlayer serverPlayer) {
-                setHealthDifference(LifeSteal.config.startingHealthDifference.get());
+                setValue(ModResources.HEALTH_DIFFERENCE, LifeSteal.config.startingHealthDifference.get());
+                setValue(ModResources.TIME_KILLED, System.currentTimeMillis());
                 refreshHealth(true);
                 MinecraftServer server = this.livingEntity.level().getServer();
-                GameProfile gameProfile = serverPlayer.getGameProfile();
-                CompoundTag compoundTag = ModUtil.getPlayerData(server, gameProfile);
-                compoundTag.putLong("TimeKilled", System.currentTimeMillis());
-                ModUtil.savePlayerData(server, gameProfile, compoundTag);
 
                 MutableComponent deadcomponent = Component.translatable("bannedmessage.lifesteal.lost_max_hearts");
-                MutableComponent fullcomponent = deadcomponent;
 
                 if(serverPlayer.isDeadOrDying())
                     serverPlayer.getInventory().dropAll();
@@ -225,8 +230,24 @@ public class HealthData implements IHealthData {
                         dropPlayerHead();
                     } else {
                         MutableComponent compPos = Component.translatable("bannedmessage.lifesteal.revive_head_location", blockPos.getX(), blockPos.getY(), blockPos.getZ());
-                        fullcomponent = ModUtil.addComponents(deadcomponent, compPos);
+                        deadcomponent = ModUtil.addComponents(deadcomponent, compPos);
                     }
+                }
+
+                if(LifeSteal.config.deathDuration.get() > 0){
+                    Calendar instance = Calendar.getInstance();
+                    instance.setTime(new Date((long)getValue(ModResources.TIME_KILLED) + LifeSteal.config.deathDuration.get()));
+                    int AM_PM = instance.get(Calendar.AM_PM);
+                    String formatAMPM;
+                    if(AM_PM == Calendar.AM)
+                        formatAMPM = "AM";
+                    else
+                        formatAMPM = "PM";
+
+                    MutableComponent compPos = Component.translatable(
+                            "bannedmessage.lifesteal.auto_revive_time",
+                            instance.get(Calendar.HOUR)+":"+instance.get(Calendar.MINUTE)+" "+formatAMPM+", "+(instance.get(Calendar.MONTH)+1) +"/"+instance.get(Calendar.DATE)+"/"+instance.get(Calendar.YEAR));
+                    deadcomponent = ModUtil.addComponents(deadcomponent, compPos);
                 }
 
                 if (!server.isSingleplayer() && LifeSteal.config.uponDeathBanned.get() && !server.getPlayerList().getBans().isBanned(serverPlayer.getGameProfile())) {
@@ -234,15 +255,15 @@ public class HealthData implements IHealthData {
                     serverPlayer.getGameProfile();
                     GameProfile gameprofile = serverPlayer.getGameProfile();
 
-                    UserBanListEntry userbanlistentry = new UserBanListEntry(gameprofile, null, LifeSteal.MOD_ID, null, fullcomponent == null ? null : fullcomponent.getString());
+                    UserBanListEntry userbanlistentry = new UserBanListEntry(gameprofile, null, LifeSteal.MOD_ID, null, deadcomponent == null ? null : deadcomponent.getString());
                     userbanlist.add(userbanlistentry);
 
                     if (serverPlayer != null) {
-                        serverPlayer.connection.disconnect(fullcomponent);
+                        serverPlayer.connection.disconnect(deadcomponent);
                     }
                 } else if (!serverPlayer.isSpectator()) {
                     serverPlayer.setGameMode(GameType.SPECTATOR);
-                    this.livingEntity.sendSystemMessage(fullcomponent);
+                    this.livingEntity.sendSystemMessage(deadcomponent);
                 }
             }
         }
@@ -256,7 +277,7 @@ public class HealthData implements IHealthData {
             final int maximumHealthGainable = LifeSteal.config.maximumHealthGainable.get();
             final int maximumHealthLoseable = LifeSteal.config.maximumHealthLoseable.get();
 
-            int healthDifference = getHealthDifference();
+            int healthDifference = getValue(ModResources.HEALTH_DIFFERENCE);
 
             if (maximumHealthGainable > -1) {
                 if (healthDifference - defaultHealthDifference >= maximumHealthGainable) {
@@ -272,7 +293,7 @@ public class HealthData implements IHealthData {
                 healthDifference = Math.max(healthDifference, defaultHealthDifference - maximumHealthLoseable);
             }
 
-            setHealthDifference(healthDifference);
+            setValue(ModResources.HEALTH_DIFFERENCE, healthDifference);
 
             AttributeInstance attribute = this.livingEntity.getAttribute(Attributes.MAX_HEALTH);
             AttributeModifier modifier = new AttributeModifier(ModResources.HEALTH_MODIFIER, healthDifference, AttributeModifier.Operation.ADD_VALUE);
@@ -292,12 +313,14 @@ public class HealthData implements IHealthData {
     @Override
     public CompoundTag serializeNBT() {
         CompoundTag tag = new CompoundTag();
-        tag.putInt("health_difference", getHealthDifference());
+        tag.putInt(ModResources.HEALTH_DIFFERENCE.getPath(), getValue(ModResources.HEALTH_DIFFERENCE));
+        tag.putLong(ModResources.TIME_KILLED.getPath(), getValue(ModResources.TIME_KILLED));
         return tag;
     }
 
     @Override
     public void deserializeNBT(CompoundTag tag) {
-        setHealthDifference(tag.getInt("health_difference"));
+        setValue(ModResources.HEALTH_DIFFERENCE, tag.getInt(ModResources.HEALTH_DIFFERENCE.getPath()));
+        setValue(ModResources.TIME_KILLED, tag.getLong(ModResources.TIME_KILLED.getPath()));
     }
 }

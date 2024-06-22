@@ -3,7 +3,8 @@ package net.goose.lifesteal.common.item.custom;
 import net.goose.lifesteal.LifeSteal;
 import net.goose.lifesteal.common.component.ModDataComponents;
 import net.goose.lifesteal.common.item.ModItems;
-import net.goose.lifesteal.data.HealthData;
+import net.goose.lifesteal.data.LifestealData;
+import net.goose.lifesteal.util.ModResources;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -54,20 +55,20 @@ public class HeartCrystalItem extends Item {
             }
 
 
-            HealthData.get(entity).ifPresent(IHeartCap -> {
+            LifestealData.get(entity).ifPresent(iLifestealData -> {
                 if (LifeSteal.config.maximumHealthGainable.get() > -1 && LifeSteal.config.preventFromUsingCrystalIfMax.get()) {
                     int maximumheartDifference = LifeSteal.config.startingHealthDifference.get() + LifeSteal.config.maximumHealthGainable.get();
-                    if (IHeartCap.getHealthDifference() == maximumheartDifference) {
+                    if ((int)iLifestealData.getValue(ModResources.HEALTH_DIFFERENCE) == maximumheartDifference) {
                         serverPlayer.displayClientMessage(Component.translatable("gui.lifesteal.heart_crystal_reaching_max"), true);
                         success.set(false);
                     }
                 }
 
                 if (success.get()) {
-                    int newheartDifference = IHeartCap.getHealthDifference() + LifeSteal.config.heartCrystalAmountGain.get();
+                    int newheartDifference = (int) iLifestealData.getValue(ModResources.HEALTH_DIFFERENCE) + LifeSteal.config.heartCrystalAmountGain.get();
 
-                    IHeartCap.setHealthDifference(newheartDifference);
-                    IHeartCap.refreshHealth(false);
+                    iLifestealData.setValue(ModResources.HEALTH_DIFFERENCE,newheartDifference);
+                    iLifestealData.refreshHealth(false);
 
                     // Formula, for every hit point, increase duration of the regeneration by 50 ticks: TickDuration = MaxHealth * 50
                     if (!unnaturalHeartCrystal) {

@@ -69,8 +69,9 @@ public class ModLangProvider extends LanguageProvider {
         addChatMessage("revived_player_success", "Successfully revived %s.");
         addChatMessage("revived_player_failed", "Failed to revive due to no position being given.");
 
-        addBannedMessage("lost_max_hearts", "You have lost all your max hearts, you are now permanently banned till further notice.");
-        addBannedMessage("revive_head_location", "Your revive head is located at [%s, %s, %s]");
+        addBannedMessage("lost_max_hearts", "You have lost all your max hearts, you are now permanently dead till further notice.");
+        addBannedMessage("revive_head_location", "Your revive head is located at [%s, %s, %s].");
+        addBannedMessage("auto_revive_time", "You will be automatically revived on %s.");
 
         addGuiMessage("crystal_core_disabled", "Crystal Cores have been disabled in the configurations");
         addGuiMessage("heart_crystal_disabled", "Heart Crystals have been disabled in the configurations");
