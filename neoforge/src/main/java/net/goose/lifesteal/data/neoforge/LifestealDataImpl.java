@@ -29,15 +29,16 @@ public class LifestealDataImpl {
     }
 
     public static Collection<ResourceLocation> getKeys(LifestealData lifestealData){
-        Set<AttachmentType<?>> attachmentTypes = lifestealData.getLivingEntity().getAttachmentMap().keySet();
-        List<ResourceLocation> collection = List.of();
-        for (int i = 0; i < ModDataAttachments.ATTACHMENT_TYPES.getEntries().stream().count(); i++) {
-            DeferredHolder<AttachmentType<?>, ? extends AttachmentType<?>> attachment = ModDataAttachments.ATTACHMENT_TYPES.getEntries().stream().toList().get(i);
-            if(attachmentTypes.contains(attachment.get())){
-                collection.add(attachment.getId());
-            }
-        }
-        return collection;
+//        Set<AttachmentType<?>> attachmentTypes = lifestealData.getLivingEntity().getAttachmentMap().keySet();
+//        List<ResourceLocation> collection = List.of();
+//        for (int i = 0; i < ModDataAttachments.ATTACHMENT_TYPES.getEntries().stream().count(); i++) {
+//            DeferredHolder<AttachmentType<?>, ? extends AttachmentType<?>> attachment = ModDataAttachments.ATTACHMENT_TYPES.getEntries().stream().toList().get(i);
+//            if(attachmentTypes.contains(attachment.get())){
+//                collection.add(attachment.getId());
+//            }
+//        }
+//        return collection;
+        return null;
     }
 
     public static <T> T getValue(LifestealData lifestealData, ResourceLocation data){
