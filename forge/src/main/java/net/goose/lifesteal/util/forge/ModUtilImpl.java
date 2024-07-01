@@ -1,4 +1,4 @@
-package net.goose.lifesteal.util.neoforge;
+package net.goose.lifesteal.util.forge;
 
 import net.minecraft.nbt.CompoundTag;
 

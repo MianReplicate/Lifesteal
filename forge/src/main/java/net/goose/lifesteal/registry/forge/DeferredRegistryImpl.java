@@ -1,6 +1,6 @@
-package net.goose.lifesteal.registry.neoforge;
+package net.goose.lifesteal.registry.forge;
 
-import net.goose.lifesteal.neoforge.LifestealNeoForge;
+import net.goose.lifesteal.forge.LifestealForge;
 import net.goose.lifesteal.registry.DeferredRegistry;
 import net.goose.lifesteal.registry.RegistrySupplier;
 import net.minecraft.core.Registry;
@@ -31,7 +31,7 @@ public class DeferredRegistryImpl {
 
         @Override
         public void register() {
-            this.register.register(LifestealNeoForge.modEventBus);
+            this.register.register(LifestealForge.modEventBus);
         }
 
 

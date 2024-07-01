@@ -1,4 +1,4 @@
-package net.goose.lifesteal.data.neoforge;
+package net.goose.lifesteal.data.forge;
 
 import net.goose.lifesteal.api.ILifestealData;
 import net.goose.lifesteal.data.LifestealData;

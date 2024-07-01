@@ -16,8 +16,8 @@ forgix {
         jarLocation = "build/libs/lifesteal-${mod_version}.jar" // This is the location of the fabric jar from the fabric project. If this property is not defined then by default it fetches the jar with the shortest name.
     }
 
-    neoforge {
-        projectName = "neoforge"
+    forge {
+        projectName = "forge"
         jarLocation = "build/libs/lifesteal-${mod_version}.jar" // This is the location of the forge jar from the forge project. If this property is not defined then by default it fetches the jar with the shortest name.
     }
 
@@ -38,6 +38,10 @@ subprojects {
     archivesBaseName = mod_id
     version = mod_version
     group = mod_base_package
+
+    project.ext {
+        accessWidenerFile = file("common/src/main/resources/${mod_id}.accesswidener")
+    }
 
     repositories {
         mavenLocal()
@@ -74,7 +78,7 @@ subprojects {
             name = "ModMaven"
             url = "https://modmaven.dev"
         }
-        maven { url "https://maven.neoforged.net/releases/" }
+        maven { url "https://maven.forged.net/releases/" }
         maven { url 'https://jitpack.io' }
     }
 
@@ -139,7 +143,7 @@ subprojects {
             inputs.property "${it.key}", "${it.value}"
         }
 
-        filesMatching([ '*.mixins.json', 'pack.mcmeta', 'META-INF/neoforge.mods.toml', 'fabric.mod.json', 'architectury.common.json' ]) {
+        filesMatching([ '*.mixins.json', 'pack.mcmeta', 'META-INF/forge.mods.toml', 'fabric.mod.json', 'architectury.common.json' ]) {
             expand project.properties
         }
     }

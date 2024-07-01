@@ -1,6 +1,6 @@
 package net.goose.lifesteal.configuration;
 
-import net.neoforged.neoforge.common.ModConfigSpec;
+import net.forged.forge.common.ModConfigSpec;
 import org.apache.commons.lang3.tuple.Pair;
 
 public class ConfigHolder {

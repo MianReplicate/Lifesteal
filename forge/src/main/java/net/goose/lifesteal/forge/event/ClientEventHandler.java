@@ -1,4 +1,4 @@
-package net.goose.lifesteal.neoforge.event;
+package net.goose.lifesteal.forge.event;
 
 import net.goose.lifesteal.LifeSteal;
 import net.goose.lifesteal.client.render.ReviveHeadBER;

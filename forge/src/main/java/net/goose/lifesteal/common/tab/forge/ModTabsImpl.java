@@ -1,4 +1,4 @@
-package net.goose.lifesteal.common.tab.neoforge;
+package net.goose.lifesteal.common.tab.forge;
 
 import net.goose.lifesteal.common.item.ModItems;
 import net.goose.lifesteal.common.tab.ModTabs;

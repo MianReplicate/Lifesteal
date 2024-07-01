@@ -1,4 +1,4 @@
-# This is an example neoforge.mods.toml file. It contains the data relating to the loading mods.
+# This is an example mods.toml file. It contains the data relating to the loading mods.
 # There are several mandatory fields (#mandatory), and many more that are optional (#optional).
 # The overall format is standard TOML format, v0.5.0.
 # Note that there are a couple of TOML lists in this file.
@@ -6,7 +6,7 @@
 # The name of the mod loader type to load - for regular FML @Mod mods it should be javafml
 modLoader = "javafml" #mandatory
 # A version range to match for said mod loader - for regular FML @Mod it will be the forge version
-loaderVersion = "${neo_loader_version_range}" #mandatory This is typically bumped every Minecraft version by Forge. See our download page for lists of versions.
+loaderVersion = "${forge_loader_version_range}" #mandatory This is typically bumped every Minecraft version by Forge. See our download page for lists of versions.
 # The license for you mod. This is mandatory metadata and allows for easier comprehension of your redistributive properties.
 # Review your options at https://choosealicense.com/. All rights reserved is the default copyright stance, and is thus the default here.
 license = "${mod_license}"
@@ -44,11 +44,11 @@ ${mod_description}
 # A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
 [[dependencies.lifesteal]] #optional
 # the modid of the dependency
-modId = "neoforge" #mandatory
+modId = "forge" #mandatory
 # Does this dependency have to exist - if not, ordering below must be specified
 type = 'required' #mandatory
 # The version range of the dependency
-versionRange = "${neo_version_range}" #mandatory
+versionRange = "${forge_version_range}" #mandatory
 # An ordering relationship for the dependency - BEFORE or AFTER required if the relationship is not mandatory
 ordering = "NONE"
 # Side this dependency is applied on - BOTH, CLIENT or SERVER
@@ -61,9 +61,3 @@ type = 'required'
 versionRange = "${minecraft_version_range}"
 ordering = "NONE"
 side = "BOTH"
-
-[[mixins]]
-config="lifesteal-common.mixins.json"
-
-[[accessTransformers]]
-file="META-INF/accesstransformer.cfg"

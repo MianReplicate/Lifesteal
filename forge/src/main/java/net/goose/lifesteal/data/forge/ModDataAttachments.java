@@ -1,4 +1,4 @@
-package net.goose.lifesteal.data.neoforge;
+package net.goose.lifesteal.data.forge;
 
 import com.mojang.serialization.Codec;
 import net.goose.lifesteal.LifeSteal;

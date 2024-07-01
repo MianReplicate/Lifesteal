@@ -1,6 +1,6 @@
 package net.goose.lifesteal.fabric;
 
-import fuzs.forgeconfigapiport.fabric.api.neoforge.v4.NeoForgeConfigRegistry;
+import fuzs.forgeconfigapiport.fabric.api.forge.v4.forgeConfigRegistry;
 import net.fabricmc.api.ModInitializer;
 import net.goose.lifesteal.LifeSteal;
 import net.goose.lifesteal.advancement.ModCriteria;
@@ -10,7 +10,7 @@ import net.goose.lifesteal.fabric.event.ModEvents;
 import net.goose.lifesteal.util.ModResources;
 import net.goose.lifesteal.world.gen.ModBiomeModifier;
 import net.minecraft.advancements.CriteriaTriggers;
-import net.neoforged.fml.config.ModConfig;
+import net.forged.fml.config.ModConfig;
 
 import static net.goose.lifesteal.advancement.ModCriteria.*;
 
@@ -25,7 +25,7 @@ public class LifestealFabric implements ModInitializer {
     }
     @Override
     public void onInitialize() {
-        NeoForgeConfigRegistry.INSTANCE.register(LifeSteal.MOD_ID, ModConfig.Type.COMMON, ConfigHolder.SERVER_SPEC);
+        forgeConfigRegistry.INSTANCE.register(LifeSteal.MOD_ID, ModConfig.Type.COMMON, ConfigHolder.SERVER_SPEC);
         LifeSteal.config = ConfigHolder.SERVER;
         LifeSteal.init();
         ModEvents.register();

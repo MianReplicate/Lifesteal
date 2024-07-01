@@ -1,7 +1,7 @@
 package net.goose.lifesteal.configuration;
 
 import net.minecraft.commands.Commands;
-import net.neoforged.neoforge.common.ModConfigSpec;
+import net.forged.forge.common.ModConfigSpec;
 import org.jetbrains.annotations.Nullable;
 
 public class ModConfig {

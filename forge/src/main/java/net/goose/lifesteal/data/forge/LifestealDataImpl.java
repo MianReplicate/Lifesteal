@@ -1,4 +1,4 @@
-package net.goose.lifesteal.data.neoforge;
+package net.goose.lifesteal.data.forge;
 
 import net.goose.lifesteal.api.ILifestealData;
 import net.goose.lifesteal.data.LifestealData;
@@ -10,7 +10,6 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 public class LifestealDataImpl {
 
