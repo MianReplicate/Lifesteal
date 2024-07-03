@@ -1,4 +1,5 @@
 {
+  "TagKey[minecraft:item / origins:ignore_diet]": "Ignore Diet",
   "advancement.lifesteal:back_from_the_dead": "???",
   "advancement.lifesteal:back_from_the_dead.desc": "...",
   "advancement.lifesteal:get_10_max_hearts": "Immortality",
@@ -57,6 +58,5 @@
   "item.lifesteal.heart_crystal.named": "%s's Heart",
   "item.lifesteal.heart_crystal.unnatural": "Unnatural Heart Crystal",
   "item.lifesteal.revive_crystal": "Revive Crystal",
-  "itemGroup.lifesteal": "Lifesteal",
-  "tag.item.origins.ignore_diet": "Ignore Diet"
+  "itemGroup.lifesteal": "Lifesteal"
 }

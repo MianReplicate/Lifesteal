@@ -23,7 +23,7 @@ public class LifestealForge {
         LifeSteal.init();
 
         eventBus.register(EventHandler.class);
-        modEventBus.register(ModCapabilities.EventCapHandler.class);
+        eventBus.register(ModCapabilities.EventCapHandler.class);
         modEventBus.register(ModDataGenerators.class);
     }
 }

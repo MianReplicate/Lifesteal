@@ -34,7 +34,7 @@ public class ModDataGenerators {
 
         if (ev.includeServer()) {
             gen.addProvider(ev.includeServer(), new ModWorldGenProvider(packOutput, provider)); // ConfiguredFeatures&PlacedFeatures with BiomeModifiers && Structures
-            gen.addProvider(ev.includeServer(), new ModRecipesProvider(packOutput, provider)); // Recipes
+            gen.addProvider(ev.includeServer(), new ModRecipesProvider(packOutput)); // Recipes
             gen.addProvider(ev.includeServer(), new LootTableProvider(packOutput, Collections.emptySet(), // LootTables
                     List.of(new LootTableProvider.SubProviderEntry(ModLootProvider.ModBlockLoot::new, LootContextParamSets.BLOCK),
                             new LootTableProvider.SubProviderEntry(ModLootProvider.ModChestLoot::new, LootContextParamSets.CHEST))));

@@ -46,7 +46,7 @@ ${mod_description}
 # the modid of the dependency
 modId = "forge" #mandatory
 # Does this dependency have to exist - if not, ordering below must be specified
-type = 'required' #mandatory
+mandatory = true #mandatory
 # The version range of the dependency
 versionRange = "${forge_version_range}" #mandatory
 # An ordering relationship for the dependency - BEFORE or AFTER required if the relationship is not mandatory
@@ -56,7 +56,7 @@ side = "BOTH"
 # Here's another dependency
 [[dependencies.lifesteal]]
 modId = "minecraft"
-type = 'required'
+mandatory = true
 # This version range declares a minimum of the current minecraft version up to but not including the next major version
 versionRange = "${minecraft_version_range}"
 ordering = "NONE"

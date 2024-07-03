@@ -1,0 +1,30 @@
+{
+  "parent": "lifesteal:root",
+  "criteria": {
+    "back_from_the_dead": {
+      "conditions": {},
+      "trigger": "lifesteal:back_from_the_dead"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancement.lifesteal:back_from_the_dead.desc"
+    },
+    "frame": "challenge",
+    "hidden": false,
+    "icon": {
+      "item": "lifesteal:revive_head"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.lifesteal:back_from_the_dead"
+    }
+  },
+  "requirements": [
+    [
+      "back_from_the_dead"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

@@ -1,9 +1,0 @@
-{
-  "type": "neoforge:add_features",
-  "biomes": "#lifesteal:overworld_ore",
-  "features": [
-    "lifesteal:heart_ore_placed",
-    "lifesteal:deepslate_heart_geode_placed"
-  ],
-  "step": "underground_ores"
-}

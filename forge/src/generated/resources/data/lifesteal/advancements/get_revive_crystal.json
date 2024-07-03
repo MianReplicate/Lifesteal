@@ -1,0 +1,41 @@
+{
+  "parent": "lifesteal:get_heart_crystal",
+  "criteria": {
+    "has_revive_crystal": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "lifesteal:revive_crystal"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancement.lifesteal:get_revive_crystal.desc"
+    },
+    "frame": "challenge",
+    "hidden": false,
+    "icon": {
+      "item": "lifesteal:revive_crystal"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.lifesteal:get_revive_crystal"
+    }
+  },
+  "requirements": [
+    [
+      "has_revive_crystal"
+    ]
+  ],
+  "rewards": {
+    "experience": 500
+  },
+  "sends_telemetry_event": true
+}

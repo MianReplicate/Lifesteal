@@ -6,7 +6,6 @@ import dev.architectury.injectables.annotations.ExpectPlatform;
 import net.goose.lifesteal.LifeSteal;
 import net.goose.lifesteal.api.PlayerImpl;
 import net.goose.lifesteal.common.blockentity.custom.ReviveSkullBlockEntity;
-import net.goose.lifesteal.common.component.ModDataComponents;
 import net.goose.lifesteal.common.item.ModItems;
 import net.goose.lifesteal.data.LifestealData;
 import net.minecraft.ChatFormatting;

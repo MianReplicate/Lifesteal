@@ -84,7 +84,7 @@ subprojects {
 
     tasks.withType(JavaCompile) {
         options.encoding = "UTF-8"
-        options.release = 21
+        options.release = 17
     }
 
     java {
@@ -115,10 +115,13 @@ subprojects {
         minecraft = "${minecraft_version}"
     }
 
-//    loom {
-//        accessWidenerPath.set(project(':common').loom.accessWidenerPath)
-//        silentMojangMappingsLicense()
-//    }
+    loom {
+        silentMojangMappingsLicense()
+
+        if(accessWidenerFile.exists()) {
+            accessWidenerPath = accessWidenerFile
+        }
+    }
 
     dependencies {
         minecraft "com.mojang:minecraft:${rootProject.minecraft_version}"
@@ -143,7 +146,7 @@ subprojects {
             inputs.property "${it.key}", "${it.value}"
         }
 
-        filesMatching([ '*.mixins.json', 'pack.mcmeta', 'META-INF/forge.mods.toml', 'fabric.mod.json', 'architectury.common.json' ]) {
+        filesMatching([ '*.mixins.json', 'pack.mcmeta', 'META-INF/mods.toml', 'fabric.mod.json', 'architectury.common.json' ]) {
             expand project.properties
         }
     }

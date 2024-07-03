@@ -1,7 +1,7 @@
 {
   "values": [
     "#minecraft:is_nether",
-    "#c:is_dry/nether",
-    "#c:is_hot/nether"
+    "#forge:is_dry/nether",
+    "#forge:is_hot/nether"
   ]
 }

@@ -7,7 +7,10 @@ import net.goose.lifesteal.util.ModResources;
 import net.goose.lifesteal.util.ModTags;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
 import net.minecraftforge.common.data.LanguageProvider;
+
+import java.util.function.Supplier;
 
 public class ModLangProvider extends LanguageProvider {
     public ModLangProvider(PackOutput output) {
@@ -31,9 +34,13 @@ public class ModLangProvider extends LanguageProvider {
         add("bannedmessage."+ LifeSteal.MOD_ID+"."+title, translation);
     }
 
+    public void addTag(Supplier<? extends TagKey<?>> key, String name) {
+        add(key.get().toString(), name);
+    }
+
     @Override
     protected void addTranslations() {
-        add(() -> ModTags.ORIGINS_IGNORE_DIET, "Ignore Diet");
+        addTag(() -> ModTags.ORIGINS_IGNORE_DIET, "Ignore Diet");
 
         addItem(ModItems.CRYSTAL_FRAGMENT, "Crystal Fragment");
         addItem(ModItems.CRYSTAL_CORE, "Crystal Core");
