@@ -9,7 +9,6 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.common.data.LanguageProvider;
 
-// TODO: Finish this up sometime lol
 public class ModLangProvider extends LanguageProvider {
     public ModLangProvider(PackOutput output) {
         super(output, LifeSteal.MOD_ID, "en_us");
