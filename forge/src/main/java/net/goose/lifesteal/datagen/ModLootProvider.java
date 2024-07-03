@@ -27,10 +27,6 @@ import java.util.function.BiConsumer;
 
 public class ModLootProvider {
     public static class ModBlockLoot extends VanillaBlockLoot {
-        public ModBlockLoot() {
-            super();
-        }
-
         @Override
         protected void generate() {
             this.add(ModBlocks.CRYSTAL_ORE.get(), (block) -> createOreDrop(block, ModItems.CRYSTAL_FRAGMENT.get()));
@@ -50,7 +46,7 @@ public class ModLootProvider {
         }
     }
 
-    public record ModChestLoot implements LootTableSubProvider {
+    public static class ModChestLoot implements LootTableSubProvider {
 
         @Override
         public void generate(BiConsumer<ResourceLocation, LootTable.Builder> biConsumer) {
