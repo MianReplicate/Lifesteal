@@ -12,7 +12,6 @@ import net.goose.lifesteal.data.LifestealData;
 import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.*;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -119,7 +118,7 @@ public class ModUtil {
             File file = new File(playerDir, uuidString + ".dat");
             if (file.exists() && file.isFile())
             {
-                CompoundTag tag = NbtIo.readCompressed(file.toPath(), NbtAccounter.unlimitedHeap());
+                CompoundTag tag = NbtIo.readCompressed(file);
                 return tag;
             } else {
                 throw new Exception("Soooo we couldn't get their data whomp whomp");
@@ -138,7 +137,7 @@ public class ModUtil {
 
             Path path = playerDir.toPath();
             Path path2 = Files.createTempFile(path, uuidString + "-", ".dat");
-            NbtIo.writeCompressed(compoundTag, path2);
+            NbtIo.writeCompressed(compoundTag, path2.toFile());
             Path path3 = path.resolve(uuidString + ".dat");
             Path path4 = path.resolve(uuidString + ".dat_old");
             Util.safeReplaceFile(path3, path2, path4);
@@ -239,9 +238,10 @@ public class ModUtil {
 
     public static void ripHeartCrystalFromPlayer(LivingEntity killedPlayer) {
         ItemStack itemStack = new ItemStack(ModItems.HEART_CRYSTAL.get());
-        itemStack.set(ModDataComponents.RIPPED.get(), true);
-        itemStack.set(ModDataComponents.UNFRESH.get(), true);
-        itemStack.set(DataComponents.CUSTOM_NAME, Component.translatable("item.lifesteal.heart_crystal.named", killedPlayer.getName().getString()));
+        CompoundTag compoundTag = itemStack.getOrCreateTagElement(LifeSteal.MOD_ID);
+        compoundTag.putBoolean(ModResources.RIPPED, true);
+        compoundTag.putBoolean(ModResources.UNFRESH, true);
+        itemStack.setHoverName(Component.translatable("item.lifesteal.heart_crystal.named", killedPlayer.getName().getString()));
 
         ServerPlayer serverPlayer = (ServerPlayer) killedPlayer;
         serverPlayer.drop(itemStack, true, false);

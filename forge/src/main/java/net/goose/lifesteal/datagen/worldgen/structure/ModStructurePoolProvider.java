@@ -12,7 +12,7 @@ import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
 
 public class ModStructurePoolProvider {
 
-    public static void bootstrap(BootstrapContext<StructureTemplatePool> context) {
+    public static void bootstrap(BootstapContext<StructureTemplatePool> context) {
         HolderGetter<StructureTemplatePool> templatePoolGetter = context.lookup(Registries.TEMPLATE_POOL);
         Holder<StructureTemplatePool> emptyHolder = templatePoolGetter.getOrThrow(Pools.EMPTY);
         context.register(ModResources.ABANDONED_TRADING_CART_POOL, new StructureTemplatePool(

@@ -13,7 +13,6 @@ import net.goose.lifesteal.common.item.ModItems;
 import net.goose.lifesteal.util.ModResources;
 import net.goose.lifesteal.util.ModUtil;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -31,7 +30,6 @@ import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.component.ResolvableProfile;
 import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -42,6 +40,7 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class LifestealData implements ILifestealData {
+    private final HashMap<ResourceLocation, Object> dataMap = new HashMap<>();
     private final LivingEntity livingEntity;
     public LifestealData(final LivingEntity entity) {
         this.livingEntity = entity;
@@ -121,7 +120,7 @@ public class LifestealData implements ILifestealData {
                         return null;
                     }
                     ReviveSkullBlockEntity playerHeadEntity = (ReviveSkullBlockEntity) ((ReviveHeadBlock)playerHeadState.getBlock()).newBlockEntity(targetPos, playerHeadState);
-                    playerHeadEntity.setOwner(new ResolvableProfile(serverPlayer.getGameProfile()));
+                    playerHeadEntity.setOwner(serverPlayer.getGameProfile());
                     level.setBlockEntity(playerHeadEntity);
 
                     BlockPos currentPos = playerHeadEntity.getBlockPos();
@@ -138,7 +137,9 @@ public class LifestealData implements ILifestealData {
         if (this.livingEntity instanceof ServerPlayer serverPlayer) {
             if (!serverPlayer.level().isClientSide) {
                 ItemStack itemStack = new ItemStack(ModItems.REVIVE_HEAD_ITEM.get());
-                itemStack.set(DataComponents.PROFILE, new ResolvableProfile(serverPlayer.getGameProfile()));
+                CompoundTag compoundTag = new CompoundTag();
+                compoundTag.putString("SkullOwner", serverPlayer.getName().toString());
+                itemStack.setTag(compoundTag);
                 serverPlayer.drop(itemStack, true, false);
                 return true;
             }
@@ -150,36 +151,21 @@ public class LifestealData implements ILifestealData {
         return this.livingEntity;
     }
 
-    @ExpectPlatform
-    public static Collection<ResourceLocation> getKeys(LifestealData lifestealData){
-        throw new AssertionError("i just fucked your DAD hehehHAHAHAHAH");
+    @Override
+    public Collection<ResourceLocation> getKeys(){
+        return this.dataMap.keySet();
     }
 
-    @ExpectPlatform
-    public static <T> T getValue(LifestealData lifestealData, ResourceLocation key) {
-        throw new AssertionError("i just fucked your MOM MNAUDHAIUWHDIUAWHDIAUWD");
-    }
-
-    @ExpectPlatform
-    public static <T> void setValue(LifestealData lifestealData, ResourceLocation key, T value) {
-        throw new AssertionError("joe mama");
-    }
     @Override
     public <T> T getValue(ResourceLocation key) {
-        return getValue(this, key);
+        return (T) this.dataMap.get(key);
     }
 
     @Override
     public <T> void setValue(ResourceLocation key, T value) {
         if (!this.livingEntity.level().isClientSide) {
-            setValue(this, key, value);
+            this.dataMap.put(key, value);
         }
-    }
-
-    // this is untested, i have no idea if it fuckin works at all lol. It works on Fabric (at least it seems) but idk about Neo cuz Neo no need it
-    @Override
-    public Collection<ResourceLocation> getKeys() {
-        return getKeys(this);
     }
 
     // Returns the real amount of hitpoints a player has, includes every other mod's effect and ours.
@@ -191,14 +177,14 @@ public class LifestealData implements ILifestealData {
                 new AtomicInteger(0);
 
         attribute.getModifiers().forEach(modifier -> {
-            if(!modifier.is(ModResources.HEALTH_MODIFIER)){
-                if (modifier.operation() == AttributeModifier.Operation.ADD_VALUE) {
-                    double amount = modifier.amount();
+            if(!modifier.getName().equals(ModResources.HEALTH_MODIFIER)){
+                if (modifier.getOperation() == AttributeModifier.Operation.ADDITION) {
+                    double amount = modifier.getAmount();
                     healthModifiedTotal.addAndGet((int) Math.round(amount));
-                } else if (modifier.operation() == AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL) {
-                    healthModifiedTotal.addAndGet((int) Math.round(this.livingEntity.getMaxHealth() * modifier.amount()));
-                } else if (modifier.operation() == AttributeModifier.Operation.ADD_MULTIPLIED_BASE) {
-                    healthModifiedTotal.addAndGet((int) Math.round(attribute.getBaseValue() * modifier.amount()));
+                } else if (modifier.getOperation() == AttributeModifier.Operation.MULTIPLY_TOTAL) {
+                    healthModifiedTotal.addAndGet((int) Math.round(this.livingEntity.getMaxHealth() * modifier.getAmount()));
+                } else if (modifier.getOperation() == AttributeModifier.Operation.MULTIPLY_BASE) {
+                    healthModifiedTotal.addAndGet((int) Math.round(attribute.getBaseValue() * modifier.getAmount()));
                 }
             }
         });
@@ -299,8 +285,14 @@ public class LifestealData implements ILifestealData {
             setValue(ModResources.HEALTH_DIFFERENCE, healthDifference);
 
             AttributeInstance attribute = this.livingEntity.getAttribute(Attributes.MAX_HEALTH);
-            AttributeModifier modifier = new AttributeModifier(ModResources.HEALTH_MODIFIER, healthDifference, AttributeModifier.Operation.ADD_VALUE);
-            attribute.addOrReplacePermanentModifier(modifier);
+            AttributeModifier modifier = new AttributeModifier(ModResources.HEALTH_MODIFIER, healthDifference, AttributeModifier.Operation.ADDITION);
+            Set<AttributeModifier> modifiers = attribute.getModifiers(AttributeModifier.Operation.ADDITION);
+            modifiers.forEach(mod -> {
+                if(mod.getName().equals(ModResources.HEALTH_MODIFIER)){
+                    attribute.removeModifier(mod);
+                }
+            });
+            attribute.addPermanentModifier(modifier);
 
             if (healthDifference >= 20 && this.livingEntity instanceof ServerPlayer serverPlayer) {
                 ModCriteria.GET_10_MAX_HEARTS.trigger(serverPlayer);

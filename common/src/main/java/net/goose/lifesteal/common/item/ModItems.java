@@ -16,7 +16,7 @@ import net.minecraft.world.item.Rarity;
 public class ModItems {
     public static final DeferredRegistry<Item> ITEMS = DeferredRegistry.create(LifeSteal.MOD_ID, Registries.ITEM);
 
-    public static FoodProperties alwaysEdible = (new FoodProperties.Builder()).alwaysEdible().build();
+    public static FoodProperties alwaysEdible = (new FoodProperties.Builder()).alwaysEat().build();
 
     public static final RegistrySupplier<Item> CRYSTAL_FRAGMENT = ITEMS.register("crystal_fragment",
             () -> new Item(new Item.Properties()));

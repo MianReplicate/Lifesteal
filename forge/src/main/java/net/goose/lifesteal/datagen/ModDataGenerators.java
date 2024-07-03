@@ -10,9 +10,9 @@ import net.minecraft.data.loot.LootTableProvider;
 import net.minecraft.data.tags.TagsProvider;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
-import net.neoforged.neoforge.data.event.GatherDataEvent;
+import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.data.event.GatherDataEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 import java.util.Collections;
 import java.util.List;
@@ -37,8 +37,7 @@ public class ModDataGenerators {
             gen.addProvider(ev.includeServer(), new ModRecipesProvider(packOutput, provider)); // Recipes
             gen.addProvider(ev.includeServer(), new LootTableProvider(packOutput, Collections.emptySet(), // LootTables
                     List.of(new LootTableProvider.SubProviderEntry(ModLootProvider.ModBlockLoot::new, LootContextParamSets.BLOCK),
-                            new LootTableProvider.SubProviderEntry(ModLootProvider.ModChestLoot::new, LootContextParamSets.CHEST)),
-                    provider));
+                            new LootTableProvider.SubProviderEntry(ModLootProvider.ModChestLoot::new, LootContextParamSets.CHEST))));
             gen.addProvider(ev.includeServer(), new ModBiomeTagsProvider(packOutput, provider, efh)); // BiomeTags
             gen.addProvider(ev.includeServer(), new ModAdvancementsProvider(packOutput, provider, efh, // Advancements
                     List.of(new ModAdvancementsProvider.AdvancementsGenerator())));

@@ -5,7 +5,7 @@ import net.goose.lifesteal.registry.DeferredRegistry;
 import net.goose.lifesteal.registry.RegistrySupplier;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
-import net.neoforged.neoforge.registries.DeferredRegister;
+import net.minecraftforge.registries.DeferredRegister;
 
 import java.util.ArrayList;
 import java.util.Collection;

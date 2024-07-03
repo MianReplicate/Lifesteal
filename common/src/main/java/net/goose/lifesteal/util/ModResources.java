@@ -13,6 +13,10 @@ import net.minecraft.world.level.storage.loot.LootTable;
 
 // All shared resources should be created here
 public class ModResources {
+    // Tags
+    public static final String RIPPED = "ripped";
+    public static final String UNFRESH = "unfresh";
+
     // Structure Template Pools
     public static final ResourceKey<StructureTemplatePool> ABANDONED_TRADING_CART_POOL = createTemplatePool(LifeSteal.MOD_ID, "abandoned_trading_cart");
     public static final ResourceKey<StructureTemplatePool> COLLAPSED_MINESHAFT_POOL = createTemplatePool(LifeSteal.MOD_ID, "collapsed_mineshaft");
@@ -73,19 +77,19 @@ public class ModResources {
     public static final ResourceLocation LIFESTEAL_DATA = modLoc("lifesteal_data");
     public static final ResourceLocation HEALTH_DIFFERENCE = modLoc("health_difference");
     public static final ResourceLocation TIME_KILLED = modLoc("time_killed");
-    public static final ResourceLocation HEALTH_MODIFIER = modLoc("health_modifier");
+    public static final String HEALTH_MODIFIER = "health_modifier";
 
     // Loot Tables
-    public static final ResourceKey<LootTable> BARREL_1_TABLE =
-            createLootTable(ResourceLocation.DEFAULT_NAMESPACE,"chests/barrel_1");
-    public static final ResourceKey<LootTable> MINERS_HOME_TABLE =
-            createLootTable(ResourceLocation.DEFAULT_NAMESPACE,"chests/miners_home");
-    public static final ResourceKey<LootTable> MINERS_RUINED_SHACK_TABLE =
-            createLootTable(ResourceLocation.DEFAULT_NAMESPACE,"chests/miners_ruined_shack");
-    public static final ResourceKey<LootTable> RICH_CART_TABLE =
-            createLootTable(ResourceLocation.DEFAULT_NAMESPACE,"chests/rich_cart");
-    public static final ResourceKey<LootTable> RUINED_LIBRARY_TABLE =
-            createLootTable(ResourceLocation.DEFAULT_NAMESPACE,"chests/ruined_library");
+    public static final ResourceLocation BARREL_1_TABLE =
+            new ResourceLocation("chests/barrel_1");
+    public static final ResourceLocation MINERS_HOME_TABLE =
+            new ResourceLocation("chests/miners_home");
+    public static final ResourceLocation MINERS_RUINED_SHACK_TABLE =
+            new ResourceLocation("chests/miners_ruined_shack");
+    public static final ResourceLocation RICH_CART_TABLE =
+            new ResourceLocation("chests/rich_cart");
+    public static final ResourceLocation RUINED_LIBRARY_TABLE =
+            new ResourceLocation("chests/ruined_library");
 
     // Advancement Triggers (and also used for Advancements themselves lol)
     public static final ResourceLocation GET_10_MAX_HEARTS = modLoc("get_10_max_hearts");
@@ -117,29 +121,25 @@ public class ModResources {
     public static final ResourceLocation ADD_NETHER_FEATURES = modLoc("add_nether_features");
 
     public static ResourceLocation modLoc(String name) {
-        return ResourceLocation.fromNamespaceAndPath(LifeSteal.MOD_ID, name);
+        return new ResourceLocation(LifeSteal.MOD_ID, name);
     }
     
     private static ResourceKey<PlacedFeature> createPlacedFeature(String domain, String name){
-        return ResourceKey.create(Registries.PLACED_FEATURE, ResourceLocation.fromNamespaceAndPath(domain, name));
+        return ResourceKey.create(Registries.PLACED_FEATURE, new ResourceLocation(domain, name));
     }
     private static ResourceKey<ConfiguredFeature<?, ?>> createConfiguredFeature(String domain, String name){
-        return ResourceKey.create(Registries.CONFIGURED_FEATURE, ResourceLocation.fromNamespaceAndPath(domain, name));
-    }
-    
-    private static ResourceKey<LootTable> createLootTable(String domain, String name){
-        return ResourceKey.create(Registries.LOOT_TABLE, ResourceLocation.fromNamespaceAndPath(domain, name));
+        return ResourceKey.create(Registries.CONFIGURED_FEATURE, new ResourceLocation(domain, name));
     }
 
     public static ResourceKey<StructureTemplatePool> createTemplatePool(String domain, String name) {
-        return ResourceKey.create(Registries.TEMPLATE_POOL, ResourceLocation.fromNamespaceAndPath(domain, name));
+        return ResourceKey.create(Registries.TEMPLATE_POOL, new ResourceLocation(domain, name));
     }
 
     public static ResourceKey<StructureSet> createStructureSet(String domain, String name) {
-        return ResourceKey.create(Registries.STRUCTURE_SET, ResourceLocation.fromNamespaceAndPath(domain, name));
+        return ResourceKey.create(Registries.STRUCTURE_SET, new ResourceLocation(domain, name));
     }
 
     public static ResourceKey<Structure> createStructure(String domain, String name) {
-        return ResourceKey.create(Registries.STRUCTURE, ResourceLocation.fromNamespaceAndPath(domain, name));
+        return ResourceKey.create(Registries.STRUCTURE, new ResourceLocation(domain, name));
     }
 }

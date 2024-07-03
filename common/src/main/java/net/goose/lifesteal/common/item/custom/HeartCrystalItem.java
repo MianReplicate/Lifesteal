@@ -1,11 +1,10 @@
 package net.goose.lifesteal.common.item.custom;
 
 import net.goose.lifesteal.LifeSteal;
-import net.goose.lifesteal.common.component.ModDataComponents;
 import net.goose.lifesteal.common.item.ModItems;
 import net.goose.lifesteal.data.LifestealData;
 import net.goose.lifesteal.util.ModResources;
-import net.minecraft.core.component.DataComponents;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -14,6 +13,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -36,8 +36,9 @@ public class HeartCrystalItem extends Item {
         AtomicBoolean success = new AtomicBoolean(false);
 
         if (!level.isClientSide() && entity instanceof ServerPlayer serverPlayer) {
-            boolean rippedHeartCrystal = item.get(ModDataComponents.RIPPED.get()) != null && (boolean) item.get(ModDataComponents.RIPPED.get());
-            boolean unnaturalHeartCrystal = item.get(ModDataComponents.UNFRESH.get()) != null && (boolean) item.get(ModDataComponents.UNFRESH.get());
+            CompoundTag compoundTag = item.getTagElement(LifeSteal.MOD_ID);
+            boolean rippedHeartCrystal = compoundTag != null && compoundTag.getBoolean(ModResources.RIPPED);
+            boolean unnaturalHeartCrystal = compoundTag != null && compoundTag.getBoolean(ModResources.UNFRESH);
             success.set(true);
 
             if (!rippedHeartCrystal) {
@@ -80,36 +81,39 @@ public class HeartCrystalItem extends Item {
         return success.get();
     }
 
+
     @Override
     public ItemStack finishUsingItem(ItemStack item, Level level, LivingEntity entity) {
-        boolean success = false;
-        if(!level.isClientSide){
-            if (!LifeSteal.config.crystalInstantUse.get()) {
-                success = useHeartCrystal(item, level, entity);
-            } else {
-                item.set(DataComponents.FOOD, null);
-            }
-        }
-        return success && !LifeSteal.config.crystalInstantUse.get() ? super.finishUsingItem(item, level, entity) : item;
+        boolean success = useHeartCrystal(item, level, entity);
+        return success ? super.finishUsingItem(item, level, entity) : item;
     }
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionHand) {
-        if(!level.isClientSide){
+        if (!this.isEdible() && !level.isClientSide) {
             ItemStack item = player.getItemInHand(interactionHand);
-            if (LifeSteal.config.crystalInstantUse.get()) {
-                item.set(DataComponents.FOOD, null);
-                boolean success = useHeartCrystal(item, level, player);
+            boolean success = useHeartCrystal(item, level, player);
 
-                if (success) {
-                    item.shrink(1);
-                    player.containerMenu.broadcastChanges();
-                }
-            } else {
-                item.set(DataComponents.FOOD, ModItems.alwaysEdible);
+            if (success) {
+                item.shrink(1);
+                player.containerMenu.broadcastChanges();
             }
         }
 
         return super.use(level, player, interactionHand);
+    }
+
+    @Override
+    public boolean isEdible() {
+        return !LifeSteal.config.crystalInstantUse.get();
+    }
+
+    @Override
+    public FoodProperties getFoodProperties() {
+        if (LifeSteal.config.crystalInstantUse.get()) {
+            return null;
+        } else {
+            return ModItems.alwaysEdible;
+        }
     }
 }

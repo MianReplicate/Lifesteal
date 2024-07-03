@@ -8,7 +8,6 @@ import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.goose.lifesteal.LifeSteal;
-import net.goose.lifesteal.common.component.ModDataComponents;
 import net.goose.lifesteal.common.item.ModItems;
 import net.goose.lifesteal.data.LifestealData;
 import net.goose.lifesteal.util.ModResources;
@@ -20,7 +19,6 @@ import net.minecraft.commands.SharedSuggestionProvider;
 import net.minecraft.commands.arguments.GameProfileArgument;
 import net.minecraft.commands.arguments.coordinates.Vec3Argument;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -133,8 +131,9 @@ public class LifestealCommand {
             lifestealData.refreshHealth(false);
 
             ItemStack heartCrystal = new ItemStack(ModItems.HEART_CRYSTAL.get(), amount);
-            heartCrystal.set(ModDataComponents.UNFRESH.get(), true);
-            heartCrystal.set(DataComponents.CUSTOM_NAME, Component.translatable("item.lifesteal.heart_crystal.unnatural"));
+            CompoundTag compoundTag = heartCrystal.getOrCreateTagElement(LifeSteal.MOD_ID);
+            compoundTag.putBoolean(ModResources.UNFRESH, true);
+            heartCrystal.setHoverName(Component.translatable("item.lifesteal.heart_crystal.unnatural"));
             if (serverPlayer.getInventory().getFreeSlot() == -1) {
                 serverPlayer.drop(heartCrystal, true);
             } else {

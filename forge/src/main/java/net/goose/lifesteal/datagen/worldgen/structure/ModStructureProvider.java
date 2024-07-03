@@ -5,7 +5,7 @@ import net.goose.lifesteal.util.ModTags;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstrapContext;
+import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Biomes;
@@ -21,7 +21,7 @@ import net.minecraft.world.level.levelgen.structure.structures.JigsawStructure;
 import java.util.Map;
 
 public class ModStructureProvider {
-    public static void bootstrap(BootstrapContext<Structure> context){
+    public static void bootstrap(BootstapContext<Structure> context){
         HolderGetter<Biome> biomeGetter = context.lookup(Registries.BIOME);
         HolderGetter<StructureTemplatePool> poolGetter = context.lookup(Registries.TEMPLATE_POOL);
 

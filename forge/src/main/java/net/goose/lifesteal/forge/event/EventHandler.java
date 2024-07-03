@@ -3,9 +3,9 @@ package net.goose.lifesteal.forge.event;
 import net.goose.lifesteal.command.ModCommands;
 import net.goose.lifesteal.common.blockentity.custom.ReviveSkullBlockEntity;
 import net.minecraft.world.entity.player.Player;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.neoforge.event.RegisterCommandsEvent;
-import net.neoforged.neoforge.event.level.BlockEvent;
+import net.minecraftforge.event.RegisterCommandsEvent;
+import net.minecraftforge.event.level.BlockEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 @SuppressWarnings("unused")
 public class EventHandler {

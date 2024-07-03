@@ -7,9 +7,8 @@ import net.goose.lifesteal.util.ModResources;
 import net.goose.lifesteal.util.ModTags;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
-import net.neoforged.neoforge.common.data.LanguageProvider;
+import net.minecraftforge.common.data.LanguageProvider;
 
-// TODO: Finish this up sometime lol
 public class ModLangProvider extends LanguageProvider {
     public ModLangProvider(PackOutput output) {
         super(output, LifeSteal.MOD_ID, "en_us");
@@ -34,7 +33,7 @@ public class ModLangProvider extends LanguageProvider {
 
     @Override
     protected void addTranslations() {
-        addTag(() -> ModTags.ORIGINS_IGNORE_DIET, "Ignore Diet");
+        add(() -> ModTags.ORIGINS_IGNORE_DIET, "Ignore Diet");
 
         addItem(ModItems.CRYSTAL_FRAGMENT, "Crystal Fragment");
         addItem(ModItems.CRYSTAL_CORE, "Crystal Core");

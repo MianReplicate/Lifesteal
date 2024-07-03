@@ -1,23 +1,30 @@
 package net.goose.lifesteal.data.forge;
 
 import net.goose.lifesteal.api.ILifestealData;
-import net.goose.lifesteal.data.LifestealData;
-import net.goose.lifesteal.util.ModResources;
-import net.minecraft.world.entity.EntityType;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.neoforge.capabilities.EntityCapability;
-import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.CapabilityManager;
+import net.minecraftforge.common.capabilities.CapabilityToken;
+import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
+import net.minecraftforge.event.AttachCapabilitiesEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 public class ModCapabilities {
-    public static final EntityCapability<ILifestealData, Void> LIFESTEAL_DATA =
-            EntityCapability.createVoid(
-                    ModResources.LIFESTEAL_DATA,
-                    ILifestealData.class
-            );
+    public static final Capability<ILifestealData> LIFESTEAL_DATA = CapabilityManager.get(new CapabilityToken<>() {
+    });
+
     public static class EventCapHandler {
         @SubscribeEvent
+        public static void attachentityCapabilities(final AttachCapabilitiesEvent<Entity> event) {
+            if (event.getObject() instanceof Player) {
+                LifestealDataImpl.attach(event);
+            }
+        }
+
+        @SubscribeEvent
         public static void registerCapabilities(final RegisterCapabilitiesEvent event) {
-            event.registerEntity(LIFESTEAL_DATA, EntityType.PLAYER, (entity, context) -> new LifestealData(entity));
+            event.register(LifestealDataImpl.class);
         }
     }
 }

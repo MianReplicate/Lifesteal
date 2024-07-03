@@ -5,19 +5,20 @@ import net.goose.lifesteal.common.item.ModItems;
 import net.goose.lifesteal.registry.RegistrySupplier;
 import net.goose.lifesteal.util.ModResources;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.data.loot.LootTableSubProvider;
 import net.minecraft.data.loot.packs.VanillaBlockLoot;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
-import net.minecraft.world.level.storage.loot.functions.CopyComponentsFunction;
+import net.minecraft.world.level.storage.loot.functions.CopyNbtFunction;
 import net.minecraft.world.level.storage.loot.functions.EnchantWithLevelsFunction;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceCondition;
+import net.minecraft.world.level.storage.loot.providers.nbt.ContextNbtProvider;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 
@@ -26,8 +27,8 @@ import java.util.function.BiConsumer;
 
 public class ModLootProvider {
     public static class ModBlockLoot extends VanillaBlockLoot {
-        public ModBlockLoot(HolderLookup.Provider arg) {
-            super(arg);
+        public ModBlockLoot() {
+            super();
         }
 
         @Override
@@ -35,9 +36,7 @@ public class ModLootProvider {
             this.add(ModBlocks.CRYSTAL_ORE.get(), (block) -> createOreDrop(block, ModItems.CRYSTAL_FRAGMENT.get()));
             this.add(ModBlocks.DEEPSLATE_CRYSTAL_ORE.get(), (block) -> createOreDrop(block, ModItems.CRYSTAL_FRAGMENT.get()));
             this.add(ModBlocks.NETHERRACK_CRYSTAL_ORE.get(), (block) -> createOreDrop(block, ModItems.CRYSTAL_FRAGMENT.get()));
-            this.add(ModBlocks.REVIVE_HEAD.get(), (block) -> LootTable.lootTable().withPool((LootPool.lootPool().add(LootItem.lootTableItem(ModItems.REVIVE_HEAD_ITEM.get())
-                    .apply(CopyComponentsFunction.copyComponents(CopyComponentsFunction.Source.BLOCK_ENTITY)
-                            .include(DataComponents.PROFILE).include(DataComponents.NOTE_BLOCK_SOUND))))));
+            this.add(ModBlocks.REVIVE_HEAD.get(), (block) -> LootTable.lootTable().withPool((LootPool.lootPool().add(LootItem.lootTableItem(ModItems.REVIVE_HEAD_ITEM.get()).apply(CopyNbtFunction.copyData(ContextNbtProvider.BLOCK_ENTITY).copy("SkullOwner", "SkullOwner").copy("note_block_sound", "BlockEntityTag.note_block_sound"))))));
             dropSelf(ModBlocks.CRYSTAL_BLOCK.get());
         }
 
@@ -51,10 +50,10 @@ public class ModLootProvider {
         }
     }
 
-    public record ModChestLoot(HolderLookup.Provider registries) implements LootTableSubProvider {
+    public record ModChestLoot implements LootTableSubProvider {
 
         @Override
-        public void generate(BiConsumer<ResourceKey<LootTable>, LootTable.Builder> biConsumer) {
+        public void generate(BiConsumer<ResourceLocation, LootTable.Builder> biConsumer) {
             biConsumer.accept(ModResources.BARREL_1_TABLE, LootTable.lootTable()
                     .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(4.0F))
                             .add(LootItem.lootTableItem(Items.STRING).setWeight(10)
@@ -90,7 +89,7 @@ public class ModLootProvider {
                     .withPool(LootPool.lootPool().setRolls(UniformGenerator.between(0F, 1F))
                             .add(LootItem.lootTableItem(Items.STONE_PICKAXE).setWeight(75))
                             .add(LootItem.lootTableItem(Items.IRON_PICKAXE).setWeight(20)
-                                    .apply(EnchantWithLevelsFunction.enchantWithLevels(this.registries, UniformGenerator.between(1.0F, 10.0F))
+                                    .apply(EnchantWithLevelsFunction.enchantWithLevels(UniformGenerator.between(1.0F, 10.0F))
                                             .when(LootItemRandomChanceCondition.randomChance(0.10F))))));
             biConsumer.accept(ModResources.MINERS_RUINED_SHACK_TABLE, LootTable.lootTable()
                     .withPool(LootPool.lootPool().setRolls(UniformGenerator.between(2.0F, 3.0F))
@@ -147,7 +146,7 @@ public class ModLootProvider {
                                     .apply(SetItemCountFunction.setCount(UniformGenerator.between(3.0F, 18.0F))))
                             .add(LootItem.lootTableItem(Items.BOOK).setWeight(5)
                                     .apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 6.0F)))
-                                    .apply(EnchantWithLevelsFunction.enchantWithLevels(registries, UniformGenerator.between(1.0F, 24.0F))
+                                    .apply(EnchantWithLevelsFunction.enchantWithLevels(UniformGenerator.between(1.0F, 24.0F))
                                             .when(LootItemRandomChanceCondition.randomChance(0.10F)))))
                     .withPool(LootPool.lootPool().setRolls(UniformGenerator.between(3.0F, 4.0F))
                             .add(LootItem.lootTableItem(ModItems.CRYSTAL_CORE.get()).setWeight(35))

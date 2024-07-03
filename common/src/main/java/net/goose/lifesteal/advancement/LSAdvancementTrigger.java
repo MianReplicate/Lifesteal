@@ -1,43 +1,45 @@
 package net.goose.lifesteal.advancement;
 
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.advancements.Criterion;
-import net.minecraft.advancements.critereon.ContextAwarePredicate;
-import net.minecraft.advancements.critereon.EntityPredicate;
-import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
+import com.google.gson.JsonObject;
+import net.minecraft.advancements.critereon.*;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 
-import java.util.Optional;
+public class LSAdvancementTrigger extends SimpleCriterionTrigger<LSAdvancementTrigger.Instance> {
+    public final ResourceLocation resourceLocation;
 
-public class LSAdvancementTrigger extends SimpleCriterionTrigger<LSAdvancementTrigger.TriggerInstance> {
-    public LSAdvancementTrigger() {
+    public LSAdvancementTrigger(ResourceLocation resourceLocation) {
+        this.resourceLocation = resourceLocation;
     }
+
+    public Instance createInstance(JsonObject p_230241_1_, ContextAwarePredicate p_230241_2_, DeserializationContext p_230241_3_) {
+        return new Instance(p_230241_2_, resourceLocation);
+    }
+
+    public void trigger(ServerPlayer p_192180_1_) {
+        this.trigger(p_192180_1_, (p_226308_1_) -> true);
+    }
+
     @Override
-    public Codec<LSAdvancementTrigger.TriggerInstance> codec() {
-        return LSAdvancementTrigger.TriggerInstance.CODEC;
+    public ResourceLocation getId() {
+        return resourceLocation;
     }
 
-    public void trigger(ServerPlayer serverPlayer) {
-        this.trigger(serverPlayer, (testTrigger) -> true);
-    }
 
-    public record TriggerInstance(Optional<ContextAwarePredicate> player) implements SimpleInstance {
-        public static final Codec<TriggerInstance> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-                EntityPredicate.ADVANCEMENT_CODEC.optionalFieldOf("player")
-                        .forGetter(TriggerInstance::player)).apply(instance, TriggerInstance::new));
+    public static class Instance extends AbstractCriterionTriggerInstance {
 
-        public static Criterion<LSAdvancementTrigger.TriggerInstance> GET_10_MAX_HEARTS() {
-            return ModCriteria.GET_10_MAX_HEARTS.createCriterion(new LSAdvancementTrigger.TriggerInstance(Optional.empty()));
+        public Instance(ContextAwarePredicate contextAwarePredicate, ResourceLocation res) {
+            super(res, contextAwarePredicate);
         }
-        public static Criterion<LSAdvancementTrigger.TriggerInstance> USE_TOTEM_WHILE_20_MAX_HEARTS() {
-            return ModCriteria.USE_TOTEM_WHILE_20_MAX_HEARTS.createCriterion(new LSAdvancementTrigger.TriggerInstance(Optional.empty()));
+
+        public static ConstructBeaconTrigger.TriggerInstance forLevel(MinMaxBounds.Ints p_203912_0_) {
+            return new ConstructBeaconTrigger.TriggerInstance(ContextAwarePredicate.ANY, p_203912_0_);
         }
-        public static Criterion<LSAdvancementTrigger.TriggerInstance> BACK_FROM_THE_DEAD() {
-            return ModCriteria.BACK_FROM_THE_DEAD.createCriterion(new LSAdvancementTrigger.TriggerInstance(Optional.empty()));
-        }
-        public static Criterion<LSAdvancementTrigger.TriggerInstance> REVIVED() {
-            return ModCriteria.REVIVED.createCriterion(new LSAdvancementTrigger.TriggerInstance(Optional.empty()));
+
+
+        public JsonObject serializeToJson(SerializationContext p_230240_1_) {
+            JsonObject lvt_2_1_ = super.serializeToJson(p_230240_1_);
+            return lvt_2_1_;
         }
     }
 }

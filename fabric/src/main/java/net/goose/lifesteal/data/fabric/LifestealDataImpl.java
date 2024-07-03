@@ -1,15 +1,13 @@
 package net.goose.lifesteal.data.fabric;
 
+import dev.onyxstudios.cca.api.v3.component.ComponentV3;
 import net.goose.lifesteal.LifeSteal;
-import net.goose.lifesteal.configuration.ModConfig;
 import net.goose.lifesteal.data.LifestealData;
 import net.goose.lifesteal.util.ModResources;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import org.ladysnake.cca.api.v3.component.ComponentV3;
 
 import java.util.*;
 
@@ -31,25 +29,13 @@ public class LifestealDataImpl extends LifestealData implements ComponentV3 {
         }
     }
 
-    public static Collection<ResourceLocation> getKeys(LifestealData lifestealData){
-        return ((LifestealDataImpl) lifestealData).dataMap.keySet();
-    }
-
-    public static <T> T getValue(LifestealData lifestealData, ResourceLocation key) {
-        return (T) ((LifestealDataImpl) lifestealData).dataMap.get(key);
-    }
-
-    public static <T> void setValue(LifestealData lifestealData, ResourceLocation key, T value) {
-        ((LifestealDataImpl) lifestealData).dataMap.put(key, value);
-    }
-
     @Override
-    public void readFromNbt(CompoundTag tag, HolderLookup.Provider registryLookup) {
+    public void readFromNbt(CompoundTag tag) {
         this.deserializeNBT(tag);
     }
 
     @Override
-    public void writeToNbt(CompoundTag tag, HolderLookup.Provider registryLookup) {
+    public void writeToNbt(CompoundTag tag) {
         CompoundTag nbt = this.serializeNBT();
         for (String key : nbt.getAllKeys()) {
             tag.put(key, Objects.requireNonNull(nbt.get(key)));

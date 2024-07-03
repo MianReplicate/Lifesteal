@@ -1,5 +1,6 @@
 package net.goose.lifesteal.common.item.custom;
 
+import com.mojang.authlib.GameProfile;
 import net.goose.lifesteal.LifeSteal;
 import net.goose.lifesteal.advancement.ModCriteria;
 import net.goose.lifesteal.common.blockentity.custom.ReviveSkullBlockEntity;
@@ -8,12 +9,10 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.server.players.UserBanList;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.component.ResolvableProfile;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 
@@ -41,12 +40,12 @@ public class ReviveCrystalItem extends Item {
             ItemStack itemStack = useOnContext.getItemInHand();
             BlockPos blockPos = useOnContext.getClickedPos();
             if(level.getBlockEntity(blockPos) instanceof ReviveSkullBlockEntity blockEntity){
-                ResolvableProfile gameprofile = blockEntity.getOwnerProfile();
+                GameProfile gameprofile = blockEntity.getOwnerProfile();
                 if (gameprofile != null) {
                     boolean successful = ModUtil.revivePlayer(
                             (ServerLevel) level,
                             blockPos,
-                            gameprofile.gameProfile(),
+                            gameprofile,
                             !LifeSteal.config.disableLightningEffect.get(),
                             LifeSteal.config.silentlyRevivePlayer.get(),
                             player);

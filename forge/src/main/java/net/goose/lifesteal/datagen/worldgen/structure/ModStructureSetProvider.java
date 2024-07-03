@@ -4,14 +4,14 @@ import com.google.common.collect.ImmutableList;
 import net.goose.lifesteal.util.ModResources;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstrapContext;
+import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureSet;
 import net.minecraft.world.level.levelgen.structure.placement.RandomSpreadStructurePlacement;
 import net.minecraft.world.level.levelgen.structure.placement.RandomSpreadType;
 
 public class ModStructureSetProvider {
-    public static void bootstrap(BootstrapContext<StructureSet> context){
+    public static void bootstrap(BootstapContext<StructureSet> context){
         HolderGetter<Structure> holderGetter = context.lookup(Registries.STRUCTURE);
         context.register(ModResources.BIG_STRUCTURES, new StructureSet(
                 ImmutableList.of(

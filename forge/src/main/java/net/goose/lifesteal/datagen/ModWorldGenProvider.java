@@ -11,8 +11,8 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
-import net.neoforged.neoforge.common.data.DatapackBuiltinEntriesProvider;
-import net.neoforged.neoforge.registries.NeoForgeRegistries;
+import net.minecraftforge.common.data.DatapackBuiltinEntriesProvider;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
@@ -25,7 +25,7 @@ public class ModWorldGenProvider extends DatapackBuiltinEntriesProvider {
             .add(Registries.STRUCTURE, ModStructureProvider::bootstrap)
             .add(Registries.CONFIGURED_FEATURE, ModConfiguredFeaturesProvider::bootstrap)
             .add(Registries.PLACED_FEATURE, ModPlacedFeaturesProvider::bootstrap)
-            .add(NeoForgeRegistries.Keys.BIOME_MODIFIERS, ModBiomeModifiersProvider::bootstrap);
+            .add(ForgeRegistries.Keys.BIOME_MODIFIERS, ModBiomeModifiersProvider::bootstrap);
 
     public ModWorldGenProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider) {
         super(output, lookupProvider, BUILDER, Set.of(LifeSteal.MOD_ID));

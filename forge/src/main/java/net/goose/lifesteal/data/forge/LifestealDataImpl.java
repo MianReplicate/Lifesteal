@@ -1,47 +1,56 @@
 package net.goose.lifesteal.data.forge;
 
+import net.goose.lifesteal.LifeSteal;
 import net.goose.lifesteal.api.ILifestealData;
 import net.goose.lifesteal.data.LifestealData;
+import net.goose.lifesteal.util.ModResources;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
-import net.neoforged.neoforge.attachment.AttachmentType;
-import net.neoforged.neoforge.registries.DeferredHolder;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.common.util.INBTSerializable;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.event.AttachCapabilitiesEvent;
+import org.jetbrains.annotations.NotNull;
 
-import java.util.Collection;
-import java.util.List;
+import javax.annotation.Nullable;
 import java.util.Optional;
 
 public class LifestealDataImpl {
 
     public static Optional<ILifestealData> get(final Entity entity) {
-        return Optional.ofNullable(entity.getCapability(ModCapabilities.LIFESTEAL_DATA));
+        return entity.getCapability(ModCapabilities.LIFESTEAL_DATA).resolve();
     }
 
-    private static AttachmentType<?> getAttachmentFromLocation(ResourceLocation data){
-        for (int i = 0; i < ModDataAttachments.ATTACHMENT_TYPES.getEntries().stream().count(); i++) {
-            DeferredHolder<AttachmentType<?>, ? extends AttachmentType<?>> attachment = ModDataAttachments.ATTACHMENT_TYPES.getEntries().stream().toList().get(i);
-            if(attachment.is(data)){
-                return attachment.get();
+    public static void attach(final AttachCapabilitiesEvent<Entity> event) {
+        class HeartCapProvider implements ICapabilityProvider, INBTSerializable<CompoundTag> {
+
+            public static final ResourceLocation IDENTIFIER = new ResourceLocation(LifeSteal.MOD_ID, ModResources.LIFESTEAL_DATA.getPath());
+            private final ILifestealData backend = new LifestealData((LivingEntity) event.getObject());
+            private final LazyOptional<ILifestealData> optionalData = LazyOptional.of(() -> backend);
+
+            @NotNull
+            @Override
+            public <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
+                return ModCapabilities.LIFESTEAL_DATA.orEmpty(cap, this.optionalData);
+            }
+
+            @Override
+            public CompoundTag serializeNBT() {
+                return this.backend.serializeNBT();
+            }
+
+            @Override
+            public void deserializeNBT(CompoundTag nbt) {
+                this.backend.deserializeNBT(nbt);
             }
         }
-        return null;
-    }
 
-    public static Collection<ResourceLocation> getKeys(LifestealData lifestealData){
-        List<ResourceLocation> collection = List.of();
-        ModDataAttachments.ATTACHMENT_TYPES.getEntries().forEach(attachmentTypeHolder -> {
-            if(lifestealData.getLivingEntity().getExistingData(attachmentTypeHolder.get()).isPresent()){
-                collection.add(attachmentTypeHolder.getId());
-            }
-        });
-        return collection;
-    }
+        final HeartCapProvider provider = new HeartCapProvider();
 
-    public static <T> T getValue(LifestealData lifestealData, ResourceLocation data){
-        return (T) lifestealData.getLivingEntity().getData(getAttachmentFromLocation(data));
-    }
-
-    public static <T> void setValue(LifestealData lifestealData, ResourceLocation data, T value){
-        lifestealData.getLivingEntity().setData((AttachmentType<? super Object>) getAttachmentFromLocation(data), value);
+        event.addCapability(HeartCapProvider.IDENTIFIER, provider);
     }
 }

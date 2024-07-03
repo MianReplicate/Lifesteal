@@ -2,7 +2,6 @@ package net.goose.lifesteal.common.blockentity.custom;
 
 import net.goose.lifesteal.common.blockentity.ModBlockEntityTypes;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.SkullBlockEntity;
@@ -25,14 +24,14 @@ public class ReviveSkullBlockEntity extends SkullBlockEntity {
     }
 
     @Override
-    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-        super.saveAdditional(tag, registries);
+    protected void saveAdditional(CompoundTag tag) {
+        super.saveAdditional(tag);
         tag.putBoolean("ForceDestroy", this.forceDestroy);
     }
 
     @Override
-    public void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-        super.loadAdditional(tag, registries);
+    public void load(CompoundTag tag) {
+        super.load(tag);
         if (tag.contains("ForceDestroy", 10)) {
             this.setDestroyed(tag.getBoolean("ForceDestroy"));
         }
