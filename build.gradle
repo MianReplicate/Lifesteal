@@ -78,7 +78,6 @@ subprojects {
             name = "ModMaven"
             url = "https://modmaven.dev"
         }
-        maven { url "https://maven.forged.net/releases/" }
         maven { url 'https://jitpack.io' }
     }
 
