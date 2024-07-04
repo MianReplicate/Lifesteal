@@ -10,7 +10,9 @@ else
     projectName = 'Fabric'
 
 sourceSets.main.resources.srcDirs = [ 'src/main/resources', {
-    project(':forge').file('src/generated/resources').absolutePath
+    if(loomPlatform == 'fabric'){
+        project(':forge').file('src/generated/resources').absolutePath
+    }
 }
 ]
 

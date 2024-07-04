@@ -12,18 +12,13 @@ import net.minecraft.world.entity.LivingEntity;
 import java.util.*;
 
 public class LifestealDataImpl extends LifestealData implements ComponentV3 {
-    private final HashMap<ResourceLocation, Object> dataMap = new HashMap<>();
     public LifestealDataImpl(LivingEntity livingEntity) {
         super(livingEntity);
     }
 
     public static Optional<LifestealData> get(Entity entity) {
         try {
-            LifestealDataImpl lifestealData = ModComponents.LIFESTEAL_DATA.get(entity);
-            lifestealData.dataMap.putIfAbsent(ModResources.HEALTH_DIFFERENCE, LifeSteal.config.startingHealthDifference.get());
-            lifestealData.dataMap.putIfAbsent(ModResources.TIME_KILLED, 0L);
-
-            return Optional.of(lifestealData);
+            return Optional.of(ModComponents.LIFESTEAL_DATA.get(entity));
         } catch (Exception e) {
             return Optional.empty();
         }
