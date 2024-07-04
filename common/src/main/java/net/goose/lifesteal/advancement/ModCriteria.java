@@ -15,6 +15,7 @@ public class ModCriteria {
         LifeSteal.LOGGER.debug("Initializing ModCriteria for " + LifeSteal.MOD_ID);
         CriteriaTriggers.register(GET_10_MAX_HEARTS);
         CriteriaTriggers.register(USE_TOTEM_WHILE_20_MAX_HEARTS);
+        CriteriaTriggers.register(BACK_FROM_THE_DEAD);
         CriteriaTriggers.register(REVIVED);
     }
 }
