@@ -16,7 +16,7 @@ public class ModEvents {
         {
             Collection<ResourceLocation> keys = newData.getKeys();
             keys.forEach(key -> newData.setValue(key, oldData.getValue(key)));
-            newData.refreshHealth(true);
+            newData.refreshHealth(!alive);
         }))));
 
         PlayerBlockBreakEvents.BEFORE.register(((world, player, pos, state, blockEntity) -> {

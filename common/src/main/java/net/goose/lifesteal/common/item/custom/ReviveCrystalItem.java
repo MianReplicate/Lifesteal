@@ -28,7 +28,7 @@ public class ReviveCrystalItem extends Item {
             Level level = useOnContext.getLevel();
             Player player = useOnContext.getPlayer();
 
-            if (level.getServer().isSingleplayer()) {
+            if (!ModUtil.isMultiplayer(level.getServer(), false)) {
                 player.displayClientMessage(Component.translatable("gui.lifesteal.multiplayer_only"), true);
                 return super.useOn(useOnContext);
             }
