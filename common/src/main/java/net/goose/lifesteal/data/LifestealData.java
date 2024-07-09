@@ -43,9 +43,9 @@ public class LifestealData implements ILifestealData {
     private final HashMap<ResourceLocation, Object> dataMap = new HashMap<>();
     private final LivingEntity livingEntity;
     public LifestealData(final LivingEntity entity) {
+        this.livingEntity = entity;
         this.dataMap.putIfAbsent(ModResources.HEALTH_DIFFERENCE, LifeSteal.config.startingHealthDifference.get());
         this.dataMap.putIfAbsent(ModResources.TIME_KILLED, 0L);
-        this.livingEntity = entity;
     }
 
     @ExpectPlatform
