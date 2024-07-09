@@ -14,6 +14,8 @@ import java.util.*;
 public class LifestealDataImpl extends LifestealData implements ComponentV3 {
     public LifestealDataImpl(LivingEntity livingEntity) {
         super(livingEntity);
+        this.dataMap.putIfAbsent(ModResources.HEALTH_DIFFERENCE, LifeSteal.config.startingHealthDifference.get());
+        this.dataMap.putIfAbsent(ModResources.TIME_KILLED, 0L);
     }
 
     public static Optional<LifestealData> get(Entity entity) {

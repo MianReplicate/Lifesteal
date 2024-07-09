@@ -10,6 +10,7 @@ import net.goose.lifesteal.common.item.ModItems;
 import net.goose.lifesteal.data.LifestealData;
 import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.*;
 import net.minecraft.network.chat.Component;
@@ -204,12 +205,7 @@ public class ModUtil {
         } else {
             serverPlayer.teleportTo(level, reviveAt.getX(), reviveAt.getY(), reviveAt.getZ(), serverPlayer.getYRot(), serverPlayer.getXRot());
             ((PlayerImpl) serverPlayer).setRevived(true);
-            LivingEntity livingEntity = (LivingEntity) serverPlayer.getCamera();
-
-            if (livingEntity != null) {
-                successful = true;
-                LifestealData.get(livingEntity).ifPresent(LifestealData::tryRevivalEffects);
-            }
+            successful = true;
         }
 
         if (successful) {
@@ -244,5 +240,9 @@ public class ModUtil {
 
         ServerPlayer serverPlayer = (ServerPlayer) killedPlayer;
         serverPlayer.drop(itemStack, true, false);
+    }
+
+    public static boolean isMultiplayer(MinecraftServer server, boolean excludeLan){
+        return (!server.isSingleplayer() || (!excludeLan && server.isPublished()));
     }
 }
