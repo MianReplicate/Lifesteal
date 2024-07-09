@@ -3,6 +3,11 @@ apply plugin: 'com.github.johnrengelman.shadow'
 evaluationDependsOn(':common')
 
 def loomPlatform = project.property('loom.platform')
+def projectName
+if(loomPlatform == 'forge')
+    projectName = 'Forge'
+else
+    projectName = 'Fabric'
 
 sourceSets.main.resources.srcDirs = [ 'src/main/resources', {
     if(loomPlatform == 'fabric'){
@@ -11,6 +16,35 @@ sourceSets.main.resources.srcDirs = [ 'src/main/resources', {
 }
 ]
 
+loom {
+    accessWidenerPath.set(project(":common").loom.accessWidenerPath)
+    if(loomPlatform == 'forge'){
+        runs {
+            client {
+                programArgs "--username", "DevGoose###"
+            }
+        }
+
+        forge {
+            if(accessWidenerFile.exists()) {
+                convertAccessWideners = true
+                extraAccessWideners.add accessWidenerFile.name
+            }
+
+            if(file("src/main/resources/${mod_id}.mixins.json").exists()) {
+                mixinConfig "${mod_id}.mixins.json"
+            }
+
+            if(getRootProject().file("common/src/main/resources/${mod_id}-common.mixins.json").exists()) {
+                mixinConfig "${mod_id}-common.mixins.json"
+            }
+
+            dataGen {
+                mod "${mod_id}"
+            }
+        }
+    }
+}
 
 def resourceTargets = ['fabric.mod.json', 'mods.toml']
 def intoTargets = ["$rootDir/out/production/resources/", "$rootDir/out/production/${project.name}.main/", "$rootDir/bin/main/"]
@@ -22,7 +56,8 @@ def replaceProperties = [mod_id                 : mod_id, mod_name: mod_name, mo
                          mod_license            : mod_license,
                          minecraft_version_range: minecraft_version_range,
                          minecraft_version      : minecraft_version, fabric_loader_version: fabric_loader_version,
-                         fabric_api_version     : fabric_api_version, repository_url: repository_url, forge_version_range: forge_version_range,
+                         fabric_api_version     : fabric_api_version, repository_url: repository_url,
+                         forge_version_range    : forge_version_range, forge_version: forge_version, forge_loader_version_range: forge_loader_version_range
                             ]
 processResources {
     inputs.properties replaceProperties
@@ -51,7 +86,7 @@ configurations {
     shadowCommon
     compileClasspath.extendsFrom common
     runtimeClasspath.extendsFrom common
-    create("development${loomPlatform.capitalize()}") {
+    create("development${projectName}") {
         extendsFrom common
     }
 }
@@ -60,34 +95,11 @@ architectury {
     platformSetupLoomIde()
 
     if(loomPlatform == 'fabric') fabric()
-    else if(loomPlatform == 'forge') forge()
-    else if(loomPlatform == 'quilt') loader(loomPlatform)
-}
-
-loom {
-    if(loomPlatform == 'forge') {
-        forge {
-            if(accessWidenerFile.exists()) {
-                convertAccessWideners = true
-                extraAccessWideners.add accessWidenerFile.name
-            }
-
-            if(file("src/main/resources/${mod_id}.mixins.json").exists()) {
-                mixinConfig "${mod_id}.mixins.json"
-            }
-
-            if(getRootProject().file("common/src/main/resources/${mod_id}-common.mixins.json").exists()) {
-                mixinConfig "${mod_id}-common.mixins.json"
-            }
-
-            dataGen {
-                mod "${mod_id}"
-            }
-        }
-    }
+    else if (loomPlatform == 'forge') forge()
 }
 
 dependencies {
+    implementation project(path: ':common')
     if(loomPlatform == 'fabric') {
         modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
         modApi "net.fabricmc.fabric-api:fabric-api:${fabric_api_version}+${minecraft_version}"
@@ -101,18 +113,28 @@ dependencies {
         // Adds a dependency on the base cardinal components module (required by every other module)
         // Replace modImplementation with modApi if you expose components in your own API
         modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-base:${cardinal_components_api_version}"
-        modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-world:${cardinal_components_api_version}"
         modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${cardinal_components_api_version}"
         // Includes Cardinal Components API as a Jar-in-Jar dependency (optional)
         include "dev.onyxstudios.cardinal-components-api:cardinal-components-base:${cardinal_components_api_version}"
-        include "dev.onyxstudios.cardinal-components-api:cardinal-components-world:${cardinal_components_api_version}"
         include "dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${cardinal_components_api_version}"
-    } else if(loomPlatform == 'forge') {
+
+        modRuntimeOnly("mezz.jei:jei-${minecraft_version}-fabric:${jei_version}")
+        modRuntimeOnly("maven.modrinth:sodium:${sodium_version}")
+        modRuntimeOnly("curse.maven:modernfix-${modern_fix_id}:${modern_fix_fabric}")
+        modRuntimeOnly("curse.maven:ferritecore-${ferritecore_fabric_id}:${ferritecore_fabric}")
+        modRuntimeOnly("curse.maven:mousetweaks-${mouse_tweaks_id}:${mouse_tweaks_fabric}")
+    } else if(loomPlatform == 'forge'){
         forge "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
+
+//        runtimeOnly("mezz.jei:jei-${minecraft_version}-forge:${jei_version}")
+//        runtimeOnly("curse.maven:embeddium-${embeddium_id}:${embeddium_version}")
+//        runtimeOnly("curse.maven:modernfix-${modern_fix_id}:${modern_fix_forge}")
+//        runtimeOnly("curse.maven:ferritecore-${ferritecore_forge_id}:${ferritecore_forge}")
+//        runtimeOnly("curse.maven:mousetweaks-${mouse_tweaks_id}:${mouse_tweaks_forge}")
     }
 
     common(project(path: ':common', configuration: 'namedElements')) { transitive false }
-    shadowCommon(project(path: ':common', configuration: "transformProduction${loomPlatform.capitalize()}")) { transitive false }
+    shadowCommon(project(path: ':common', configuration: "transformProduction${projectName}")) { transitive false }
 }
 
 shadowJar {
@@ -123,7 +145,7 @@ shadowJar {
 }
 
 remapJar {
-    if(loomPlatform == 'fabric' || loomPlatform == 'quilt') {
+    if(loomPlatform == 'fabric') {
         injectAccessWidener = true
     }
 

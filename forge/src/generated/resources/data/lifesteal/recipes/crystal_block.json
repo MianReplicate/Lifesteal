@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "c": {
+      "item": "lifesteal:crystal_core"
+    },
+    "d": {
+      "item": "minecraft:diamond"
+    },
+    "f": {
+      "item": "lifesteal:crystal_fragment"
+    }
+  },
+  "pattern": [
+    "cfc",
+    "fdf",
+    "cfc"
+  ],
+  "result": {
+    "item": "lifesteal:crystal_block"
+  },
+  "show_notification": true
+}

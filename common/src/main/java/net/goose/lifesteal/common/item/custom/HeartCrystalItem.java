@@ -1,7 +1,9 @@
 package net.goose.lifesteal.common.item.custom;
 
 import net.goose.lifesteal.LifeSteal;
-import net.goose.lifesteal.data.HealthData;
+import net.goose.lifesteal.common.item.ModItems;
+import net.goose.lifesteal.data.LifestealData;
+import net.goose.lifesteal.util.ModResources;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -20,8 +22,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class HeartCrystalItem extends Item {
 
-    public static final FoodProperties HeartCrystal = (new FoodProperties.Builder()).alwaysEat().build();
-
     public HeartCrystalItem(Properties pProperties) {
         super(pProperties);
     }
@@ -32,29 +32,16 @@ public class HeartCrystalItem extends Item {
         entity.addEffect(new MobEffectInstance(MobEffects.REGENERATION, tickTime, 3));
     }
 
-    public boolean runHeartCrystalCode(ItemStack item, Level level, LivingEntity entity) {
+    public boolean useHeartCrystal(ItemStack item, Level level, LivingEntity entity) {
         AtomicBoolean success = new AtomicBoolean(false);
 
         if (!level.isClientSide() && entity instanceof ServerPlayer serverPlayer) {
-            CompoundTag compoundTag = item.getTagElement("lifesteal");
-            boolean compoundTagExists;
-            boolean droppedHeartCrystal;
-            boolean unnaturalHeartCrystal;
-
+            CompoundTag compoundTag = item.getTagElement(LifeSteal.MOD_ID);
+            boolean rippedHeartCrystal = compoundTag != null && compoundTag.getBoolean(ModResources.RIPPED);
+            boolean unnaturalHeartCrystal = compoundTag != null && compoundTag.getBoolean(ModResources.UNFRESH);
             success.set(true);
 
-            if (compoundTag != null) {
-                compoundTagExists = true;
-                droppedHeartCrystal = compoundTag.getBoolean("dropped");
-
-                unnaturalHeartCrystal = compoundTag.getBoolean("Unfresh");
-            } else {
-                unnaturalHeartCrystal = false;
-                droppedHeartCrystal = false;
-                compoundTagExists = false;
-            }
-
-            if (!droppedHeartCrystal) {
+            if (!rippedHeartCrystal) {
                 if (unnaturalHeartCrystal) {
                     if (LifeSteal.config.disableUnnaturalHeartCrystals.get()) {
                         serverPlayer.displayClientMessage(Component.translatable("gui.lifesteal.unnatural_heart_crystal_disabled"), true);
@@ -69,25 +56,23 @@ public class HeartCrystalItem extends Item {
             }
 
 
-            HealthData.get(entity).ifPresent(IHeartCap -> {
-                if (LifeSteal.config.maximumamountofhitpointsGainable.get() > -1 && LifeSteal.config.preventFromUsingCrystalIfMax.get()) {
-                    int maximumheartDifference = LifeSteal.config.startingHeartDifference.get() + LifeSteal.config.maximumamountofhitpointsGainable.get();
-                    if (IHeartCap.getHeartDifference() == maximumheartDifference) {
+            LifestealData.get(entity).ifPresent(iLifestealData -> {
+                if (LifeSteal.config.maximumHealthGainable.get() > -1 && LifeSteal.config.preventFromUsingCrystalIfMax.get()) {
+                    int maximumheartDifference = LifeSteal.config.startingHealthDifference.get() + LifeSteal.config.maximumHealthGainable.get();
+                    if ((int)iLifestealData.getValue(ModResources.HEALTH_DIFFERENCE) == maximumheartDifference) {
                         serverPlayer.displayClientMessage(Component.translatable("gui.lifesteal.heart_crystal_reaching_max"), true);
                         success.set(false);
                     }
                 }
 
                 if (success.get()) {
-                    int newheartDifference = IHeartCap.getHeartDifference() + LifeSteal.config.heartCrystalAmountGain.get();
+                    int newheartDifference = (int) iLifestealData.getValue(ModResources.HEALTH_DIFFERENCE) + LifeSteal.config.heartCrystalAmountGain.get();
 
-                    IHeartCap.setHeartDifference(newheartDifference);
-                    IHeartCap.refreshHearts(false);
+                    iLifestealData.setValue(ModResources.HEALTH_DIFFERENCE,newheartDifference);
+                    iLifestealData.refreshHealth(false);
 
                     // Formula, for every hit point, increase duration of the regeneration by 50 ticks: TickDuration = MaxHealth * 50
-                    if (!compoundTagExists) {
-                        applyCrystalEffect(entity);
-                    } else if (!unnaturalHeartCrystal) {
+                    if (!unnaturalHeartCrystal) {
                         applyCrystalEffect(entity);
                     }
                 }
@@ -96,17 +81,18 @@ public class HeartCrystalItem extends Item {
         return success.get();
     }
 
+
     @Override
     public ItemStack finishUsingItem(ItemStack item, Level level, LivingEntity entity) {
-        boolean success = runHeartCrystalCode(item, level, entity);
+        boolean success = useHeartCrystal(item, level, entity);
         return success ? super.finishUsingItem(item, level, entity) : item;
     }
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionHand) {
-        if (!this.isEdible()) {
+        if (!this.isEdible() && !level.isClientSide) {
             ItemStack item = player.getItemInHand(interactionHand);
-            boolean success = runHeartCrystalCode(item, level, player);
+            boolean success = useHeartCrystal(item, level, player);
 
             if (success) {
                 item.shrink(1);
@@ -127,7 +113,7 @@ public class HeartCrystalItem extends Item {
         if (LifeSteal.config.crystalInstantUse.get()) {
             return null;
         } else {
-            return HeartCrystal;
+            return ModItems.alwaysEdible;
         }
     }
 }

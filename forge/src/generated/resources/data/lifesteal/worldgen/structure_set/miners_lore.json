@@ -1,0 +1,54 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "salt": 1542327654,
+    "separation": 20,
+    "spacing": 40
+  },
+  "structures": [
+    {
+      "structure": "lifesteal:miners_home",
+      "weight": 12
+    },
+    {
+      "structure": "lifesteal:miners_home_1",
+      "weight": 10
+    },
+    {
+      "structure": "lifesteal:miners_home_2",
+      "weight": 10
+    },
+    {
+      "structure": "lifesteal:miners_home_taiga",
+      "weight": 12
+    },
+    {
+      "structure": "lifesteal:miners_home_taiga_1",
+      "weight": 8
+    },
+    {
+      "structure": "lifesteal:miners_home_taiga_2",
+      "weight": 8
+    },
+    {
+      "structure": "lifesteal:miners_broken_portal",
+      "weight": 24
+    },
+    {
+      "structure": "lifesteal:miners_broken_portal_1",
+      "weight": 24
+    },
+    {
+      "structure": "lifesteal:miners_broken_portal_2",
+      "weight": 24
+    },
+    {
+      "structure": "lifesteal:miners_shack",
+      "weight": 24
+    },
+    {
+      "structure": "lifesteal:miners_ruined_shack",
+      "weight": 28
+    }
+  ]
+}

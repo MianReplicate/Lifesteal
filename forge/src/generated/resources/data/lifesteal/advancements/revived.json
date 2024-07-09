@@ -1,0 +1,33 @@
+{
+  "parent": "lifesteal:get_revive_crystal",
+  "criteria": {
+    "revived_player": {
+      "conditions": {},
+      "trigger": "lifesteal:revived"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancement.lifesteal:revived.desc"
+    },
+    "frame": "challenge",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:dirt"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.lifesteal:revived"
+    }
+  },
+  "requirements": [
+    [
+      "revived_player"
+    ]
+  ],
+  "rewards": {
+    "experience": 1000
+  },
+  "sends_telemetry_event": true
+}

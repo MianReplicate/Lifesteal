@@ -6,7 +6,7 @@
     "targets": [
       {
         "state": {
-          "Name": "lifesteal:netherrack_heart_ore"
+          "Name": "lifesteal:netherrack_crystal_ore"
         },
         "target": {
           "predicate_type": "minecraft:tag_match",

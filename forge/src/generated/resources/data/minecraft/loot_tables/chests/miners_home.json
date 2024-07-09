@@ -17,7 +17,7 @@
               "function": "minecraft:set_count"
             }
           ],
-          "name": "lifesteal:heart_fragment",
+          "name": "lifesteal:crystal_fragment",
           "weight": 55
         },
         {
@@ -33,7 +33,7 @@
               "function": "minecraft:set_count"
             }
           ],
-          "name": "lifesteal:heart_ore",
+          "name": "lifesteal:crystal_ore",
           "weight": 35
         },
         {
@@ -49,7 +49,7 @@
               "function": "minecraft:set_count"
             }
           ],
-          "name": "lifesteal:deepslate_heart_ore",
+          "name": "lifesteal:deepslate_crystal_ore",
           "weight": 25
         },
         {
@@ -65,7 +65,7 @@
               "function": "minecraft:set_count"
             }
           ],
-          "name": "lifesteal:netherrack_heart_ore",
+          "name": "lifesteal:netherrack_crystal_ore",
           "weight": 35
         },
         {
@@ -81,7 +81,7 @@
         },
         {
           "type": "minecraft:item",
-          "name": "lifesteal:heart_core_block",
+          "name": "lifesteal:crystal_block",
           "weight": 25
         }
       ],
@@ -205,7 +205,7 @@
                 "max": 10.0,
                 "min": 1.0
               },
-              "treasure": true
+              "treasure": false
             }
           ],
           "name": "minecraft:iron_pickaxe",

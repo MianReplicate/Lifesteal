@@ -2,11 +2,9 @@
   "schemaVersion": 1,
   "id": "lifesteal",
   "version": "${mod_version}",
-
   "custom": {
     "cardinal-components": [
-      "lifesteal:leveldata",
-      "lifesteal:healthdata"
+      "lifesteal:lifesteal_data"
     ]
   },
   "icon": "${logo_file}",

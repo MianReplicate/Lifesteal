@@ -17,9 +17,7 @@ public class LSAdvancementTrigger extends SimpleCriterionTrigger<LSAdvancementTr
     }
 
     public void trigger(ServerPlayer p_192180_1_) {
-        this.trigger(p_192180_1_, (p_226308_1_) -> {
-            return true;
-        });
+        this.trigger(p_192180_1_, (p_226308_1_) -> true);
     }
 
     @Override

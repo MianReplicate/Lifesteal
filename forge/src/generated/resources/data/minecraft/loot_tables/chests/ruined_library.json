@@ -45,7 +45,7 @@
                 "max": 24.0,
                 "min": 1.0
               },
-              "treasure": true
+              "treasure": false
             }
           ],
           "name": "minecraft:book",
@@ -59,7 +59,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "lifesteal:heart_core",
+          "name": "lifesteal:crystal_core",
           "weight": 35
         },
         {
@@ -75,7 +75,7 @@
               "function": "minecraft:set_count"
             }
           ],
-          "name": "lifesteal:heart_fragment",
+          "name": "lifesteal:crystal_fragment",
           "weight": 60
         },
         {
@@ -91,7 +91,7 @@
               "function": "minecraft:set_count"
             }
           ],
-          "name": "lifesteal:heart_core_block",
+          "name": "lifesteal:crystal_block",
           "weight": 5
         },
         {

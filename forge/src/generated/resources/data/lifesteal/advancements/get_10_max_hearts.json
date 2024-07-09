@@ -14,7 +14,7 @@
     "frame": "goal",
     "hidden": false,
     "icon": {
-      "item": "lifesteal:heart_core_block"
+      "item": "lifesteal:crystal_block"
     },
     "show_toast": true,
     "title": {

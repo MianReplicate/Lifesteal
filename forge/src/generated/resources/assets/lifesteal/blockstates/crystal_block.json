@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "lifesteal:block/crystal_block"
+    }
+  }
+}

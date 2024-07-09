@@ -1,11 +1,11 @@
 {
   "criteria": {
-    "has_heart_fragment": {
+    "has_fragment": {
       "conditions": {
         "items": [
           {
             "items": [
-              "lifesteal:heart_fragment"
+              "lifesteal:crystal_fragment"
             ]
           }
         ]
@@ -15,14 +15,14 @@
   },
   "display": {
     "announce_to_chat": false,
-    "background": "lifesteal:textures/block/heart_core_block.png",
+    "background": "lifesteal:textures/block/crystal_block.png",
     "description": {
       "translate": "advancement.lifesteal:root.desc"
     },
     "frame": "task",
     "hidden": false,
     "icon": {
-      "item": "lifesteal:heart_fragment"
+      "item": "lifesteal:crystal_fragment"
     },
     "show_toast": false,
     "title": {
@@ -31,7 +31,7 @@
   },
   "requirements": [
     [
-      "has_heart_fragment"
+      "has_fragment"
     ]
   ],
   "sends_telemetry_event": true

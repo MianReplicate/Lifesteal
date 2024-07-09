@@ -1,13 +1,1 @@
 apply from: '../loader.gradle'
-
-loom {
-    runs {
-        client {
-            programArgs "--username", "DevGoose###"
-        }
-
-        /*data {
-            arg "--existing", project(":common").file("src/main/resources/").absolutePath
-        }*/
-    }
-}

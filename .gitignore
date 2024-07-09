@@ -117,3 +117,12 @@ run/
 # Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
 !gradle-wrapper.jar
 /forge/src/generated/resources/.cache/
+/forge/src/generated/.cache/
+/forge/src/generated/resources/.cache/2e5c1b0b964e9d13a85e1ba77262eeb4b2261222
+/forge/src/generated/resources/.cache/7dde3484a02d0b33fdce06409a82ad738e071f8d
+/forge/src/generated/resources/.cache/9fb1092f32d4fcbf9e061ffd718d4ec689c6c95e
+/forge/src/generated/resources/.cache/59eb3dbb5f86130e09b3c62d89b9525ee01cf52d
+/forge/src/generated/resources/.cache/103d9f3f36b01595f1aa5172191e60eff02e6924
+/forge/src/generated/resources/.cache/915fd4a85908214aa8f0d04a0bcd1e5aba20fe20
+/forge/src/generated/resources/.cache/e5c5eb35b4ba40351ecb7d9f04c3527f2f5779b0
+/forge/src/generated/resources/.cache/

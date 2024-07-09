@@ -1,5 +1,5 @@
 {
-  "parent": "lifesteal:get_heart_core",
+  "parent": "lifesteal:get_crystal_core",
   "criteria": {
     "has_heart_crystal": {
       "conditions": {

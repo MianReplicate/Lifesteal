@@ -3,10 +3,10 @@
   "category": "misc",
   "key": {
     "b": {
-      "item": "lifesteal:heart_core_block"
+      "item": "lifesteal:crystal_block"
     },
     "c": {
-      "item": "lifesteal:heart_core"
+      "item": "lifesteal:crystal_core"
     },
     "d": {
       "item": "minecraft:diamond"

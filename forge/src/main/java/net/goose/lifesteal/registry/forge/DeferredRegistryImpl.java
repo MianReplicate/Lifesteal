@@ -1,10 +1,10 @@
 package net.goose.lifesteal.registry.forge;
 
+import net.goose.lifesteal.forge.LifestealForge;
 import net.goose.lifesteal.registry.DeferredRegistry;
 import net.goose.lifesteal.registry.RegistrySupplier;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
 
 import java.util.ArrayList;
@@ -31,7 +31,7 @@ public class DeferredRegistryImpl {
 
         @Override
         public void register() {
-            this.register.register(FMLJavaModLoadingContext.get().getModEventBus());
+            this.register.register(LifestealForge.modEventBus);
         }
 
 

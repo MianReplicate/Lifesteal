@@ -2,6 +2,7 @@ package net.goose.lifesteal.registry.fabric;
 
 import net.goose.lifesteal.registry.DeferredRegistry;
 import net.goose.lifesteal.registry.RegistrySupplier;
+import net.goose.lifesteal.util.ModResources;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
