@@ -227,7 +227,7 @@ public class LifestealData implements ILifestealData {
                 if(serverPlayer.isDeadOrDying())
                     serverPlayer.getInventory().dropAll();
 
-                if (LifeSteal.config.playersSpawnHeadUponDeath.get() && !server.isSingleplayer()) {
+                if (LifeSteal.config.playersSpawnHeadUponDeath.get() && ModUtil.isMultiplayer(server, false)) {
                     BlockPos blockPos = spawnPlayerHead();
                     if(blockPos == null){
                         dropPlayerHead();
@@ -253,7 +253,7 @@ public class LifestealData implements ILifestealData {
                     deadcomponent = ModUtil.addComponents(deadcomponent, compPos);
                 }
 
-                if (!server.isSingleplayer() && LifeSteal.config.uponDeathBanned.get() && !server.getPlayerList().getBans().isBanned(serverPlayer.getGameProfile())) {
+                if (ModUtil.isMultiplayer(server, true) && LifeSteal.config.uponDeathBanned.get() && !server.getPlayerList().getBans().isBanned(serverPlayer.getGameProfile())) {
                     UserBanList userbanlist = server.getPlayerList().getBans();
                     serverPlayer.getGameProfile();
                     GameProfile gameprofile = serverPlayer.getGameProfile();

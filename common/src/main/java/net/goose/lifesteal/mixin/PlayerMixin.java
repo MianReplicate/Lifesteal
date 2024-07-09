@@ -46,12 +46,15 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerImpl {
 
     @Inject(method = "tick", at = @At("HEAD"))
     private void tickMethod(final CallbackInfo info){
-        LifestealData.get(this).ifPresent(lifestealData -> {
-            // Are we at the amount where player should be banned based on their stats?
-            if((int) lifestealData.getValue(ModResources.HEALTH_DIFFERENCE) <= lifestealData.getHPDifferenceRequiredForBan()){
-                lifestealData.killPlayerPermanently();
-            }
-        });
+        if(!this.level().isClientSide){
+            LifestealData.get(this).ifPresent(lifestealData -> {
+                // Are we at the amount where player should be banned based on their stats?
+                if((int) lifestealData.getValue(ModResources.HEALTH_DIFFERENCE) <= lifestealData.getHPDifferenceRequiredForBan()){
+                    lifestealData.killPlayerPermanently();
+                }
+                lifestealData.tryRevivalEffects();
+            });
+        }
     }
     @Inject(method = "dropEquipment", at = @At("HEAD"))
     private void onDeath(final CallbackInfo info) {

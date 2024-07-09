@@ -64,6 +64,3 @@ side = "BOTH"
 
 [[mixins]]
 config="lifesteal-common.mixins.json"
-
-[[accessTransformers]]
-file="META-INF/accesstransformer.cfg"
