@@ -53,7 +53,7 @@ public class LifestealCommand {
                         .then(Commands.literal("withdraw")
                                 .requires((commandSource) -> commandSource.hasPermission(LifeSteal.config.permissionLevelForWithdraw.get()))
                                 .executes((command) -> withdraw(command.getSource(), 1))
-                                .then(Commands.argument("amount", IntegerArgumentType.integer(1))
+                                .then(Commands.argument("amount", IntegerArgumentType.integer(1, 99))
                                         .executes((command) -> withdraw(command.getSource(), IntegerArgumentType.getInteger(command, "amount")))))
                         .then(Commands.literal("gethitpoints")
                                 .requires((commandSource) -> commandSource.hasPermission(LifeSteal.config.permissionLevelForGettingHitPoints.get()))
@@ -115,29 +115,28 @@ public class LifestealCommand {
         if (serverPlayer.getAdvancements().getOrStartProgress(Advancement.Builder.advancement().build(ResourceLocation.tryParse(advancementUsed))).isDone() || advancementUsed.isEmpty() || serverPlayer.isCreative()) {
             LifestealData lifestealData = LifestealData.get(serverPlayer).get();
 
-            int heartDifference = (int) lifestealData.getValue(ModResources.HEALTH_DIFFERENCE) - (LifeSteal.config.heartCrystalAmountGain.get() * amount);
+            int newHealthDifference = (int) lifestealData.getValue(ModResources.HEALTH_DIFFERENCE) - (LifeSteal.config.heartCrystalAmountGain.get() * amount);
 
             if (maximumheartsLoseable >= 0) {
-                if (heartDifference < startingHitPointDifference - maximumheartsLoseable) {
+                if (newHealthDifference < startingHitPointDifference - maximumheartsLoseable) {
                     serverPlayer.displayClientMessage(Component.translatable("gui.lifesteal.cant_withdraw_less_than_maximum"), true);
                     return Command.SINGLE_SUCCESS;
                 }
-            }else if(heartDifference <= lifestealData.getHPDifferenceRequiredForBan()) {
+            }else if(newHealthDifference <= lifestealData.getHPDifferenceRequiredForBan()) {
                 serverPlayer.displayClientMessage(Component.translatable("gui.lifesteal.cant_withdraw_less_than_amount_have"), true);
                 return Command.SINGLE_SUCCESS;
             }
 
-            lifestealData.setValue(ModResources.HEALTH_DIFFERENCE,heartDifference);
+            lifestealData.setValue(ModResources.HEALTH_DIFFERENCE,newHealthDifference);
             lifestealData.refreshHealth(false);
 
             ItemStack heartCrystal = new ItemStack(ModItems.HEART_CRYSTAL.get(), amount);
             CompoundTag compoundTag = heartCrystal.getOrCreateTagElement(LifeSteal.MOD_ID);
             compoundTag.putBoolean(ModResources.UNFRESH, true);
             heartCrystal.setHoverName(Component.translatable("item.lifesteal.heart_crystal.unnatural"));
-            if (serverPlayer.getInventory().getFreeSlot() == -1) {
-                serverPlayer.drop(heartCrystal, true);
-            } else {
-                serverPlayer.getInventory().add(heartCrystal);
+            boolean given = serverPlayer.getInventory().add(heartCrystal);
+            if (!given) {
+                serverPlayer.drop(heartCrystal, false);
             }
         } else {
             String text = (String) LifeSteal.config.textUsedForRequirementOnWithdrawing.get();
