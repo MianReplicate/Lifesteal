@@ -264,8 +264,10 @@ public class LifestealData implements ILifestealData {
                     if (serverPlayer != null) {
                         serverPlayer.connection.disconnect(deadcomponent);
                     }
-                } else if (!serverPlayer.isSpectator()) {
-                    serverPlayer.setGameMode(GameType.SPECTATOR);
+                } else{
+                    if (!serverPlayer.isSpectator()){
+                        serverPlayer.setGameMode(GameType.SPECTATOR);
+                    }
                     this.livingEntity.sendSystemMessage(deadcomponent);
                 }
             }
