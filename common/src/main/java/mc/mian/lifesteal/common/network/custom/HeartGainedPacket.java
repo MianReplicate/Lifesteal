@@ -5,7 +5,6 @@ import commonnetwork.networking.data.Side;
 import mc.mian.lifesteal.common.item.LSItems;
 import mc.mian.lifesteal.util.LSUtil;
 import net.minecraft.client.Minecraft;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;

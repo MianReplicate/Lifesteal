@@ -18,7 +18,7 @@ dependencies {
     implementation 'com.electronwill.night-config:core:3.6.3'
     implementation 'com.electronwill.night-config:toml:3.6.3'
     common_networking_mc_version = common_networking_mc_version != null ? common_networking_mc_version : minecraft_version
-    implementation "mysticdrew:common-networking-common:${common_networking_version}-${common_networking_mc_version}"
+    modApi "mysticdrew:common-networking-common:${common_networking_version}-${common_networking_mc_version}"
     modApi "fuzs.forgeconfigapiport:forgeconfigapiport-common-forgeapi:${forge_config_api_port_version}"
     modApi "mc.mian:indestructible_blocks:${indestructible_blocks_version}+${minecraft_version}-fabric"
     compileOnly "org.spongepowered:mixin:${mixin_version}"
