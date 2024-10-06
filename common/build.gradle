@@ -17,12 +17,15 @@ dependencies {
 
     implementation 'com.electronwill.night-config:core:3.6.3'
     implementation 'com.electronwill.night-config:toml:3.6.3'
-    compileOnly "fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${forge_config_api_port_version}"
+    common_networking_mc_version = common_networking_mc_version != null ? common_networking_mc_version : minecraft_version
+    implementation "mysticdrew:common-networking-common:${common_networking_version}-${common_networking_mc_version}"
+    modApi "fuzs.forgeconfigapiport:forgeconfigapiport-common-forgeapi:${forge_config_api_port_version}"
+    modApi "mc.mian:indestructible_blocks:${indestructible_blocks_version}+${minecraft_version}-fabric"
     compileOnly "org.spongepowered:mixin:${mixin_version}"
 }
 
 loom {
-    accessWidenerPath.set(file("src/main/resources/lifesteal.accesswidener"))
+    accessWidenerPath.set(file("src/main/resources/${mod_id}.accesswidener"))
 }
 
 idea.module {
@@ -31,4 +34,20 @@ idea.module {
             file('build'),
             file('run')
     ]
+}
+
+publishing {
+    publications {
+        mavenCommon(MavenPublication) {
+            groupId = group
+            artifactId = mod_id
+            version = version
+            from components.java
+        }
+    }
+
+    // See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
+    repositories {
+        // Add repositories to publish to here.
+    }
 }

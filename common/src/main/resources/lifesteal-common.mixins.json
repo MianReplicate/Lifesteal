@@ -1,13 +1,13 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "net.goose.lifesteal.mixin",
+  "package": "mc.mian.lifesteal.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "LevelChunkMixin",
     "LivingMixin",
     "PlayerMixin",
-    "ServerLevelMixin"
+    "ServerLevelMixin",
+    "BEMixin"
   ],
   "client": [
   ],
