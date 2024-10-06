@@ -175,6 +175,10 @@ unifiedPublishing {
                 curseforge="forge-config-api-port-fabric"
                 modrinth="forge-config-api-port"
             }
+            includes {
+                curseforge="indestructible-blocks"
+                modrinth="indestructible-blocks"
+            }
         }
 
         var CURSE_API_KEY = project.findProperty("curseforge_token") ?: System.getenv("curseforge_token") ?: ""
