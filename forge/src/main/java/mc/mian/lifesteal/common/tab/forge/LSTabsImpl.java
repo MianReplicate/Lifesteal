@@ -1,4 +1,4 @@
-package mc.mian.lifesteal.common.tab.neoforge;
+package mc.mian.lifesteal.common.tab.forge;
 
 import mc.mian.lifesteal.common.item.LSItems;
 import mc.mian.lifesteal.common.tab.LSTabs;

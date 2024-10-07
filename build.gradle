@@ -22,10 +22,6 @@ subprojects {
     version = "${mod_version}+${minecraft_version}"
     group = mod_base_package
 
-    project.ext {
-        accessWidenerFile = file("common/src/main/resources/${mod_id}.accesswidener")
-    }
-
     repositories {
         mavenLocal()
         maven { url 'https://maven.parchmentmc.org' }

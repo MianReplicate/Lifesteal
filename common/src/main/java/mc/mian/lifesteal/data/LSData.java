@@ -4,7 +4,7 @@ import com.mojang.authlib.GameProfile;
 import dev.architectury.injectables.annotations.ExpectPlatform;
 import mc.mian.lifesteal.LifeSteal;
 import mc.mian.lifesteal.advancement.LSCriteria;
-import mc.mian.lifesteal.api.ILifestealData;
+import mc.mian.lifesteal.api.ILSData;
 import mc.mian.lifesteal.api.PlayerImpl;
 import mc.mian.lifesteal.common.block.LSBlocks;
 import mc.mian.lifesteal.common.block.custom.ReviveHeadBlock;
@@ -41,7 +41,7 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class LSData implements ILifestealData {
+public class LSData implements ILSData {
     private final LivingEntity livingEntity;
     public LSData(final LivingEntity entity) {
         this.livingEntity = entity;

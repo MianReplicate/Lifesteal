@@ -1,6 +1,6 @@
 package mc.mian.lifesteal.data.neoforge;
 
-import mc.mian.lifesteal.api.ILifestealData;
+import mc.mian.lifesteal.api.ILSData;
 import mc.mian.lifesteal.data.LSData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
@@ -13,7 +13,7 @@ import java.util.Optional;
 
 public class LSDataImpl {
 
-    public static Optional<ILifestealData> get(final Entity entity) {
+    public static Optional<ILSData> get(final Entity entity) {
         return Optional.ofNullable(entity.getCapability(LSCapabilities.LIFESTEAL_DATA));
     }
 

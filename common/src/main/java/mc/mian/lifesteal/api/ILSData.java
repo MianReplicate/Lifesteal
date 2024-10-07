@@ -8,8 +8,7 @@ import net.minecraft.world.entity.LivingEntity;
 
 import java.util.Collection;
 
-
-public interface ILifestealData extends Serializable<CompoundTag> {
+public interface ILSData extends Serializable<CompoundTag> {
     void tryRevivalEffects();
 
     BlockPos spawnPlayerHead();
