@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "id": "lifesteal",
+  "id": "${mod_id}",
   "version": "${mod_version}",
   "custom": {
     "cardinal-components": [
@@ -11,7 +11,7 @@
   "name": "${mod_name}",
   "description": "${mod_description}",
   "authors": [
-    "LoxiGoose",
+    "MianReplicate",
     "bredtxt",
     "iZophoro"
   ],
@@ -23,17 +23,17 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "net.goose.lifesteal.fabric.LifestealFabric"
+      "mc.mian.lifesteal.fabric.LifestealFabric"
     ],
     "client": [
-      "net.goose.lifesteal.fabric.LifestealFabricClient"
+      "mc.mian.lifesteal.fabric.LifestealFabricClient"
     ],
     "cardinal-components": [
-      "net.goose.lifesteal.data.fabric.ModComponents"
+      "mc.mian.lifesteal.data.fabric.LSComponents"
     ]
   },
   "mixins": [
-    "lifesteal-common.mixins.json"
+    "${mod_id}-common.mixins.json"
   ],
   "depends": {
     "fabricloader": ">=${fabric_loader_version}",

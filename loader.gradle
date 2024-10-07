@@ -1,4 +1,5 @@
 apply plugin: 'com.github.johnrengelman.shadow'
+apply plugin: "me.shedaniel.unified-publishing"
 
 evaluationDependsOn(':common')
 
@@ -8,6 +9,8 @@ if(loomPlatform == 'forge')
     projectName = 'Forge'
 else
     projectName = 'Fabric'
+
+def generatedResources = file("src/generated/resources")
 
 sourceSets.main.resources.srcDirs = [ 'src/main/resources', {
     if(loomPlatform == 'fabric'){
@@ -21,7 +24,7 @@ loom {
     if(loomPlatform == 'forge'){
         runs {
             client {
-                programArgs "--username", "DevGoose###"
+                programArgs "--username", "Replicate###"
             }
         }
 
@@ -48,17 +51,15 @@ loom {
 
 def resourceTargets = ['fabric.mod.json', 'mods.toml']
 def intoTargets = ["$rootDir/out/production/resources/", "$rootDir/out/production/${project.name}.main/", "$rootDir/bin/main/"]
-def replaceProperties = [mod_id                 : mod_id, mod_name: mod_name, mod_version: mod_version,
-                         mod_authors            : mod_authors, mod_credits:mod_credits, mod_description: mod_description,
-                         display_url            :display_url, logo_file:logo_file,
-                         issue_tracker_url      : issue_tracker_url,
-                         update_json_url        : update_json_url,
-                         mod_license            : mod_license,
-                         minecraft_version_range: minecraft_version_range,
-                         minecraft_version      : minecraft_version, fabric_loader_version: fabric_loader_version,
-                         fabric_api_version     : fabric_api_version, repository_url: repository_url,
-                         forge_version_range    : forge_version_range, forge_version: forge_version, forge_loader_version_range: forge_loader_version_range
-                            ]
+def replaceProperties = [mod_id             : mod_id, mod_name: mod_name, mod_version: mod_version,
+                         mod_authors        : mod_authors, mod_credits:mod_credits, mod_description: mod_description,
+                         logo_file          :logo_file,
+                         issue_tracker_url  : issue_tracker_url,
+                         mod_license        : mod_license,
+                         minecraft_version  : minecraft_version, fabric_loader_version: fabric_loader_version,
+                         fabric_api_version : fabric_api_version, repository_url: repository_url,
+                         forge_version_range: forge_version_range, forge_version: forge_version, forge_loader_version_range: forge_loader_version_range
+]
 processResources {
     inputs.properties replaceProperties
     replaceProperties.put 'project', project
@@ -99,7 +100,13 @@ architectury {
 }
 
 dependencies {
-    implementation project(path: ':common')
+    // thanks sodium for adding forge support, very cool :>
+    common_networking_mc_version = common_networking_mc_version != null ? common_networking_mc_version : minecraft_version
+    modImplementation "mysticdrew:common-networking-${loomPlatform}:${common_networking_version}-${common_networking_mc_version}"
+    modRuntimeOnly("mezz.jei:jei-${minecraft_version}-${loomPlatform}:${jei_version}")
+    modApi "mc.mian:indestructible_blocks:${indestructible_blocks_version}+${minecraft_version}-${loomPlatform}"
+    include "mc.mian:indestructible_blocks:${indestructible_blocks_version}+${minecraft_version}-${loomPlatform}"
+
     if(loomPlatform == 'fabric') {
         modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
         modApi "net.fabricmc.fabric-api:fabric-api:${fabric_api_version}+${minecraft_version}"
@@ -118,23 +125,55 @@ dependencies {
         include "dev.onyxstudios.cardinal-components-api:cardinal-components-base:${cardinal_components_api_version}"
         include "dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${cardinal_components_api_version}"
 
-        modRuntimeOnly("mezz.jei:jei-${minecraft_version}-fabric:${jei_version}")
-        modRuntimeOnly("maven.modrinth:sodium:${sodium_version}")
-        modRuntimeOnly("curse.maven:modernfix-${modern_fix_id}:${modern_fix_fabric}")
-        modRuntimeOnly("curse.maven:ferritecore-${ferritecore_fabric_id}:${ferritecore_fabric}")
-        modRuntimeOnly("curse.maven:mousetweaks-${mouse_tweaks_id}:${mouse_tweaks_fabric}")
+        modRuntimeOnly("maven.modrinth:sodium:${sodium_version}-fabric")
+        modRuntimeOnly("curse.maven:modernfix-${modern_fix_id}:${modern_fix}")
+        modRuntimeOnly("curse.maven:ferritecore-${ferritecore_id}:${ferritecore}")
+        modRuntimeOnly("curse.maven:mousetweaks-${mouse_tweaks_id}:${mouse_tweaks}")
     } else if(loomPlatform == 'forge'){
         forge "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
-
-//        runtimeOnly("mezz.jei:jei-${minecraft_version}-forge:${jei_version}")
-//        runtimeOnly("curse.maven:embeddium-${embeddium_id}:${embeddium_version}")
-//        runtimeOnly("curse.maven:modernfix-${modern_fix_id}:${modern_fix_forge}")
-//        runtimeOnly("curse.maven:ferritecore-${ferritecore_forge_id}:${ferritecore_forge}")
-//        runtimeOnly("curse.maven:mousetweaks-${mouse_tweaks_id}:${mouse_tweaks_forge}")
     }
 
     common(project(path: ':common', configuration: 'namedElements')) { transitive false }
     shadowCommon(project(path: ':common', configuration: "transformProduction${projectName}")) { transitive false }
+}
+
+unifiedPublishing {
+    project {
+        displayName = "[${projectName}] ${rootProject.minecraft_version} - ${rootProject.mod_version}"
+        version="${rootProject.mod_version}"
+        releaseType = "${rootProject.mod_release_type}".toLowerCase()
+        changelog = new File("${rootProject.projectDir}/changelog.html").text
+        gameVersions = [rootProject.minecraft_version]
+        mainPublication tasks.remapJar
+        gameLoaders = ["${loomPlatform}"]
+        relations {
+            includes {
+                curseforge="common-network"
+                modrinth="common-network"
+            }
+            includes {
+                curseforge="forge-config-api-port-fabric"
+                modrinth="forge-config-api-port"
+            }
+        }
+
+        var CURSE_API_KEY = project.findProperty("curseforge_token") ?: System.getenv("curseforge_token") ?: ""
+        if (CURSE_API_KEY != "") {
+            curseforge {
+                token = CURSE_API_KEY
+                id = "${rootProject.curseforge_id}"
+                gameVersions.addAll "Java ${rootProject.java_version}"
+            }
+        }
+
+        var MODRINTH_TOKEN = project.findProperty("modrinth_token") ?: System.getenv("modrinth_token") ?: ""
+        if (MODRINTH_TOKEN != "") {
+            modrinth {
+                token = MODRINTH_TOKEN
+                id = "${rootProject.modrinth_id}"
+            }
+        }
+    }
 }
 
 shadowJar {
@@ -176,4 +215,26 @@ idea.module {
             file('build'),
             file('run')
     ]
+}
+
+publishing {
+    publications {
+        if(loomPlatform == 'forge')
+            mavenForge(MavenPublication) {
+                groupId = group
+                artifactId = mod_id
+                version = version + "-${loomPlatform}"
+                from components.java
+            }
+        else
+            mavenFabric(MavenPublication) {
+                groupId = group
+                artifactId = mod_id
+                version = version + "-${loomPlatform}"
+                from components.java
+            }
+    }
+    repositories {
+        mavenLocal()
+    }
 }

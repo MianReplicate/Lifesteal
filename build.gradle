@@ -1,26 +1,9 @@
 plugins {
     id "architectury-plugin" version "3.4-SNAPSHOT"
-    id "dev.architectury.loom" version "1.6.+" apply false
-    id "io.github.pacifistmc.forgix" version "1.2.9"
+    id "dev.architectury.loom" version "${architectury_loom_version}" apply false
     id 'org.jetbrains.gradle.plugin.idea-ext' version '1.1' apply false
     id 'com.github.johnrengelman.shadow' version '7.1.2' apply false
-}
-
-forgix {
-    group = mod_base_package // This is the common group of the mod which by default in Architectury Template it's defined as "maven_group" in your gradle.properties. If this property is not defined then by default it'll fetch the group from the maven_group property in your gradle.properties
-    mergedJarName = "${mod_id}-${mod_version}+${minecraft_version}.jar" // This is the name of the merged jar. If this property is not defined then by default it'll fetch the "archives_base_name" property with the "mod_version" property in your gradle.properties.
-    outputDir = "build/libs/Merged" // This is the output directory of the merged jar from the root project. If this property is not defined then by default it's set to "Merged".
-
-    fabric {
-        projectName = "fabric" // This is the name of the fabric project. If this property is not defined then by default it'll set to "fabric" since that's the name the Architectury Template uses.
-        jarLocation = "build/libs/lifesteal-${mod_version}.jar" // This is the location of the fabric jar from the fabric project. If this property is not defined then by default it fetches the jar with the shortest name.
-    }
-
-    forge {
-        projectName = "forge"
-        jarLocation = "build/libs/lifesteal-${mod_version}.jar" // This is the location of the forge jar from the forge project. If this property is not defined then by default it fetches the jar with the shortest name.
-    }
-
+    id "me.shedaniel.unified-publishing" version "0.1.+"
 }
 
 architectury {
@@ -36,7 +19,7 @@ subprojects {
     apply plugin: 'org.jetbrains.gradle.plugin.idea-ext'
 
     archivesBaseName = mod_id
-    version = mod_version
+    version = "${mod_version}+${minecraft_version}"
     group = mod_base_package
 
     project.ext {
@@ -52,12 +35,15 @@ subprojects {
         // See https://docs.gradle.org/current/userguide/declaring_repositories.html
         // for more information about repositories.
         maven {
-            name = "Fuzs Mod Resources"
-            url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/"
-        }
-        maven {
             name = 'Ladysnake Mods'
             url = 'https://maven.ladysnake.org/releases'
+        }
+        maven {
+            url = "https://jm.gserv.me/repository/maven-public/"
+        }
+        maven {
+            name = "Fuzs Mod Resources"
+            url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/"
         }
         maven {
             url 'https://www.cursemaven.com'
@@ -78,12 +64,14 @@ subprojects {
             name = "ModMaven"
             url = "https://modmaven.dev"
         }
+        maven { url "https://maven.neoforged.net/releases/" }
+        maven { url "https://maven.minecraftforge.net/" }
         maven { url 'https://jitpack.io' }
     }
 
     tasks.withType(JavaCompile) {
         options.encoding = "UTF-8"
-        options.release = 17
+        options.release = java_version.toInteger()
     }
 
     java {
@@ -114,13 +102,10 @@ subprojects {
         minecraft = "${minecraft_version}"
     }
 
-    loom {
-        silentMojangMappingsLicense()
-
-        if(accessWidenerFile.exists()) {
-            accessWidenerPath = accessWidenerFile
-        }
-    }
+//    loom {
+//        accessWidenerPath.set(project(':common').loom.accessWidenerPath)
+//        silentMojangMappingsLicense()
+//    }
 
     dependencies {
         minecraft "com.mojang:minecraft:${rootProject.minecraft_version}"
@@ -145,14 +130,11 @@ subprojects {
             inputs.property "${it.key}", "${it.value}"
         }
 
-        filesMatching([ '*.mixins.json', 'pack.mcmeta', 'META-INF/mods.toml', 'fabric.mod.json', 'architectury.common.json' ]) {
+        filesMatching([ '*.mixins.json', 'META-INF/neoforge.mods.toml', 'fabric.mod.json', '*.common.json', 'META-INF/mods.toml']) {
             expand project.properties
         }
     }
 
-
-    build.finalizedBy(mergeJars)
-    assemble.finalizedBy(mergeJars)
 }
 
 apply plugin: 'org.jetbrains.gradle.plugin.idea-ext'
