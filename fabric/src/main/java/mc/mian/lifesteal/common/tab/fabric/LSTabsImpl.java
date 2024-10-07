@@ -7,7 +7,7 @@ import mc.mian.lifesteal.common.tab.LSTabs;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
 
-public class ModTabsImpl {
+public class LSTabsImpl {
     public static CreativeModeTab createTab(){
         return FabricItemGroup.builder()
                 .icon(LSTabs::makeIcon)

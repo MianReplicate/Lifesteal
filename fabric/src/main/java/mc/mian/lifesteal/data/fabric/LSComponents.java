@@ -5,8 +5,9 @@ import dev.onyxstudios.cca.api.v3.component.ComponentRegistryV3;
 import dev.onyxstudios.cca.api.v3.entity.EntityComponentFactoryRegistry;
 import dev.onyxstudios.cca.api.v3.entity.EntityComponentInitializer;
 import dev.onyxstudios.cca.api.v3.entity.RespawnCopyStrategy;
+import mc.mian.lifesteal.util.LSConstants;
 
-public class ModComponents implements EntityComponentInitializer {
+public class LSComponents implements EntityComponentInitializer {
     public static final ComponentKey<LSDataImpl> LIFESTEAL_DATA =
             ComponentRegistryV3.INSTANCE.getOrCreate(LSConstants.LIFESTEAL_DATA, LSDataImpl.class);
 

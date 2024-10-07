@@ -7,7 +7,7 @@ import net.minecraft.resources.ResourceLocation;
 
 import java.util.Collection;
 
-public class ModEvents {
+public class LSEvents {
     public static void register() {
         LifeSteal.LOGGER.debug("Registering ModEvents for " + LifeSteal.MOD_ID);
         ServerPlayerEvents.COPY_FROM.register(((oldPlayer, newPlayer, alive) -> LSData.get(oldPlayer).ifPresent(oldData -> LSData.get(newPlayer).ifPresent(newData ->

@@ -15,7 +15,7 @@ public class LSDataImpl extends LSData implements ComponentV3 {
 
     public static Optional<LSData> get(Entity entity) {
         try {
-            return Optional.of(ModComponents.LIFESTEAL_DATA.get(entity));
+            return Optional.of(LSComponents.LIFESTEAL_DATA.get(entity));
         } catch (Exception e) {
             return Optional.empty();
         }

@@ -7,7 +7,7 @@ import net.minecraft.world.level.levelgen.GenerationStep;
 
 import java.util.function.BiConsumer;
 
-public class ModBiomeModifier {
+public class LSBiomeModifier {
     private static BiConsumer<BiomeSelectionContext, BiomeModificationContext> HEART_MODIFIER() {
         return (biomeSelectionContext, biomeModificationContext) -> {
             biomeModificationContext.getGenerationSettings().addFeature(

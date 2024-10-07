@@ -5,8 +5,8 @@ import net.fabricmc.api.ModInitializer;
 import mc.mian.lifesteal.LifeSteal;
 import mc.mian.lifesteal.configuration.ConfigHolder;
 import mc.mian.lifesteal.fabric.event.CommandRegistry;
-import mc.mian.lifesteal.fabric.event.ModEvents;
-import mc.mian.lifesteal.world.gen.ModBiomeModifier;
+import mc.mian.lifesteal.fabric.event.LSEvents;
+import mc.mian.lifesteal.world.gen.LSBiomeModifier;
 import net.minecraftforge.fml.config.ModConfig;
 
 public class LifestealFabric implements ModInitializer {
@@ -16,8 +16,8 @@ public class LifestealFabric implements ModInitializer {
         ForgeConfigRegistry.INSTANCE.register(LifeSteal.MOD_ID, ModConfig.Type.COMMON, ConfigHolder.SERVER_SPEC);
         LifeSteal.config = ConfigHolder.SERVER;
         LifeSteal.init();
-        ModEvents.register();
+        LSEvents.register();
         CommandRegistry.register();
-        ModBiomeModifier.register();
+        LSBiomeModifier.register();
     }
 }
