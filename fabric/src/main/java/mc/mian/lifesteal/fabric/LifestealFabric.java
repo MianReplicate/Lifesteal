@@ -5,7 +5,7 @@ import net.fabricmc.api.ModInitializer;
 import mc.mian.lifesteal.LifeSteal;
 import mc.mian.lifesteal.configuration.ConfigHolder;
 import mc.mian.lifesteal.fabric.event.CommandRegistry;
-import mc.mian.lifesteal.fabric.event.ModEvents;
+import mc.mian.lifesteal.fabric.event.LSEvents;
 import mc.mian.lifesteal.util.LSConstants;
 import mc.mian.lifesteal.world.gen.LSBiomeModifier;
 import net.minecraft.advancements.CriteriaTriggers;
@@ -27,7 +27,7 @@ public class LifestealFabric implements ModInitializer {
         ForgeConfigRegistry.INSTANCE.register(LSConstants.MOD_ID, ModConfig.Type.COMMON, ConfigHolder.SERVER_SPEC);
         LifeSteal.config = ConfigHolder.SERVER;
         LifeSteal.init();
-        ModEvents.register();
+        LSEvents.register();
         CommandRegistry.register();
         LSBiomeModifier.register();
         registerCriteria();
