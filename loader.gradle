@@ -128,26 +128,21 @@ architectury {
 dependencies {
     // thanks sodium for adding neoforge support, very cool :>
     def mcVersion = rootProject.hasProperty('common_networking_mc_version') ? "${common_networking_mc_version}" : "${minecraft_version}"
-    modApi "mysticdrew:common-networking-${loomPlatform}:${common_networking_version}-${mcVersion}"
-    include "mysticdrew:common-networking-${loomPlatform}:${common_networking_version}-${mcVersion}"
+    modApi(include("mysticdrew:common-networking-${loomPlatform}:${common_networking_version}-${mcVersion}"))
     modRuntimeOnly("mezz.jei:jei-${minecraft_version}-${loomPlatform}:${jei_version}")
 
-    modApi "mc.mian:indestructible_blocks:${indestructible_blocks_version}+${minecraft_version}-${loomPlatform}"
-    include "mc.mian:indestructible_blocks:${indestructible_blocks_version}+${minecraft_version}-${loomPlatform}"
+    modApi(include("mc.mian:indestructible_blocks:${indestructible_blocks_version}+${minecraft_version}-${loomPlatform}"))
 
     if(loomPlatform != 'forge'){
-        modApi "fuzs.forgeconfigapiport:forgeconfigapiport-${loomPlatform}:${forge_config_api_port_version}"
-        include "fuzs.forgeconfigapiport:forgeconfigapiport-${loomPlatform}:${forge_config_api_port_version}"
+        modApi(include("fuzs.forgeconfigapiport:forgeconfigapiport-${loomPlatform}:${forge_config_api_port_version}"))
     }
 
     if(loomPlatform == 'fabric') {
         modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
         modApi "net.fabricmc.fabric-api:fabric-api:${fabric_api_version}+${minecraft_version}"
 
-        modImplementation "org.ladysnake.cardinal-components-api:cardinal-components-base:${cardinal_components_api_version}"
-        modImplementation "org.ladysnake.cardinal-components-api:cardinal-components-entity:${cardinal_components_api_version}"
-        include "org.ladysnake.cardinal-components-api:cardinal-components-base:${cardinal_components_api_version}"
-        include "org.ladysnake.cardinal-components-api:cardinal-components-entity:${cardinal_components_api_version}"
+        modApi(include("org.ladysnake.cardinal-components-api:cardinal-components-base:${cardinal_components_api_version}"))
+        modApi(include("org.ladysnake.cardinal-components-api:cardinal-components-entity:${cardinal_components_api_version}"))
 
         modRuntimeOnly("maven.modrinth:sodium:${sodium_version}-fabric")
         modRuntimeOnly("curse.maven:modernfix-${modern_fix_id}:${modern_fix}")
