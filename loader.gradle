@@ -51,14 +51,22 @@ loom {
 
 def resourceTargets = ['fabric.mod.json', 'mods.toml']
 def intoTargets = ["$rootDir/out/production/resources/", "$rootDir/out/production/${project.name}.main/", "$rootDir/bin/main/"]
-def replaceProperties = [mod_id             : mod_id, mod_name: mod_name, mod_version: mod_version,
-                         mod_authors        : mod_authors, mod_credits:mod_credits, mod_description: mod_description,
-                         logo_file          :logo_file,
-                         issue_tracker_url  : issue_tracker_url,
-                         mod_license        : mod_license,
-                         minecraft_version  : minecraft_version, fabric_loader_version: fabric_loader_version,
-                         fabric_api_version : fabric_api_version, repository_url: repository_url,
-                         forge_version_range: forge_version_range, forge_version: forge_version, forge_loader_version_range: forge_loader_version_range
+def replaceProperties = [mod_id: mod_id,
+                         mod_name: mod_name,
+                         mod_version: mod_version,
+                         mod_authors: mod_authors,
+                         mod_credits:mod_credits,
+                         mod_description: mod_description,
+                         logo_file:logo_file,
+                         issue_tracker_url: issue_tracker_url,
+                         mod_license: mod_license,
+                         minecraft_version: minecraft_version,
+                         fabric_loader_version: fabric_loader_version,
+                         fabric_api_version: fabric_api_version,
+                         repository_url: repository_url,
+                         forge_version_range : forge_version_range,
+                         forge_version: forge_version,
+                         forge_loader_version_range: forge_loader_version_range
 ]
 processResources {
     inputs.properties replaceProperties
@@ -105,24 +113,14 @@ dependencies {
     modApi(include("mysticdrew:common-networking-${loomPlatform}:${common_networking_version}-${mcVersion}"))
     modRuntimeOnly("mezz.jei:jei-${minecraft_version}-${loomPlatform}:${jei_version}")
     modApi(include("mc.mian:indestructible_blocks:${indestructible_blocks_version}+${minecraft_version}-${loomPlatform}"))
+    modApi(include("fuzs.forgeconfigapiport:forgeconfigapiport-${loomPlatform}:${forge_config_api_port_version}"))
 
     if(loomPlatform == 'fabric') {
         modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
         modApi "net.fabricmc.fabric-api:fabric-api:${fabric_api_version}+${minecraft_version}"
 
-        implementation 'com.electronwill.night-config:core:3.6.3'
-        implementation 'com.electronwill.night-config:toml:3.6.3'
-
-        modImplementation "fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${forge_config_api_port_version}"
-        include "fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${forge_config_api_port_version}"
-
-        // Adds a dependency on the base cardinal components module (required by every other module)
-        // Replace modImplementation with modApi if you expose components in your own API
-        modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-base:${cardinal_components_api_version}"
-        modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${cardinal_components_api_version}"
-        // Includes Cardinal Components API as a Jar-in-Jar dependency (optional)
-        include "dev.onyxstudios.cardinal-components-api:cardinal-components-base:${cardinal_components_api_version}"
-        include "dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${cardinal_components_api_version}"
+        modApi(include("org.ladysnake.cardinal-components-api:cardinal-components-base:${cardinal_components_api_version}"))
+        modApi(include("org.ladysnake.cardinal-components-api:cardinal-components-entity:${cardinal_components_api_version}"))
 
         modRuntimeOnly("maven.modrinth:sodium:${sodium_version}-fabric")
         modRuntimeOnly("curse.maven:modernfix-${modern_fix_id}:${modern_fix}")
