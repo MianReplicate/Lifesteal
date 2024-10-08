@@ -1,7 +1,6 @@
 package mc.mian.lifesteal.fabric.event;
 
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
-import mc.mian.lifesteal.LifeSteal;
 import mc.mian.lifesteal.data.LSData;
 import net.minecraft.resources.ResourceLocation;
 
