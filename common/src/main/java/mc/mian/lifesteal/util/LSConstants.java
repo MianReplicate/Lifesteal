@@ -77,7 +77,7 @@ public class LSConstants {
     public static final ResourceKey<Structure> RUINED_LIBRARY = LSUtil.createStructure(LSConstants.MOD_ID, "ruined_library");
 
     // Lifesteal Data
-    public static final ResourceLocation LIFESTEAL_DATA = LSUtil.modLoc("lifesteal_data");
+    public static final ResourceLocation LS_DATA = LSUtil.modLoc("lifesteal_data");
     public static final ResourceLocation HEALTH_DIFFERENCE = LSUtil.modLoc("health_difference");
     public static final ResourceLocation TIME_KILLED = LSUtil.modLoc("time_killed");
     public static final ResourceLocation HEALTH_MODIFIER = LSUtil.modLoc("health_modifier");

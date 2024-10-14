@@ -291,6 +291,18 @@ public class LSData implements ILSData {
             AttributeInstance attribute = this.livingEntity.getAttribute(Attributes.MAX_HEALTH);
             AttributeModifier modifier = new AttributeModifier(LSConstants.HEALTH_MODIFIER.toString(), healthDifference, AttributeModifier.Operation.ADDITION);
             Set<AttributeModifier> modifiers = attribute.getModifiers(AttributeModifier.Operation.ADDITION);
+//            Iterator<AttributeModifier> iterator = modifiers.iterator();
+//            while(iterator.hasNext()){
+//                AttributeModifier mod = iterator.next();
+//                if(mod.getName().equals(LSConstants.HEALTH_MODIFIER.toString())){
+//                    attribute.removeModifier(mod);
+//                }
+//            }
+//            for(AttributeModifier mod : modifiers) {
+//                if(mod.getName().equals(LSConstants.HEALTH_MODIFIER.toString())){
+//                    attribute.removeModifier(mod);
+//                }
+//            }
             modifiers.forEach(mod -> {
                 if(mod.getName().equals(LSConstants.HEALTH_MODIFIER.toString())){
                     attribute.removeModifier(mod);

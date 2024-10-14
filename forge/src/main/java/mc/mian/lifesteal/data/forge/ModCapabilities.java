@@ -6,6 +6,6 @@ import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.CapabilityToken;
 
 public class ModCapabilities {
-    public static final Capability<ILSData> LIFESTEAL_DATA = CapabilityManager.get(new CapabilityToken<>() {
+    public static final Capability<ILSData> LS_DATA = CapabilityManager.get(new CapabilityToken<>() {
     });
 }

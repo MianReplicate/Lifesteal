@@ -22,20 +22,20 @@ import java.util.Optional;
 public class LSDataImpl {
 
     public static Optional<ILSData> get(final Entity entity) {
-        return entity.getCapability(ModCapabilities.LIFESTEAL_DATA).resolve();
+        return entity.getCapability(ModCapabilities.LS_DATA).resolve();
     }
 
     public static void attach(final AttachCapabilitiesEvent<Entity> event) {
         class HeartCapProvider implements ICapabilityProvider, INBTSerializable<CompoundTag> {
 
-            public static final ResourceLocation IDENTIFIER = new ResourceLocation(LifeSteal.MOD_ID, LSConstants.LIFESTEAL_DATA.getPath());
+            public static final ResourceLocation IDENTIFIER = new ResourceLocation(LifeSteal.MOD_ID, LSConstants.LS_DATA.getPath());
             private final ILSData backend = new LSData((LivingEntity) event.getObject());
             private final LazyOptional<ILSData> optionalData = LazyOptional.of(() -> backend);
 
             @NotNull
             @Override
             public <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
-                return ModCapabilities.LIFESTEAL_DATA.orEmpty(cap, this.optionalData);
+                return ModCapabilities.LS_DATA.orEmpty(cap, this.optionalData);
             }
 
             @Override
