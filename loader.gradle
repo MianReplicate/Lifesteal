@@ -181,7 +181,7 @@ publishMods {
             accessToken = CURSE_API_KEY
             projectId = "${rootProject.curseforge_id}"
             minecraftVersions.add("${rootProject.minecraft_version}")
-            requires("common-network", "forge-config-api-port-fabric")
+            embeds("common-network", "forge-config-api-port-fabric")
         }
     }
 
@@ -191,7 +191,7 @@ publishMods {
             accessToken = MODRINTH_TOKEN
             projectId = "${rootProject.modrinth_id}"
             minecraftVersions.add("${rootProject.minecraft_version}")
-            requires("common-network", "forge-config-api-port")
+            embeds("common-network", "forge-config-api-port")
         }
     }
 }
