@@ -1,6 +1,5 @@
 package mc.mian.lifesteal.datagen;
 
-import mc.mian.lifesteal.LifeSteal;
 import mc.mian.lifesteal.datagen.worldgen.level.LSBiomeModifiersProvider;
 import mc.mian.lifesteal.datagen.worldgen.level.LSConfiguredFeaturesProvider;
 import mc.mian.lifesteal.datagen.worldgen.level.LSPlacedFeaturesProvider;

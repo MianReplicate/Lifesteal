@@ -1,6 +1,5 @@
 package mc.mian.lifesteal.neoforge.event;
 
-import mc.mian.lifesteal.LifeSteal;
 import mc.mian.lifesteal.command.LSCommands;
 import mc.mian.lifesteal.common.blockentity.LSBlockEntityTypes;
 import mc.mian.lifesteal.data.LSData;

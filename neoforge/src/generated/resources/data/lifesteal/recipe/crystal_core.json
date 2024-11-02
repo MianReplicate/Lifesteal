@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "f": {
-      "item": "lifesteal:crystal_fragment"
-    },
-    "g": {
-      "item": "minecraft:golden_apple"
-    }
+    "f": "lifesteal:crystal_fragment",
+    "g": "minecraft:golden_apple"
   },
   "pattern": [
     "fff",

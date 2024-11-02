@@ -1,13 +1,7 @@
 package mc.mian.lifesteal.common.block.custom;
 
-import mc.mian.indestructible_blocks.util.DestructibilityState;
-import mc.mian.indestructible_blocks.util.IndestructibleUtil;
-import mc.mian.lifesteal.LifeSteal;
-import mc.mian.lifesteal.common.block.LSBlocks;
-import mc.mian.lifesteal.configuration.LSConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;

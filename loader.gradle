@@ -1,5 +1,5 @@
 apply plugin: 'com.github.johnrengelman.shadow'
-apply plugin: "me.shedaniel.unified-publishing"
+apply plugin: "me.modmuss50.mod-publish-plugin"
 
 evaluationDependsOn(':common')
 
@@ -129,78 +129,73 @@ dependencies {
     // thanks sodium for adding neoforge support, very cool :>
     def mcVersion = rootProject.hasProperty('common_networking_mc_version') ? "${common_networking_mc_version}" : "${minecraft_version}"
     modApi(include("mysticdrew:common-networking-${loomPlatform}:${common_networking_version}-${mcVersion}"))
-    modRuntimeOnly("mezz.jei:jei-${minecraft_version}-${loomPlatform}:${jei_version}")
-
     modApi(include("mc.mian:indestructible_blocks:${indestructible_blocks_version}+${minecraft_version}-${loomPlatform}"))
+
+    if(!disable_runtimes.toBoolean()) {
+        modRuntimeOnly("mezz.jei:jei-${minecraft_version}-${loomPlatform}:${jei_version}")
+
+        if(loomPlatform == 'fabric'){
+            modRuntimeOnly("maven.modrinth:sodium:${sodium_version}-fabric")
+            modRuntimeOnly("curse.maven:modernfix-${modern_fix_id}:${modern_fix}")
+            modRuntimeOnly("curse.maven:ferritecore-${ferritecore_id}:${ferritecore}")
+            modRuntimeOnly("curse.maven:mousetweaks-${mouse_tweaks_id}:${mouse_tweaks}")
+        }
+    }
 
     if(loomPlatform != 'forge'){
         modApi(include("fuzs.forgeconfigapiport:forgeconfigapiport-${loomPlatform}:${forge_config_api_port_version}"))
     }
 
-    if(loomPlatform == 'fabric') {
-        modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
-        modApi "net.fabricmc.fabric-api:fabric-api:${fabric_api_version}+${minecraft_version}"
+    switch(loomPlatform){
+        case 'forge':
+            forge "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
-        modApi(include("org.ladysnake.cardinal-components-api:cardinal-components-base:${cardinal_components_api_version}"))
-        modApi(include("org.ladysnake.cardinal-components-api:cardinal-components-entity:${cardinal_components_api_version}"))
-
-        modRuntimeOnly("maven.modrinth:sodium:${sodium_version}-fabric")
-        modRuntimeOnly("curse.maven:modernfix-${modern_fix_id}:${modern_fix}")
-        modRuntimeOnly("curse.maven:ferritecore-${ferritecore_id}:${ferritecore}")
-        modRuntimeOnly("curse.maven:mousetweaks-${mouse_tweaks_id}:${mouse_tweaks}")
-//        modRuntimeOnly("curse.maven:configured-${configured_id}:${configured_fabric}")
-    } else if(loomPlatform == 'forge') {
-        forge "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
-
-        // have to include mixinextras for Forge lol
-        compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:${mixin_extras_version}"))
-        implementation(include("io.github.llamalad7:mixinextras-forge:${mixin_extras_version}"))
-    } else if(loomPlatform == 'neoforge'){
-        neoForge "net.neoforged:neoforge:${neo_version}"
+            // have to include mixinextras for Forge lol
+            compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:${mixin_extras_version}"))
+            implementation(include("io.github.llamalad7:mixinextras-forge:${mixin_extras_version}"))
+            break
+        case 'fabric':
+            modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
+            modApi "net.fabricmc.fabric-api:fabric-api:${fabric_api_version}+${minecraft_version}"
+            break
+        case 'neoforge':
+            neoForge "net.neoforged:neoforge:${neo_version}"
+            break
     }
 
     common(project(path: ':common', configuration: 'namedElements')) { transitive false }
     shadowCommon(project(path: ':common', configuration: "transformProduction${projectName}")) { transitive false }
 }
 
-unifiedPublishing {
-    project {
-        displayName = "[${projectName}] ${rootProject.minecraft_version} - ${rootProject.mod_version}"
-        version="${rootProject.mod_version}"
-        releaseType = "${rootProject.mod_release_type}".toLowerCase()
-        changelog = new File("${rootProject.projectDir}/changelog.html").text
-        gameVersions = [rootProject.minecraft_version]
-        mainPublication tasks.remapJar
-        gameLoaders = ["${loomPlatform}"]
-        relations {
-            includes {
-                curseforge="common-network"
-                modrinth="common-network"
-            }
-            includes {
-                curseforge="forge-config-api-port-fabric"
-                modrinth="forge-config-api-port"
-            }
-        }
 
-        var CURSE_API_KEY = project.findProperty("curseforge_token") ?: System.getenv("curseforge_token") ?: ""
-        if (CURSE_API_KEY != "") {
-            curseforge {
-                token = CURSE_API_KEY
-                id = "${rootProject.curseforge_id}"
-                gameVersions.addAll "Java ${rootProject.java_version}"
-            }
-        }
+publishMods {
+    file = remapJar.archiveFile
+    changelog = new File("${rootProject.projectDir}/changelog.md").text
+    modLoaders.add("${loomPlatform}")
+    type = STABLE
+    displayName = "[${projectName}] ${rootProject.minecraft_version} - ${rootProject.mod_version}"
 
-        var MODRINTH_TOKEN = project.findProperty("modrinth_token") ?: System.getenv("modrinth_token") ?: ""
-        if (MODRINTH_TOKEN != "") {
-            modrinth {
-                token = MODRINTH_TOKEN
-                id = "${rootProject.modrinth_id}"
-            }
+    var CURSE_API_KEY = project.findProperty("curseforge_token") ?: System.getenv("curseforge_token") ?: ""
+    if (CURSE_API_KEY != "") {
+        curseforge {
+            accessToken = CURSE_API_KEY
+            projectId = "${rootProject.curseforge_id}"
+            minecraftVersions.add("${rootProject.minecraft_version}")
+            requires("common-network", "forge-config-api-port-fabric")
+        }
+    }
+
+    var MODRINTH_TOKEN = project.findProperty("modrinth_token") ?: System.getenv("modrinth_token") ?: ""
+    if (MODRINTH_TOKEN != "") {
+        modrinth {
+            accessToken = MODRINTH_TOKEN
+            projectId = "${rootProject.modrinth_id}"
+            minecraftVersions.add("${rootProject.minecraft_version}")
+            requires("common-network", "forge-config-api-port")
         }
     }
 }
+
 
 shadowJar {
     if(loomPlatform != 'fabric')

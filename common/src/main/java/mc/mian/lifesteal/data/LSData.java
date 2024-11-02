@@ -268,7 +268,7 @@ public class LSData implements ILSData {
                     if (!serverPlayer.isSpectator()){
                         serverPlayer.setGameMode(GameType.SPECTATOR);
                     }
-                    this.livingEntity.sendSystemMessage(deadcomponent);
+                    serverPlayer.sendSystemMessage(deadcomponent);
                 }
             }
         }
@@ -288,8 +288,8 @@ public class LSData implements ILSData {
                 if (healthDifference - defaultHealthDifference >= maximumHealthGainable) {
                     healthDifference = maximumHealthGainable + defaultHealthDifference;
 
-                    if (LifeSteal.config.tellPlayersIfReachedMaxHearts.get()) {
-                        this.livingEntity.sendSystemMessage(Component.translatable("chat.message.lifesteal.reached_max_hearts"));
+                    if (LifeSteal.config.tellPlayersIfReachedMaxHearts.get() && this.livingEntity instanceof ServerPlayer serverPlayer) {
+                        serverPlayer.sendSystemMessage(Component.translatable("chat.message.lifesteal.reached_max_hearts"));
                     }
                 }
             }

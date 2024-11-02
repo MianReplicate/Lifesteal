@@ -2,21 +2,11 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "c": {
-      "item": "lifesteal:crystal_core"
-    },
-    "g": {
-      "item": "minecraft:ghast_tear"
-    },
-    "h": {
-      "item": "lifesteal:heart_crystal"
-    },
-    "n": {
-      "item": "minecraft:netherite_ingot"
-    },
-    "t": {
-      "item": "minecraft:totem_of_undying"
-    }
+    "c": "lifesteal:crystal_core",
+    "g": "minecraft:ghast_tear",
+    "h": "lifesteal:heart_crystal",
+    "n": "minecraft:netherite_ingot",
+    "t": "minecraft:totem_of_undying"
   },
   "pattern": [
     "gcg",

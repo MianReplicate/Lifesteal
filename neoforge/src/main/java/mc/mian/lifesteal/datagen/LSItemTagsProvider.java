@@ -1,6 +1,5 @@
 package mc.mian.lifesteal.datagen;
 
-import mc.mian.lifesteal.LifeSteal;
 import mc.mian.lifesteal.common.item.LSItems;
 import mc.mian.lifesteal.util.LSConstants;
 import mc.mian.lifesteal.util.LSTags;

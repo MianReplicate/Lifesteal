@@ -34,7 +34,7 @@ public class LSDataGenerators {
 
         if (ev.includeServer()) {
             gen.addProvider(ev.includeServer(), new LSWorldGenProvider(packOutput, provider)); // ConfiguredFeatures&PlacedFeatures with BiomeModifiers && Structures
-            gen.addProvider(ev.includeServer(), new LSRecipesProvider(packOutput, provider)); // Recipes
+            gen.addProvider(ev.includeServer(), new LSRecipesProvider.Runner(packOutput, provider)); // Recipes
             gen.addProvider(ev.includeServer(), new LootTableProvider(packOutput, Collections.emptySet(), // LootTables
                     List.of(new LootTableProvider.SubProviderEntry(LSLootProvider.ModBlockLoot::new, LootContextParamSets.BLOCK),
                             new LootTableProvider.SubProviderEntry(LSLootProvider.ModChestLoot::new, LootContextParamSets.CHEST)),

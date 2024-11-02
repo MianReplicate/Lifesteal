@@ -2,24 +2,12 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "b": {
-      "item": "lifesteal:crystal_block"
-    },
-    "c": {
-      "item": "lifesteal:crystal_core"
-    },
-    "d": {
-      "item": "minecraft:diamond"
-    },
-    "g": {
-      "item": "minecraft:golden_apple"
-    },
-    "h": {
-      "item": "minecraft:heart_of_the_sea"
-    },
-    "r": {
-      "item": "minecraft:blaze_rod"
-    }
+    "b": "lifesteal:crystal_block",
+    "c": "lifesteal:crystal_core",
+    "d": "minecraft:diamond",
+    "g": "minecraft:golden_apple",
+    "h": "minecraft:heart_of_the_sea",
+    "r": "minecraft:blaze_rod"
   },
   "pattern": [
     "bhb",

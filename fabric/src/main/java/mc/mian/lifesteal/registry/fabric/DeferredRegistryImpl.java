@@ -27,7 +27,7 @@ public class DeferredRegistryImpl {
 
         public Impl(String modid, ResourceKey<? extends Registry<T>> resourceKey) {
             this.modid = modid;
-            this.registry = (Registry<T>) Objects.requireNonNull(BuiltInRegistries.REGISTRY.get(resourceKey.location()), "Registry " + resourceKey + " not found!");
+            this.registry = (Registry<T>) BuiltInRegistries.REGISTRY.get(resourceKey.location()).orElseThrow(() -> new NullPointerException("Registry " + resourceKey + " not found!")).value();
             this.entries = new ArrayList<>();
         }
 

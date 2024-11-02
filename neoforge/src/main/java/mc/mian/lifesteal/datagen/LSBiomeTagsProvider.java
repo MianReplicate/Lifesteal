@@ -1,6 +1,5 @@
 package mc.mian.lifesteal.datagen;
 
-import mc.mian.lifesteal.LifeSteal;
 import mc.mian.lifesteal.util.LSConstants;
 import mc.mian.lifesteal.util.LSTags;
 import net.minecraft.core.HolderLookup;

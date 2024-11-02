@@ -27,10 +27,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.players.PlayerList;
 import net.minecraft.server.players.UserBanList;
 import net.minecraft.util.datafix.DataFixTypes;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LightningBolt;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.GameType;
@@ -132,9 +129,7 @@ public class LSUtil {
 
     public static List<GameProfile> getGameProfiles(MinecraftServer server, boolean includedSaved){
         ArrayList<GameProfile> gameProfiles = new ArrayList<>();
-        server.getPlayerList().getPlayers().forEach(player -> {
-            gameProfiles.add(player.getGameProfile());
-        });
+        server.getPlayerList().getPlayers().forEach(player -> gameProfiles.add(player.getGameProfile()));
         if(includedSaved){
             LevelStorageSource.LevelStorageAccess levelStorageAccess = server.storageSource;
             File playerDir = levelStorageAccess.getLevelPath(LevelResource.PLAYER_DATA_DIR).toFile();
@@ -242,7 +237,7 @@ public class LSUtil {
                 successful = true;
             }
         } else {
-            serverPlayer.teleportTo(level, reviveAt.getX(), reviveAt.getY(), reviveAt.getZ(), serverPlayer.getYRot(), serverPlayer.getXRot());
+            serverPlayer.teleportTo(level, reviveAt.getX(), reviveAt.getY(), reviveAt.getZ(), Relative.ROTATION, serverPlayer.getYRot(), serverPlayer.getXRot(), true);
             ((PlayerImpl) serverPlayer).setRevived(true);
             successful = true;
         }

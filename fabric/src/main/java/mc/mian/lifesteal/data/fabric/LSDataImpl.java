@@ -1,18 +1,17 @@
 package mc.mian.lifesteal.data.fabric;
 
 import mc.mian.lifesteal.LifeSteal;
+import mc.mian.lifesteal.api.ILSRetrieve;
 import mc.mian.lifesteal.data.LSData;
 import mc.mian.lifesteal.util.LSConstants;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import org.ladysnake.cca.api.v3.component.ComponentV3;
 
 import java.util.*;
 
-public class LSDataImpl extends LSData implements ComponentV3 {
+public class LSDataImpl extends LSData {
     private final HashMap<ResourceLocation, Object> dataMap = new HashMap<>();
     public LSDataImpl(LivingEntity livingEntity) {
         super(livingEntity);
@@ -22,7 +21,7 @@ public class LSDataImpl extends LSData implements ComponentV3 {
 
     public static Optional<LSData> get(Entity entity) {
         try {
-            return Optional.of(LSComponents.LIFESTEAL_DATA.get(entity));
+            return Optional.of(((ILSRetrieve)entity).lifesteal_1_21$getData());
         } catch (Exception e) {
             return Optional.empty();
         }
@@ -40,16 +39,8 @@ public class LSDataImpl extends LSData implements ComponentV3 {
         ((LSDataImpl) lifestealData).dataMap.put(key, value);
     }
 
-    @Override
-    public void readFromNbt(CompoundTag tag, HolderLookup.Provider registryLookup) {
-        this.deserializeNBT(tag);
-    }
-
-    @Override
-    public void writeToNbt(CompoundTag tag, HolderLookup.Provider registryLookup) {
+    public void writeToNbt(CompoundTag compoundTag) {
         CompoundTag nbt = this.serializeNBT();
-        for (String key : nbt.getAllKeys()) {
-            tag.put(key, Objects.requireNonNull(nbt.get(key)));
-        }
+        compoundTag.put(LSConstants.LIFESTEAL_DATA.getPath(), nbt);
     }
 }

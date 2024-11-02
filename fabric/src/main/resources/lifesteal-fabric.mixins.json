@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "mc.mian.lifesteal.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+    "LSDataMixin"
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

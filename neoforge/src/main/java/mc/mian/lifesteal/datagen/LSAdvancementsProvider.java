@@ -1,6 +1,5 @@
 package mc.mian.lifesteal.datagen;
 
-import mc.mian.lifesteal.LifeSteal;
 import mc.mian.lifesteal.advancement.LSAdvancementTrigger;
 import mc.mian.lifesteal.common.block.LSBlocks;
 import mc.mian.lifesteal.common.item.LSItems;
@@ -24,15 +23,6 @@ import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
 public class LSAdvancementsProvider extends AdvancementProvider {
-    /**
-     * Constructs an advancement provider using the generators to write the
-     * advancements to a file.
-     *
-     * @param output             the target directory of the data generator
-     * @param registries         a future of a lookup for registries and their objects
-     * @param existingFileHelper a helper used to find whether a file exists
-     * @param subProviders       the generators used to create the advancements
-     */
     public LSAdvancementsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries, ExistingFileHelper existingFileHelper, List<AdvancementGenerator> subProviders) {
         super(output, registries, existingFileHelper, subProviders);
     }
