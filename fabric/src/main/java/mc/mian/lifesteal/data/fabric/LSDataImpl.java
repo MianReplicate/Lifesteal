@@ -6,7 +6,6 @@ import mc.mian.lifesteal.data.LSData;
 import mc.mian.lifesteal.util.LSConstants;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 
 import java.util.*;
@@ -19,7 +18,7 @@ public class LSDataImpl extends LSData {
         this.dataMap.putIfAbsent(LSConstants.TIME_KILLED, 0L);
     }
 
-    public static Optional<LSData> get(Entity entity) {
+    public static Optional<LSData> get(LivingEntity entity) {
         try {
             return Optional.of(((ILSRetrieve)entity).lifesteal_1_21$getData());
         } catch (Exception e) {

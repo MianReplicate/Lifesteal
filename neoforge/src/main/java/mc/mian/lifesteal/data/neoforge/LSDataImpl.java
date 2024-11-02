@@ -4,6 +4,7 @@ import mc.mian.lifesteal.api.ILSData;
 import mc.mian.lifesteal.data.LSData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.neoforged.neoforge.attachment.AttachmentType;
 import net.neoforged.neoforge.registries.DeferredHolder;
 
@@ -13,7 +14,7 @@ import java.util.Optional;
 
 public class LSDataImpl {
 
-    public static Optional<ILSData> get(final Entity entity) {
+    public static Optional<ILSData> get(final LivingEntity entity) {
         return Optional.ofNullable(entity.getCapability(LSCapabilities.LIFESTEAL_DATA));
     }
 

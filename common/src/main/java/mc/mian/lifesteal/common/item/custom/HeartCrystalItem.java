@@ -34,48 +34,44 @@ public class HeartCrystalItem extends Item {
     }
 
     public boolean useHeartCrystal(ItemStack item, Level level, LivingEntity entity) {
-        AtomicBoolean success = new AtomicBoolean(false);
 
         if (!level.isClientSide() && entity instanceof ServerPlayer serverPlayer) {
             boolean rippedHeartCrystal = item.get(LSDataComponents.RIPPED.get()) != null && (boolean) item.get(LSDataComponents.RIPPED.get());
             boolean unnaturalHeartCrystal = item.get(LSDataComponents.UNFRESH.get()) != null && (boolean) item.get(LSDataComponents.UNFRESH.get());
-            success.set(true);
 
             if (!rippedHeartCrystal) {
                 if (unnaturalHeartCrystal) {
                     if (LifeSteal.config.disableUnnaturalHeartCrystals.get()) {
                         serverPlayer.displayClientMessage(Component.translatable("gui.lifesteal.unnatural_heart_crystal_disabled"), true);
-                        success.set(false);
+                        return false;
                     }
                 } else {
                     if (LifeSteal.config.disableHeartCrystals.get()) {
                         serverPlayer.displayClientMessage(Component.translatable("gui.lifesteal.heart_crystal_disabled"), true);
-                        success.set(false);
+                        return false;
                     }
                 }
             }
-
-
-            LSData.get(entity).ifPresent(iLifestealData -> {
+            LSData lsData = LSData.get(entity).orElseGet(null);
+            if(lsData != null){
                 if (LifeSteal.config.maximumHealthGainable.get() > -1 && LifeSteal.config.preventFromUsingCrystalIfMax.get()) {
                     int maximumheartDifference = LifeSteal.config.startingHealthDifference.get() + LifeSteal.config.maximumHealthGainable.get();
-                    if ((int)iLifestealData.getValue(LSConstants.HEALTH_DIFFERENCE) == maximumheartDifference) {
+                    if ((int)lsData.getValue(LSConstants.HEALTH_DIFFERENCE) >= maximumheartDifference) {
                         serverPlayer.displayClientMessage(Component.translatable("gui.lifesteal.heart_crystal_reaching_max"), true);
-                        success.set(false);
+                        return false;
                     }
                 }
 
-                if (success.get()) {
-                    LSUtil.gainHealth(entity, null);
+                LSUtil.gainHealth(entity, null);
 
-                    // Formula, for every hit point, increase duration of the regeneration by 50 ticks: TickDuration = MaxHealth * 50
-                    if (!unnaturalHeartCrystal) {
-                        applyCrystalEffect(entity);
-                    }
+                // Formula, for every hit point, increase duration of the regeneration by 50 ticks: TickDuration = MaxHealth * 50
+                if (!unnaturalHeartCrystal) {
+                    applyCrystalEffect(entity);
                 }
-            });
+                return true;
+            }
         }
-        return success.get();
+        return false;
     }
 
     @Override

@@ -48,7 +48,7 @@ public class LSData implements ILSData {
     }
 
     @ExpectPlatform
-    public static Optional<LSData> get(Entity entity) {
+    public static Optional<LSData> get(LivingEntity entity) {
         throw new AssertionError();
     }
 

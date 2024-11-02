@@ -34,16 +34,6 @@ public class LSLangProvider extends LanguageProvider {
         add("bannedmessage."+ LSConstants.MOD_ID+"."+title, translation);
     }
 
-    public void addBlockWithItem(RegistrySupplier<Block> block, String translation){
-        addBlock(block, translation);
-        add("item."+LSConstants.MOD_ID+"."+block.getId().getPath(), translation);
-    }
-
-    public void addBlockWithItem(String blockName, String translation){
-        add("block."+LSConstants.MOD_ID+"."+blockName, translation);
-        add("item."+LSConstants.MOD_ID+"."+blockName, translation);
-    }
-
     @Override
     protected void addTranslations() {
         addTag(() -> LSTags.ORIGINS_IGNORE_DIET, "Ignore Diet");
@@ -53,12 +43,12 @@ public class LSLangProvider extends LanguageProvider {
         addItem(LSItems.HEART_CRYSTAL, "Heart Crystal");
         addItem(LSItems.REVIVE_CRYSTAL, "Revive Crystal");
 
-        addBlockWithItem(LSBlocks.CRYSTAL_BLOCK, "Crystal Block");
-        addBlockWithItem(LSBlocks.REVIVE_HEAD, "Revive Head");
-        addBlockWithItem(LSBlocks.CRYSTAL_ORE, "Crystal Ore");
-        addBlockWithItem(LSBlocks.NETHERRACK_CRYSTAL_ORE, "Netherrack Crystal Ore");
-        addBlockWithItem(LSBlocks.DEEPSLATE_CRYSTAL_ORE, "Deepslate Crystal Ore");
-        addBlockWithItem("revive_wall_head", "Revive Wall Head"); // idk why but we cant use addBlock on this one
+        addBlock(LSBlocks.CRYSTAL_BLOCK, "Crystal Block");
+        addBlock(LSBlocks.REVIVE_HEAD, "Revive Head");
+        addBlock(LSBlocks.CRYSTAL_ORE, "Crystal Ore");
+        addBlock(LSBlocks.NETHERRACK_CRYSTAL_ORE, "Netherrack Crystal Ore");
+        addBlock(LSBlocks.DEEPSLATE_CRYSTAL_ORE, "Deepslate Crystal Ore");
+        add("block.lifesteal.revive_wall_head", "Revive Wall Head"); // idk why but we cant use addBlock on this one
 
         addAdvancement(LSConstants.ROOT, "Fragment of the Past", "The beginning of the end.");
         addAdvancement(LSConstants.GET_CRYSTAL_CORE, "A Beacon of Hope", "Silent screams come from the core, begging to be crafted into something greater.");

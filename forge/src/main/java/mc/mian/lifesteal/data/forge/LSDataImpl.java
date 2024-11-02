@@ -33,7 +33,7 @@ public class LSDataImpl extends LSData implements ILSDataForge {
         this.dataMap.putIfAbsent(LSConstants.TIME_KILLED, 0L);
     }
 
-    public static Optional<LSData> get(final Entity entity) {
+    public static Optional<LSData> get(final LivingEntity entity) {
         return Optional.ofNullable((LSData) entity.getCapability(LSCapabilities.LIFESTEAL_DATA).resolve().orElse(null));
     }
 

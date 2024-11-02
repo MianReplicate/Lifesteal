@@ -31,7 +31,7 @@ public class LSItems {
     public static final RegistrySupplier<Item> REVIVE_CRYSTAL = registerItem("revive_crystal",
             (properties) -> new ReviveCrystalItem(properties.stacksTo(1).fireResistant()));
     public static final RegistrySupplier<Item> REVIVE_HEAD_ITEM = registerItem("revive_head",
-            (properties) -> new PlayerHeadItem(LSBlocks.REVIVE_HEAD.get(), LSBlocks.REVIVE_WALL_HEAD.get(), properties.rarity(Rarity.UNCOMMON).stacksTo(1).fireResistant()));
+            (properties) -> new PlayerHeadItem(LSBlocks.REVIVE_HEAD.get(), LSBlocks.REVIVE_WALL_HEAD.get(), properties.rarity(Rarity.UNCOMMON).stacksTo(1).fireResistant().useBlockDescriptionPrefix()));
 
     public static RegistrySupplier<Item> registerItem(String name, Function<Item.Properties, Item> itemFunc){
         return ITEMS.register(name, () -> itemFunc.apply(new Item.Properties().setId(ResourceKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(LSConstants.MOD_ID, name)))));

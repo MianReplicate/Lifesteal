@@ -41,24 +41,23 @@ public class ReviveCrystalItem extends Item {
             BlockPos blockPos = useOnContext.getClickedPos();
             if(level.getBlockEntity(blockPos) instanceof SkullBlockEntity blockEntity){
                 ResolvableProfile gameprofile = blockEntity.getOwnerProfile();
-                if (gameprofile != null) {
-                    boolean successful = LSUtil.revivePlayer(
-                            (ServerLevel) level,
-                            blockPos,
-                            gameprofile.gameProfile(),
-                            !LifeSteal.config.disableLightningEffect.get(),
-                            LifeSteal.config.silentlyRevivePlayer.get(),
-                            player);
-
-                    if (successful) {
-                        itemStack.shrink(1);
-                        LSCriteria.REVIVED.trigger((ServerPlayer) player);
-                    } else {
-                        player.displayClientMessage(Component.translatable("gui.lifesteal.error_revive_block"), true);
-                    }
-                } else {
+                if (gameprofile == null) {
                     player.displayClientMessage(Component.translatable("gui.lifesteal.null_revive_block"), true);
                 }
+
+                if (LSUtil.revivePlayer(
+                        (ServerLevel) level,
+                        blockPos,
+                        gameprofile.gameProfile(),
+                        !LifeSteal.config.disableLightningEffect.get(),
+                        LifeSteal.config.silentlyRevivePlayer.get(),
+                        player)) {
+                    itemStack.shrink(1);
+                    LSCriteria.REVIVED.trigger((ServerPlayer) player);
+                } else {
+                    player.displayClientMessage(Component.translatable("gui.lifesteal.error_revive_block"), true);
+                }
+
             } else {
                 player.displayClientMessage(Component.translatable("gui.lifesteal.invaild_revive_block"), true);
             }

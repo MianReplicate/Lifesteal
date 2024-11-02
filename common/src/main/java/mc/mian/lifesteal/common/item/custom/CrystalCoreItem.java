@@ -22,36 +22,35 @@ public class CrystalCoreItem extends Item {
     }
 
     public boolean useCrystalCore(LivingEntity entity) {
-        boolean success = true;
         if (entity instanceof ServerPlayer serverPlayer) {
-            if (!LifeSteal.config.disableCores.get()) {
-                if (Math.round(entity.getHealth()) < entity.getMaxHealth() || !LifeSteal.config.preventFromUsingCoreIfMax.get()) {
-                    float maxHealth = entity.getMaxHealth();
-                    float amountThatWillBeHealed = (float) (maxHealth * LifeSteal.config.coreHeal.get());
-                    float differenceInHealth = entity.getMaxHealth() - entity.getHealth();
-                    if (differenceInHealth <= amountThatWillBeHealed) {
-                        amountThatWillBeHealed = differenceInHealth;
-                    }
-
-                    int oldDuration = 0;
-                    if (entity.hasEffect(MobEffects.REGENERATION)) {
-                        MobEffectInstance mobEffect = entity.getEffect(MobEffects.REGENERATION);
-
-                        oldDuration = mobEffect.getDuration();
-                    }
-
-                    int tickTime = (int) ((amountThatWillBeHealed * 50) / 3) + oldDuration;
-                    entity.addEffect(new MobEffectInstance(MobEffects.REGENERATION, tickTime, 2));
-                } else {
-                    serverPlayer.displayClientMessage(Component.translatable("gui.lifesteal.crystal_core_at_max_health"), true);
-                    success = false;
-                }
-            } else {
+            if (LifeSteal.config.disableCores.get()) {
                 serverPlayer.displayClientMessage(Component.translatable("gui.lifesteal.crystal_core_disabled"), true);
-                success = false;
+                return false;
             }
+            if (Math.round(entity.getHealth()) >= entity.getMaxHealth() && LifeSteal.config.preventFromUsingCoreIfMax.get()) {
+                serverPlayer.displayClientMessage(Component.translatable("gui.lifesteal.crystal_core_at_max_health"), true);
+                return false;
+            }
+
+            float maxHealth = entity.getMaxHealth();
+            float amountThatWillBeHealed = (float) (maxHealth * LifeSteal.config.coreHeal.get());
+            float differenceInHealth = entity.getMaxHealth() - entity.getHealth();
+            if (differenceInHealth <= amountThatWillBeHealed) {
+                amountThatWillBeHealed = differenceInHealth;
+            }
+
+            int oldDuration = 0;
+            if (entity.hasEffect(MobEffects.REGENERATION)) {
+                MobEffectInstance mobEffect = entity.getEffect(MobEffects.REGENERATION);
+
+                oldDuration = mobEffect.getDuration();
+            }
+
+            int tickTime = (int) ((amountThatWillBeHealed * 50) / 3) + oldDuration;
+            entity.addEffect(new MobEffectInstance(MobEffects.REGENERATION, tickTime, 2));
+            return true;
         }
-        return success;
+        return false;
     }
 
     @Override
