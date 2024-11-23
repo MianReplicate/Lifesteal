@@ -60,7 +60,7 @@ The config is located in the "config" folders in your MC directory or server fol
 
 ## ❓ FAQ
 - Can I change recipes?
-  - You need to use a [datapack](https://www.mediafire.com/file/520q81ilug7ppqp/LifestealRecipeTemplate.zip/file), KubeJS or CraftTweaker to change recipes.
+  - You need to use a [datapack](https://cloudmian.duckdns.org/s/Si2SCFLkqJ9c5cZ), KubeJS or CraftTweaker to change recipes.
 - Does this work with other mods that add hearts?
   - Indeed so! The mod works as expected when other mods add hearts.
 - My friend was banned and didn't spawn a revive head! What do I do?!
