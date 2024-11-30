@@ -176,7 +176,6 @@ public class LSData implements ILSData {
         }
     }
 
-    // this is untested, i have no idea if it fuckin works at all lol. It works on Fabric (at least it seems) but idk about Neo cuz Neo no need it
     @Override
     public Collection<ResourceLocation> getKeys() {
         return getKeys(this);

@@ -28,13 +28,12 @@ loom {
     accessWidenerPath.set(project(":common").loom.accessWidenerPath)
     if(loomPlatform == 'neoforge' || loomPlatform == 'forge'){
         runs {
-            if(loomPlatform == 'neoforge'){
-                data {
-                    data()
-                    programArgs "--all", "--mod", "${mod_id}"
-                    programArgs "--output", generatedResources.absolutePath
-                }
+            data {
+                data()
+                programArgs "--all", "--mod", "${mod_id}"
+                programArgs "--output", generatedResources.absolutePath
             }
+
             client {
                 programArgs "--username", "Replicate###"
             }
@@ -128,8 +127,8 @@ architectury {
 dependencies {
     // thanks sodium for adding neoforge support, very cool :>
     def mcVersion = rootProject.hasProperty('common_networking_mc_version') ? "${common_networking_mc_version}" : "${minecraft_version}"
-    modApi(include("mysticdrew:common-networking-${loomPlatform}:${common_networking_version}-${mcVersion}"))
-    modApi(include("mc.mian:indestructible_blocks:${indestructible_blocks_version}+${minecraft_version}-${loomPlatform}"))
+    modApi("mysticdrew:common-networking-${loomPlatform}:${common_networking_version}-${mcVersion}")
+    modApi("mc.mian:indestructible_blocks:${indestructible_blocks_version}+${minecraft_version}-${loomPlatform}")
 
     if(!disable_runtimes.toBoolean()) {
         modRuntimeOnly("mezz.jei:jei-${minecraft_version}-${loomPlatform}:${jei_version}")
@@ -143,7 +142,7 @@ dependencies {
     }
 
     if(loomPlatform != 'forge'){
-        modApi(include("fuzs.forgeconfigapiport:forgeconfigapiport-${loomPlatform}:${forge_config_api_port_version}"))
+        modApi("fuzs.forgeconfigapiport:forgeconfigapiport-${loomPlatform}:${forge_config_api_port_version}")
     }
 
     switch(loomPlatform){
@@ -175,23 +174,25 @@ publishMods {
     type = STABLE
     displayName = "[${projectName}] ${rootProject.minecraft_version} - ${rootProject.mod_version}"
 
-    var CURSE_API_KEY = project.findProperty("curseforge_token") ?: System.getenv("curseforge_token") ?: ""
-    if (CURSE_API_KEY != "") {
-        curseforge {
-            accessToken = CURSE_API_KEY
-            projectId = "${rootProject.curseforge_id}"
-            minecraftVersions.add("${rootProject.minecraft_version}")
-            embeds("common-network", "forge-config-api-port-fabric")
+    var CURSE_API_KEY = project.findProperty("curseforge_token")
+    curseforge {
+        accessToken = CURSE_API_KEY
+        projectId = "${rootProject.curseforge_id}"
+        minecraftVersions.add("${rootProject.minecraft_version}")
+        requires("common-network", "indestructible-blocks")
+        if(loomPlatform != 'forge'){
+            requires("forge-config-api-port-fabric")
         }
     }
 
-    var MODRINTH_TOKEN = project.findProperty("modrinth_token") ?: System.getenv("modrinth_token") ?: ""
-    if (MODRINTH_TOKEN != "") {
-        modrinth {
-            accessToken = MODRINTH_TOKEN
-            projectId = "${rootProject.modrinth_id}"
-            minecraftVersions.add("${rootProject.minecraft_version}")
-            embeds("common-network", "forge-config-api-port")
+    var MODRINTH_TOKEN = project.findProperty("modrinth_token")
+    modrinth {
+        accessToken = MODRINTH_TOKEN
+        projectId = "${rootProject.modrinth_id}"
+        minecraftVersions.add("${rootProject.minecraft_version}")
+        requires("common-network", "indestructible-blocks")
+        if(loomPlatform != 'forge'){
+            requires("forge-config-api-port")
         }
     }
 }
