@@ -13,11 +13,35 @@ authors = "${mod_authors}"
 
 description = "${mod_description}"
 
+#Indestructible Blocks dependency
+[[dependencies.${mod_id}]]
+modId = "indestructible_blocks"
+type = 'required'
+versionRange = "${indestructible_blocks_version},"
+ordering = "NONE"
+side = "BOTH"
+
+#Common Network dependency
+[[dependencies.${mod_id}]]
+modId = "commonnetworking"
+type = 'required'
+versionRange = "${common_networking_version},"
+ordering = "NONE"
+side = "BOTH"
+
+#FCAP dependency
+[[dependencies.${mod_id}]]
+modId = "forgeconfigapiport"
+type = 'required'
+versionRange = "${forge_config_api_port_version},"
+ordering = "NONE"
+side = "BOTH"
+
 #Neoforge dependency
 [[dependencies.${mod_id}]]
 modId = "neoforge"
 type = 'required'
-versionRange = "${neo_version_range}"
+versionRange = "${neo_version_range},"
 ordering = "NONE"
 side = "BOTH"
 

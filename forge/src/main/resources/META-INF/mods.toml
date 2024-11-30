@@ -13,11 +13,27 @@ authors = "${mod_authors}"
 
 description = "${mod_description}"
 
+#Indestructible Blocks dependency
+[[dependencies.${mod_id}]]
+modId = "indestructible_blocks"
+mandatory = true
+versionRange = "${indestructible_blocks_version},"
+ordering = "NONE"
+side = "BOTH"
+
+#Common Network dependency
+[[dependencies.${mod_id}]]
+modId = "commonnetworking"
+mandatory = true
+versionRange = "${common_networking_version},"
+ordering = "NONE"
+side = "BOTH"
+
 #Neoforge dependency
 [[dependencies.${mod_id}]]
 modId = "forge"
 mandatory = true
-versionRange = "${forge_version_range}"
+versionRange = "${forge_version_range},"
 ordering = "NONE"
 side = "BOTH"
 

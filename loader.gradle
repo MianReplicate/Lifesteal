@@ -64,25 +64,29 @@ loom {
 
 def resourceTargets = ['fabric.mod.json', 'neoforge.mods.toml', 'mods.toml']
 def intoTargets = ["$rootDir/out/production/resources/", "$rootDir/out/production/${project.name}.main/", "$rootDir/bin/main/"]
-def replaceProperties = [mod_id: mod_id,
-                         mod_name: mod_name,
-                         mod_version: mod_version,
-                         mod_authors: mod_authors,
-                         mod_credits:mod_credits,
-                         mod_description: mod_description,
-                         logo_file:logo_file,
-                         issue_tracker_url: issue_tracker_url,
-                         mod_license: mod_license,
-                         minecraft_version: minecraft_version,
-                         fabric_loader_version: fabric_loader_version,
-                         fabric_api_version: fabric_api_version,
-                         repository_url: repository_url,
-                         neo_version_range: neo_version_range,
-                         neo_version: neo_version,
-                         neo_loader_version_range: neo_loader_version_range,
-                         forge_version_range : forge_version_range,
-                         forge_version: forge_version,
-                         forge_loader_version_range: forge_loader_version_range
+def replaceProperties = [
+        mod_id: mod_id,
+        mod_name: mod_name,
+        mod_version: mod_version,
+        mod_authors: mod_authors,
+        mod_credits:mod_credits,
+        mod_description: mod_description,
+        logo_file:logo_file,
+        issue_tracker_url: issue_tracker_url,
+        mod_license: mod_license,
+        minecraft_version: minecraft_version,
+        fabric_loader_version: fabric_loader_version,
+        fabric_api_version: fabric_api_version,
+        repository_url: repository_url,
+        neo_version_range: neo_version_range,
+        neo_version: neo_version,
+        neo_loader_version_range: neo_loader_version_range,
+        forge_version_range : forge_version_range,
+        forge_version: forge_version,
+        forge_loader_version_range: forge_loader_version_range,
+        common_networking_version: common_networking_version,
+        indestructible_blocks_version: indestructible_blocks_version,
+        forge_config_api_port_version: forge_config_api_port_version,
 ]
 processResources {
     inputs.properties replaceProperties
