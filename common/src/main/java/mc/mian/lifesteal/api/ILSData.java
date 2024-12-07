@@ -14,9 +14,9 @@ public interface ILSData extends Serializable<CompoundTag> {
     BlockPos spawnPlayerHead();
     boolean dropPlayerHead();
     LivingEntity getLivingEntity();
-    int getHealthModifiedTotal(boolean includeHeartDifference);
-    int getHPDifferenceRequiredForBan();
-    void killPlayerPermanently();
+    double getAmountOfModifiedHealth(boolean includeHeartDifference);
+    double getHPDifferenceRequiredForBan();
+    void tick();
     Collection<ResourceLocation> getKeys();
     <T> T getValue(ResourceLocation key);
     <T> void setValue(ResourceLocation key, T value);

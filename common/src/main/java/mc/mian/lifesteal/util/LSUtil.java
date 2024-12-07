@@ -28,6 +28,8 @@ import net.minecraft.server.players.PlayerList;
 import net.minecraft.server.players.UserBanList;
 import net.minecraft.util.datafix.DataFixTypes;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.GameType;
@@ -125,6 +127,26 @@ public class LSUtil {
     @ExpectPlatform
     public static <T> T getLifestealDataFromTag(CompoundTag tag, String key, BiFunction<CompoundTag, String, T> function){
         throw new AssertionError("i just fucked your mom hewehhehehehehhehe");
+    }
+
+    public static double calculateRealValue(AttributeInstance instance){
+        double d = instance.getBaseValue();
+
+        for (AttributeModifier attributeModifier : instance.getModifiersOrEmpty(AttributeModifier.Operation.ADD_VALUE)) {
+            d += attributeModifier.amount();
+        }
+
+        double e = d;
+
+        for (AttributeModifier attributeModifier2 : instance.getModifiersOrEmpty(AttributeModifier.Operation.ADD_MULTIPLIED_BASE)) {
+            e += d * attributeModifier2.amount();
+        }
+
+        for (AttributeModifier attributeModifier2 : instance.getModifiersOrEmpty(AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)) {
+            e *= 1.0 + attributeModifier2.amount();
+        }
+
+        return e;
     }
 
     public static List<GameProfile> getGameProfiles(MinecraftServer server, boolean includedSaved){

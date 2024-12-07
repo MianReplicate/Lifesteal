@@ -6,6 +6,7 @@ import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
+import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import mc.mian.lifesteal.LifeSteal;
 import mc.mian.lifesteal.common.component.LSDataComponents;
@@ -25,6 +26,9 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 
@@ -68,8 +72,7 @@ public class LSCommand {
                                             return SharedSuggestionProvider.suggest(suggestList, builder);
                                         }))
                                         .executes((command) -> getHitPoint(command.getSource(), GameProfileArgument.getGameProfiles(command, "players"))))
-                        )
-                        .then(Commands.literal("sethitpoints")
+                        ).then(Commands.literal("sethitpoints")
                                 .requires((commandSource) -> commandSource.hasPermission(LifeSteal.config.permissionLevelForSettingHitPoints.get()))
                                 .then(Commands.argument("amount", IntegerArgumentType.integer())
                                         .executes((command) -> setHitPoint(command.getSource(), List.of(Objects.requireNonNull(command.getSource().getPlayer()).getGameProfile()), IntegerArgumentType.getInteger(command, "amount"))))
@@ -81,7 +84,24 @@ public class LSCommand {
                                             return SharedSuggestionProvider.suggest(suggestList, builder);
                                         }))
                                         .then(Commands.argument("amount", IntegerArgumentType.integer())
-                                                .executes((command) -> setHitPoint(command.getSource(), GameProfileArgument.getGameProfiles(command, "players"), IntegerArgumentType.getInteger(command, "amount")))))));
+                                                .executes((command) -> setHitPoint(command.getSource(), GameProfileArgument.getGameProfiles(command, "players"), IntegerArgumentType.getInteger(command, "amount"))))))
+                        .then(Commands.literal("testHealthMod")
+                                .requires((commandSourceStack -> commandSourceStack.hasPermission(Commands.LEVEL_ADMINS)))
+                                .then(Commands.argument("resource", StringArgumentType.string())
+                                        .then(Commands.argument("set", IntegerArgumentType.integer())
+                                                .then(Commands.argument("operation", StringArgumentType.word())
+                                                        .suggests((context, builder) ->
+                                                             SharedSuggestionProvider.suggest(List.of("add_value", "add_multiplied_base", "add_multiplied_total"), builder))
+                                                        .executes((source) -> testHealthMod(source.getSource(), StringArgumentType.getString(source, "resource"), IntegerArgumentType.getInteger(source, "set"), StringArgumentType.getString(source, "operation"))))))));
+    }
+
+    private static int testHealthMod(CommandSourceStack source, String resourceToCreate, int setMod, String operation) throws CommandSyntaxException {
+        ServerPlayer serverPlayer = source.getPlayerOrException();
+        AttributeInstance attribute = serverPlayer.getAttribute(Attributes.MAX_HEALTH);
+        AttributeModifier modifier = new AttributeModifier(LSConstants.modLoc(resourceToCreate), setMod, AttributeModifier.Operation.valueOf(operation.toUpperCase()));
+        attribute.addOrReplacePermanentModifier(modifier);
+
+        return Command.SINGLE_SUCCESS;
     }
 
     private static int revivePlayer(CommandSourceStack source, Collection<GameProfile> gameProfiles, @Nullable Vec3 position, boolean enableLightningEffect, boolean silentRevive){

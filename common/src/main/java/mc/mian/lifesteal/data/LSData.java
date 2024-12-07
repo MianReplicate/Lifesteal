@@ -24,7 +24,6 @@ import net.minecraft.server.players.UserBanListEntry;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -39,7 +38,6 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class LSData implements ILSData {
     private final LivingEntity livingEntity;
@@ -181,93 +179,86 @@ public class LSData implements ILSData {
         return getKeys(this);
     }
 
-    // Returns the real amount of hitpoints a player has, includes every other mod's effect and ours.
+    // Returns the real amount of hitpoints a player has
     @Override
-    public int getHealthModifiedTotal(boolean includeHealthDifference){
-        AttributeInstance attribute = this.livingEntity.getAttribute(Attributes.MAX_HEALTH);
-        AtomicInteger healthModifiedTotal = includeHealthDifference ?
-                new AtomicInteger(getValue(LSConstants.HEALTH_DIFFERENCE)) :
-                new AtomicInteger(0);
-
-        attribute.getModifiers().forEach(modifier -> {
-            if(!modifier.is(LSConstants.HEALTH_MODIFIER)){
-                if (modifier.operation() == AttributeModifier.Operation.ADD_VALUE) {
-                    double amount = modifier.amount();
-                    healthModifiedTotal.addAndGet((int) Math.round(amount));
-                } else if (modifier.operation() == AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL) {
-                    healthModifiedTotal.addAndGet((int) Math.round(this.livingEntity.getMaxHealth() * modifier.amount()));
-                } else if (modifier.operation() == AttributeModifier.Operation.ADD_MULTIPLIED_BASE) {
-                    healthModifiedTotal.addAndGet((int) Math.round(attribute.getBaseValue() * modifier.amount()));
-                }
-            }
-        });
-
-        return healthModifiedTotal.get();
+    public double getAmountOfModifiedHealth(boolean includeHealthDifference){
+        return LSUtil.calculateRealValue(this.livingEntity.getAttribute(Attributes.MAX_HEALTH))
+                - this.livingEntity.getAttribute(Attributes.MAX_HEALTH).getBaseValue()
+                - (includeHealthDifference ? 0 : ((Integer) this.getValue(LSConstants.HEALTH_DIFFERENCE)).doubleValue());
     }
 
     // Returns the amount a player's HPDifference would have to be to get banned.
     @Override
-    public int getHPDifferenceRequiredForBan(){
-        int healthModified = this.getHealthModifiedTotal(false) + (int) this.livingEntity.getAttribute(Attributes.MAX_HEALTH).getBaseValue();
-        return -healthModified;
+    public double getHPDifferenceRequiredForBan(){
+        return LifeSteal.config.banDynamicHearts.get() ?
+                -(this.getAmountOfModifiedHealth(false)
+                + this.livingEntity.getAttribute(Attributes.MAX_HEALTH).getBaseValue()) : -20;
+    }
+
+    public boolean isBannable(){
+        double hpDifference = ((Integer) getValue(LSConstants.HEALTH_DIFFERENCE)).doubleValue();
+        double hpDifferenceNeeded = getHPDifferenceRequiredForBan();
+        return hpDifference <= hpDifferenceNeeded;
     }
 
     @Override
-    public void killPlayerPermanently(){
+    public void tick(){
         if(!this.livingEntity.level().isClientSide){
-            if (this.livingEntity instanceof ServerPlayer serverPlayer) {
-                setValue(LSConstants.HEALTH_DIFFERENCE, LifeSteal.config.startingHealthDifference.get());
-                setValue(LSConstants.TIME_KILLED, System.currentTimeMillis());
-                refreshHealth(true);
-                MinecraftServer server = this.livingEntity.level().getServer();
+            if(isBannable()){
+                if (this.livingEntity instanceof ServerPlayer serverPlayer) {
+                    setValue(LSConstants.HEALTH_DIFFERENCE, LifeSteal.config.startingHealthDifference.get());
+                    setValue(LSConstants.TIME_KILLED, System.currentTimeMillis());
+                    refreshHealth(true);
+                    MinecraftServer server = this.livingEntity.level().getServer();
 
-                MutableComponent deadcomponent = Component.translatable("bannedmessage.lifesteal.lost_max_hearts");
+                    MutableComponent deadcomponent = Component.translatable("bannedmessage.lifesteal.lost_max_hearts");
 
-                if(serverPlayer.isDeadOrDying())
-                    serverPlayer.getInventory().dropAll();
+                    if(serverPlayer.isDeadOrDying())
+                        serverPlayer.getInventory().dropAll();
 
-                if (LifeSteal.config.playersSpawnHeadUponDeath.get() && LSUtil.isMultiplayer(server, false)) {
-                    BlockPos blockPos = spawnPlayerHead();
-                    if(blockPos == null){
-                        dropPlayerHead();
-                    } else {
-                        MutableComponent compPos = Component.translatable("bannedmessage.lifesteal.revive_head_location", blockPos.getX(), blockPos.getY(), blockPos.getZ());
+                    if (LifeSteal.config.playersSpawnHeadUponDeath.get() && LSUtil.isMultiplayer(server, false)) {
+                        BlockPos blockPos = spawnPlayerHead();
+                        if(blockPos == null){
+                            dropPlayerHead();
+                        } else {
+                            MutableComponent compPos = Component.translatable("bannedmessage.lifesteal.revive_head_location", blockPos.getX(), blockPos.getY(), blockPos.getZ());
+                            deadcomponent = LSUtil.addComponents(deadcomponent, compPos);
+                        }
+                    }
+
+                    if(LifeSteal.config.deathDuration.get() > 0){
+                        Calendar instance = Calendar.getInstance();
+                        instance.setTime(new Date((long)getValue(LSConstants.TIME_KILLED) + LifeSteal.config.deathDuration.get()));
+                        int AM_PM = instance.get(Calendar.AM_PM);
+                        String formatAMPM;
+                        if(AM_PM == Calendar.AM)
+                            formatAMPM = "AM";
+                        else
+                            formatAMPM = "PM";
+
+                        MutableComponent compPos = Component.translatable(
+                                "bannedmessage.lifesteal.auto_revive_time",
+                                instance.get(Calendar.HOUR)+":"+instance.get(Calendar.MINUTE)+" "+formatAMPM+", "+(instance.get(Calendar.MONTH)+1) +"/"+instance.get(Calendar.DATE)+"/"+instance.get(Calendar.YEAR));
                         deadcomponent = LSUtil.addComponents(deadcomponent, compPos);
                     }
-                }
 
-                if(LifeSteal.config.deathDuration.get() > 0){
-                    Calendar instance = Calendar.getInstance();
-                    instance.setTime(new Date((long)getValue(LSConstants.TIME_KILLED) + LifeSteal.config.deathDuration.get()));
-                    int AM_PM = instance.get(Calendar.AM_PM);
-                    String formatAMPM;
-                    if(AM_PM == Calendar.AM)
-                        formatAMPM = "AM";
-                    else
-                        formatAMPM = "PM";
+                    if (LSUtil.isMultiplayer(server, true) && LifeSteal.config.uponDeathBanned.get() && !server.getPlayerList().getBans().isBanned(serverPlayer.getGameProfile())) {
+                        UserBanList userbanlist = server.getPlayerList().getBans();
+                        serverPlayer.getGameProfile();
+                        GameProfile gameprofile = serverPlayer.getGameProfile();
 
-                    MutableComponent compPos = Component.translatable(
-                            "bannedmessage.lifesteal.auto_revive_time",
-                            instance.get(Calendar.HOUR)+":"+instance.get(Calendar.MINUTE)+" "+formatAMPM+", "+(instance.get(Calendar.MONTH)+1) +"/"+instance.get(Calendar.DATE)+"/"+instance.get(Calendar.YEAR));
-                    deadcomponent = LSUtil.addComponents(deadcomponent, compPos);
-                }
+                        UserBanListEntry userbanlistentry = new UserBanListEntry(gameprofile, null, LSConstants.MOD_ID, null, deadcomponent == null ? null : deadcomponent.getString());
+                        userbanlist.add(userbanlistentry);
 
-                if (LSUtil.isMultiplayer(server, true) && LifeSteal.config.uponDeathBanned.get() && !server.getPlayerList().getBans().isBanned(serverPlayer.getGameProfile())) {
-                    UserBanList userbanlist = server.getPlayerList().getBans();
-                    serverPlayer.getGameProfile();
-                    GameProfile gameprofile = serverPlayer.getGameProfile();
-
-                    UserBanListEntry userbanlistentry = new UserBanListEntry(gameprofile, null, LSConstants.MOD_ID, null, deadcomponent == null ? null : deadcomponent.getString());
-                    userbanlist.add(userbanlistentry);
-
-                    if (serverPlayer != null) {
-                        serverPlayer.connection.disconnect(deadcomponent);
+                        if (serverPlayer != null) {
+                            serverPlayer.connection.disconnect(deadcomponent);
+                        }
+                    } else{
+                        if (!serverPlayer.isSpectator()){
+                            serverPlayer.setGameMode(GameType.SPECTATOR);
+                        }
+                        serverPlayer.sendSystemMessage(deadcomponent);
                     }
-                } else{
-                    if (!serverPlayer.isSpectator()){
-                        serverPlayer.setGameMode(GameType.SPECTATOR);
-                    }
-                    serverPlayer.sendSystemMessage(deadcomponent);
                 }
             }
         }
