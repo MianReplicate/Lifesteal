@@ -5,65 +5,51 @@ evaluationDependsOn(':common')
 
 def loomPlatform = project.property('loom.platform')
 def projectName
-if(loomPlatform == 'neoforge')
-    projectName = 'NeoForge'
-else if(loomPlatform == 'fabric')
-    projectName = 'Fabric'
-else if (loomPlatform == 'forge') {
+if(loomPlatform == 'forge')
     projectName = 'Forge'
-
-    configurations.all {
-        resolutionStrategy.force("net.sf.jopt-simple:jopt-simple:5.0.4")
-    }
-}
+else
+    projectName = 'Fabric'
 
 def generatedResources = file("src/generated/resources")
 
 sourceSets.main.resources.srcDirs = [ 'src/main/resources', {
-    project(':neoforge').file('src/generated/resources').absolutePath
+    if(loomPlatform == 'fabric'){
+        project(':forge').file('src/generated/resources').absolutePath
+    }
 }
 ]
 
 loom {
     accessWidenerPath.set(project(":common").loom.accessWidenerPath)
-    if(loomPlatform == 'neoforge' || loomPlatform == 'forge'){
+    if(loomPlatform == 'forge'){
         runs {
-            if(loomPlatform == 'neoforge'){
-                data {
-                    data()
-                    programArgs "--all", "--mod", "${mod_id}"
-                    programArgs "--output", generatedResources.absolutePath
-                }
-            }
             client {
                 programArgs "--username", "Replicate###"
             }
         }
 
-        if(loomPlatform == 'forge'){
-            forge {
+        forge {
+            if(accessWidenerFile.exists()) {
                 convertAccessWideners = true
-                extraAccessWideners.add accessWidenerPath.get().asFile.name
-
-                if(file("src/main/resources/${mod_id}.mixins.json").exists()) {
-                    mixinConfig "${mod_id}.mixins.json"
-                }
-
-                if(getRootProject().file("common/src/main/resources/${mod_id}-common.mixins.json").exists()) {
-                    mixinConfig "${mod_id}-common.mixins.json"
-                }
+                extraAccessWideners.add accessWidenerFile.name
             }
-        } else if (loomPlatform == 'neoforge'){
-            mods {
-                forge {
-                    sourceSet project(":neoforge").sourceSets.main
-                }
+
+            if(file("src/main/resources/${mod_id}.mixins.json").exists()) {
+                mixinConfig "${mod_id}.mixins.json"
+            }
+
+            if(getRootProject().file("common/src/main/resources/${mod_id}-common.mixins.json").exists()) {
+                mixinConfig "${mod_id}-common.mixins.json"
+            }
+
+            dataGen {
+                mod "${mod_id}"
             }
         }
     }
 }
 
-def resourceTargets = ['fabric.mod.json', 'neoforge.mods.toml', 'mods.toml']
+def resourceTargets = ['fabric.mod.json', 'mods.toml']
 def intoTargets = ["$rootDir/out/production/resources/", "$rootDir/out/production/${project.name}.main/", "$rootDir/bin/main/"]
 def replaceProperties = [mod_id: mod_id,
                          mod_name: mod_name,
@@ -118,25 +104,23 @@ architectury {
     platformSetupLoomIde()
 
     if(loomPlatform == 'fabric') fabric()
-    else if (loomPlatform == 'neoforge') neoForge()
     else if (loomPlatform == 'forge') forge()
 }
 
 dependencies {
-    // thanks sodium for adding neoforge support, very cool :>
+    // thanks sodium for adding forge support, very cool :>
     def mcVersion = rootProject.hasProperty('common_networking_mc_version') ? "${common_networking_mc_version}" : "${minecraft_version}"
     modApi("mysticdrew:common-networking-${loomPlatform}:${common_networking_version}-${mcVersion}")
+//    modRuntimeOnly("mezz.jei:jei-${minecraft_version}-${loomPlatform}:${jei_version}")
     modApi("mc.mian:indestructible_blocks:${indestructible_blocks_version}+${minecraft_version}-${loomPlatform}")
-
-    if(!disable_runtimes.toBoolean()) {
-        modRuntimeOnly("mezz.jei:jei-${minecraft_version}-${loomPlatform}:${jei_version}")
 
     if(loomPlatform == 'fabric') {
         modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
         modApi "net.fabricmc.fabric-api:fabric-api:${fabric_api_version}+${minecraft_version}"
 
-        modApi(include("org.ladysnake.cardinal-components-api:cardinal-components-base:${cardinal_components_api_version}"))
-        modApi(include("org.ladysnake.cardinal-components-api:cardinal-components-entity:${cardinal_components_api_version}"))
+        modApi("dev.onyxstudios.cardinal-components-api:cardinal-components-base:${cardinal_components_api_version}")
+        modApi("dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${cardinal_components_api_version}")
+        modApi("fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${forge_config_api_port_version}")
 
         modRuntimeOnly("maven.modrinth:sodium:${sodium_version}-fabric")
         modRuntimeOnly("curse.maven:modernfix-${modern_fix_id}:${modern_fix}")
@@ -149,7 +133,6 @@ dependencies {
     common(project(path: ':common', configuration: 'namedElements')) { transitive false }
     shadowCommon(project(path: ':common', configuration: "transformProduction${projectName}")) { transitive false }
 }
-
 
 publishMods {
     file = remapJar.archiveFile
@@ -181,11 +164,7 @@ publishMods {
     }
 }
 
-
 shadowJar {
-    if(loomPlatform != 'fabric')
-        exclude "fabric.mod.json"
-    exclude "architectury-common.accessWidener"
     exclude 'architectury.common.json'
 
     configurations = [project.configurations.shadowCommon]
@@ -193,8 +172,9 @@ shadowJar {
 }
 
 remapJar {
-    if(loomPlatform == 'fabric')
+    if(loomPlatform == 'fabric') {
         injectAccessWidener = true
+    }
 
     inputFile = shadowJar.archiveFile
     dependsOn shadowJar
@@ -227,7 +207,7 @@ idea.module {
 
 publishing {
     publications {
-        if (loomPlatform == 'forge')
+        if(loomPlatform == 'forge')
             mavenForge(MavenPublication) {
                 groupId = group
                 artifactId = mod_id
@@ -241,7 +221,6 @@ publishing {
                 version = version + "-${loomPlatform}"
                 from components.java
             }
-    }
     }
     repositories {
         mavenLocal()

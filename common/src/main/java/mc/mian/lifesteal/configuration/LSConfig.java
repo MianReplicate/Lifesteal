@@ -45,6 +45,7 @@ public class LSConfig {
     public final ForgeConfigSpec.IntValue permissionLevelForSettingHitPoints;
     public final ForgeConfigSpec.IntValue permissionLevelForGettingHitPoints;
     public final ForgeConfigSpec.BooleanValue unbreakableReviveHeads;
+    public final ForgeConfigSpec.BooleanValue banDynamicHearts;
 
     public LSConfig(final ForgeConfigSpec.Builder builder) {
         builder.comment("IMPORTANT NOTE: 2 Hitpoints = 1 Heart");
@@ -57,6 +58,7 @@ public class LSConfig {
         this.uponDeathBanned = buildBoolean(builder, "Ban players upon losing all hearts:", true, "Determines if players who have lost all hearts get banned, or simply go into Spectator mode. Singleplayer will always go into Spectator");
         this.playerDropsHeartCrystalWhenKilled = buildBoolean(builder, "Players drop a Heart Crystal on death:", false, "Determines if players should drop a heart crystal upon death.");
         this.deathDuration = buildInt(builder, "How long player is dead for:", 0, 0, Integer.MAX_VALUE, "How long (seconds) until a player is automatically revived. Set to 0 to disable this feature.");
+        this.banDynamicHearts = buildBoolean(builder, "Should players be banned dynamically:", false, "Because other mods add permanent hearts to the game like Origins, should we ban players at a static value of -20 hit points from this mod or ban them depending on the hearts added from other mods too? By default, this is false because this feature does not work 100% with other mods.");
         builder.pop();
 
         builder.comment("This category is for how players should lose hearts. If you want players to not be able to lose hearts at all, disable all the config options below.");

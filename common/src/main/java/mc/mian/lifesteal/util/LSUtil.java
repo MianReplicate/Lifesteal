@@ -29,6 +29,8 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.GameType;
@@ -123,6 +125,27 @@ public class LSUtil {
     public static <T> T getLifestealDataFromTag(CompoundTag tag, String key, BiFunction<CompoundTag, String, T> function){
         throw new AssertionError("i just fucked your mom hewehhehehehehhehe");
     }
+
+    public static double calculateRealValue(AttributeInstance instance){
+        double d = instance.getBaseValue();
+
+        for (AttributeModifier attributeModifier : instance.getModifiersOrEmpty(AttributeModifier.Operation.ADDITION)) {
+            d += attributeModifier.getAmount();
+        }
+
+        double e = d;
+
+        for (AttributeModifier attributeModifier2 : instance.getModifiersOrEmpty(AttributeModifier.Operation.MULTIPLY_BASE)) {
+            e += d * attributeModifier2.getAmount();
+        }
+
+        for (AttributeModifier attributeModifier2 : instance.getModifiersOrEmpty(AttributeModifier.Operation.MULTIPLY_TOTAL)) {
+            e *= 1.0 + attributeModifier2.getAmount();
+        }
+
+        return e;
+    }
+
 
     public static List<GameProfile> getGameProfiles(MinecraftServer server, boolean includedSaved){
         ArrayList<GameProfile> gameProfiles = new ArrayList<>();

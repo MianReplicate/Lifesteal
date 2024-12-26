@@ -3,3 +3,4 @@ accessible field net/minecraft/server/MinecraftServer storageSource Lnet/minecra
 accessible class net/minecraft/world/level/block/entity/BlockEntityType$BlockEntitySupplier
 accessible method net/minecraft/server/players/StoredUserEntry getUser ()Ljava/lang/Object;
 accessible method net/minecraft/advancements/CriteriaTriggers register (Lnet/minecraft/advancements/CriterionTrigger;)Lnet/minecraft/advancements/CriterionTrigger;
+accessible method net/minecraft/world/entity/ai/attributes/AttributeInstance getModifiersOrEmpty (Lnet/minecraft/world/entity/ai/attributes/AttributeModifier$Operation;)Ljava/util/Collection;
