@@ -1,4 +1,3 @@
-# Version 7.1.2
+# Version 7.1.3
 ## Changes:
-- Fixed some critical game breaking bugs
-- Added a dynamic health check option
+- Fixed a critical crash relating to modifiers
