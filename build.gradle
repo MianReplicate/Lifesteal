@@ -23,7 +23,7 @@ subprojects {
     group = mod_base_package
 
     project.ext {
-        accessWidenerFile = file("common/src/main/resources/${mod_id}.accesswidener")
+        accessWidenerFile = getRootProject().file("common/src/main/resources/${mod_id}.accesswidener")
     }
 
     repositories {
