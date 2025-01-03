@@ -81,6 +81,7 @@ public class LSConstants {
     public static final ResourceLocation HEALTH_DIFFERENCE = LSUtil.modLoc("health_difference");
     public static final ResourceLocation TIME_KILLED = LSUtil.modLoc("time_killed");
     public static final ResourceLocation HEALTH_MODIFIER = LSUtil.modLoc("health_modifier");
+    public static final ResourceLocation STORED_MODIFIER_UUID = LSUtil.modLoc("stored_modifier");
 
     // Loot Tables
     public static final ResourceLocation BARREL_1_TABLE =

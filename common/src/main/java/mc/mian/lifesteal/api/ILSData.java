@@ -5,6 +5,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 
 import java.util.Collection;
 
@@ -22,6 +23,7 @@ public interface ILSData extends Serializable<CompoundTag> {
     <T> T getValue(ResourceLocation key);
     <T> void setValue(ResourceLocation key, T value);
     void refreshHealth(boolean healtoMax);
+    void addOrUpdateHealthModifier();
 }
 
 

@@ -37,7 +37,6 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class LSData implements ILSData {
     private final HashMap<ResourceLocation, Object> dataMap = new HashMap<>();
@@ -46,6 +45,7 @@ public class LSData implements ILSData {
         this.livingEntity = entity;
         this.dataMap.putIfAbsent(LSConstants.HEALTH_DIFFERENCE, LifeSteal.config.startingHealthDifference.get());
         this.dataMap.putIfAbsent(LSConstants.TIME_KILLED, 0L);
+        this.dataMap.putIfAbsent(LSConstants.STORED_MODIFIER_UUID, UUID.randomUUID());
     }
 
     @ExpectPlatform
@@ -256,6 +256,21 @@ public class LSData implements ILSData {
     }
 
     @Override
+    public void addOrUpdateHealthModifier(){
+        AttributeInstance attribute = this.livingEntity.getAttribute(Attributes.MAX_HEALTH);
+        AttributeModifier modifier = new AttributeModifier(LSConstants.HEALTH_MODIFIER.toString(), ((Integer) this.getValue(LSConstants.HEALTH_DIFFERENCE)).doubleValue(), AttributeModifier.Operation.ADDITION);
+        UUID modifierId = this.getValue(LSConstants.STORED_MODIFIER_UUID);
+        if(modifierId != null){
+            AttributeModifier toRemove = attribute.getModifier(modifierId);
+            if(toRemove != null && toRemove.getName().equals(LSConstants.HEALTH_MODIFIER.toString())){
+                attribute.removeModifier(toRemove);
+            }
+        }
+        this.setValue(LSConstants.STORED_MODIFIER_UUID, modifier.getId());
+        attribute.addPermanentModifier(modifier);
+    }
+
+    @Override
     public void refreshHealth(boolean healtoMax) {
 
         if (!this.livingEntity.level().isClientSide) {
@@ -280,16 +295,7 @@ public class LSData implements ILSData {
             }
 
             setValue(LSConstants.HEALTH_DIFFERENCE, healthDifference);
-
-            AttributeInstance attribute = this.livingEntity.getAttribute(Attributes.MAX_HEALTH);
-            AttributeModifier modifier = new AttributeModifier(LSConstants.HEALTH_MODIFIER.toString(), healthDifference, AttributeModifier.Operation.ADDITION);
-            Set<AttributeModifier> modifiers = attribute.getModifiers(AttributeModifier.Operation.ADDITION);
-            for (AttributeModifier mod : modifiers) {
-                if (mod.getName().equals(LSConstants.HEALTH_MODIFIER.toString())) {
-                    attribute.removeModifier(mod);
-                }
-            }
-            attribute.addPermanentModifier(modifier);
+            addOrUpdateHealthModifier();
 
             if (healthDifference >= 20 && this.livingEntity instanceof ServerPlayer serverPlayer) {
                 LSCriteria.GET_10_MAX_HEARTS.trigger(serverPlayer);
@@ -307,6 +313,7 @@ public class LSData implements ILSData {
         CompoundTag tag = new CompoundTag();
         tag.putInt(LSConstants.HEALTH_DIFFERENCE.getPath(), getValue(LSConstants.HEALTH_DIFFERENCE));
         tag.putLong(LSConstants.TIME_KILLED.getPath(), getValue(LSConstants.TIME_KILLED));
+        tag.putUUID(LSConstants.STORED_MODIFIER_UUID.getPath(), getValue(LSConstants.STORED_MODIFIER_UUID));
         return tag;
     }
 
@@ -314,5 +321,6 @@ public class LSData implements ILSData {
     public void deserializeNBT(CompoundTag tag) {
         setValue(LSConstants.HEALTH_DIFFERENCE, tag.getInt(LSConstants.HEALTH_DIFFERENCE.getPath()));
         setValue(LSConstants.TIME_KILLED, tag.getLong(LSConstants.TIME_KILLED.getPath()));
+        setValue(LSConstants.STORED_MODIFIER_UUID, tag.getUUID(LSConstants.STORED_MODIFIER_UUID.getPath()));
     }
 }
