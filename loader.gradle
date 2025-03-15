@@ -29,7 +29,7 @@ loom {
     if(loomPlatform == 'neoforge' || loomPlatform == 'forge'){
         runs {
             data {
-                data()
+                clientData()
                 programArgs "--all", "--mod", "${mod_id}"
                 programArgs "--output", generatedResources.absolutePath
             }

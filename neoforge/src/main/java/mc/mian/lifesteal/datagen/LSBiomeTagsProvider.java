@@ -8,13 +8,12 @@ import net.minecraft.data.tags.BiomeTagsProvider;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.world.level.biome.Biomes;
 import net.neoforged.neoforge.common.Tags;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
 import java.util.concurrent.CompletableFuture;
 
 public class LSBiomeTagsProvider extends BiomeTagsProvider {
-    public LSBiomeTagsProvider(PackOutput arg, CompletableFuture<HolderLookup.Provider> completableFuture, ExistingFileHelper existingFileHelper) {
-        super(arg, completableFuture, LSConstants.MOD_ID, existingFileHelper);
+    public LSBiomeTagsProvider(PackOutput arg, CompletableFuture<HolderLookup.Provider> completableFuture) {
+        super(arg, completableFuture, LSConstants.MOD_ID);
     }
 
     @Override

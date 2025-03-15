@@ -8,13 +8,13 @@ import net.minecraft.advancements.*;
 import net.minecraft.advancements.critereon.InventoryChangeTrigger;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
+import net.minecraft.data.advancements.AdvancementProvider;
+import net.minecraft.data.advancements.AdvancementSubProvider;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
-import net.neoforged.neoforge.common.data.AdvancementProvider;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -23,8 +23,8 @@ import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
 public class LSAdvancementsProvider extends AdvancementProvider {
-    public LSAdvancementsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries, ExistingFileHelper existingFileHelper, List<AdvancementGenerator> subProviders) {
-        super(output, registries, existingFileHelper, subProviders);
+    public LSAdvancementsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries, List<AdvancementSubProvider> subProviders) {
+        super(output, registries, subProviders);
     }
 
     private static DisplayInfo simpleDisplay(ItemLike icon, String name, AdvancementType frameType) {
@@ -40,10 +40,10 @@ public class LSAdvancementsProvider extends AdvancementProvider {
         return new DisplayInfo(icon, Component.translatable(expandedName), Component.translatable(expandedName + ".desc"), Optional.ofNullable(background), frameType, showToast, announceChat, hidden);
     }
 
-    public static class AdvancementsGenerator implements AdvancementGenerator {
+    public static class AdvancementsGenerator implements AdvancementSubProvider {
 
         @Override
-        public void generate(HolderLookup.Provider registries, Consumer<AdvancementHolder> saver, ExistingFileHelper existingFileHelper) {
+        public void generate(HolderLookup.Provider registries, Consumer<AdvancementHolder> saver) {
             AdvancementHolder ROOT = Advancement.Builder.advancement()
                     .display(display(
                             LSItems.CRYSTAL_FRAGMENT.get().getDefaultInstance(),
