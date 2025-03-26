@@ -1,3 +1,3 @@
-# Version 10.0.3
+# Version 10.0.4
 ## Changes:
-- Fixed data components not saving properly
+- Fixed crashes relating to Neoforge with commands
