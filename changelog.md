@@ -1,4 +1,3 @@
-# Version 10.0.1
+# Version 10.0.2
 ## Changes:
-- Fixed some critical game breaking bugs
-- Added a dynamic health check option
+- Fixed common networking dependency for Fabric
