@@ -1,3 +1,3 @@
-# Version 10.0.2
+# Version 10.0.3
 ## Changes:
-- Fixed common networking dependency for Fabric
+- Fixed data components not saving properly
