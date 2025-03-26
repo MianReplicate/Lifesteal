@@ -104,7 +104,9 @@ processResources {
             }
         }
     }
-
+    from(rootProject.file("common/src/main/resources")) {
+        include("lifesteal.accesswidener")
+    }
 }
 
 configurations {
@@ -219,6 +221,9 @@ remapJar {
     inputFile = shadowJar.archiveFile
     dependsOn shadowJar
     archiveClassifier = null
+
+    if(loomPlatform == 'neoforge')
+        atAccessWideners.add("lifesteal.accesswidener")
 }
 
 jar {
