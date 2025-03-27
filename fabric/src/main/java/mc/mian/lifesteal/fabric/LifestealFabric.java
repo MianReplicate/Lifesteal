@@ -1,6 +1,6 @@
 package mc.mian.lifesteal.fabric;
 
-import fuzs.forgeconfigapiport.fabric.api.forge.v4.ForgeConfigRegistry;
+import fuzs.forgeconfigapiport.fabric.api.v5.ConfigRegistry;
 import net.fabricmc.api.ModInitializer;
 import mc.mian.lifesteal.LifeSteal;
 import mc.mian.lifesteal.configuration.ConfigHolder;
@@ -24,7 +24,7 @@ public class LifestealFabric implements ModInitializer {
     }
     @Override
     public void onInitialize() {
-        ForgeConfigRegistry.INSTANCE.register(LSConstants.MOD_ID, ModConfig.Type.COMMON, ConfigHolder.SERVER_SPEC);
+        ConfigRegistry.INSTANCE.register(LSConstants.MOD_ID, ModConfig.Type.COMMON, ConfigHolder.SERVER_SPEC);
         LifeSteal.config = ConfigHolder.SERVER;
         LifeSteal.init();
         LSEvents.register();

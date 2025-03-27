@@ -50,7 +50,7 @@ public abstract class ServerLevelMixin {
                                 TimeKilled = LSUtil.getLifestealDataFromTag(
                                         tag,
                                         LSConstants.TIME_KILLED.getPath(),
-                                        CompoundTag::getLong);
+                                        CompoundTag::getLong).orElse(0L);
                             }
                         }
                         long TimePassed = System.currentTimeMillis() - TimeKilled;

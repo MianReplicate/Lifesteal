@@ -64,7 +64,7 @@ public class LSData implements ILSData {
                     if (!LifeSteal.config.disableStatusEffects.get()) {
                         int tickTime = 600;
                         this.livingEntity.addEffect(new MobEffectInstance(MobEffects.REGENERATION, tickTime, 3));
-                        this.livingEntity.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, tickTime, 3));
+                        this.livingEntity.addEffect(new MobEffectInstance(MobEffects.RESISTANCE, tickTime, 3));
                         this.livingEntity.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, tickTime, 3));
                     }
                     if (LifeSteal.config.customHeartDifferenceWhenRevived.get()) {

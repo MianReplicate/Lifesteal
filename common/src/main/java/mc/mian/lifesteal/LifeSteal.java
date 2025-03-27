@@ -8,9 +8,6 @@ import mc.mian.lifesteal.common.network.LSNetwork;
 import mc.mian.lifesteal.common.tab.LSTabs;
 import mc.mian.lifesteal.configuration.LSConfig;
 import mc.mian.lifesteal.util.LSConstants;
-import mc.mian.lifesteal.util.LSPlatform;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 public class LifeSteal {
     public static LSConfig config;

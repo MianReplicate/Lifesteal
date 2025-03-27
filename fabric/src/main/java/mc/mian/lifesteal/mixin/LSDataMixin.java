@@ -29,7 +29,7 @@ public class LSDataMixin implements ILSRetrieve {
 
     @Inject(at = @At("TAIL"), method = "readAdditionalSaveData")
     public void readLSData(CompoundTag compound, CallbackInfo ci){
-        this.lsData.deserializeNBT(compound.getCompound(LSConstants.LIFESTEAL_DATA.getPath()));
+        compound.getCompound(LSConstants.LIFESTEAL_DATA.getPath()).ifPresent(lsData::deserializeNBT);
     }
 
     @Override

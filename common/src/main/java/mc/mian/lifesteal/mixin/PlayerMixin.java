@@ -164,7 +164,7 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerImpl {
 
     @Inject(method = "readAdditionalSaveData", at = @At("HEAD"))
     private void loadOurDataTooLol(CompoundTag compoundTag, final CallbackInfo info){
-       this.setRevived(compoundTag.getBoolean("Revived"));
+       this.setRevived(compoundTag.getBoolean("Revived").orElse(false));
     }
 
     @Override

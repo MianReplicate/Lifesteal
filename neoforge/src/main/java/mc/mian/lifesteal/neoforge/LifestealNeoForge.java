@@ -1,9 +1,8 @@
 package mc.mian.lifesteal.neoforge;
 
-import fuzs.forgeconfigapiport.neoforge.api.forge.v4.ForgeConfigRegistry;
+import fuzs.forgeconfigapiport.neoforge.api.v5.ForgeConfigRegistry;
 import mc.mian.lifesteal.LifeSteal;
 import mc.mian.lifesteal.configuration.ConfigHolder;
-import mc.mian.lifesteal.data.neoforge.LSCapabilities;
 import mc.mian.lifesteal.data.neoforge.LSDataAttachments;
 import mc.mian.lifesteal.datagen.LSDataGenerators;
 import mc.mian.lifesteal.util.LSConstants;
@@ -26,7 +25,7 @@ public class LifestealNeoForge {
         modEventBus = modEventBusParam;
         modEventBus.addListener(this::registerEvent);
 
-        ForgeConfigRegistry.INSTANCE.register(ModConfig.Type.COMMON, ConfigHolder.SERVER_SPEC);
+        ForgeConfigRegistry.INSTANCE.register(LSConstants.MOD_ID, ModConfig.Type.COMMON, ConfigHolder.SERVER_SPEC);
         LifeSteal.config = ConfigHolder.SERVER;
         LifeSteal.init();
 
