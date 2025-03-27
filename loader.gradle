@@ -36,6 +36,15 @@ loom {
 
             client {
                 programArgs "--username", "Replicate###"
+                if(loomPlatform == 'forge'){
+                    programArgs '--launchTarget', "forge_userdev_client"
+                }
+            }
+
+            server {
+                if(loomPlatform == 'forge'){
+                    programArgs '--launchTarget', "forge_userdev_server"
+                }
             }
         }
 
@@ -133,7 +142,7 @@ architectury {
 dependencies {
     // thanks sodium for adding neoforge support, very cool :>
     def mcVersion = rootProject.hasProperty('common_networking_mc_version') ? "${common_networking_mc_version}" : "${minecraft_version}"
-//    modApi("mysticdrew:common-networking-${loomPlatform}:${common_networking_version}-${mcVersion}")
+    modApi("mysticdrew:common-networking-${loomPlatform}:${common_networking_version}-${mcVersion}")
     modApi("mc.mian:indestructible_blocks:${indestructible_blocks_version}+${minecraft_version}-${loomPlatform}")
 
     if(!disable_runtimes.toBoolean()) {
@@ -149,7 +158,6 @@ dependencies {
 
     if(loomPlatform != 'forge'){
         modApi("fuzs.forgeconfigapiport:forgeconfigapiport-${loomPlatform}:${forge_config_api_port_version}")
-        modApi("mysticdrew:common-networking-${loomPlatform}:${common_networking_version}-${mcVersion}") // testing purposes, forge currently doesnt have common network
     }
 
     switch(loomPlatform){
