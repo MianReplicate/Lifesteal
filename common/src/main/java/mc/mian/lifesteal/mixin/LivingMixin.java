@@ -9,6 +9,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -17,8 +18,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(LivingEntity.class)
 public abstract class LivingMixin {
 
+    @Unique
     @Nullable
-    public abstract LivingEntity getAttacker();
+    public abstract LivingEntity lifesteal$getAttacker();
 
     @Inject(method = "checkTotemDeathProtection", at = @At("TAIL"))
     private void totemUsed(final DamageSource source, final CallbackInfoReturnable<Boolean> cir) {
@@ -38,7 +40,7 @@ public abstract class LivingMixin {
     @Inject(method = "die", at = @At("HEAD"))
     private void onDeath(final CallbackInfo ci) {
         if (LifeSteal.config.shouldAllMobsGiveHearts.get()) {
-            LivingEntity entity = this.getAttacker();
+            LivingEntity entity = this.lifesteal$getAttacker();
             if (entity instanceof ServerPlayer serverPlayer) {
                 LSData.get(serverPlayer).ifPresent(lifestealData ->
                 {

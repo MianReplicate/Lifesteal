@@ -12,6 +12,7 @@ import mc.mian.lifesteal.LifeSteal;
 import mc.mian.lifesteal.common.component.LSDataComponents;
 import mc.mian.lifesteal.common.item.LSItems;
 import mc.mian.lifesteal.data.LSData;
+import mc.mian.lifesteal.platform.Services;
 import mc.mian.lifesteal.util.LSConstants;
 import mc.mian.lifesteal.util.LSUtil;
 import net.minecraft.advancements.Advancement;
@@ -180,7 +181,7 @@ public class LSCommand {
                         Component.translatable(
                                 "chat.message.lifesteal.get_hit_point_for_player",
                                 gameProfile.getName(),
-                                LSUtil.getLifestealDataFromTag(LSUtil.getPlayerData(source.getServer(), gameProfile), LSConstants.HEALTH_DIFFERENCE.getPath(), CompoundTag::getInt)),
+                                Services.DATA_HELPER.getLifestealDataFromTag(LSUtil.getPlayerData(source.getServer(), gameProfile), LSConstants.HEALTH_DIFFERENCE.getPath(), CompoundTag::getInt)),
                         false);
             }
         });
@@ -204,7 +205,7 @@ public class LSCommand {
                 }
             } else {
                 CompoundTag playerTag = LSUtil.getPlayerData(source.getServer(), gameProfile);
-                playerTag = LSUtil.setLifestealDataFromTag(playerTag, LSConstants.HEALTH_DIFFERENCE.getPath(), (attachmentsTag, key) ->
+                playerTag = Services.DATA_HELPER.setLifestealDataFromTag(playerTag, LSConstants.HEALTH_DIFFERENCE.getPath(), (attachmentsTag, key) ->
                 {
                     attachmentsTag.putInt(key, amount);
                     return attachmentsTag;

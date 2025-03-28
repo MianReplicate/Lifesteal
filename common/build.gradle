@@ -26,7 +26,7 @@ neoForge {
 dependencies {
     implementation "mysticdrew:common-networking-common:${common_networking_version}"
     implementation "fuzs.forgeconfigapiport:forgeconfigapiport-common-forgeapi:${forge_config_api_port_version}"
-    implementation "mc.mian:indestructible_blocks:${indestructible_blocks_version}+${minecraft_version}-fabric"
+    implementation "mc.mian:indestructible_blocks:${indestructible_blocks_version}+${minecraft_version}-neoforge"
 
     compileOnly group: 'org.spongepowered', name: 'mixin', version: '0.8.5'
     // fabric and neoforge both bundle mixinextras, so it is safe to use it in common

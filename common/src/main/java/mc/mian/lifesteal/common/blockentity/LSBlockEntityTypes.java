@@ -15,7 +15,7 @@ public class LSBlockEntityTypes {
     public static final DeferredRegistry<BlockEntityType<?>> BLOCK_ENTITY_TYPES = DeferredRegistry.create(LSConstants.MOD_ID, Registries.BLOCK_ENTITY_TYPE);
 
     public static final RegistrySupplier<BlockEntityType<SkullBlockEntity>> EXPANDED_SKULL =
-            BLOCK_ENTITY_TYPES.register("expanded_skull", () -> new BlockEntityType(
+            BLOCK_ENTITY_TYPES.register("expanded_skull", () -> new BlockEntityType<>(
                             SkullBlockEntity::new,
                                     Set.of(Blocks.SKELETON_SKULL,
                                             Blocks.SKELETON_WALL_SKULL,

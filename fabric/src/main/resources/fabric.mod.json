@@ -18,10 +18,10 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "mc.mian.lifesteal.fabric.LifestealFabric"
+      "mc.mian.lifesteal.LifestealFabric"
     ],
     "client": [
-      "mc.mian.lifesteal.fabric.LifestealFabricClient"
+      "mc.mian.lifesteal.LifestealFabricClient"
     ]
   },
   "mixins": [

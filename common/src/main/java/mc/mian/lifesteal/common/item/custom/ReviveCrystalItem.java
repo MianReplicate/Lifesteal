@@ -15,6 +15,7 @@ import net.minecraft.world.item.component.ResolvableProfile;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.SkullBlockEntity;
+import org.jetbrains.annotations.NotNull;
 
 public class ReviveCrystalItem extends Item {
     public ReviveCrystalItem(Properties properties) {
@@ -22,7 +23,7 @@ public class ReviveCrystalItem extends Item {
     }
 
     @Override
-    public InteractionResult useOn(UseOnContext useOnContext) {
+    public @NotNull InteractionResult useOn(UseOnContext useOnContext) {
         if (!useOnContext.getLevel().isClientSide) {
             Level level = useOnContext.getLevel();
             Player player = useOnContext.getPlayer();

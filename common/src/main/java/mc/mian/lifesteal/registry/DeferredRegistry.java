@@ -1,6 +1,6 @@
 package mc.mian.lifesteal.registry;
 
-import dev.architectury.injectables.annotations.ExpectPlatform;
+import mc.mian.lifesteal.platform.Services;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 
@@ -15,9 +15,8 @@ public abstract class DeferredRegistry<T> {
 
     public abstract Collection<RegistrySupplier<T>> getEntries();
 
-    @ExpectPlatform
     public static <T> DeferredRegistry<T> create(String modid, ResourceKey<? extends Registry<T>> resourceKey) {
-        throw new AssertionError();
+        return Services.REGISTRY_CREATOR.create(modid, resourceKey);
     }
 
 }

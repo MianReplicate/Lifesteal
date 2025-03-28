@@ -32,8 +32,8 @@ public class LSConfig {
     public final ForgeConfigSpec.BooleanValue customHeartDifferenceWhenRevived;
     public final ForgeConfigSpec.IntValue startingHeartDifferenceFromCrystal;
     public final ForgeConfigSpec.BooleanValue tellPlayersIfHitPointChanged;
-    public final ForgeConfigSpec.ConfigValue advancementUsedForWithdrawing;
-    public final ForgeConfigSpec.ConfigValue textUsedForRequirementOnWithdrawing;
+    public final ForgeConfigSpec.ConfigValue<String> advancementUsedForWithdrawing;
+    public final ForgeConfigSpec.ConfigValue<String> textUsedForRequirementOnWithdrawing;
     public final ForgeConfigSpec.BooleanValue tellPlayersIfReachedMaxHearts;
     public final ForgeConfigSpec.BooleanValue silentlyRevivePlayer;
     public final ForgeConfigSpec.BooleanValue playersSpawnHeadUponDeath;
@@ -143,7 +143,7 @@ public class LSConfig {
         return builder.comment(comment).translation(name).defineInRange(name, defaultValue, min, max);
     }
 
-    private static ForgeConfigSpec.ConfigValue buildString(ForgeConfigSpec.Builder builder, String name, String defaultValue, String comment) {
+    private static ForgeConfigSpec.ConfigValue<String> buildString(ForgeConfigSpec.Builder builder, String name, String defaultValue, String comment) {
         return builder.comment(comment).translation(name).define(name, defaultValue);
     }
 
@@ -151,7 +151,7 @@ public class LSConfig {
         return builder.comment(comment).translation(name).define(name, defaultValue);
     }
 
-    private static ForgeConfigSpec.EnumValue buildEnum(ForgeConfigSpec.Builder builder, String name, Enum defaultValue, String comment) {
+    private static ForgeConfigSpec.EnumValue<?> buildEnum(ForgeConfigSpec.Builder builder, String name, Enum defaultValue, String comment) {
         return builder.comment(comment).translation(name).defineEnum(name, defaultValue);
     }
 

@@ -3,7 +3,6 @@ package mc.mian.lifesteal.util;
 import com.google.common.collect.ImmutableMap;
 import com.mojang.authlib.GameProfile;
 import commonnetwork.api.Dispatcher;
-import dev.architectury.injectables.annotations.ExpectPlatform;
 import mc.mian.indestructible_blocks.util.IndestructibleUtil;
 import mc.mian.lifesteal.LifeSteal;
 import mc.mian.lifesteal.api.PlayerImpl;
@@ -50,7 +49,6 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
-import java.util.function.BiFunction;
 
 public class LSUtil {
     public static ResourceLocation modLoc(String name) {
@@ -117,16 +115,6 @@ public class LSUtil {
         });
         ImmutableMap<GameProfile, KilledType> map = builder.build();
         return map;
-    }
-
-    @ExpectPlatform
-    public static CompoundTag setLifestealDataFromTag(CompoundTag tag, String key, BiFunction<CompoundTag, String, CompoundTag> function){
-        throw new AssertionError("i just fucked your mom hewehhehehehehhehe");
-    }
-
-    @ExpectPlatform
-    public static <T> T getLifestealDataFromTag(CompoundTag tag, String key, BiFunction<CompoundTag, String, T> function){
-        throw new AssertionError("i just fucked your mom hewehhehehehehhehe");
     }
 
     public static double calculateRealValue(AttributeInstance instance){

@@ -1,7 +1,6 @@
 package mc.mian.lifesteal.data;
 
 import com.mojang.authlib.GameProfile;
-import dev.architectury.injectables.annotations.ExpectPlatform;
 import mc.mian.lifesteal.LifeSteal;
 import mc.mian.lifesteal.advancement.LSCriteria;
 import mc.mian.lifesteal.api.ILSData;
@@ -9,6 +8,7 @@ import mc.mian.lifesteal.api.PlayerImpl;
 import mc.mian.lifesteal.common.block.LSBlocks;
 import mc.mian.lifesteal.common.block.custom.ReviveHeadBlock;
 import mc.mian.lifesteal.common.item.LSItems;
+import mc.mian.lifesteal.platform.Services;
 import mc.mian.lifesteal.util.LSConstants;
 import mc.mian.lifesteal.util.LSUtil;
 import net.minecraft.core.BlockPos;
@@ -45,9 +45,8 @@ public class LSData implements ILSData {
         this.livingEntity = entity;
     }
 
-    @ExpectPlatform
-    public static Optional<LSData> get(LivingEntity entity) {
-        throw new AssertionError();
+    public static Optional<LSData> get(LivingEntity entity){
+        return Services.DATA_HELPER.get(entity);
     }
 
     @Override
@@ -148,35 +147,21 @@ public class LSData implements ILSData {
         return this.livingEntity;
     }
 
-    @ExpectPlatform
-    public static Collection<ResourceLocation> getKeys(LSData lifestealData){
-        throw new AssertionError("i just fucked your DAD hehehHAHAHAHAH");
-    }
-
-    @ExpectPlatform
-    public static <T> T getValue(LSData lifestealData, ResourceLocation key) {
-        throw new AssertionError("i just fucked your MOM MNAUDHAIUWHDIUAWHDIAUWD");
-    }
-
-    @ExpectPlatform
-    public static <T> void setValue(LSData lifestealData, ResourceLocation key, T value) {
-        throw new AssertionError("joe mama");
-    }
     @Override
     public <T> T getValue(ResourceLocation key) {
-        return getValue(this, key);
+        return Services.DATA_HELPER.getValue(this, key);
     }
 
     @Override
     public <T> void setValue(ResourceLocation key, T value) {
         if (!this.livingEntity.level().isClientSide) {
-            setValue(this, key, value);
+            Services.DATA_HELPER.setValue(this, key, value);
         }
     }
 
     @Override
     public Collection<ResourceLocation> getKeys() {
-        return getKeys(this);
+        return Services.DATA_HELPER.getKeys(this);
     }
 
     // Returns the real amount of hitpoints a player has
