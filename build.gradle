@@ -8,67 +8,67 @@ plugins {
 
 version = "${mod_version}-${minecraft_version}"
 
-publishMods {
-    changelog = new File("${rootProject.projectDir}/changelog.md").text
-    type = STABLE
-
-    def cfOptions = curseforgeOptions {
-        accessToken = project.findProperty("curseforge_token")
-        projectId = "${curseforge_id}"
-        minecraftVersions.add("${rootProject.minecraft_version}")
-        requires("common-network", "indestructible-blocks")
-    }
-
-    def mrOptions = modrinthOptions {
-        accessToken = project.findProperty("modrinth_token")
-        projectId = "${modrinth_id}"
-        minecraftVersions.add("${rootProject.minecraft_version}")
-        requires("common-network", "indestructible-blocks")
-    }
-
-    curseforge("curseforgeFabric") {
-        from cfOptions
-        file project(":fabric")
-        modLoaders.add("fabric")
-        displayName = "[Fabric] ${minecraft_version} - ${mod_version}"
-        requires("forge-config-api-port-fabric", "fabric-api")
-    }
-
-    curseforge("curseforgeForge") {
-        from cfOptions
-        file project(":forge")
-        modLoaders.add("forge")
-        displayName = "[Forge] ${minecraft_version} - ${mod_version}"
-    }
-
-    curseforge("curseforgeNeoforge"){
-        from cfOptions
-        file project(":neoforge")
-        modLoaders.add("neoforge")
-        displayName = "[NeoForge] ${minecraft_version} - ${mod_version}"
-        requires("forge-config-api-port-fabric")
-    }
-
-    modrinth("modrinthFabric") {
-        from mrOptions
-        file project(":fabric")
-        modLoaders.add("fabric")
-        displayName = "[Fabric] ${minecraft_version} - ${mod_version}"
-        requires("forge-config-api-port", "fabric-api")
-    }
-
-    modrinth("modrinthForge") {
-        from mrOptions
-        file project(":forge")
-        modLoaders.add("forge")
-        displayName = "[Forge] ${minecraft_version} - ${mod_version}"
-    }
-
-    modrinth("modrinthNeoforge") {
-        from mrOptions
-        file project(":neoforge")
-        modLoaders.add("neoforge")
-        displayName = "[NeoForge] ${minecraft_version} - ${mod_version}"
-        requires("forge-config-api-port")
-    }
-}
+//publishMods {
+//    changelog = new File("${rootProject.projectDir}/changelog.md").text
+//    type = STABLE
+//
+//    def cfOptions = curseforgeOptions {
+//        accessToken = project.findProperty("curseforge_token")
+//        projectId = "${curseforge_id}"
+//        minecraftVersions.add("${rootProject.minecraft_version}")
+//        requires("common-network", "indestructible-blocks")
+//    }
+//
+//    def mrOptions = modrinthOptions {
+//        accessToken = project.findProperty("modrinth_token")
+//        projectId = "${modrinth_id}"
+//        minecraftVersions.add("${rootProject.minecraft_version}")
+//        requires("common-network", "indestructible-blocks")
+//    }
+//
+//    curseforge("curseforgeFabric") {
+//        from cfOptions
+//        file project(":fabric")
+//        modLoaders.add("fabric")
+//        displayName = "[Fabric] ${minecraft_version} - ${mod_version}"
+//        requires("forge-config-api-port-fabric", "fabric-api")
+//    }
+//
+//    curseforge("curseforgeForge") {
+//        from cfOptions
+//        file project(":forge")
+//        modLoaders.add("forge")
+//        displayName = "[Forge] ${minecraft_version} - ${mod_version}"
+//    }
+//
+//    curseforge("curseforgeNeoforge"){
+//        from cfOptions
+//        file project(":neoforge")
+//        modLoaders.add("neoforge")
+//        displayName = "[NeoForge] ${minecraft_version} - ${mod_version}"
+//        requires("forge-config-api-port-fabric")
+//    }
+//
+//    modrinth("modrinthFabric") {
+//        from mrOptions
+//        file project(":fabric")
+//        modLoaders.add("fabric")
+//        displayName = "[Fabric] ${minecraft_version} - ${mod_version}"
+//        requires("forge-config-api-port", "fabric-api")
+//    }
+//
+//    modrinth("modrinthForge") {
+//        from mrOptions
+//        file project(":forge")
+//        modLoaders.add("forge")
+//        displayName = "[Forge] ${minecraft_version} - ${mod_version}"
+//    }
+//
+//    modrinth("modrinthNeoforge") {
+//        from mrOptions
+//        file project(":neoforge")
+//        modLoaders.add("neoforge")
+//        displayName = "[NeoForge] ${minecraft_version} - ${mod_version}"
+//        requires("forge-config-api-port")
+//    }
+//}

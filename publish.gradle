@@ -1,0 +1,42 @@
+apply plugin: "me.modmuss50.mod-publish-plugin"
+
+publishMods {
+    if(tasks.findByName("remapJar")){
+        file = remapJar.archiveFile
+    } else {
+        file = jar.archiveFile
+    }
+
+    changelog = new File("${rootProject.projectDir}/changelog.md").text
+    modLoaders.add("${project.name}")
+    type = STABLE
+
+    def projectName = project.name.substring(0, 1).toUpperCase() + project.name.substring(1, project.name.length())
+    displayName = "[${projectName}] ${project.minecraft_version} - ${project.mod_version}"
+
+    var CURSE_API_KEY = project.findProperty("curseforge_token")
+    curseforge {
+        accessToken = CURSE_API_KEY
+        projectId = "${project.curseforge_id}"
+
+        minecraftVersions.add("${project.minecraft_version}")
+        requires("common-network", "indestructible-blocks")
+
+        if(project.name != 'forge'){
+            requires("forge-config-api-port-fabric")
+        }
+    }
+
+    var MODRINTH_TOKEN = project.findProperty("modrinth_token")
+    modrinth {
+        accessToken = MODRINTH_TOKEN
+        projectId = "${project.modrinth_id}"
+
+        minecraftVersions.add("${project.minecraft_version}")
+        requires("common-network", "indestructible-blocks")
+
+        if(project.name != 'forge'){
+            requires("forge-config-api-port")
+        }
+    }
+}

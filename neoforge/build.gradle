@@ -3,6 +3,8 @@ plugins {
     id 'net.neoforged.moddev'
 }
 
+apply from: '../publish.gradle'
+
 neoForge {
     version = neo_version
     // Automatically enable neoforge AccessTransformers if the file exists
