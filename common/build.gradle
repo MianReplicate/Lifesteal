@@ -1,53 +1,51 @@
-architectury {
-    def platforms = rootProject
-            .subprojects
-            .findAll { it.hasProperty('loom.platform') }
-            .collect { it.property('loom.platform') as String }
-            .toSet()
+plugins {
+    id 'multiloader-common'
+    id 'net.neoforged.moddev'
+}
 
-    println "Platforms: ${platforms.toListString()}"
-    common(platforms)
+repositories{
+    maven {
+        name = 'Fabric'
+        url = uri('https://maven.fabricmc.net')
+    }
+}
+
+neoForge {
+    neoFormVersion = neo_form_version
+    // Automatically enable AccessTransformers if the file exists
+    def at = file('src/main/resources/META-INF/accesstransformer.cfg')
+    if (at.exists()) {
+        accessTransformers.from(at.absolutePath)
+    }
+    parchment {
+        minecraftVersion = parchment_minecraft_version
+        mappingsVersion = parchment_mappings_version
+    }
 }
 
 dependencies {
-    // We depend on fabric loader here to use the fabric @Environment annotations and get the mixin dependencies
-    // Do NOT use other classes from fabric loader
-    modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
-    // Remove the next line if you don't want to depend on the API
+    implementation "mysticdrew:common-networking-common:${common_networking_version}"
+    implementation "fuzs.forgeconfigapiport:forgeconfigapiport-common-forgeapi:${forge_config_api_port_version}"
+    implementation "mc.mian:indestructible_blocks:${indestructible_blocks_version}+${minecraft_version}-fabric"
 
-    implementation 'com.electronwill.night-config:core:3.6.3'
-    implementation 'com.electronwill.night-config:toml:3.6.3'
-    def mcVersion = rootProject.hasProperty('common_networking_mc_version') ? "${common_networking_mc_version}" : "${minecraft_version}"
-    modApi "mysticdrew:common-networking-common:${common_networking_version}-${mcVersion}"
-    modApi "fuzs.forgeconfigapiport:forgeconfigapiport-common-forgeapi:${forge_config_api_port_version}"
-    modApi "mc.mian:indestructible_blocks:${indestructible_blocks_version}+${minecraft_version}-fabric"
-    compileOnly "org.spongepowered:mixin:${mixin_version}"
+    compileOnly group: 'org.spongepowered', name: 'mixin', version: '0.8.5'
+    // fabric and neoforge both bundle mixinextras, so it is safe to use it in common
+    compileOnly group: 'io.github.llamalad7', name: 'mixinextras-common', version: mixin_extras_version
+    annotationProcessor group: 'io.github.llamalad7', name: 'mixinextras-common', version: mixin_extras_version
 }
 
-loom {
-    accessWidenerPath.set(file("src/main/resources/${mod_id}.accesswidener"))
-}
-
-idea.module {
-    excludeDirs += [
-            file('.gradle'),
-            file('build'),
-            file('run')
-    ]
-}
-
-publishing {
-    publications {
-        mavenCommon(MavenPublication) {
-            groupId = group
-            artifactId = mod_id
-            version = version
-            from components.java
-        }
+configurations {
+    commonJava {
+        canBeResolved = false
+        canBeConsumed = true
     }
-
-    // See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
-    repositories {
-        // Add repositories to publish to here.
+    commonResources {
+        canBeResolved = false
+        canBeConsumed = true
     }
+}
+
+artifacts {
+    commonJava sourceSets.main.java.sourceDirectories.singleFile
+    commonResources sourceSets.main.resources.sourceDirectories.singleFile
 }
