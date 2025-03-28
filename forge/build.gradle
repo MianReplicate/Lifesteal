@@ -63,8 +63,6 @@ minecraft {
     }
 }
 
-sourceSets.main.resources.srcDir 'src/generated/resources'
-
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
     compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:${mixin_extras_version}"))
