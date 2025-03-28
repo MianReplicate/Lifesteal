@@ -160,9 +160,9 @@ public class LSCommand {
                 serverPlayer.drop(heartCrystal, false);
             }
         } else {
-            String text = (String) LifeSteal.config.textUsedForRequirementOnWithdrawing.get();
+            String text = LifeSteal.config.textUsedForRequirementOnWithdrawing.get();
             if (!text.isEmpty()) {
-                serverPlayer.displayClientMessage(Component.literal((String) LifeSteal.config.textUsedForRequirementOnWithdrawing.get()), true);
+                serverPlayer.displayClientMessage(Component.literal(LifeSteal.config.textUsedForRequirementOnWithdrawing.get()), true);
             }
         }
         return Command.SINGLE_SUCCESS;

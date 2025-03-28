@@ -3,6 +3,7 @@ package mc.mian.lifesteal.common.network.custom;
 import commonnetwork.networking.data.PacketContext;
 import commonnetwork.networking.data.Side;
 import mc.mian.lifesteal.common.item.LSItems;
+import mc.mian.lifesteal.util.LSConstants;
 import mc.mian.lifesteal.util.LSUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
@@ -12,7 +13,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 
 public class HeartGainedPacket {
-    public static final ResourceLocation CHANNEL = LSUtil.modLoc("heart_gained");
+    public static final ResourceLocation CHANNEL = LSConstants.modLoc("heart_gained");
     public static final StreamCodec<FriendlyByteBuf, HeartGainedPacket> STREAM_CODEC =
             StreamCodec.ofMember(HeartGainedPacket::encode, HeartGainedPacket::new);
 

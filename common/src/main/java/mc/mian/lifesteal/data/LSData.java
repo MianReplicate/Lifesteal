@@ -8,6 +8,7 @@ import mc.mian.lifesteal.api.PlayerImpl;
 import mc.mian.lifesteal.common.block.LSBlocks;
 import mc.mian.lifesteal.common.block.custom.ReviveHeadBlock;
 import mc.mian.lifesteal.common.item.LSItems;
+import mc.mian.lifesteal.configuration.LSConfig;
 import mc.mian.lifesteal.platform.Services;
 import mc.mian.lifesteal.util.LSConstants;
 import mc.mian.lifesteal.util.LSUtil;
@@ -300,7 +301,7 @@ public class LSData implements ILSData {
 
     @Override
     public void deserializeNBT(CompoundTag tag) {
-        setValue(LSConstants.HEALTH_DIFFERENCE, tag.getInt(LSConstants.HEALTH_DIFFERENCE.getPath()));
-        setValue(LSConstants.TIME_KILLED, tag.getLong(LSConstants.TIME_KILLED.getPath()));
+        setValue(LSConstants.HEALTH_DIFFERENCE, tag.getInt(LSConstants.HEALTH_DIFFERENCE.getPath()).orElse(LifeSteal.config.startingHealthDifference.get()));
+        setValue(LSConstants.TIME_KILLED, tag.getLong(LSConstants.TIME_KILLED.getPath()).orElse(0L));
     }
 }

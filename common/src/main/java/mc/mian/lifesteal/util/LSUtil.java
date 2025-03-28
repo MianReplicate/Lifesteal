@@ -50,9 +50,6 @@ import java.nio.file.Path;
 import java.util.*;
 
 public class LSUtil {
-    public static ResourceLocation modLoc(String name) {
-        return ResourceLocation.fromNamespaceAndPath(LSConstants.MOD_ID, name);
-    }
     public static ResourceKey<PlacedFeature> createPlacedFeature(String domain, String name){
         return ResourceKey.create(Registries.PLACED_FEATURE, ResourceLocation.fromNamespaceAndPath(domain, name));
     }

@@ -37,10 +37,10 @@ public class LSBlocks {
     public static final RegistrySupplier<Block> REVIVE_HEAD = registerBlock("revive_head", (properties) ->
             new ReviveHeadBlock(properties.instrument(NoteBlockInstrument.CUSTOM_HEAD).strength(1.0F).explosionResistance(999f)));
     public static final RegistrySupplier<Block> REVIVE_WALL_HEAD = registerBlock("revive_wall_head", (properties) ->
-            new ReviveWallHeadBlock(properties.instrument(NoteBlockInstrument.CUSTOM_HEAD).strength(1.0F).explosionResistance(999f).overrideLootTable(Optional.of(ResourceKey.create(Registries.LOOT_TABLE,  LSUtil.modLoc("blocks/"+REVIVE_HEAD.getId().getPath()))))));
+            new ReviveWallHeadBlock(properties.instrument(NoteBlockInstrument.CUSTOM_HEAD).strength(1.0F).explosionResistance(999f).overrideLootTable(Optional.of(ResourceKey.create(Registries.LOOT_TABLE,  LSConstants.modLoc("blocks/"+REVIVE_HEAD.getId().getPath()))))));
 
     public static RegistrySupplier<Block> registerBlock(String name, Function<BlockBehaviour.Properties, Block> blockFunction) {
-        return BLOCKS.register(name, () -> blockFunction.apply(BlockBehaviour.Properties.of().setId(ResourceKey.create(Registries.BLOCK, LSUtil.modLoc(name)))));
+        return BLOCKS.register(name, () -> blockFunction.apply(BlockBehaviour.Properties.of().setId(ResourceKey.create(Registries.BLOCK, LSConstants.modLoc(name)))));
     }
 
     public static RegistrySupplier<Block> registerBlockWithItem(String name, Function<BlockBehaviour.Properties, Block> blockFunction) {

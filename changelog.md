@@ -1,4 +1,3 @@
-# Version 10.0.4
+# Version 10.0.5
 ## Changes:
-- Port to 1.21.5
-- Fixed crashes relating to Neoforge with commands
+- Fixed crashes relating to NBT data

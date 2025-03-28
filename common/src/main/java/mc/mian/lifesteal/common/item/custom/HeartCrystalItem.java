@@ -36,8 +36,8 @@ public class HeartCrystalItem extends Item {
     public boolean useHeartCrystal(ItemStack item, Level level, LivingEntity entity) {
 
         if (!level.isClientSide() && entity instanceof ServerPlayer serverPlayer) {
-            boolean rippedHeartCrystal = item.get(LSDataComponents.RIPPED.get()) != null && (boolean) item.get(LSDataComponents.RIPPED.get());
-            boolean unnaturalHeartCrystal = item.get(LSDataComponents.UNFRESH.get()) != null && (boolean) item.get(LSDataComponents.UNFRESH.get());
+            boolean rippedHeartCrystal = item.get(LSDataComponents.RIPPED.get()) != null && item.get(LSDataComponents.RIPPED.get());
+            boolean unnaturalHeartCrystal = item.get(LSDataComponents.UNFRESH.get()) != null && item.get(LSDataComponents.UNFRESH.get());
 
             if (!rippedHeartCrystal) {
                 if (unnaturalHeartCrystal) {

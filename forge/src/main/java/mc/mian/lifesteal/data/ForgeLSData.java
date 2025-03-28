@@ -32,7 +32,7 @@ public class ForgeLSData extends LSData implements AutoCapLSData {
     public static void attach(final AttachCapabilitiesEvent<Entity> event) {
         class HeartCapProvider implements ICapabilityProvider, INBTSerializable<CompoundTag> {
 
-            public static final ResourceLocation IDENTIFIER = LSUtil.modLoc(LSConstants.LIFESTEAL_DATA.getPath());
+            public static final ResourceLocation IDENTIFIER = LSConstants.modLoc(LSConstants.LIFESTEAL_DATA.getPath());
             private final AutoCapLSData backend = new ForgeLSData((LivingEntity) event.getObject());
             private final LazyOptional<AutoCapLSData> optionalData = LazyOptional.of(() -> backend);
 
