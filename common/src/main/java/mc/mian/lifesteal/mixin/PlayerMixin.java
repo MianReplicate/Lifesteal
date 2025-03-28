@@ -20,7 +20,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(value = Player.class, priority = 1)
+@Mixin(value = Player.class)
 public abstract class PlayerMixin extends LivingEntity implements PlayerImpl {
     @Shadow public abstract boolean killedEntity(ServerLevel level, LivingEntity entity);
 
@@ -161,21 +161,21 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerImpl {
 
     @Inject(method = "addAdditionalSaveData", at = @At("HEAD"))
     private void addOurDataTooLol(CompoundTag compoundTag, final CallbackInfo info){
-        compoundTag.putBoolean("Revived", this.getRevived());
+        compoundTag.putBoolean("Revived", this.lifesteal$getRevived());
     }
 
     @Inject(method = "readAdditionalSaveData", at = @At("HEAD"))
     private void loadOurDataTooLol(CompoundTag compoundTag, final CallbackInfo info){
-       this.setRevived(compoundTag.getBoolean("Revived").orElse(false));
+       this.lifesteal$setRevived(compoundTag.getBoolean("Revived").orElse(false));
     }
 
     @Override
-    public void setRevived(boolean bool) {
+    public void lifesteal$setRevived(boolean bool) {
         this.lifesteal$revived = bool;
     }
 
     @Override
-    public boolean getRevived() {
+    public boolean lifesteal$getRevived() {
         return this.lifesteal$revived;
     }
 }

@@ -53,7 +53,7 @@ public class LSData implements ILSData {
     public void tryRevivalEffects() {
         if (this.livingEntity instanceof ServerPlayer serverPlayer) {
             PlayerImpl playerImpl = ((PlayerImpl) serverPlayer);
-            if(playerImpl.getRevived())
+            if(playerImpl.lifesteal$getRevived())
             {
                 Level level = this.livingEntity.level();
                 if (!level.isClientSide) {
@@ -74,7 +74,7 @@ public class LSData implements ILSData {
                     setValue(LSConstants.TIME_KILLED, 0L);
                     refreshHealth(true);
                     LSCriteria.BACK_FROM_THE_DEAD.trigger(serverPlayer);
-                    playerImpl.setRevived(false);
+                    playerImpl.lifesteal$setRevived(false);
                 }
             }
         }

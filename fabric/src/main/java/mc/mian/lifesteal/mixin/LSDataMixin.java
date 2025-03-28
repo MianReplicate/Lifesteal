@@ -17,25 +17,25 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(LivingEntity.class)
 public class LSDataMixin implements ILSRetrieve {
     @Unique
-    private FabricLSData lsData;
+    private FabricLSData lifesteal$lsData;
 
     @Inject(at = @At("TAIL"), method = "<init>")
     public void init(EntityType<?> entityType, Level level, CallbackInfo ci){
-        this.lsData = new FabricLSData((LivingEntity)(Object)this);
+        this.lifesteal$lsData = new FabricLSData((LivingEntity)(Object)this);
     }
 
     @Inject(at = @At("TAIL"), method = "addAdditionalSaveData")
     public void addLSData(CompoundTag compound, CallbackInfo ci){
-        this.lsData.writeToNbt(compound);
+        this.lifesteal$lsData.writeToNbt(compound);
     }
 
     @Inject(at = @At("TAIL"), method = "readAdditionalSaveData")
     public void readLSData(CompoundTag compound, CallbackInfo ci){
-        compound.getCompound(LSConstants.LIFESTEAL_DATA.getPath()).ifPresent(lsData::deserializeNBT);
+        compound.getCompound(LSConstants.LIFESTEAL_DATA.getPath()).ifPresent(lifesteal$lsData::deserializeNBT);
     }
 
     @Override
     public LSData lifesteal_1_21$getData() {
-        return this.lsData;
+        return this.lifesteal$lsData;
     }
 }

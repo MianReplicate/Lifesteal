@@ -247,7 +247,7 @@ public class LSUtil {
             }
         } else {
             serverPlayer.teleportTo(level, reviveAt.getX(), reviveAt.getY(), reviveAt.getZ(), Relative.ROTATION, serverPlayer.getYRot(), serverPlayer.getXRot(), true);
-            ((PlayerImpl) serverPlayer).setRevived(true);
+            ((PlayerImpl) serverPlayer).lifesteal$setRevived(true);
             successful = true;
         }
 
