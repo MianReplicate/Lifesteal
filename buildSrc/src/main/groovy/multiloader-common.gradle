@@ -3,8 +3,10 @@ plugins {
     id 'maven-publish'
 }
 
+version = "${project.name}-${mod_version}-${minecraft_version}"
+
 base {
-    archivesName = "${mod_id}-${project.name}-${mod_version}-${minecraft_version}"
+    archivesName = "${mod_id}"
 }
 
 java {
@@ -135,7 +137,7 @@ publishing {
         register('mavenJava', MavenPublication) {
             groupId = mod_base_package
             artifactId = mod_id
-            version = project.name + "-" + mod_version + "-" + minecraft_version
+            version = project.version
             from components.java
         }
     }

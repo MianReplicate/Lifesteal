@@ -6,19 +6,21 @@ plugins {
     id "me.modmuss50.mod-publish-plugin" version "${mod_publish_plugin_version}"
 }
 
+version = "${mod_version}-${minecraft_version}"
+
 publishMods {
     changelog = new File("${rootProject.projectDir}/changelog.md").text
     type = STABLE
 
     def cfOptions = curseforgeOptions {
-        accessToken = providers.environmentVariable("curseforge_token")
+        accessToken = project.findProperty("curseforge_token")
         projectId = "${curseforge_id}"
         minecraftVersions.add("${rootProject.minecraft_version}")
         requires("common-network", "indestructible-blocks")
     }
 
     def mrOptions = modrinthOptions {
-        accessToken = providers.environmentVariable("modrinth_token")
+        accessToken = project.findProperty("modrinth_token")
         projectId = "${modrinth_id}"
         minecraftVersions.add("${rootProject.minecraft_version}")
         requires("common-network", "indestructible-blocks")
