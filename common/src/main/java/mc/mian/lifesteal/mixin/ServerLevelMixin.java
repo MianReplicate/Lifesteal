@@ -20,7 +20,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import javax.annotation.Nonnull;
 import java.util.function.BooleanSupplier;
 
 @Mixin(ServerLevel.class)
@@ -29,7 +28,7 @@ public abstract class ServerLevelMixin {
     private static int lifesteal$tickTime = 0;
     @Shadow public abstract ServerLevel getLevel();
 
-    @Shadow @Nonnull public abstract MinecraftServer getServer();
+    @Shadow public abstract MinecraftServer getServer();
 
     @Inject(method = "tick", at = @At("HEAD"))
     private void tick(BooleanSupplier hasTimeLeft, CallbackInfo ci){

@@ -39,7 +39,7 @@ public class FabricPlatformHelper implements IPlatformHelper {
 
     public MinecraftServer getServer() {
         MinecraftServer server;
-        if (LSPlatform.isClient()) {
+        if (isClient()) {
             server = getServerFromClient();
         } else {
             server = MINECRAFT_SERVER;

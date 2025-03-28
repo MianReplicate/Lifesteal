@@ -33,7 +33,6 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 
-import javax.annotation.Nullable;
 import java.util.*;
 
 public class LSCommand {
@@ -105,7 +104,7 @@ public class LSCommand {
         return Command.SINGLE_SUCCESS;
     }
 
-    private static int revivePlayer(CommandSourceStack source, Collection<GameProfile> gameProfiles, @Nullable Vec3 position, boolean enableLightningEffect, boolean silentRevive){
+    private static int revivePlayer(CommandSourceStack source, Collection<GameProfile> gameProfiles, Vec3 position, boolean enableLightningEffect, boolean silentRevive){
         if(position == null && !source.isPlayer()){
             source.sendFailure(Component.translatable("chat.message.lifesteal.revived_player_failed"));
         } else{

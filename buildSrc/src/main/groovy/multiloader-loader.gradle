@@ -43,3 +43,8 @@ tasks.named('sourcesJar', Jar) {
     dependsOn(configurations.commonResources)
     from(configurations.commonResources)
 }
+
+sourceSets.main.resources.srcDirs = [ 'src/main/resources', {
+    project(':neoforge').file('src/generated/resources').absolutePath
+}
+]

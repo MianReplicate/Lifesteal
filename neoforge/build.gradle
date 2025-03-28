@@ -24,6 +24,9 @@ neoForge {
         }
         data {
             clientData()
+            programArguments = ["--all",
+                                "--mod", "${mod_id}",
+                                "--output", file("src/generated/resources").absolutePath]
         }
         server {
             server()
@@ -41,5 +44,3 @@ dependencies {
     implementation("mc.mian:indestructible_blocks:${indestructible_blocks_version}+${minecraft_version}-neoforge")
     implementation("fuzs.forgeconfigapiport:forgeconfigapiport-neoforge:${forge_config_api_port_version}")
 }
-
-sourceSets.main.resources { srcDir 'src/generated/resources' }
