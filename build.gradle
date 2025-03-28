@@ -7,37 +7,31 @@ plugins {
 }
 
 publishMods {
-    file = remapJar.archiveFile
     changelog = new File("${rootProject.projectDir}/changelog.md").text
     type = STABLE
 
-    // CurseForge options used by both Fabric and Forge
     def cfOptions = curseforgeOptions {
-        accessToken = providers.environmentVariable("CURSEFORGE_TOKEN")
-        projectId = "123456"
-        minecraftVersions.add("1.20.1")
+        accessToken = providers.environmentVariable("curseforge_token")
+        projectId = "${curseforge_id}"
+        minecraftVersions.add("${rootProject.minecraft_version}")
+        requires("common-network", "indestructible-blocks")
     }
 
-    // Modrinth options used by both Fabric and Forge
     def mrOptions = modrinthOptions {
-        accessToken = providers.environmentVariable("MODRINTH_TOKEN")
-        projectId = "12345678"
-        minecraftVersions.add("1.20.1")
+        accessToken = providers.environmentVariable("modrinth_token")
+        projectId = "${modrinth_id}"
+        minecraftVersions.add("${rootProject.minecraft_version}")
+        requires("common-network", "indestructible-blocks")
     }
 
-    // Fabric specific options for CurseForge
     curseforge("curseforgeFabric") {
         from cfOptions
         file project(":fabric")
         modLoaders.add("fabric")
         displayName = "[Fabric] ${minecraft_version} - ${mod_version}"
-
-        requires {
-            slug = "fabric-api"
-        }
+        requires("forge-config-api-port-fabric", "fabric-api")
     }
 
-    // Forge specific options for CurseForge
     curseforge("curseforgeForge") {
         from cfOptions
         file project(":forge")
@@ -45,20 +39,34 @@ publishMods {
         displayName = "[Forge] ${minecraft_version} - ${mod_version}"
     }
 
-    // Fabric specific options for Modrinth
+    curseforge("curseforgeNeoforge"){
+        from cfOptions
+        file project(":neoforge")
+        modLoaders.add("neoforge")
+        displayName = "[NeoForge] ${minecraft_version} - ${mod_version}"
+        requires("forge-config-api-port-fabric")
+    }
+
     modrinth("modrinthFabric") {
         from mrOptions
         file project(":fabric")
         modLoaders.add("fabric")
-        requires {
-            slug = "fabric-api"
-        }
+        displayName = "[Fabric] ${minecraft_version} - ${mod_version}"
+        requires("forge-config-api-port", "fabric-api")
     }
 
-    // Forge specific options for Modrinth
     modrinth("modrinthForge") {
         from mrOptions
         file project(":forge")
         modLoaders.add("forge")
+        displayName = "[Forge] ${minecraft_version} - ${mod_version}"
+    }
+
+    modrinth("modrinthNeoforge") {
+        from mrOptions
+        file project(":neoforge")
+        modLoaders.add("neoforge")
+        displayName = "[NeoForge] ${minecraft_version} - ${mod_version}"
+        requires("forge-config-api-port")
     }
 }
