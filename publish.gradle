@@ -12,6 +12,9 @@ publishMods {
     type = STABLE
 
     def projectName = project.name.substring(0, 1).toUpperCase() + project.name.substring(1, project.name.length())
+    if(projectName == "Neoforge")
+        projectName = "NeoForge" // NeoForge is a special name :O
+
     displayName = "[${projectName}] ${project.minecraft_version} - ${project.mod_version}"
 
     var CURSE_API_KEY = project.findProperty("curseforge_token")
