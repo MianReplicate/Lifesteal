@@ -1,4 +1,4 @@
-package mc.mian.lifesteal.advancement;
+package mc.mian.lifesteal.common.advancement;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;

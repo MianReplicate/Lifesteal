@@ -1,7 +1,7 @@
 package mc.mian.lifesteal.platform;
 
 import mc.mian.lifesteal.data.ForgeLSData;
-import mc.mian.lifesteal.data.LSData;
+import mc.mian.lifesteal.common.data.LSData;
 import mc.mian.lifesteal.data.ForgeLSCapabilities;
 import mc.mian.lifesteal.platform.services.IDataHelper;
 import mc.mian.lifesteal.util.LSConstants;

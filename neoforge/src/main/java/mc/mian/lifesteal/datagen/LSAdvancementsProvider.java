@@ -1,6 +1,6 @@
 package mc.mian.lifesteal.datagen;
 
-import mc.mian.lifesteal.advancement.LSAdvancementTrigger;
+import mc.mian.lifesteal.common.advancement.LSAdvancementTrigger;
 import mc.mian.lifesteal.common.block.LSBlocks;
 import mc.mian.lifesteal.common.item.LSItems;
 import mc.mian.lifesteal.util.LSConstants;
@@ -12,7 +12,6 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.data.advancements.AdvancementProvider;
 import net.minecraft.data.advancements.AdvancementSubProvider;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;

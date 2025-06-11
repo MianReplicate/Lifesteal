@@ -1,8 +1,8 @@
 package mc.mian.lifesteal.mixin;
 
 import mc.mian.lifesteal.LifeSteal;
-import mc.mian.lifesteal.advancement.LSCriteria;
-import mc.mian.lifesteal.data.LSData;
+import mc.mian.lifesteal.common.advancement.LSCriteria;
+import mc.mian.lifesteal.common.data.LSData;
 import mc.mian.lifesteal.util.LSConstants;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;

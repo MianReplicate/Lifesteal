@@ -1,6 +1,6 @@
 package mc.mian.lifesteal;
 
-import mc.mian.lifesteal.configuration.ConfigHolder;
+import mc.mian.lifesteal.common.configuration.ConfigHolder;
 import mc.mian.lifesteal.util.LSConstants;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraftforge.common.MinecraftForge;
@@ -11,8 +11,6 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.RegisterEvent;
-
-import static mc.mian.lifesteal.advancement.LSCriteria.*;
 
 @Mod(LSConstants.MOD_ID)
 public class LifestealForge {

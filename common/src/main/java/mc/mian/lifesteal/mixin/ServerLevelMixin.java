@@ -5,7 +5,7 @@ import com.mojang.authlib.GameProfile;
 import mc.mian.indestructible_blocks.util.IndestructibleUtil;
 import mc.mian.lifesteal.LifeSteal;
 import mc.mian.lifesteal.common.block.LSBlocks;
-import mc.mian.lifesteal.data.LSData;
+import mc.mian.lifesteal.common.data.LSData;
 import mc.mian.lifesteal.platform.Services;
 import mc.mian.lifesteal.util.LSConstants;
 import mc.mian.lifesteal.util.LSUtil;

@@ -2,8 +2,8 @@ package mc.mian.lifesteal.data;
 
 import mc.mian.lifesteal.LifeSteal;
 import mc.mian.lifesteal.api.AutoCapLSData;
+import mc.mian.lifesteal.common.data.LSData;
 import mc.mian.lifesteal.util.LSConstants;
-import mc.mian.lifesteal.util.LSUtil;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;

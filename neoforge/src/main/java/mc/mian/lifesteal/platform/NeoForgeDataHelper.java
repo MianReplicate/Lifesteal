@@ -1,6 +1,6 @@
 package mc.mian.lifesteal.platform;
 
-import mc.mian.lifesteal.data.LSData;
+import mc.mian.lifesteal.common.data.LSData;
 import mc.mian.lifesteal.data.LSDataAttachments;
 import mc.mian.lifesteal.data.NeoForgeLSData;
 import mc.mian.lifesteal.platform.services.IDataHelper;

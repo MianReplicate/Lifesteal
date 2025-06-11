@@ -3,7 +3,7 @@ package mc.mian.lifesteal.common.item.custom;
 import mc.mian.lifesteal.LifeSteal;
 import mc.mian.lifesteal.common.component.LSDataComponents;
 import mc.mian.lifesteal.common.item.LSItems;
-import mc.mian.lifesteal.data.LSData;
+import mc.mian.lifesteal.common.data.LSData;
 import mc.mian.lifesteal.util.LSConstants;
 import mc.mian.lifesteal.util.LSUtil;
 import net.minecraft.core.component.DataComponents;
@@ -18,8 +18,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public class HeartCrystalItem extends Item {
 

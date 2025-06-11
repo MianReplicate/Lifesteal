@@ -1,7 +1,7 @@
 package mc.mian.lifesteal.event;
 
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
-import mc.mian.lifesteal.command.LSCommands;
+import mc.mian.lifesteal.common.command.LSCommands;
 
 public class CommandRegistry {
     public static void register() {

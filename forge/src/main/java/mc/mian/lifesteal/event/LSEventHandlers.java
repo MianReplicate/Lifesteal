@@ -1,8 +1,8 @@
 package mc.mian.lifesteal.event;
 
-import mc.mian.lifesteal.command.LSCommands;
+import mc.mian.lifesteal.common.command.LSCommands;
 import mc.mian.lifesteal.common.blockentity.LSBlockEntityTypes;
-import mc.mian.lifesteal.data.LSData;
+import mc.mian.lifesteal.common.data.LSData;
 import mc.mian.lifesteal.data.ForgeLSData;
 import mc.mian.lifesteal.util.LSConstants;
 import net.minecraft.client.renderer.blockentity.SkullBlockRenderer;

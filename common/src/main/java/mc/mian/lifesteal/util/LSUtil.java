@@ -9,7 +9,7 @@ import mc.mian.lifesteal.api.PlayerImpl;
 import mc.mian.lifesteal.common.component.LSDataComponents;
 import mc.mian.lifesteal.common.item.LSItems;
 import mc.mian.lifesteal.common.network.custom.HeartGainedPacket;
-import mc.mian.lifesteal.data.LSData;
+import mc.mian.lifesteal.common.data.LSData;
 import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;

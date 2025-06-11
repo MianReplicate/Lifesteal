@@ -18,6 +18,6 @@ public class LSBlockTagsProvider extends BlockTagsProvider {
     @Override
     protected void addTags(HolderLookup.Provider provider) {
         tag(BlockTags.MINEABLE_WITH_PICKAXE).add(LSBlocks.CRYSTAL_ORE.get(), LSBlocks.DEEPSLATE_CRYSTAL_ORE.get(), LSBlocks.NETHERRACK_CRYSTAL_ORE.get(), LSBlocks.CRYSTAL_BLOCK.get());
-        tag(BlockTags.NEEDS_IRON_TOOL).add(LSBlocks.CRYSTAL_ORE.get(), LSBlocks.DEEPSLATE_CRYSTAL_ORE.get(), LSBlocks.CRYSTAL_BLOCK.get());
+        tag(BlockTags.NEEDS_IRON_TOOL).add(LSBlocks.CRYSTAL_ORE.get(), LSBlocks.DEEPSLATE_CRYSTAL_ORE.get(), LSBlocks.CRYSTAL_BLOCK.get(), LSBlocks.REVIVE_BEACON.get());
     }
 }

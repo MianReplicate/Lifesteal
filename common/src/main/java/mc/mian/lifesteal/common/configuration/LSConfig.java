@@ -1,4 +1,4 @@
-package mc.mian.lifesteal.configuration;
+package mc.mian.lifesteal.common.configuration;
 
 import net.minecraft.commands.Commands;
 import net.minecraftforge.common.ForgeConfigSpec;

@@ -1,4 +1,4 @@
-package mc.mian.lifesteal.command.commands;
+package mc.mian.lifesteal.common.command.commands;
 
 import com.google.common.collect.ImmutableMap;
 import com.mojang.authlib.GameProfile;
@@ -11,7 +11,7 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import mc.mian.lifesteal.LifeSteal;
 import mc.mian.lifesteal.common.component.LSDataComponents;
 import mc.mian.lifesteal.common.item.LSItems;
-import mc.mian.lifesteal.data.LSData;
+import mc.mian.lifesteal.common.data.LSData;
 import mc.mian.lifesteal.platform.Services;
 import mc.mian.lifesteal.util.LSConstants;
 import mc.mian.lifesteal.util.LSUtil;

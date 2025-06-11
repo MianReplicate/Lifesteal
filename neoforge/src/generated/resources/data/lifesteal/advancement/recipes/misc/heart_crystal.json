@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_heart_of_the_sea": {
+    "has_apple": {
       "conditions": {
         "items": [
           {
-            "items": "minecraft:heart_of_the_sea"
+            "items": "minecraft:enchanted_golden_apple"
           }
         ]
       },
@@ -21,7 +21,7 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_heart_of_the_sea"
+      "has_apple"
     ]
   ],
   "rewards": {

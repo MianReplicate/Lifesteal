@@ -1,6 +1,7 @@
 package mc.mian.lifesteal.data;
 
 import mc.mian.lifesteal.LifeSteal;
+import mc.mian.lifesteal.common.data.LSData;
 import mc.mian.lifesteal.util.LSConstants;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;

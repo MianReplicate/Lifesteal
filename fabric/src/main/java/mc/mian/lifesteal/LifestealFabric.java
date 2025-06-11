@@ -2,15 +2,13 @@ package mc.mian.lifesteal;
 
 import fuzs.forgeconfigapiport.fabric.api.v5.ConfigRegistry;
 import net.fabricmc.api.ModInitializer;
-import mc.mian.lifesteal.configuration.ConfigHolder;
+import mc.mian.lifesteal.common.configuration.ConfigHolder;
 import mc.mian.lifesteal.event.CommandRegistry;
 import mc.mian.lifesteal.event.LSEvents;
 import mc.mian.lifesteal.util.LSConstants;
 import mc.mian.lifesteal.world.gen.LSBiomeModifier;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.neoforged.fml.config.ModConfig;
-
-import static mc.mian.lifesteal.advancement.LSCriteria.*;
 
 public class LifestealFabric implements ModInitializer {
 

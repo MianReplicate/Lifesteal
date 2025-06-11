@@ -1,7 +1,7 @@
-package mc.mian.lifesteal.command;
+package mc.mian.lifesteal.common.command;
 
 import com.mojang.brigadier.CommandDispatcher;
-import mc.mian.lifesteal.command.commands.LSCommand;
+import mc.mian.lifesteal.common.command.commands.LSCommand;
 import mc.mian.lifesteal.util.LSConstants;
 import net.minecraft.commands.CommandSourceStack;
 

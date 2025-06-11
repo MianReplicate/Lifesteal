@@ -2,14 +2,10 @@ package mc.mian.lifesteal.datagen;
 
 import mc.mian.lifesteal.common.block.LSBlocks;
 import mc.mian.lifesteal.common.item.LSItems;
-import mc.mian.lifesteal.registry.RegistrySupplier;
 import mc.mian.lifesteal.util.LSConstants;
 import mc.mian.lifesteal.util.LSTags;
-import mc.mian.lifesteal.util.LSUtil;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.data.LanguageProvider;
 
 public class LSLangProvider extends LanguageProvider {
@@ -22,7 +18,7 @@ public class LSLangProvider extends LanguageProvider {
         add("advancement."+LSConstants.MOD_ID+":"+advancementLocation.getPath()+".desc", desc);
     }
 
-    public void addGuiMessage(String title, String translation){
+    public void addGuiTranslation(String title, String translation){
         add("gui."+ LSConstants.MOD_ID+"."+title, translation);
     }
 
@@ -74,21 +70,23 @@ public class LSLangProvider extends LanguageProvider {
         addBannedMessage("revive_head_location", "Your revive head is located at [%s, %s, %s].");
         addBannedMessage("auto_revive_time", "You will be automatically revived on %s.");
 
-        addGuiMessage("crystal_core_disabled", "Crystal Cores have been disabled in the configurations");
-        addGuiMessage("heart_crystal_disabled", "Heart Crystals have been disabled in the configurations");
-        addGuiMessage("unnatural_heart_crystal_disabled", "Unnatural Heart Crystals have been disabled in the configurations");
-        addGuiMessage("revive_crystal_disabled", "Revive Crystals have been disabled in the configurations");
-        addGuiMessage("heart_crystal_reaching_max", "You are already at the max amount of hearts");
-        addGuiMessage("crystal_core_at_max_health", "You are already at max health");
-        addGuiMessage("cant_withdraw_less_than_maximum", "You can't withdraw over the maximum amount of hearts you can lose");
-        addGuiMessage("invaild_revive_block", "You need to right click a specified player's revive head to revive them");
-        addGuiMessage("null_revive_block", "This revive head doesn't have a player assigned to it. Did you grab this out of creative mode?");
-        addGuiMessage("error_revive_block", "This player was unable to be revived");
-        addGuiMessage("already_revived", "This player is already alive");
-        addGuiMessage("revived", "This player has successfully been revived");
-        addGuiMessage("multiplayer_only", "This item can only be used in multiplayer");
-        addGuiMessage("withdrawing_disabled", "Withdrawing is disabled in the configurations");
-        addGuiMessage("cant_withdraw_less_than_amount_have", "You don't have enough hearts to justify this withdrawal");
+        addGuiTranslation("crystal_core_disabled", "Crystal Cores have been disabled in the configurations");
+        addGuiTranslation("heart_crystal_disabled", "Heart Crystals have been disabled in the configurations");
+        addGuiTranslation("unnatural_heart_crystal_disabled", "Unnatural Heart Crystals have been disabled in the configurations");
+        addGuiTranslation("revive_crystal_disabled", "Revive Crystals have been disabled in the configurations");
+        addGuiTranslation("heart_crystal_reaching_max", "You are already at the max amount of hearts");
+        addGuiTranslation("crystal_core_at_max_health", "You are already at max health");
+        addGuiTranslation("cant_withdraw_less_than_maximum", "You can't withdraw over the maximum amount of hearts you can lose");
+        addGuiTranslation("invaild_revive_block", "You need to right click a specified player's revive head to revive them");
+        addGuiTranslation("null_revive_block", "This revive head doesn't have a player assigned to it. Did you grab this out of creative mode?");
+        addGuiTranslation("error_revive_block", "This player was unable to be revived");
+        addGuiTranslation("already_revived", "This player is already alive");
+        addGuiTranslation("revived", "This player has successfully been revived");
+        addGuiTranslation("multiplayer_only", "This item can only be used in multiplayer");
+        addGuiTranslation("withdrawing_disabled", "Withdrawing is disabled in the configurations");
+        addGuiTranslation("cant_withdraw_less_than_amount_have", "You don't have enough hearts to justify this withdrawal");
+
+        addGuiTranslation("revive_beacon_title", "Revive Beacon");
 
         add("itemGroup.lifesteal", "Lifesteal");
         add("block.lifesteal.revive_head.named", "%s's Revive Head");

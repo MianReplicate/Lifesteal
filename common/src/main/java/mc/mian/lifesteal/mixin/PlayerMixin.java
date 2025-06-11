@@ -2,7 +2,7 @@ package mc.mian.lifesteal.mixin;
 
 import mc.mian.lifesteal.LifeSteal;
 import mc.mian.lifesteal.api.PlayerImpl;
-import mc.mian.lifesteal.data.LSData;
+import mc.mian.lifesteal.common.data.LSData;
 import mc.mian.lifesteal.util.LSConstants;
 import mc.mian.lifesteal.util.LSUtil;
 import net.minecraft.nbt.CompoundTag;

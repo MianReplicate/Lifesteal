@@ -1,7 +1,7 @@
 package mc.mian.lifesteal.platform;
 
 import mc.mian.lifesteal.api.ILSRetrieve;
-import mc.mian.lifesteal.data.LSData;
+import mc.mian.lifesteal.common.data.LSData;
 import mc.mian.lifesteal.data.FabricLSData;
 import mc.mian.lifesteal.platform.services.IDataHelper;
 import mc.mian.lifesteal.util.LSConstants;

@@ -5,12 +5,11 @@
     "b": "lifesteal:crystal_block",
     "c": "lifesteal:crystal_core",
     "d": "minecraft:diamond",
-    "g": "minecraft:golden_apple",
-    "h": "minecraft:heart_of_the_sea",
-    "r": "minecraft:blaze_rod"
+    "g": "minecraft:enchanted_golden_apple",
+    "r": "minecraft:prismarine_crystals"
   },
   "pattern": [
-    "bhb",
+    "brb",
     "dcd",
     "rbg"
   ],

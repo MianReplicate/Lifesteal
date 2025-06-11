@@ -1,7 +1,7 @@
 package mc.mian.lifesteal.common.item.custom;
 
 import mc.mian.lifesteal.LifeSteal;
-import mc.mian.lifesteal.advancement.LSCriteria;
+import mc.mian.lifesteal.common.advancement.LSCriteria;
 import mc.mian.lifesteal.util.LSUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;

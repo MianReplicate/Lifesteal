@@ -1,4 +1,4 @@
-package mc.mian.lifesteal.configuration;
+package mc.mian.lifesteal.common.configuration;
 
 import net.minecraftforge.common.ForgeConfigSpec;
 import org.apache.commons.lang3.tuple.Pair;

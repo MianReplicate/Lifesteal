@@ -1,14 +1,13 @@
-package mc.mian.lifesteal.data;
+package mc.mian.lifesteal.common.data;
 
 import com.mojang.authlib.GameProfile;
 import mc.mian.lifesteal.LifeSteal;
-import mc.mian.lifesteal.advancement.LSCriteria;
+import mc.mian.lifesteal.common.advancement.LSCriteria;
 import mc.mian.lifesteal.api.ILSData;
 import mc.mian.lifesteal.api.PlayerImpl;
 import mc.mian.lifesteal.common.block.LSBlocks;
 import mc.mian.lifesteal.common.block.custom.ReviveHeadBlock;
 import mc.mian.lifesteal.common.item.LSItems;
-import mc.mian.lifesteal.configuration.LSConfig;
 import mc.mian.lifesteal.platform.Services;
 import mc.mian.lifesteal.util.LSConstants;
 import mc.mian.lifesteal.util.LSUtil;

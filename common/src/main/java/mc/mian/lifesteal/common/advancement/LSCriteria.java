@@ -1,4 +1,4 @@
-package mc.mian.lifesteal.advancement;
+package mc.mian.lifesteal.common.advancement;
 
 public class LSCriteria {
 

@@ -2,7 +2,7 @@ package mc.mian.lifesteal.event;
 
 import mc.mian.lifesteal.util.LSConstants;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
-import mc.mian.lifesteal.data.LSData;
+import mc.mian.lifesteal.common.data.LSData;
 import net.minecraft.resources.ResourceLocation;
 
 import java.util.Collection;

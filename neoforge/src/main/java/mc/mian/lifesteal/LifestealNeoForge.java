@@ -1,7 +1,7 @@
 package mc.mian.lifesteal;
 
 import fuzs.forgeconfigapiport.neoforge.api.v5.ForgeConfigRegistry;
-import mc.mian.lifesteal.configuration.ConfigHolder;
+import mc.mian.lifesteal.common.configuration.ConfigHolder;
 import mc.mian.lifesteal.data.LSDataAttachments;
 import mc.mian.lifesteal.datagen.LSDataGenerators;
 import mc.mian.lifesteal.util.LSConstants;
@@ -12,8 +12,6 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.registries.RegisterEvent;
-
-import static mc.mian.lifesteal.advancement.LSCriteria.*;
 
 @Mod(LSConstants.MOD_ID)
 public class LifestealNeoForge {

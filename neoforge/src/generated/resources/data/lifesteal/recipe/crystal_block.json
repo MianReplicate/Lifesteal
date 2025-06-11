@@ -2,14 +2,14 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
+    "a": "minecraft:amethyst_block",
     "c": "lifesteal:crystal_core",
-    "d": "minecraft:diamond",
-    "f": "lifesteal:crystal_fragment"
+    "r": "minecraft:redstone_block"
   },
   "pattern": [
-    "cfc",
-    "fdf",
-    "cfc"
+    "rcr",
+    "cac",
+    "rcr"
   ],
   "result": {
     "count": 1,
