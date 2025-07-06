@@ -31,11 +31,11 @@ public class BEMixin {
 //        original.call(instance, arg);
 //    }
 
-    @WrapOperation(method = "isValidBlockState", at = @At(value = "HEAD"))
-    public boolean isValidBlockState(BlockEntity instance, BlockState arg, Operation<Boolean> original){
-        if(instance instanceof SkullBlockEntity && arg.getBlock().equals(LSBlocks.REVIVE_BEACON.get()))
+    @WrapOperation(method = "isValidBlockState", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/entity/BlockEntityType;isValid(Lnet/minecraft/world/level/block/state/BlockState;)Z"))
+    public boolean isValidBlockState(BlockEntityType instance, BlockState state, Operation<Boolean> original){
+        if((BlockEntity) (Object) this instanceof SkullBlockEntity && state.getBlock().equals(LSBlocks.REVIVE_BEACON.get()))
             return true;
 
-        return original.call(instance, arg);
+        return original.call(instance, state);
     }
 }

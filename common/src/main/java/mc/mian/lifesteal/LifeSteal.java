@@ -4,6 +4,7 @@ import mc.mian.lifesteal.common.block.LSBlocks;
 import mc.mian.lifesteal.common.blockentity.LSBlockEntityTypes;
 import mc.mian.lifesteal.common.component.LSDataComponents;
 import mc.mian.lifesteal.common.item.LSItems;
+import mc.mian.lifesteal.common.menu.LSMenuTypes;
 import mc.mian.lifesteal.common.network.LSNetwork;
 import mc.mian.lifesteal.common.tab.LSTabs;
 import mc.mian.lifesteal.common.configuration.LSConfig;
@@ -19,6 +20,7 @@ public class LifeSteal {
         LSBlocks.register();
         LSBlockEntityTypes.register();
         LSTabs.register();
+        LSMenuTypes.register();
         LSNetwork.register();
     }
 }

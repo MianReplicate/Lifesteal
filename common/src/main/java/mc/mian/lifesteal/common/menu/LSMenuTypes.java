@@ -1,6 +1,5 @@
 package mc.mian.lifesteal.common.menu;
 
-import mc.mian.lifesteal.LifeSteal;
 import mc.mian.lifesteal.client.ReviveBeaconMenu;
 import mc.mian.lifesteal.registry.DeferredRegistry;
 import mc.mian.lifesteal.registry.RegistrySupplier;
@@ -9,7 +8,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.inventory.MenuType;
 
-public class MenuTypes {
+public class LSMenuTypes {
     public static final DeferredRegistry<MenuType<?>> MENU_TYPES = DeferredRegistry.create(LSConstants.MOD_ID, Registries.MENU);
 
     public static final RegistrySupplier<MenuType<ReviveBeaconMenu>> REVIVE_BEACON =

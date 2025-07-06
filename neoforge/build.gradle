@@ -20,7 +20,9 @@ neoForge {
         configureEach {
             systemProperty('neoforge.enabledGameTestNamespaces', mod_id)
             ideName = "NeoForge ${it.name.capitalize()} (${project.path})" // Unify the run config names with fabric
+            jvmArguments = ['-XX:+AllowEnhancedClassRedefinition', "-XX:+AllowRedefinitionToAddDeleteMethods", '-XX:+IgnoreUnrecognizedVMOptions']
         }
+
         client {
             client()
         }

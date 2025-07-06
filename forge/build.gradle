@@ -39,6 +39,10 @@ minecraft {
     }
 
     runs {
+        configureEach {
+            jvmArgs '-XX:+AllowEnhancedClassRedefinition', "-XX:+AllowRedefinitionToAddDeleteMethods", '-XX:+IgnoreUnrecognizedVMOptions'
+        }
+
         client {
             workingDirectory file('runs/client')
             ideaModule "${rootProject.name}.${project.name}.main"

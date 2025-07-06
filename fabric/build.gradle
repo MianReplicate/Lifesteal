@@ -28,6 +28,10 @@ loom {
         defaultRefmapName.set("${mod_id}.refmap.json")
     }
     runs {
+        configureEach {
+            programArgs('-XX:+AllowEnhancedClassRedefinition', "-XX:+AllowRedefinitionToAddDeleteMethods", '-XX:+IgnoreUnrecognizedVMOptions')
+        }
+
         client {
             client()
             setConfigName('Fabric Client')
