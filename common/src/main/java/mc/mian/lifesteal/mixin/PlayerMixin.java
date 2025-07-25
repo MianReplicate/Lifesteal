@@ -13,6 +13,8 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -160,13 +162,13 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerImpl {
     }
 
     @Inject(method = "addAdditionalSaveData", at = @At("HEAD"))
-    private void addOurDataTooLol(CompoundTag compoundTag, final CallbackInfo info){
-        compoundTag.putBoolean("Revived", this.lifesteal$getRevived());
+    private void addOurDataTooLol(ValueOutput output, CallbackInfo ci){
+        output.putBoolean("Revived", this.lifesteal$getRevived());
     }
 
     @Inject(method = "readAdditionalSaveData", at = @At("HEAD"))
-    private void loadOurDataTooLol(CompoundTag compoundTag, final CallbackInfo info){
-       this.lifesteal$setRevived(compoundTag.getBoolean("Revived").orElse(false));
+    private void loadOurDataTooLol(ValueInput input, CallbackInfo ci){
+       this.lifesteal$setRevived(input.getBooleanOr("Revived", false));
     }
 
     @Override

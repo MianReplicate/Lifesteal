@@ -1,41 +1,21 @@
 package mc.mian.lifesteal.mixin;
 
-import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
-import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import mc.mian.lifesteal.common.block.LSBlocks;
-import mc.mian.lifesteal.common.blockentity.LSBlockEntityTypes;
-import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.SkullBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.SkullBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Mutable;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(BlockEntity.class)
+@Mixin(BlockEntityType.class)
 public class BEMixin {
-//    @Mutable
-//    @Shadow
-//    @Final
-//    private BlockEntityType<?> type;
-//
-//    @WrapOperation(method = "<init>", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/entity/BlockEntity;validateBlockState(Lnet/minecraft/world/level/block/state/BlockState;)V"))
-//    public void getType(BlockEntity instance, BlockState arg, Operation<Void> original) {
-//        if ((BlockEntity) (Object) this instanceof SkullBlockEntity) {
-//            this.type = LSBlockEntityTypes.EXPANDED_SKULL.get();
-//        }
-//        original.call(instance, arg);
-//    }
-
-    @WrapOperation(method = "isValidBlockState", at = @At(value = "HEAD"))
-    public boolean isValidBlockState(BlockEntity instance, BlockState arg, Operation<Boolean> original){
-        if(instance instanceof SkullBlockEntity && arg.getBlock().equals(LSBlocks.REVIVE_BEACON.get()))
-            return true;
-
-        return original.call(instance, arg);
+    @Inject(method = "isValid", at = @At(value = "HEAD"), cancellable = true)
+    public void isValidBlockState(BlockState state, CallbackInfoReturnable<Boolean> cir){
+        if(state.getBlock() instanceof SkullBlock
+                && ((BlockEntityType)(Object) this) == BlockEntityType.SKULL)
+            cir.setReturnValue(true);
     }
 }

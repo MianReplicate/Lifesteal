@@ -19,9 +19,6 @@
   "entrypoints": {
     "main": [
       "mc.mian.lifesteal.LifestealFabric"
-    ],
-    "client": [
-      "mc.mian.lifesteal.LifestealFabricClient"
     ]
   },
   "mixins": [

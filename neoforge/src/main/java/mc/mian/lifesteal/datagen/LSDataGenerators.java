@@ -30,8 +30,8 @@ public class LSDataGenerators {
         gen.addProvider(true, new LSBiomeTagsProvider(packOutput, provider)); // BiomeTags
         gen.addProvider(true, new LSAdvancementsProvider(packOutput, provider, // Advancements
                 List.of(new LSAdvancementsProvider.AdvancementsGenerator())));
-        TagsProvider tagsProvider = gen.addProvider(true, new LSBlockTagsProvider(packOutput, provider)); // BlockTags
-        gen.addProvider(true, new LSItemTagsProvider(packOutput, provider, tagsProvider.contentsGetter()));
+        gen.addProvider(true, new LSBlockTagsProvider(packOutput, provider)); // BlockTags
+        gen.addProvider(true, new LSItemTagsProvider(packOutput, provider));
         gen.addProvider(true, new LSLangProvider(packOutput));
         gen.addProvider(true, new LSModelProvider(packOutput));
     }

@@ -1,13 +1,11 @@
 package mc.mian.lifesteal.common.block;
 
-import mc.mian.lifesteal.common.block.custom.ReviveBeacon;
 import mc.mian.lifesteal.common.block.custom.ReviveHeadBlock;
 import mc.mian.lifesteal.common.block.custom.ReviveWallHeadBlock;
 import mc.mian.lifesteal.common.item.LSItems;
 import mc.mian.lifesteal.registry.DeferredRegistry;
 import mc.mian.lifesteal.registry.RegistrySupplier;
 import mc.mian.lifesteal.util.LSConstants;
-import mc.mian.lifesteal.util.LSUtil;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.valueproviders.UniformInt;
@@ -26,8 +24,6 @@ public class LSBlocks {
 
     public static final RegistrySupplier<Block> CRYSTAL_BLOCK = registerBlockWithItem("crystal_block", (properties) ->
             new Block(properties.mapColor(MapColor.METAL).strength(6f).requiresCorrectToolForDrops()));
-    public static final RegistrySupplier<Block> REVIVE_BEACON = registerBlockWithItem("revive_beacon", (properties) ->
-            new ReviveBeacon(properties.strength(1f).requiresCorrectToolForDrops()));
 
     public static final RegistrySupplier<Block> CRYSTAL_ORE = registerBlockWithItem("crystal_ore", (properties) ->
             new DropExperienceBlock(UniformInt.of(3, 7), properties.mapColor(MapColor.STONE).strength(4f).requiresCorrectToolForDrops()));

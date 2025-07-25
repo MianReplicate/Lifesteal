@@ -47,6 +47,7 @@
   "gui.lifesteal.invaild_revive_block": "You need to right click a specified player's revive head to revive them",
   "gui.lifesteal.multiplayer_only": "This item can only be used in multiplayer",
   "gui.lifesteal.null_revive_block": "This revive head doesn't have a player assigned to it. Did you grab this out of creative mode?",
+  "gui.lifesteal.revive_beacon_title": "Revive Beacon",
   "gui.lifesteal.revive_crystal_disabled": "Revive Crystals have been disabled in the configurations",
   "gui.lifesteal.revived": "This player has successfully been revived",
   "gui.lifesteal.unnatural_heart_crystal_disabled": "Unnatural Heart Crystals have been disabled in the configurations",

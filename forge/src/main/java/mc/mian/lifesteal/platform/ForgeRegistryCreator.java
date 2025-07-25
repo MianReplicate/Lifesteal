@@ -32,7 +32,7 @@ public class ForgeRegistryCreator implements IRegistryCreator {
 
         @Override
         public void register() {
-            this.register.register(LifestealForge.modEventBus);
+            this.register.register(LifestealForge.modEventGroup);
         }
 
 

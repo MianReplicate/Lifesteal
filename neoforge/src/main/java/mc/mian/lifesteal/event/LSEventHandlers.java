@@ -1,7 +1,6 @@
 package mc.mian.lifesteal.event;
 
 import mc.mian.lifesteal.common.command.LSCommands;
-import mc.mian.lifesteal.common.blockentity.LSBlockEntityTypes;
 import mc.mian.lifesteal.common.data.LSData;
 import mc.mian.lifesteal.data.NeoForgeLSCapabilities;
 import mc.mian.lifesteal.data.NeoForgeLSData;
@@ -17,24 +16,13 @@ import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 
 public class LSEventHandlers {
-    @EventBusSubscriber(modid = LSConstants.MOD_ID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
-    public static class ModClient{
-        @SubscribeEvent
-        public static void OnRenderersRegister(EntityRenderersEvent.RegisterRenderers event) {
-            event.registerBlockEntityRenderer(LSBlockEntityTypes.EXPANDED_SKULL.get(), SkullBlockRenderer::new);
-        }
-    }
-
-    @EventBusSubscriber(modid = LSConstants.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
-    public static class Mod{
+    @EventBusSubscriber(modid = LSConstants.MOD_ID)
+    public static class Common{
         @SubscribeEvent
         public static void registerCapabilities(final RegisterCapabilitiesEvent event) {
             event.registerEntity(NeoForgeLSCapabilities.LIFESTEAL_DATA, EntityType.PLAYER, (entity, context) -> new LSData(entity));
         }
-    }
 
-    @EventBusSubscriber(modid = LSConstants.MOD_ID, bus = EventBusSubscriber.Bus.GAME)
-    public static class Common{
         @SubscribeEvent
         public static void OnCommandsRegister(final RegisterCommandsEvent event) {
             LSCommands.registerCommands(command -> command.accept(event.getDispatcher()));

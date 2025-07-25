@@ -1,6 +1,7 @@
 package mc.mian.lifesteal;
 
 import fuzs.forgeconfigapiport.fabric.api.v5.ConfigRegistry;
+import mc.mian.lifesteal.common.advancement.LSCriteria;
 import net.fabricmc.api.ModInitializer;
 import mc.mian.lifesteal.common.configuration.ConfigHolder;
 import mc.mian.lifesteal.event.CommandRegistry;
@@ -14,10 +15,10 @@ public class LifestealFabric implements ModInitializer {
 
     public static void registerCriteria(){
         LSConstants.LOGGER.debug("Initializing ModCriteria for " + LSConstants.MOD_ID);
-        CriteriaTriggers.register(LSConstants.GET_10_MAX_HEARTS.toString(), GET_10_MAX_HEARTS);
-        CriteriaTriggers.register(LSConstants.USE_TOTEM_WHILE_20_MAX_HEARTS.toString(), USE_TOTEM_WHILE_20_MAX_HEARTS);
-        CriteriaTriggers.register(LSConstants.BACK_FROM_THE_DEAD.toString(), BACK_FROM_THE_DEAD);
-        CriteriaTriggers.register(LSConstants.REVIVED.toString(), REVIVED);
+        CriteriaTriggers.register(LSConstants.GET_10_MAX_HEARTS.toString(), LSCriteria.GET_10_MAX_HEARTS);
+        CriteriaTriggers.register(LSConstants.USE_TOTEM_WHILE_20_MAX_HEARTS.toString(), LSCriteria.USE_TOTEM_WHILE_20_MAX_HEARTS);
+        CriteriaTriggers.register(LSConstants.BACK_FROM_THE_DEAD.toString(), LSCriteria.BACK_FROM_THE_DEAD);
+        CriteriaTriggers.register(LSConstants.REVIVED.toString(), LSCriteria.REVIVED);
     }
     @Override
     public void onInitialize() {

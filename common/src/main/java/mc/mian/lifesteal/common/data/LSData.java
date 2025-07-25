@@ -36,6 +36,8 @@ import net.minecraft.world.level.block.entity.SkullBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 import java.util.*;
 
@@ -288,6 +290,16 @@ public class LSData implements ILSData {
             }
         }
 
+    }
+
+    public void serializeOutput(ValueOutput output){
+        output.putInt(LSConstants.HEALTH_DIFFERENCE.getPath(), getValue(LSConstants.HEALTH_DIFFERENCE));
+        output.putLong(LSConstants.TIME_KILLED.getPath(), getValue(LSConstants.TIME_KILLED));
+    }
+
+    public void deserializeInput(ValueInput input){
+        setValue(LSConstants.HEALTH_DIFFERENCE, input.getIntOr(LSConstants.HEALTH_DIFFERENCE.getPath(), LifeSteal.config.startingHealthDifference.get()));
+        setValue(LSConstants.TIME_KILLED, input.getLongOr(LSConstants.TIME_KILLED.getPath(), 0L));
     }
 
     @Override

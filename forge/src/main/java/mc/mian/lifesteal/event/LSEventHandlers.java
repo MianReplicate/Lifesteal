@@ -1,30 +1,18 @@
 package mc.mian.lifesteal.event;
 
 import mc.mian.lifesteal.common.command.LSCommands;
-import mc.mian.lifesteal.common.blockentity.LSBlockEntityTypes;
 import mc.mian.lifesteal.common.data.LSData;
 import mc.mian.lifesteal.data.ForgeLSData;
 import mc.mian.lifesteal.util.LSConstants;
-import net.minecraft.client.renderer.blockentity.SkullBlockRenderer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.eventbus.api.listener.SubscribeEvent;
 
 public class LSEventHandlers {
-    @net.minecraftforge.fml.common.Mod.EventBusSubscriber(modid = LSConstants.MOD_ID, bus = net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
-    public static class ModClient{
-        @SubscribeEvent
-        public static void OnRenderersRegister(EntityRenderersEvent.RegisterRenderers event) {
-            event.registerBlockEntityRenderer(LSBlockEntityTypes.EXPANDED_SKULL.get(), SkullBlockRenderer::new);
-        }
-    }
-
     @net.minecraftforge.fml.common.Mod.EventBusSubscriber(modid = LSConstants.MOD_ID, bus = net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus.FORGE)
     public static class Common{
         @SubscribeEvent
