@@ -66,6 +66,30 @@ The config is located in the "config" folders in your MC directory or server fol
 - My friend was banned and didn't spawn a revive head! What do I do?!
   - Use the /ls reviveplayer command to bring back your friend.
 
+# Recipes
+![Recipes](others/recipes.png)
+
+### Heart Core
+|   |   |   |
+|---|---|---|
+| Heart Fragment | Heart Fragment | Heart Fragment |
+| Heart Fragment | Golden Apple | Heart Fragment |
+| Heart Fragment | Heart Fragment | Heart Fragment |
+
+### Heart Core Block
+|   |   |   |
+|---|---|---|
+| Heart Core | Heart Fragment | Heart Core |
+| Heart Fragment | Diamond | Heart Fragment |
+| Heart Core | Heart Fragment | Heart Core |
+
+### Heart Crystal
+|   |   |   |
+|---|---|---|
+| Heart Core Block | Heart of the sea | Heart Core Block |
+| Diamond | Heart Core | Diamond |
+| Blazing Rod | Heart Core Block | Golden Apple |
+
 #### ❗ Incompatibilities
 - Origins can be buggy at times, this is being looked into to be fixed for the near future
 
