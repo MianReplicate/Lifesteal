@@ -86,7 +86,7 @@ The config is located in the "config" folders in your MC directory or server fol
 ### Heart Crystal
 |   |   |   |
 |---|---|---|
-| Heart Core Block | Heart Fragment | Heart Core Block |
+| Heart Core Block | Heart of the sea | Heart Core Block |
 | Diamond | Heart Core | Diamond |
 | Blazing Rod | Heart Core Block | Golden Apple |
 
