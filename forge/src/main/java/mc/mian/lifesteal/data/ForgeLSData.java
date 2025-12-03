@@ -29,7 +29,7 @@ public class ForgeLSData extends LSData implements AutoCapLSData {
         this.dataMap.putIfAbsent(LSConstants.TIME_KILLED, 0L);
     }
 
-    public static void attach(final AttachCapabilitiesEvent<Entity> event) {
+    public static void attach(final AttachCapabilitiesEvent.Entities event) {
         class HeartCapProvider implements ICapabilityProvider, INBTSerializable<CompoundTag> {
 
             public static final ResourceLocation IDENTIFIER = LSConstants.modLoc(LSConstants.LIFESTEAL_DATA.getPath());

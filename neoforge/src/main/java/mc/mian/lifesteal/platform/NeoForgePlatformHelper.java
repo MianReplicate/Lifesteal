@@ -13,7 +13,7 @@ import java.util.Collection;
 
 public class NeoForgePlatformHelper implements IPlatformHelper {
     public boolean isProduction() {
-        return FMLLoader.isProduction();
+        return FMLLoader.getCurrent().isProduction();
     }
 
     public boolean isModLoaded(String id) {
@@ -25,11 +25,11 @@ public class NeoForgePlatformHelper implements IPlatformHelper {
     }
 
     public boolean isClient() {
-        return FMLEnvironment.dist == Dist.CLIENT;
+        return FMLEnvironment.getDist() == Dist.CLIENT;
     }
 
     public boolean isServer() {
-        return FMLEnvironment.dist == Dist.DEDICATED_SERVER;
+        return FMLEnvironment.getDist() == Dist.DEDICATED_SERVER;
     }
 
     public MinecraftServer getServer() {

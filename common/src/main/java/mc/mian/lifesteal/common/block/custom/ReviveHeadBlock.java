@@ -1,6 +1,7 @@
 package mc.mian.lifesteal.common.block.custom;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -43,7 +44,7 @@ public class ReviveHeadBlock extends PlayerHeadBlock implements EntityBlock, Liq
         BlockEntity blockEntity = level.getBlockEntity(blockPos);
 
         if (blockEntity instanceof SkullBlockEntity skullBlockEntity) {
-            skullBlockEntity.setOwner(itemStack.get(DataComponents.PROFILE));
+            skullBlockEntity.setComponents(DataComponentMap.builder().set(DataComponents.PROFILE, itemStack.get(DataComponents.PROFILE)).build());
         }
     }
 }

@@ -12,6 +12,7 @@ import mc.mian.lifesteal.platform.Services;
 import mc.mian.lifesteal.util.LSConstants;
 import mc.mian.lifesteal.util.LSUtil;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -19,6 +20,7 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.players.NameAndId;
 import net.minecraft.server.players.UserBanList;
 import net.minecraft.server.players.UserBanListEntry;
 import net.minecraft.util.Mth;
@@ -58,7 +60,7 @@ public class LSData implements ILSData {
             if(playerImpl.lifesteal$getRevived())
             {
                 Level level = this.livingEntity.level();
-                if (!level.isClientSide) {
+                if (!level.isClientSide()) {
                     if (serverPlayer.isSpectator()) {
                         serverPlayer.setGameMode(GameType.SURVIVAL);
                     }
@@ -86,7 +88,7 @@ public class LSData implements ILSData {
     public BlockPos spawnPlayerHead() {
         if (this.livingEntity instanceof ServerPlayer serverPlayer) {
             Level level = serverPlayer.level();
-            if (!level.isClientSide) {
+            if (!level.isClientSide()) {
                 BlockPos playerPos = serverPlayer.blockPosition();
 
                 int y = playerPos.getY();
@@ -120,7 +122,7 @@ public class LSData implements ILSData {
                         return null;
                     }
                     SkullBlockEntity playerHeadEntity = (SkullBlockEntity) ((ReviveHeadBlock)playerHeadState.getBlock()).newBlockEntity(targetPos, playerHeadState);
-                    playerHeadEntity.setOwner(new ResolvableProfile(serverPlayer.getGameProfile()));
+                    playerHeadEntity.setComponents(DataComponentMap.builder().set(DataComponents.PROFILE, ResolvableProfile.createResolved(serverPlayer.getGameProfile())).build());
                     level.setBlockEntity(playerHeadEntity);
 
                     BlockPos currentPos = playerHeadEntity.getBlockPos();
@@ -135,9 +137,9 @@ public class LSData implements ILSData {
     @Override
     public boolean dropPlayerHead(){
         if (this.livingEntity instanceof ServerPlayer serverPlayer) {
-            if (!serverPlayer.level().isClientSide) {
+            if (!serverPlayer.level().isClientSide()) {
                 ItemStack itemStack = new ItemStack(LSItems.REVIVE_HEAD_ITEM.get());
-                itemStack.set(DataComponents.PROFILE, new ResolvableProfile(serverPlayer.getGameProfile()));
+                itemStack.set(DataComponents.PROFILE, ResolvableProfile.createResolved(serverPlayer.getGameProfile()));
                 serverPlayer.drop(itemStack, true, false);
                 return true;
             }
@@ -156,7 +158,7 @@ public class LSData implements ILSData {
 
     @Override
     public <T> void setValue(ResourceLocation key, T value) {
-        if (!this.livingEntity.level().isClientSide) {
+        if (!this.livingEntity.level().isClientSide()) {
             Services.DATA_HELPER.setValue(this, key, value);
         }
     }
@@ -190,7 +192,7 @@ public class LSData implements ILSData {
 
     @Override
     public void tick(){
-        if(!this.livingEntity.level().isClientSide){
+        if(!this.livingEntity.level().isClientSide()){
             if(isBannable()){
                 if (this.livingEntity instanceof ServerPlayer serverPlayer) {
                     setValue(LSConstants.HEALTH_DIFFERENCE, LifeSteal.config.startingHealthDifference.get());
@@ -229,17 +231,14 @@ public class LSData implements ILSData {
                         deadcomponent = LSUtil.addComponents(deadcomponent, compPos);
                     }
 
-                    if (LSUtil.isMultiplayer(server, true) && LifeSteal.config.uponDeathBanned.get() && !server.getPlayerList().getBans().isBanned(serverPlayer.getGameProfile())) {
+                    if (LSUtil.isMultiplayer(server, true) && LifeSteal.config.uponDeathBanned.get() && !server.getPlayerList().getBans().isBanned(serverPlayer.nameAndId())) {
                         UserBanList userbanlist = server.getPlayerList().getBans();
-                        serverPlayer.getGameProfile();
-                        GameProfile gameprofile = serverPlayer.getGameProfile();
+                        NameAndId nameAndID = serverPlayer.nameAndId();
 
-                        UserBanListEntry userbanlistentry = new UserBanListEntry(gameprofile, null, LSConstants.MOD_ID, null, deadcomponent == null ? null : deadcomponent.getString());
+                        UserBanListEntry userbanlistentry = new UserBanListEntry(nameAndID, null, LSConstants.MOD_ID, null, deadcomponent == null ? null : deadcomponent.getString());
                         userbanlist.add(userbanlistentry);
 
-                        if (serverPlayer != null) {
-                            serverPlayer.connection.disconnect(deadcomponent);
-                        }
+                        serverPlayer.connection.disconnect(deadcomponent);
                     } else{
                         if (!serverPlayer.isSpectator()){
                             serverPlayer.setGameMode(GameType.SPECTATOR);
@@ -254,7 +253,7 @@ public class LSData implements ILSData {
     @Override
     public void refreshHealth(boolean healtoMax) {
 
-        if (!this.livingEntity.level().isClientSide) {
+        if (!this.livingEntity.level().isClientSide()) {
             final int defaultHealthDifference = LifeSteal.config.startingHealthDifference.get();
             final int maximumHealthGainable = LifeSteal.config.maximumHealthGainable.get();
             final int maximumHealthLoseable = LifeSteal.config.maximumHealthLoseable.get();

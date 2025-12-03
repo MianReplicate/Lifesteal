@@ -24,8 +24,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(value = Player.class)
 public abstract class PlayerMixin extends LivingEntity implements PlayerImpl {
-    @Shadow public abstract boolean killedEntity(ServerLevel level, LivingEntity entity);
-
     @Unique
     private boolean lifesteal$revived;
     protected PlayerMixin(EntityType<? extends LivingEntity> entityType, Level level) {
@@ -57,7 +55,7 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerImpl {
 
     @Inject(method = "tick", at = @At("HEAD"))
     private void tickMethod(final CallbackInfo info){
-        if(!this.level().isClientSide){
+        if(!this.level().isClientSide()){
             LSData.get(this).ifPresent(lifestealData -> {
                 // Are we at the amount where player should be banned based on their stats?
                 if(((Integer) lifestealData.getValue(LSConstants.HEALTH_DIFFERENCE)).doubleValue() <= lifestealData.getHPDifferenceRequiredForBan()){

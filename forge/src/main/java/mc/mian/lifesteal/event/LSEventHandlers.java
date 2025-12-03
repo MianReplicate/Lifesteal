@@ -42,7 +42,7 @@ public class LSEventHandlers {
         }
 
         @SubscribeEvent
-        public static void attachEntityCapabilities(final AttachCapabilitiesEvent<Entity> event) {
+        public static void attachEntityCapabilities(final AttachCapabilitiesEvent.Entities event) {
             if (event.getObject() instanceof Player) {
                 ForgeLSData.attach(event);
             }

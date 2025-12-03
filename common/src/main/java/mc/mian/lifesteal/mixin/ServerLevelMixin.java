@@ -13,6 +13,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.players.NameAndId;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -32,7 +33,7 @@ public abstract class ServerLevelMixin {
 
     @Inject(method = "tick", at = @At("HEAD"))
     private void tick(BooleanSupplier hasTimeLeft, CallbackInfo ci){
-        if(this.getLevel().dimension() == ServerLevel.OVERWORLD && !this.getLevel().isClientSide){
+        if(this.getLevel().dimension() == ServerLevel.OVERWORLD && !this.getLevel().isClientSide()){
             IndestructibleUtil.setIndestructibilityState(LSBlocks.REVIVE_HEAD.getId().toString(), LifeSteal.config.unbreakableReviveHeads.get());
             IndestructibleUtil.setIndestructibilityState(LSBlocks.REVIVE_WALL_HEAD.getId().toString(), LifeSteal.config.unbreakableReviveHeads.get());
 
@@ -40,14 +41,14 @@ public abstract class ServerLevelMixin {
             if(lifesteal$tickTime %20==0){
                 lifesteal$tickTime = 0;
                 if(LifeSteal.config.deathDuration.get() != 0){
-                    ImmutableMap<GameProfile, LSUtil.KilledType> gameProfiles = LSUtil.getDeadPlayers(this.getServer());
-                    gameProfiles.forEach((profile, killedType) -> {
-                        ServerPlayer player = this.getServer().getPlayerList().getPlayer(profile.getId());
+                    ImmutableMap<NameAndId, LSUtil.KilledType> gameProfiles = LSUtil.getDeadPlayers(this.getServer());
+                    gameProfiles.forEach((nameAndID, killedType) -> {
+                        ServerPlayer player = this.getServer().getPlayerList().getPlayer(nameAndID.id());
                         long TimeKilled = 0L;
                         if(player != null){
                             TimeKilled = LSData.get(player).get().getValue(LSConstants.TIME_KILLED);
                         } else {
-                            CompoundTag tag = LSUtil.getPlayerData(this.getServer(), profile);
+                            CompoundTag tag = LSUtil.getPlayerData(this.getServer(), nameAndID);
                             if(tag != null){
                                 TimeKilled = Services.DATA_HELPER.getLifestealDataFromTag(
                                         tag,
@@ -59,8 +60,8 @@ public abstract class ServerLevelMixin {
                         if(TimePassed >= LifeSteal.config.deathDuration.get() * 1000){
                             LSUtil.revivePlayer(
                                     this.getLevel(),
-                                    this.getLevel().getSharedSpawnPos(),
-                                    profile,
+                                    this.getLevel().getRespawnData().pos(),
+                                    nameAndID,
                                     false,
                                     true,
                                     null

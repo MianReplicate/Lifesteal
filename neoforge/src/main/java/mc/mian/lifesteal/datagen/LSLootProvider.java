@@ -9,6 +9,7 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.data.loot.LootTableSubProvider;
 import net.minecraft.data.loot.packs.VanillaBlockLoot;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.util.context.ContextKey;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.storage.loot.LootPool;
@@ -36,7 +37,7 @@ public class LSLootProvider {
             this.add(LSBlocks.DEEPSLATE_CRYSTAL_ORE.get(), (block) -> createOreDrop(block, LSItems.CRYSTAL_FRAGMENT.get()));
             this.add(LSBlocks.NETHERRACK_CRYSTAL_ORE.get(), (block) -> createOreDrop(block, LSItems.CRYSTAL_FRAGMENT.get()));
             this.add(LSBlocks.REVIVE_HEAD.get(), (block) -> LootTable.lootTable().withPool((LootPool.lootPool().add(LootItem.lootTableItem(LSItems.REVIVE_HEAD_ITEM.get())
-                    .apply(CopyComponentsFunction.copyComponents(CopyComponentsFunction.Source.BLOCK_ENTITY)
+                    .apply(CopyComponentsFunction.copyComponentsFromBlockEntity(new ContextKey<>(LSBlocks.REVIVE_HEAD.getId()))
                             .include(DataComponents.PROFILE).include(DataComponents.NOTE_BLOCK_SOUND))))));
             dropSelf(LSBlocks.CRYSTAL_BLOCK.get());
         }

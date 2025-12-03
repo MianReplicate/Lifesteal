@@ -23,6 +23,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.players.NameAndId;
 import net.minecraft.server.players.PlayerList;
 import net.minecraft.server.players.UserBanList;
 import net.minecraft.util.datafix.DataFixTypes;
@@ -90,8 +91,8 @@ public class LSUtil {
         return listTag;
     }
 
-    public static ImmutableMap<GameProfile, KilledType> getDeadPlayers(MinecraftServer server){
-        ImmutableMap.Builder<GameProfile, KilledType> builder = ImmutableMap.builder();
+    public static ImmutableMap<NameAndId, KilledType> getDeadPlayers(MinecraftServer server){
+        ImmutableMap.Builder<NameAndId, KilledType> builder = ImmutableMap.builder();
         PlayerList playerList = server.getPlayerList();
         List<ServerPlayer> serverPlayers = playerList.getPlayers();
 
@@ -105,11 +106,11 @@ public class LSUtil {
         serverPlayers.forEach(entry -> {
             if(entry.gameMode.getGameModeForPlayer() == GameType.SPECTATOR){
                 if((long) LSData.get(entry).get().getValue(LSConstants.TIME_KILLED) > 0L){
-                    builder.put(entry.getGameProfile(), KilledType.SPECTATOR);
+                    builder.put(entry.nameAndId(), KilledType.SPECTATOR);
                 }
             }
         });
-        ImmutableMap<GameProfile, KilledType> map = builder.build();
+        ImmutableMap<NameAndId, KilledType> map = builder.build();
         return map;
     }
 
@@ -141,7 +142,8 @@ public class LSUtil {
             File playerDir = levelStorageAccess.getLevelPath(LevelResource.PLAYER_DATA_DIR).toFile();
             Arrays.stream(playerDir.listFiles()).toList().forEach(file -> {
                 String[] splitString = file.getName().split(".dat");
-                GameProfile gameProfile = server.getProfileCache().get(UUID.fromString(splitString[0])).get();
+                var uuid = UUID.fromString(splitString[0]);
+                GameProfile gameProfile = server.services().nameToIdCache().get(uuid).map(nameAndId -> new GameProfile(nameAndId.id(), nameAndId.name())).orElse(null);
                 if(!gameProfiles.contains(gameProfile)){
                     gameProfiles.add(gameProfile);
                 }
@@ -150,11 +152,11 @@ public class LSUtil {
         return gameProfiles;
     }
 
-    public static CompoundTag getPlayerData(MinecraftServer server, GameProfile gameProfile){
+    public static CompoundTag getPlayerData(MinecraftServer server, NameAndId nameAndID){
         try{
             LevelStorageSource.LevelStorageAccess levelStorageAccess = server.storageSource;
             File playerDir = levelStorageAccess.getLevelPath(LevelResource.PLAYER_DATA_DIR).toFile();
-            String uuidString = gameProfile.getId().toString();
+            String uuidString = nameAndID.id().toString();
             File file = new File(playerDir, uuidString + ".dat");
             if (file.exists() && file.isFile())
             {
@@ -164,16 +166,16 @@ public class LSUtil {
                 throw new Exception("Soooo we couldn't get their data whomp whomp");
             }
         } catch (Exception var4){
-            LSConstants.LOGGER.warn("Failed to retrieve " + gameProfile.getName()+"'s data");
+            LSConstants.LOGGER.warn("Failed to retrieve " + nameAndID.name()+"'s data");
         }
         return null;
     }
 
-    public static boolean savePlayerData(MinecraftServer server, GameProfile gameProfile, CompoundTag compoundTag) {
+    public static boolean savePlayerData(MinecraftServer server, NameAndId nameAndID, CompoundTag compoundTag) {
         try {
             LevelStorageSource.LevelStorageAccess levelStorageAccess = server.storageSource;
             File playerDir = levelStorageAccess.getLevelPath(LevelResource.PLAYER_DATA_DIR).toFile();
-            String uuidString = gameProfile.getId().toString();
+            String uuidString = nameAndID.id().toString();
 
             Path path = playerDir.toPath();
             Path path2 = Files.createTempFile(path, uuidString + "-", ".dat");
@@ -183,17 +185,17 @@ public class LSUtil {
             Util.safeReplaceFile(path3, path2, path4);
             return true;
         } catch(Exception var4) {
-            LSConstants.LOGGER.warn("Failed to save "+ gameProfile.getName() + "'s data");
+            LSConstants.LOGGER.warn("Failed to save "+ nameAndID.name() + "'s data");
         }
         return false;
     }
 
-    private static boolean revivePlayerAtPos(MinecraftServer server, GameProfile gameProfile, BlockPos respawnPos, Level respawnLevel)
+    private static boolean revivePlayerAtPos(MinecraftServer server, NameAndId nameAndID, BlockPos respawnPos, Level respawnLevel)
     {
         try
         {
-            LSConstants.LOGGER.info("Attempting to set position and revive " + gameProfile.getName());
-            CompoundTag compoundTag = getPlayerData(server, gameProfile);
+            LSConstants.LOGGER.info("Attempting to set position and revive " + nameAndID.name());
+            CompoundTag compoundTag = getPlayerData(server, nameAndID);
 
             int i = NbtUtils.getDataVersion(compoundTag, -1);
             compoundTag = DataFixTypes.PLAYER.updateToCurrentVersion(server.getFixerUpper(), compoundTag, i);
@@ -202,15 +204,15 @@ public class LSUtil {
             compoundTag.put("Pos", newDoubleList(respawnPos.getX(), respawnPos.getY(), respawnPos.getZ()));
             compoundTag.putString("Dimension", respawnLevel.dimension().location().getPath());
 
-            if(savePlayerData(server, gameProfile, compoundTag)){
-                LSConstants.LOGGER.info("Successfully set position and revived " + gameProfile.getName());
+            if(savePlayerData(server, nameAndID, compoundTag)){
+                LSConstants.LOGGER.info("Successfully set position and revived " + nameAndID.name());
                 return true;
             }
 
             throw new Exception("somehow it fucked up");
         } catch (Exception var4)
         {
-            LSConstants.LOGGER.warn("Failed to set position and revive " + gameProfile.getName());
+            LSConstants.LOGGER.warn("Failed to set position and revive " + nameAndID.name());
         }
         return false;
     }
@@ -226,23 +228,23 @@ public class LSUtil {
         return currentComponent;
     }
 
-    public static boolean revivePlayer(ServerLevel level, BlockPos reviveAt, GameProfile profileToUnban, boolean enableLightningEffect, boolean silentRevive, Player optionalReviver) {
+    public static boolean revivePlayer(ServerLevel level, BlockPos reviveAt, NameAndId nameAndID, boolean enableLightningEffect, boolean silentRevive, Player optionalReviver) {
         boolean successful = false;
 
         MinecraftServer server = level.getServer();
-        ServerPlayer serverPlayer = server.getPlayerList().getPlayer(profileToUnban.getId());
+        ServerPlayer serverPlayer = server.getPlayerList().getPlayer(nameAndID.id());
         UserBanList userBanList = server.getPlayerList().getBans();
 
-        if(userBanList.isBanned(profileToUnban)){
-            userBanList.remove(profileToUnban);
-        }
-
         if (serverPlayer == null) {
-            if(revivePlayerAtPos(level.getServer(), profileToUnban, reviveAt, level))
+            if(revivePlayerAtPos(level.getServer(), nameAndID, reviveAt, level))
             {
                 successful = true;
             }
         } else {
+            if(userBanList.isBanned(nameAndID)){
+                userBanList.remove(nameAndID);
+            }
+
             serverPlayer.teleportTo(level, reviveAt.getX(), reviveAt.getY(), reviveAt.getZ(), Relative.ROTATION, serverPlayer.getYRot(), serverPlayer.getXRot(), true);
             ((PlayerImpl) serverPlayer).lifesteal$setRevived(true);
             successful = true;
@@ -261,7 +263,7 @@ public class LSUtil {
             }
 
             if (!silentRevive) {
-                Component component = Component.translatable("chat.message.lifesteal.revived_player", profileToUnban.getName()).withStyle(ChatFormatting.YELLOW);
+                Component component = Component.translatable("chat.message.lifesteal.revived_player", nameAndID.name()).withStyle(ChatFormatting.YELLOW);
                 level.getServer().getPlayerList().broadcastSystemMessage(component, false);
             } else if(optionalReviver != null) {
                 optionalReviver.displayClientMessage(Component.translatable("gui.lifesteal.revived"), true);
@@ -286,7 +288,7 @@ public class LSUtil {
     }
 
     public static void gainHealth(LivingEntity livingEntity, Integer health){
-        if(livingEntity.level().isClientSide) return;
+        if(livingEntity.level().isClientSide()) return;
 
         LSData.get(livingEntity).ifPresent(lsData -> {
             int newheartDifference = health != null ? health : (int) lsData.getValue(LSConstants.HEALTH_DIFFERENCE) + LifeSteal.config.heartCrystalAmountGain.get();

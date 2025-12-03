@@ -31,11 +31,11 @@ public class LSAdvancementsProvider extends AdvancementProvider {
         return simpleDisplayWithBackground(icon, name, frameType, null);
     }
 
-    private static DisplayInfo simpleDisplayWithBackground(ItemLike icon, String name, AdvancementType frameType, @Nullable ClientAsset background) {
+    private static DisplayInfo simpleDisplayWithBackground(ItemLike icon, String name, AdvancementType frameType, @Nullable ClientAsset.ResourceTexture background) {
         return display(new ItemStack(icon), name, frameType, background, true, true, false);
     }
 
-    private static DisplayInfo display(ItemStack icon, String name, AdvancementType frameType, ClientAsset background, boolean showToast, boolean announceChat, boolean hidden) {
+    private static DisplayInfo display(ItemStack icon, String name, AdvancementType frameType, ClientAsset.ResourceTexture background, boolean showToast, boolean announceChat, boolean hidden) {
         String expandedName = "advancement." + LSConstants.MOD_ID + ":" + name;
         return new DisplayInfo(icon, Component.translatable(expandedName), Component.translatable(expandedName + ".desc"), Optional.ofNullable(background), frameType, showToast, announceChat, hidden);
     }
@@ -49,7 +49,7 @@ public class LSAdvancementsProvider extends AdvancementProvider {
                             LSItems.CRYSTAL_FRAGMENT.get().getDefaultInstance(),
                             "root",
                             AdvancementType.TASK,
-                            new ClientAsset(LSConstants.modLoc("block/crystal_block")),
+                            new ClientAsset.ResourceTexture(LSConstants.modLoc("block/crystal_block")),
                             false,
                             false,
                             false))

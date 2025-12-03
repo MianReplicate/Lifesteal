@@ -56,9 +56,9 @@ public class CrystalCoreItem extends Item {
     @Override
     public ItemStack finishUsingItem(ItemStack item, Level level, LivingEntity entity) {
         boolean success = false;
-        if(!level.isClientSide){
+        if(!level.isClientSide()){
             if (!LifeSteal.config.coreInstantUse.get()) {
-                if (!level.isClientSide) {
+                if (!level.isClientSide()) {
                     success = useCrystalCore(entity);
                 }
             } else {
@@ -71,7 +71,7 @@ public class CrystalCoreItem extends Item {
 
     @Override
     public InteractionResult use(Level level, Player player, InteractionHand interactionHand) {
-        if(!level.isClientSide){
+        if(!level.isClientSide()){
             ItemStack item = player.getItemInHand(interactionHand);
             if (LifeSteal.config.coreInstantUse.get()) {
                 item.set(DataComponents.FOOD, null);

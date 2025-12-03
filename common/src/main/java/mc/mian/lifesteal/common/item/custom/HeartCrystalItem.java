@@ -75,7 +75,7 @@ public class HeartCrystalItem extends Item {
     @Override
     public ItemStack finishUsingItem(ItemStack item, Level level, LivingEntity entity) {
         boolean success = false;
-        if(!level.isClientSide){
+        if(!level.isClientSide()){
             if (!LifeSteal.config.crystalInstantUse.get()) {
                 success = useHeartCrystal(item, level, entity);
             } else {
@@ -87,7 +87,7 @@ public class HeartCrystalItem extends Item {
 
     @Override
     public InteractionResult use(Level level, Player player, InteractionHand interactionHand) {
-        if(!level.isClientSide){
+        if(!level.isClientSide()){
             ItemStack item = player.getItemInHand(interactionHand);
             if (LifeSteal.config.crystalInstantUse.get()) {
                 item.set(DataComponents.FOOD, null);

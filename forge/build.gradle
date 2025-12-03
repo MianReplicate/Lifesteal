@@ -71,7 +71,7 @@ dependencies {
     }
 
     implementation("mysticdrew:common-networking-forge:${common_networking_version}")
-    implementation("mc.mian:indestructible_blocks:${indestructible_blocks_version}+${minecraft_version}-forge")
+    implementation("mc.mian:indestructible_blocks:${indestructible_blocks_version}-forge")
 
     // Forge's hack fix
     implementation('net.sf.jopt-simple:jopt-simple:5.0.4') { version { strictly '5.0.4' } }

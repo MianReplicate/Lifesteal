@@ -7,6 +7,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.players.NameAndId;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -24,7 +25,7 @@ public class ReviveCrystalItem extends Item {
 
     @Override
     public @NotNull InteractionResult useOn(UseOnContext useOnContext) {
-        if (!useOnContext.getLevel().isClientSide) {
+        if (!useOnContext.getLevel().isClientSide()) {
             Level level = useOnContext.getLevel();
             Player player = useOnContext.getPlayer();
 
@@ -44,19 +45,19 @@ public class ReviveCrystalItem extends Item {
                 ResolvableProfile gameprofile = blockEntity.getOwnerProfile();
                 if (gameprofile == null) {
                     player.displayClientMessage(Component.translatable("gui.lifesteal.null_revive_block"), true);
-                }
-
-                if (LSUtil.revivePlayer(
-                        (ServerLevel) level,
-                        blockPos,
-                        gameprofile.gameProfile(),
-                        !LifeSteal.config.disableLightningEffect.get(),
-                        LifeSteal.config.silentlyRevivePlayer.get(),
-                        player)) {
-                    itemStack.shrink(1);
-                    LSCriteria.REVIVED.trigger((ServerPlayer) player);
                 } else {
-                    player.displayClientMessage(Component.translatable("gui.lifesteal.error_revive_block"), true);
+                    if (LSUtil.revivePlayer(
+                            (ServerLevel) level,
+                            blockPos,
+                            new NameAndId(gameprofile.partialProfile()),
+                            !LifeSteal.config.disableLightningEffect.get(),
+                            LifeSteal.config.silentlyRevivePlayer.get(),
+                            player)) {
+                        itemStack.shrink(1);
+                        LSCriteria.REVIVED.trigger((ServerPlayer) player);
+                    } else {
+                        player.displayClientMessage(Component.translatable("gui.lifesteal.error_revive_block"), true);
+                    }
                 }
 
             } else {
