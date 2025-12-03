@@ -1,3 +1,3 @@
-# Version 10.0.5
+# Version 10.0.6
 ## Changes:
-- Fixed crashes relating to NBT data
+- Fixed access widener not applying on Fabric

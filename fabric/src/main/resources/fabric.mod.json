@@ -5,6 +5,7 @@
   "icon": "${logo_file}",
   "name": "${mod_name}",
   "description": "${mod_description}",
+  "accessWidener": "${mod_id}.accesswidener",
   "authors": [
     "MianReplicate",
     "bredtxt",
