@@ -116,16 +116,16 @@ public class LSConfig {
         builder.push("Withdrawing");
         this.advancementUsedForWithdrawing = buildString(builder, "Advancement needed to unlock Withdrawing:", "lifesteal:get_heart_crystal", "Determines which achievement must be obtained before the player may use the withdraw command. Leave the quotations empty to have the feature unlocked by default. You can use /advancement to figure out advancement IDs.");
         this.textUsedForRequirementOnWithdrawing = buildString(builder, "Text to display if Withdrawing isn't unlocked:", "You need to at least have gotten one heart crystal in this world to withdraw", "Determines the message sent to players who try using the withdraw command before they have unlocked it.");
-        this.adminNeededForWithdraw = buildBoolean(builder, "OP Required:", false, null);
+        this.adminNeededForWithdraw = buildBoolean(builder, "OP Required:", false, "Set whether OP is needed for this command or not.");
         builder.pop();
         builder.push("Set-Hitpoints");
-        this.adminNeededForSetHP = buildBoolean(builder, "OP Required:", true, null);
+        this.adminNeededForSetHP = buildBoolean(builder, "OP Required:", true, "Set whether OP is needed for this command or not.");
         builder.pop();
         builder.push("Get-Hitpoints");
-        this.adminNeededForGetHP = buildBoolean(builder, "OP Required:", true, null);
+        this.adminNeededForGetHP = buildBoolean(builder, "OP Required:", true, "Set whether OP is needed for this command or not.");
         builder.pop();
         builder.push("Reviving Players");
-        this.adminNeededForRevive = buildBoolean(builder, "OP Required:", true, null);
+        this.adminNeededForRevive = buildBoolean(builder, "OP Required:", true, "Set whether OP is needed for this command or not.");
         builder.pop();
 
         builder.pop();
