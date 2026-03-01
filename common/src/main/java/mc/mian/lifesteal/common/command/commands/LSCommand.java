@@ -25,23 +25,30 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.permissions.PermissionCheck;
+import net.minecraft.server.permissions.PermissionProviderCheck;
+import net.minecraft.server.permissions.PermissionSetSupplier;
+import net.minecraft.server.permissions.Permissions;
 import net.minecraft.server.players.NameAndId;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.common.ForgeConfigSpec;
 
 import java.util.*;
+import java.util.function.Predicate;
 
 public class LSCommand {
+
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(
                 Commands.literal("ls")
                         .then(Commands.literal("reviveplayer")
-                                .requires((commandSource -> commandSource.hasPermission(LifeSteal.config.permissionLevelForRevival.get())))
+                                .requires(hasPermission(LifeSteal.config.adminNeededForRevive))
                                 .then(Commands.argument("players", GameProfileArgument.gameProfile())
                                         .suggests((commandContext, suggestionsBuilder) -> {
                                             ArrayList<String> suggestList = new ArrayList<>();
@@ -58,12 +65,12 @@ public class LSCommand {
                                                         .then(Commands.argument("silentlyRevive", BoolArgumentType.bool())
                                                                 .executes((command) -> revivePlayer(command.getSource(), GameProfileArgument.getGameProfiles(command, "players"),Vec3Argument.getVec3(command, "location"), BoolArgumentType.getBool(command, "enableLightning"), BoolArgumentType.getBool(command, "silentlyRevive"))))))))
                         .then(Commands.literal("withdraw")
-                                .requires((commandSource) -> commandSource.hasPermission(LifeSteal.config.permissionLevelForWithdraw.get()))
+                                .requires(hasPermission(LifeSteal.config.adminNeededForWithdraw))
                                 .executes((command) -> withdraw(command.getSource(), 1))
                                 .then(Commands.argument("amount", IntegerArgumentType.integer(1, 99))
                                         .executes((command) -> withdraw(command.getSource(), IntegerArgumentType.getInteger(command, "amount")))))
                         .then(Commands.literal("gethitpoints")
-                                .requires((commandSource) -> commandSource.hasPermission(LifeSteal.config.permissionLevelForGettingHitPoints.get()))
+                                .requires(hasPermission(LifeSteal.config.adminNeededForGetHP))
                                 .executes((command) -> getHitPoint(command.getSource(), List.of(Objects.requireNonNull(command.getSource().getPlayer()).nameAndId())))
                                 .then(Commands.argument("players", GameProfileArgument.gameProfile())
                                         .suggests(((context, builder) -> {
@@ -74,7 +81,7 @@ public class LSCommand {
                                         }))
                                         .executes((command) -> getHitPoint(command.getSource(), GameProfileArgument.getGameProfiles(command, "players"))))
                         ).then(Commands.literal("sethitpoints")
-                                .requires((commandSource) -> commandSource.hasPermission(LifeSteal.config.permissionLevelForSettingHitPoints.get()))
+                                .requires(hasPermission(LifeSteal.config.adminNeededForSetHP))
                                 .then(Commands.argument("amount", IntegerArgumentType.integer())
                                         .executes((command) -> setHitPoint(command.getSource(), List.of(Objects.requireNonNull(command.getSource().getPlayer()).nameAndId()), IntegerArgumentType.getInteger(command, "amount"))))
                                 .then(Commands.argument("players", GameProfileArgument.gameProfile())
@@ -87,13 +94,17 @@ public class LSCommand {
                                         .then(Commands.argument("amount", IntegerArgumentType.integer())
                                                 .executes((command) -> setHitPoint(command.getSource(), GameProfileArgument.getGameProfiles(command, "players"), IntegerArgumentType.getInteger(command, "amount"))))))
                         .then(Commands.literal("testHealthMod")
-                                .requires((commandSourceStack -> commandSourceStack.hasPermission(Commands.LEVEL_ADMINS)))
+                                .requires(Commands.hasPermission(Commands.LEVEL_ADMINS)))
                                 .then(Commands.argument("resource", StringArgumentType.string())
                                         .then(Commands.argument("set", IntegerArgumentType.integer())
                                                 .then(Commands.argument("operation", StringArgumentType.word())
                                                         .suggests((context, builder) ->
                                                              SharedSuggestionProvider.suggest(List.of("add_value", "add_multiplied_base", "add_multiplied_total"), builder))
-                                                        .executes((source) -> testHealthMod(source.getSource(), StringArgumentType.getString(source, "resource"), IntegerArgumentType.getInteger(source, "set"), StringArgumentType.getString(source, "operation"))))))));
+                                                        .executes((source) -> testHealthMod(source.getSource(), StringArgumentType.getString(source, "resource"), IntegerArgumentType.getInteger(source, "set"), StringArgumentType.getString(source, "operation")))))));
+    }
+
+    public static Predicate<CommandSourceStack> hasPermission(ForgeConfigSpec.BooleanValue booleanValue){
+        return booleanValue.get() ? Commands.hasPermission(Commands.LEVEL_ADMINS) : Commands.hasPermission(Commands.LEVEL_ALL);
     }
 
     private static int testHealthMod(CommandSourceStack source, String resourceToCreate, int setMod, String operation) throws CommandSyntaxException {
@@ -135,7 +146,7 @@ public class LSCommand {
         final int startingHitPointDifference = LifeSteal.config.startingHealthDifference.get();
         String advancementUsed = (String) LifeSteal.config.advancementUsedForWithdrawing.get();
 
-        if (serverPlayer.getAdvancements().getOrStartProgress(Advancement.Builder.advancement().build(ResourceLocation.tryParse(advancementUsed))).isDone() || advancementUsed.isEmpty() || serverPlayer.isCreative()) {
+        if (serverPlayer.getAdvancements().getOrStartProgress(Advancement.Builder.advancement().build(Identifier.tryParse(advancementUsed))).isDone() || advancementUsed.isEmpty() || serverPlayer.isCreative()) {
             LSData lifestealData = LSData.get(serverPlayer).get();
 
             int newHealthDifference = (int) lifestealData.getValue(LSConstants.HEALTH_DIFFERENCE) - (LifeSteal.config.heartCrystalAmountGain.get() * amount);

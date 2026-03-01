@@ -6,7 +6,7 @@ import mc.mian.lifesteal.data.FabricLSData;
 import mc.mian.lifesteal.platform.services.IDataHelper;
 import mc.mian.lifesteal.util.LSConstants;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.LivingEntity;
 
 import java.util.Collection;
@@ -22,15 +22,15 @@ public class FabricDataHelper implements IDataHelper {
         }
     }
 
-    public Collection<ResourceLocation> getKeys(LSData lifestealData){
+    public Collection<Identifier> getKeys(LSData lifestealData){
         return ((FabricLSData) lifestealData).dataMap.keySet();
     }
 
-    public <T> T getValue(LSData lifestealData, ResourceLocation key) {
+    public <T> T getValue(LSData lifestealData, Identifier key) {
         return (T) ((FabricLSData) lifestealData).dataMap.get(key);
     }
 
-    public <T> void setValue(LSData lifestealData, ResourceLocation key, T value) {
+    public <T> void setValue(LSData lifestealData, Identifier key, T value) {
         ((FabricLSData) lifestealData).dataMap.put(key, value);
     }
 

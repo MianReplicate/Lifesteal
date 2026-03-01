@@ -9,7 +9,7 @@ import net.minecraft.client.data.models.ModelProvider;
 import net.minecraft.client.data.models.model.ModelLocationUtils;
 import net.minecraft.client.data.models.model.ModelTemplates;
 import net.minecraft.data.PackOutput;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.SkullBlock;
 
 public class LSModelProvider extends ModelProvider {
@@ -29,7 +29,7 @@ public class LSModelProvider extends ModelProvider {
         itemModels.generateFlatItem(LSItems.HEART_CRYSTAL.get(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(LSItems.REVIVE_CRYSTAL.get(), ModelTemplates.FLAT_ITEM);
 
-        ResourceLocation resourceLocation = ModelLocationUtils.decorateItemModelLocation("template_skull");
-        blockModels.createHead(LSBlocks.REVIVE_HEAD.get(), LSBlocks.REVIVE_WALL_HEAD.get(), SkullBlock.Types.PLAYER, resourceLocation);
+        Identifier Identifier = ModelLocationUtils.decorateItemModelLocation("template_skull");
+        blockModels.createHead(LSBlocks.REVIVE_HEAD.get(), LSBlocks.REVIVE_WALL_HEAD.get(), SkullBlock.Types.PLAYER, Identifier);
     }
 }

@@ -3,7 +3,7 @@ package mc.mian.lifesteal.api;
 import mc.mian.lifesteal.util.Serializable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.LivingEntity;
 
 import java.util.Collection;
@@ -17,9 +17,9 @@ public interface ILSData extends Serializable<CompoundTag> {
     double getAmountOfModifiedHealth(boolean includeHeartDifference);
     double getHPDifferenceRequiredForBan();
     void tick();
-    Collection<ResourceLocation> getKeys();
-    <T> T getValue(ResourceLocation key);
-    <T> void setValue(ResourceLocation key, T value);
+    Collection<Identifier> getKeys();
+    <T> T getValue(Identifier key);
+    <T> void setValue(Identifier key, T value);
     void refreshHealth(boolean healtoMax);
 }
 

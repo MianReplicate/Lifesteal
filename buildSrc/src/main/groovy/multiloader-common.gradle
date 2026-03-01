@@ -42,8 +42,7 @@ repositories {
         filter { includeGroup('org.parchmentmc.data') }
     }
     maven {
-        name = 'BlameJared'
-        url = 'https://maven.blamejared.com'
+        url = "https://jm.gserv.me/repository/maven-public/"
     }
     maven {
         name = "Fuzs Mod Resources"

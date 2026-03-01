@@ -40,10 +40,10 @@ public class LSConfig {
     public final ForgeConfigSpec.BooleanValue playerDropsHeartCrystalWhenKilled;
     public final ForgeConfigSpec.BooleanValue playerDropsHeartCrystalWhenKillerHasMax;
     public final ForgeConfigSpec.BooleanValue uponDeathBanned;
-    public final ForgeConfigSpec.IntValue permissionLevelForRevival;
-    public final ForgeConfigSpec.IntValue permissionLevelForWithdraw;
-    public final ForgeConfigSpec.IntValue permissionLevelForSettingHitPoints;
-    public final ForgeConfigSpec.IntValue permissionLevelForGettingHitPoints;
+    public final ForgeConfigSpec.BooleanValue adminNeededForRevive;
+    public final ForgeConfigSpec.BooleanValue adminNeededForWithdraw;
+    public final ForgeConfigSpec.BooleanValue adminNeededForSetHP;
+    public final ForgeConfigSpec.BooleanValue adminNeededForGetHP;
     public final ForgeConfigSpec.BooleanValue unbreakableReviveHeads;
     public final ForgeConfigSpec.BooleanValue banDynamicHearts;
 
@@ -110,22 +110,22 @@ public class LSConfig {
         this.tellPlayersIfReachedMaxHearts = buildBoolean(builder, "Notify players if they have max HP:", true, "Determines if players attempting to use a Heart Crystal should be notified if they are already at the maximum.");
         this.playerDropsHeartCrystalWhenKillerHasMax = buildBoolean(builder, "Players drop a Heart Crystal when killer has max HP", false, "Determines players should drop a Heart Crystal even if the killer has the maximum HP. NOTE: This requires Maximum Hitpoints to be enabled.");
         builder.pop();
-        builder.comment("Settings related to commands. Permission Levels range from 0 to 4, 0: Everyone, 1: Moderators, 2: Gamemasters, 3: Admins, 4: Owners");
+        builder.comment("Settings related to commands.");
         builder.push("Commands");
         this.tellPlayersIfHitPointChanged = buildBoolean(builder, "Notify players if their HP is changed:", true, "Notify players when their HP has been changed by an admin.");
         builder.push("Withdrawing");
         this.advancementUsedForWithdrawing = buildString(builder, "Advancement needed to unlock Withdrawing:", "lifesteal:get_heart_crystal", "Determines which achievement must be obtained before the player may use the withdraw command. Leave the quotations empty to have the feature unlocked by default. You can use /advancement to figure out advancement IDs.");
         this.textUsedForRequirementOnWithdrawing = buildString(builder, "Text to display if Withdrawing isn't unlocked:", "You need to at least have gotten one heart crystal in this world to withdraw", "Determines the message sent to players who try using the withdraw command before they have unlocked it.");
-        this.permissionLevelForWithdraw = buildInt(builder, "Permission Level:", Commands.LEVEL_ALL, Commands.LEVEL_ALL, Commands.LEVEL_OWNERS, null);
+        this.adminNeededForWithdraw = buildBoolean(builder, "OP Required:", false, null);
         builder.pop();
         builder.push("Set-Hitpoints");
-        this.permissionLevelForSettingHitPoints = buildInt(builder, "Permission Level:", Commands.LEVEL_GAMEMASTERS, Commands.LEVEL_ALL, Commands.LEVEL_OWNERS, null);
+        this.adminNeededForSetHP = buildBoolean(builder, "OP Required:", true, null);
         builder.pop();
         builder.push("Get-Hitpoints");
-        this.permissionLevelForGettingHitPoints = buildInt(builder, "Permission Level:", Commands.LEVEL_GAMEMASTERS, Commands.LEVEL_ALL, Commands.LEVEL_OWNERS, null);
+        this.adminNeededForGetHP = buildBoolean(builder, "OP Required:", true, null);
         builder.pop();
         builder.push("Reviving Players");
-        this.permissionLevelForRevival = buildInt(builder, "Permission Level:", Commands.LEVEL_GAMEMASTERS, Commands.LEVEL_ALL, Commands.LEVEL_OWNERS, null);
+        this.adminNeededForRevive = buildBoolean(builder, "OP Required:", true, null);
         builder.pop();
 
         builder.pop();

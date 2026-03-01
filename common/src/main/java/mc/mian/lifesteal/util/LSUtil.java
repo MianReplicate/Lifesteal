@@ -11,7 +11,6 @@ import mc.mian.lifesteal.common.item.LSItems;
 import mc.mian.lifesteal.common.network.custom.HeartGainedPacket;
 import mc.mian.lifesteal.common.data.LSData;
 import net.minecraft.ChatFormatting;
-import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
@@ -19,13 +18,14 @@ import net.minecraft.nbt.*;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.players.NameAndId;
 import net.minecraft.server.players.PlayerList;
 import net.minecraft.server.players.UserBanList;
+import net.minecraft.util.Util;
 import net.minecraft.util.datafix.DataFixTypes;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
@@ -52,26 +52,26 @@ import java.util.*;
 
 public class LSUtil {
     public static ResourceKey<PlacedFeature> createPlacedFeature(String domain, String name){
-        return ResourceKey.create(Registries.PLACED_FEATURE, ResourceLocation.fromNamespaceAndPath(domain, name));
+        return ResourceKey.create(Registries.PLACED_FEATURE, Identifier.fromNamespaceAndPath(domain, name));
     }
     public static ResourceKey<ConfiguredFeature<?, ?>> createConfiguredFeature(String domain, String name){
-        return ResourceKey.create(Registries.CONFIGURED_FEATURE, ResourceLocation.fromNamespaceAndPath(domain, name));
+        return ResourceKey.create(Registries.CONFIGURED_FEATURE, Identifier.fromNamespaceAndPath(domain, name));
     }
 
     public static ResourceKey<LootTable> createLootTable(String domain, String name){
-        return ResourceKey.create(Registries.LOOT_TABLE, ResourceLocation.fromNamespaceAndPath(domain, name));
+        return ResourceKey.create(Registries.LOOT_TABLE, Identifier.fromNamespaceAndPath(domain, name));
     }
 
     public static ResourceKey<StructureTemplatePool> createTemplatePool(String domain, String name) {
-        return ResourceKey.create(Registries.TEMPLATE_POOL, ResourceLocation.fromNamespaceAndPath(domain, name));
+        return ResourceKey.create(Registries.TEMPLATE_POOL, Identifier.fromNamespaceAndPath(domain, name));
     }
 
     public static ResourceKey<StructureSet> createStructureSet(String domain, String name) {
-        return ResourceKey.create(Registries.STRUCTURE_SET, ResourceLocation.fromNamespaceAndPath(domain, name));
+        return ResourceKey.create(Registries.STRUCTURE_SET, Identifier.fromNamespaceAndPath(domain, name));
     }
 
     public static ResourceKey<Structure> createStructure(String domain, String name) {
-        return ResourceKey.create(Registries.STRUCTURE, ResourceLocation.fromNamespaceAndPath(domain, name));
+        return ResourceKey.create(Registries.STRUCTURE, Identifier.fromNamespaceAndPath(domain, name));
     }
 
     public enum KilledType{
@@ -202,7 +202,7 @@ public class LSUtil {
 
             compoundTag.putBoolean("Revived", true);
             compoundTag.put("Pos", newDoubleList(respawnPos.getX(), respawnPos.getY(), respawnPos.getZ()));
-            compoundTag.putString("Dimension", respawnLevel.dimension().location().getPath());
+            compoundTag.putString("Dimension", respawnLevel.dimension().identifier().getPath());
 
             if(savePlayerData(server, nameAndID, compoundTag)){
                 LSConstants.LOGGER.info("Successfully set position and revived " + nameAndID.name());

@@ -3,7 +3,7 @@ package mc.mian.lifesteal.event;
 import mc.mian.lifesteal.util.LSConstants;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import mc.mian.lifesteal.common.data.LSData;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 import java.util.Collection;
 
@@ -12,7 +12,7 @@ public class LSEvents {
         LSConstants.LOGGER.debug("Registering ModEvents for " + LSConstants.MOD_ID);
         ServerPlayerEvents.COPY_FROM.register(((oldPlayer, newPlayer, alive) -> LSData.get(oldPlayer).ifPresent(oldData -> LSData.get(newPlayer).ifPresent(newData ->
         {
-            Collection<ResourceLocation> keys = newData.getKeys();
+            Collection<Identifier> keys = newData.getKeys();
             keys.forEach(key -> newData.setValue(key, oldData.getValue(key)));
             newData.refreshHealth(!alive);
         }))));

@@ -7,7 +7,7 @@ import mc.mian.lifesteal.util.LSConstants;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.common.capabilities.Capability;
@@ -21,7 +21,7 @@ import javax.annotation.Nullable;
 import java.util.HashMap;
 
 public class ForgeLSData extends LSData implements AutoCapLSData {
-    public final HashMap<ResourceLocation, Object> dataMap = new HashMap<>();
+    public final HashMap<Identifier, Object> dataMap = new HashMap<>();
 
     public ForgeLSData(LivingEntity entity) {
         super(entity);
@@ -32,7 +32,7 @@ public class ForgeLSData extends LSData implements AutoCapLSData {
     public static void attach(final AttachCapabilitiesEvent.Entities event) {
         class HeartCapProvider implements ICapabilityProvider, INBTSerializable<CompoundTag> {
 
-            public static final ResourceLocation IDENTIFIER = LSConstants.modLoc(LSConstants.LIFESTEAL_DATA.getPath());
+            public static final Identifier IDENTIFIER = LSConstants.modLoc(LSConstants.LIFESTEAL_DATA.getPath());
             private final AutoCapLSData backend = new ForgeLSData((LivingEntity) event.getObject());
             private final LazyOptional<AutoCapLSData> optionalData = LazyOptional.of(() -> backend);
 

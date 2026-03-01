@@ -5,7 +5,7 @@ import mc.mian.lifesteal.common.item.LSItems;
 import mc.mian.lifesteal.util.LSConstants;
 import mc.mian.lifesteal.util.LSTags;
 import net.minecraft.data.PackOutput;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.neoforged.neoforge.common.data.LanguageProvider;
 
 public class LSLangProvider extends LanguageProvider {
@@ -13,7 +13,7 @@ public class LSLangProvider extends LanguageProvider {
         super(output, LSConstants.MOD_ID, "en_us");
     }
 
-    public void addAdvancement(ResourceLocation advancementLocation, String title, String desc){
+    public void addAdvancement(Identifier advancementLocation, String title, String desc){
         add("advancement."+LSConstants.MOD_ID+":"+advancementLocation.getPath(), title);
         add("advancement."+LSConstants.MOD_ID+":"+advancementLocation.getPath()+".desc", desc);
     }

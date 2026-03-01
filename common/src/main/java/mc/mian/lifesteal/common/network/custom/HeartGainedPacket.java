@@ -9,11 +9,11 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvents;
 
 public class HeartGainedPacket {
-    public static final ResourceLocation CHANNEL = LSConstants.modLoc("heart_gained");
+    public static final Identifier CHANNEL = LSConstants.modLoc("heart_gained");
     public static final StreamCodec<FriendlyByteBuf, HeartGainedPacket> STREAM_CODEC =
             StreamCodec.ofMember(HeartGainedPacket::encode, HeartGainedPacket::new);
 

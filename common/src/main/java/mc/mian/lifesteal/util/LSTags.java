@@ -1,7 +1,7 @@
 package mc.mian.lifesteal.util;
 
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
@@ -20,22 +20,22 @@ public class LSTags {
     public static TagKey<Item> ORIGINS_IGNORE_DIET = makeItem("origins", "ignore_diet");
 
     private static TagKey<Item> makeItem(String domain, String path) {
-        return TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(domain, path));
+        return TagKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(domain, path));
     }
 
     private static TagKey<Block> makeBlock(String domain, String path) {
-        return TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(domain, path));
+        return TagKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(domain, path));
     }
 
     private static TagKey<EntityType<?>> makeEntityType(String domain, String path) {
-        return TagKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(domain, path));
+        return TagKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(domain, path));
     }
 
     private static TagKey<Structure> makeStructure(String domain, String path) {
-        return TagKey.create(Registries.STRUCTURE, ResourceLocation.fromNamespaceAndPath(domain, path));
+        return TagKey.create(Registries.STRUCTURE, Identifier.fromNamespaceAndPath(domain, path));
     }
 
     private static TagKey<Biome> makeBiome(String domain, String path) {
-        return TagKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath(domain, path));
+        return TagKey.create(Registries.BIOME, Identifier.fromNamespaceAndPath(domain, path));
     }
 }

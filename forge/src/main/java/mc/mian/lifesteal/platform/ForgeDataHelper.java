@@ -6,7 +6,7 @@ import mc.mian.lifesteal.data.ForgeLSCapabilities;
 import mc.mian.lifesteal.platform.services.IDataHelper;
 import mc.mian.lifesteal.util.LSConstants;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.LivingEntity;
 
 import java.util.Collection;
@@ -18,15 +18,15 @@ public class ForgeDataHelper implements IDataHelper {
         return Optional.ofNullable((LSData) entity.getCapability(ForgeLSCapabilities.LIFESTEAL_DATA).resolve().orElse(null));
     }
 
-    public Collection<ResourceLocation> getKeys(LSData lifestealData){
+    public Collection<Identifier> getKeys(LSData lifestealData){
         return ((ForgeLSData) lifestealData).dataMap.keySet();
     }
 
-    public <T> T getValue(LSData lifestealData, ResourceLocation key) {
+    public <T> T getValue(LSData lifestealData, Identifier key) {
         return (T) ((ForgeLSData) lifestealData).dataMap.get(key);
     }
 
-    public <T> void setValue(LSData lifestealData, ResourceLocation key, T value) {
+    public <T> void setValue(LSData lifestealData, Identifier key, T value) {
         ((ForgeLSData) lifestealData).dataMap.put(key, value);
     }
 

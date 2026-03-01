@@ -5,7 +5,7 @@ import mc.mian.lifesteal.data.LSDataAttachments;
 import mc.mian.lifesteal.data.NeoForgeLSData;
 import mc.mian.lifesteal.platform.services.IDataHelper;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.LivingEntity;
 import net.neoforged.neoforge.attachment.AttachmentType;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -20,7 +20,7 @@ public class NeoForgeDataHelper implements IDataHelper {
         return NeoForgeLSData.get(entity).map(iLSData -> (LSData) iLSData);
     }
 
-    private AttachmentType<?> getAttachmentFromLocation(ResourceLocation data){
+    private AttachmentType<?> getAttachmentFromLocation(Identifier data){
         for (int i = 0; i < LSDataAttachments.ATTACHMENT_TYPES.getEntries().stream().count(); i++) {
             DeferredHolder<AttachmentType<?>, ? extends AttachmentType<?>> attachment = LSDataAttachments.ATTACHMENT_TYPES.getEntries().stream().toList().get(i);
             if(attachment.is(data)){
@@ -30,8 +30,8 @@ public class NeoForgeDataHelper implements IDataHelper {
         return null;
     }
 
-    public Collection<ResourceLocation> getKeys(LSData lifestealData){
-        List<ResourceLocation> collection = List.of();
+    public Collection<Identifier> getKeys(LSData lifestealData){
+        List<Identifier> collection = List.of();
         LSDataAttachments.ATTACHMENT_TYPES.getEntries().forEach(attachmentTypeHolder -> {
             if(lifestealData.getLivingEntity().getExistingData(attachmentTypeHolder.get()).isPresent()){
                 collection.add(attachmentTypeHolder.getId());
@@ -40,11 +40,11 @@ public class NeoForgeDataHelper implements IDataHelper {
         return collection;
     }
 
-    public <T> T getValue(LSData lifestealData, ResourceLocation data){
+    public <T> T getValue(LSData lifestealData, Identifier data){
         return (T) lifestealData.getLivingEntity().getData(getAttachmentFromLocation(data));
     }
 
-    public <T> void setValue(LSData lifestealData, ResourceLocation data, T value){
+    public <T> void setValue(LSData lifestealData, Identifier data, T value){
         lifestealData.getLivingEntity().setData((AttachmentType<? super Object>) getAttachmentFromLocation(data), value);
     }
 

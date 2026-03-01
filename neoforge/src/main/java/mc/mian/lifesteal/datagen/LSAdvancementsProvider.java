@@ -5,7 +5,7 @@ import mc.mian.lifesteal.common.block.LSBlocks;
 import mc.mian.lifesteal.common.item.LSItems;
 import mc.mian.lifesteal.util.LSConstants;
 import net.minecraft.advancements.*;
-import net.minecraft.advancements.critereon.InventoryChangeTrigger;
+import net.minecraft.advancements.criterion.InventoryChangeTrigger;
 import net.minecraft.core.ClientAsset;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;

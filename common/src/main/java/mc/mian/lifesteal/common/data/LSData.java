@@ -17,7 +17,7 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.players.NameAndId;
@@ -152,19 +152,19 @@ public class LSData implements ILSData {
     }
 
     @Override
-    public <T> T getValue(ResourceLocation key) {
+    public <T> T getValue(Identifier key) {
         return Services.DATA_HELPER.getValue(this, key);
     }
 
     @Override
-    public <T> void setValue(ResourceLocation key, T value) {
+    public <T> void setValue(Identifier key, T value) {
         if (!this.livingEntity.level().isClientSide()) {
             Services.DATA_HELPER.setValue(this, key, value);
         }
     }
 
     @Override
-    public Collection<ResourceLocation> getKeys() {
+    public Collection<Identifier> getKeys() {
         return Services.DATA_HELPER.getKeys(this);
     }
 

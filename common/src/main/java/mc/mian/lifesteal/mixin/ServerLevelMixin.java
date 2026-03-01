@@ -1,7 +1,6 @@
 package mc.mian.lifesteal.mixin;
 
 import com.google.common.collect.ImmutableMap;
-import com.mojang.authlib.GameProfile;
 import mc.mian.indestructible_blocks.util.IndestructibleUtil;
 import mc.mian.lifesteal.LifeSteal;
 import mc.mian.lifesteal.common.block.LSBlocks;

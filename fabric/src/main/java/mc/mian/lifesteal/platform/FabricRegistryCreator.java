@@ -6,7 +6,7 @@ import mc.mian.lifesteal.registry.RegistrySupplier;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -27,7 +27,7 @@ public class FabricRegistryCreator implements IRegistryCreator {
 
         public Impl(String modid, ResourceKey<? extends Registry<T>> resourceKey) {
             this.modid = modid;
-            this.registry = (Registry<T>) BuiltInRegistries.REGISTRY.get(resourceKey.location()).orElseThrow(() -> new NullPointerException("Registry " + resourceKey + " not found!")).value();
+            this.registry = (Registry<T>) BuiltInRegistries.REGISTRY.get(resourceKey.identifier()).orElseThrow(() -> new NullPointerException("Registry " + resourceKey + " not found!")).value();
             this.entries = new ArrayList<>();
         }
 
@@ -38,7 +38,7 @@ public class FabricRegistryCreator implements IRegistryCreator {
 
         @Override
         public <R extends T> RegistrySupplier<R> register(String id, Supplier<R> supplier) {
-            ResourceLocation registeredId = ResourceLocation.fromNamespaceAndPath(this.modid, id);
+            Identifier registeredId = Identifier.fromNamespaceAndPath(this.modid, id);
             RegistrySupplier<R> registrySupplier = new RegistrySupplier<>(registeredId, Registry.register(this.registry, registeredId, supplier.get()));
             this.entries.add((RegistrySupplier<T>) registrySupplier);
             return registrySupplier;

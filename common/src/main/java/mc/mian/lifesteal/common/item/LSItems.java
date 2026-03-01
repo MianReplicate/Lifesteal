@@ -9,7 +9,7 @@ import mc.mian.lifesteal.registry.RegistrySupplier;
 import mc.mian.lifesteal.util.LSConstants;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.PlayerHeadItem;
@@ -34,7 +34,7 @@ public class LSItems {
             (properties) -> new PlayerHeadItem(LSBlocks.REVIVE_HEAD.get(), LSBlocks.REVIVE_WALL_HEAD.get(), properties.rarity(Rarity.UNCOMMON).stacksTo(1).fireResistant().useBlockDescriptionPrefix()));
 
     public static RegistrySupplier<Item> registerItem(String name, Function<Item.Properties, Item> itemFunc){
-        return ITEMS.register(name, () -> itemFunc.apply(new Item.Properties().setId(ResourceKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(LSConstants.MOD_ID, name)))));
+        return ITEMS.register(name, () -> itemFunc.apply(new Item.Properties().setId(ResourceKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(LSConstants.MOD_ID, name)))));
     }
 
     public static void register() {

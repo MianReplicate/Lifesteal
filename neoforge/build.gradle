@@ -43,6 +43,6 @@ neoForge {
 
 dependencies {
     implementation("mysticdrew:common-networking-neoforge:${common_networking_version}")
-    implementation("mc.mian:indestructible_blocks:${indestructible_blocks_version}-neoforge")
+    implementation("mc.mian:indestructible-blocks:neoforge-${indestructible_blocks_version}")
     implementation("fuzs.forgeconfigapiport:forgeconfigapiport-neoforge:${forge_config_api_port_version}")
 }
