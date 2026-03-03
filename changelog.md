@@ -1,3 +1,4 @@
-# Version 10.0.6
+# Version 10.0.7
 ## Changes:
-- Fixed access widener not applying on Fabric
+- Fixed critical bug that broke reviving players
+- Revive Heads should be invincible in all dimensions, not just overworld now

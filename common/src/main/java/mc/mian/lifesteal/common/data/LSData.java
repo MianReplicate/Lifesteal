@@ -14,6 +14,7 @@ import mc.mian.lifesteal.util.LSUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.component.PatchedDataComponentMap;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -122,8 +123,9 @@ public class LSData implements ILSData {
                         return null;
                     }
                     SkullBlockEntity playerHeadEntity = (SkullBlockEntity) ((ReviveHeadBlock)playerHeadState.getBlock()).newBlockEntity(targetPos, playerHeadState);
-                    playerHeadEntity.setComponents(DataComponentMap.builder().set(DataComponents.PROFILE, ResolvableProfile.createResolved(serverPlayer.getGameProfile())).build());
+                    playerHeadEntity.setComponents(DataComponentMap.builder().addAll(playerHeadEntity.components()).set(DataComponents.PROFILE, ResolvableProfile.createResolved(serverPlayer.getGameProfile())).build());
                     level.setBlockEntity(playerHeadEntity);
+                    playerHeadEntity.applyComponents(playerHeadEntity.components(), new PatchedDataComponentMap(playerHeadEntity.components()).asPatch());
 
                     BlockPos currentPos = playerHeadEntity.getBlockPos();
                     LSConstants.LOGGER.info(serverPlayer.getName().getString() + "'s revive head has been placed at" + " X: " + currentPos.getX() + " Y: " + currentPos.getY() + " Z: " + currentPos.getZ());

@@ -238,13 +238,13 @@ public class LSUtil {
         if (serverPlayer == null) {
             if(revivePlayerAtPos(level.getServer(), nameAndID, reviveAt, level))
             {
+                if(userBanList.isBanned(nameAndID)){
+                    userBanList.remove(nameAndID);
+                }
+
                 successful = true;
             }
         } else {
-            if(userBanList.isBanned(nameAndID)){
-                userBanList.remove(nameAndID);
-            }
-
             serverPlayer.teleportTo(level, reviveAt.getX(), reviveAt.getY(), reviveAt.getZ(), Relative.ROTATION, serverPlayer.getYRot(), serverPlayer.getXRot(), true);
             ((PlayerImpl) serverPlayer).lifesteal$setRevived(true);
             successful = true;
