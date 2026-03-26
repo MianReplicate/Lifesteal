@@ -266,7 +266,7 @@ public class LSUtil {
                 Component component = Component.translatable("chat.message.lifesteal.revived_player", nameAndID.name()).withStyle(ChatFormatting.YELLOW);
                 level.getServer().getPlayerList().broadcastSystemMessage(component, false);
             } else if(optionalReviver != null) {
-                optionalReviver.displayClientMessage(Component.translatable("gui.lifesteal.revived"), true);
+                optionalReviver.sendOverlayMessage(Component.translatable("gui.lifesteal.revived"));
             }
         }
 

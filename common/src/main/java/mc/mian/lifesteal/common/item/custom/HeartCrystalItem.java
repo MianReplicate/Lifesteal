@@ -40,12 +40,12 @@ public class HeartCrystalItem extends Item {
             if (!rippedHeartCrystal) {
                 if (unnaturalHeartCrystal) {
                     if (LifeSteal.config.disableUnnaturalHeartCrystals.get()) {
-                        serverPlayer.displayClientMessage(Component.translatable("gui.lifesteal.unnatural_heart_crystal_disabled"), true);
+                        serverPlayer.sendOverlayMessage(Component.translatable("gui.lifesteal.unnatural_heart_crystal_disabled"));
                         return false;
                     }
                 } else {
                     if (LifeSteal.config.disableHeartCrystals.get()) {
-                        serverPlayer.displayClientMessage(Component.translatable("gui.lifesteal.heart_crystal_disabled"), true);
+                        serverPlayer.sendOverlayMessage(Component.translatable("gui.lifesteal.heart_crystal_disabled"));
                         return false;
                     }
                 }
@@ -55,7 +55,7 @@ public class HeartCrystalItem extends Item {
                 if (LifeSteal.config.maximumHealthGainable.get() > -1 && LifeSteal.config.preventFromUsingCrystalIfMax.get()) {
                     int maximumheartDifference = LifeSteal.config.startingHealthDifference.get() + LifeSteal.config.maximumHealthGainable.get();
                     if ((int)lsData.getValue(LSConstants.HEALTH_DIFFERENCE) >= maximumheartDifference) {
-                        serverPlayer.displayClientMessage(Component.translatable("gui.lifesteal.heart_crystal_reaching_max"), true);
+                        serverPlayer.sendOverlayMessage(Component.translatable("gui.lifesteal.heart_crystal_reaching_max"));
                         return false;
                     }
                 }

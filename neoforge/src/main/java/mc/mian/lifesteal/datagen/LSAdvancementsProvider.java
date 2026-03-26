@@ -12,7 +12,9 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.data.advancements.AdvancementProvider;
 import net.minecraft.data.advancements.AdvancementSubProvider;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
 import org.jetbrains.annotations.Nullable;
@@ -28,14 +30,18 @@ public class LSAdvancementsProvider extends AdvancementProvider {
     }
 
     private static DisplayInfo simpleDisplay(ItemLike icon, String name, AdvancementType frameType) {
+        return simpleDisplay(icon.asItem(), name, frameType);
+    }
+
+    private static DisplayInfo simpleDisplay(Item icon, String name, AdvancementType frameType) {
         return simpleDisplayWithBackground(icon, name, frameType, null);
     }
 
-    private static DisplayInfo simpleDisplayWithBackground(ItemLike icon, String name, AdvancementType frameType, @Nullable ClientAsset.ResourceTexture background) {
-        return display(new ItemStack(icon), name, frameType, background, true, true, false);
+    private static DisplayInfo simpleDisplayWithBackground(Item icon, String name, AdvancementType frameType, @Nullable ClientAsset.ResourceTexture background) {
+        return display(new ItemStackTemplate(icon), name, frameType, background, true, true, false);
     }
 
-    private static DisplayInfo display(ItemStack icon, String name, AdvancementType frameType, ClientAsset.ResourceTexture background, boolean showToast, boolean announceChat, boolean hidden) {
+    private static DisplayInfo display(ItemStackTemplate icon, String name, AdvancementType frameType, ClientAsset.ResourceTexture background, boolean showToast, boolean announceChat, boolean hidden) {
         String expandedName = "advancement." + LSConstants.MOD_ID + ":" + name;
         return new DisplayInfo(icon, Component.translatable(expandedName), Component.translatable(expandedName + ".desc"), Optional.ofNullable(background), frameType, showToast, announceChat, hidden);
     }
@@ -46,7 +52,7 @@ public class LSAdvancementsProvider extends AdvancementProvider {
         public void generate(HolderLookup.Provider registries, Consumer<AdvancementHolder> saver) {
             AdvancementHolder ROOT = Advancement.Builder.advancement()
                     .display(display(
-                            LSItems.CRYSTAL_FRAGMENT.get().getDefaultInstance(),
+                            new ItemStackTemplate(LSItems.CRYSTAL_FRAGMENT.get()),
                             "root",
                             AdvancementType.TASK,
                             new ClientAsset.ResourceTexture(LSConstants.modLoc("block/crystal_block")),

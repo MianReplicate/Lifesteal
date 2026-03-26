@@ -24,11 +24,11 @@ public class CrystalCoreItem extends Item {
     public boolean useCrystalCore(LivingEntity entity) {
         if (entity instanceof ServerPlayer serverPlayer) {
             if (LifeSteal.config.disableCores.get()) {
-                serverPlayer.displayClientMessage(Component.translatable("gui.lifesteal.crystal_core_disabled"), true);
+                serverPlayer.sendOverlayMessage(Component.translatable("gui.lifesteal.crystal_core_disabled"));
                 return false;
             }
             if (Math.round(entity.getHealth()) >= entity.getMaxHealth() && LifeSteal.config.preventFromUsingCoreIfMax.get()) {
-                serverPlayer.displayClientMessage(Component.translatable("gui.lifesteal.crystal_core_at_max_health"), true);
+                serverPlayer.sendOverlayMessage(Component.translatable("gui.lifesteal.crystal_core_at_max_health"));
                 return false;
             }
 

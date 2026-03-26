@@ -20,7 +20,7 @@ public class LifestealForge {
     public static BusGroup modEventGroup = FMLJavaModLoadingContext.get().getModBusGroup();
 
     public LifestealForge() {
-        modEventGroup.register(MethodHandles.lookup(), this);
+        RegisterEvent.getBus(modEventGroup).addListener(LifestealForge::registerCriteria);
 
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, ConfigHolder.SERVER_SPEC);
         LifeSteal.config = ConfigHolder.SERVER;
@@ -33,11 +33,5 @@ public class LifestealForge {
         registerEvent.register(BuiltInRegistries.TRIGGER_TYPES.key(), LSConstants.USE_TOTEM_WHILE_20_MAX_HEARTS, () -> LSCriteria.USE_TOTEM_WHILE_20_MAX_HEARTS);
         registerEvent.register(BuiltInRegistries.TRIGGER_TYPES.key(), LSConstants.BACK_FROM_THE_DEAD, () -> LSCriteria.BACK_FROM_THE_DEAD);
         registerEvent.register(BuiltInRegistries.TRIGGER_TYPES.key(), LSConstants.REVIVED, () -> LSCriteria.REVIVED);
-    }
-
-    @SubscribeEvent
-    public static void registerEvent(RegisterEvent registerEvent){
-        // NeoForge is special so we have to register criteria this way
-        registerCriteria(registerEvent);
     }
 }

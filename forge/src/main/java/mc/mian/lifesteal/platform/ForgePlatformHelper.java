@@ -17,11 +17,11 @@ public class ForgePlatformHelper implements IPlatformHelper {
     }
 
     public boolean isModLoaded(String id) {
-        return ModList.get().isLoaded(id);
+        return ModList.isLoaded(id);
     }
 
     public Collection<String> getModIds() {
-        return ModList.get().getMods().stream().map(IModInfo::getModId).toList();
+        return ModList.getMods().stream().map(IModInfo::getModId).toList();
     }
 
     public boolean isClient() {

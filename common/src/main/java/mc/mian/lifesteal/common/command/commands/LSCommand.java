@@ -153,11 +153,11 @@ public class LSCommand {
 
             if (maximumheartsLoseable >= 0) {
                 if (newHealthDifference < startingHitPointDifference - maximumheartsLoseable) {
-                    serverPlayer.displayClientMessage(Component.translatable("gui.lifesteal.cant_withdraw_less_than_maximum"), true);
+                    serverPlayer.sendOverlayMessage(Component.translatable("gui.lifesteal.cant_withdraw_less_than_maximum"));
                     return Command.SINGLE_SUCCESS;
                 }
             }else if(newHealthDifference <= lifestealData.getHPDifferenceRequiredForBan()) {
-                serverPlayer.displayClientMessage(Component.translatable("gui.lifesteal.cant_withdraw_less_than_amount_have"), true);
+                serverPlayer.sendOverlayMessage(Component.translatable("gui.lifesteal.cant_withdraw_less_than_amount_have"));
                 return Command.SINGLE_SUCCESS;
             }
 
@@ -174,7 +174,7 @@ public class LSCommand {
         } else {
             String text = LifeSteal.config.textUsedForRequirementOnWithdrawing.get();
             if (!text.isEmpty()) {
-                serverPlayer.displayClientMessage(Component.literal(LifeSteal.config.textUsedForRequirementOnWithdrawing.get()), true);
+                serverPlayer.sendOverlayMessage(Component.literal(LifeSteal.config.textUsedForRequirementOnWithdrawing.get()));
             }
         }
         return Command.SINGLE_SUCCESS;

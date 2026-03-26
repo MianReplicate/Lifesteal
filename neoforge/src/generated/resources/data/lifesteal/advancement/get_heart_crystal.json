@@ -17,7 +17,6 @@
       "translate": "advancement.lifesteal:get_heart_crystal.desc"
     },
     "icon": {
-      "count": 1,
       "id": "lifesteal:heart_crystal"
     },
     "title": {

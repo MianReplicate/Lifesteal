@@ -18,7 +18,6 @@
       "translate": "advancement.lifesteal:root.desc"
     },
     "icon": {
-      "count": 1,
       "id": "lifesteal:crystal_fragment"
     },
     "show_toast": false,

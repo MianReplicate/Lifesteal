@@ -1,22 +1,19 @@
 plugins {
     id 'multiloader-loader'
-    id 'fabric-loom'
+    id 'net.fabricmc.fabric-loom'
 }
 
 apply from: '../publish.gradle'
 
 dependencies {
     minecraft "com.mojang:minecraft:${minecraft_version}"
-    mappings loom.layered {
-        officialMojangMappings()
-        parchment("org.parchmentmc.data:parchment-${parchment_minecraft_version}:${parchment_mappings_version}@zip")
-    }
-    modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
-    modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_api_version}+${minecraft_version}"
 
-    modImplementation("mysticdrew:common-networking-fabric:${common_networking_version}")
-    modImplementation("mc.mian:indestructible-blocks:fabric-${indestructible_blocks_version}")
-    modImplementation("fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${forge_config_api_port_version}")
+    implementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
+    implementation "net.fabricmc.fabric-api:fabric-api:${fabric_api_version}+${minecraft_version}"
+
+    implementation("mysticdrew:common-networking-fabric:${common_networking_version}")
+    implementation("mc.mian:indestructible-blocks:fabric-${indestructible_blocks_version}")
+    implementation("fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${forge_config_api_port_version}")
 }
 
 loom {
@@ -40,5 +37,11 @@ loom {
             ideConfigGenerated(true)
             runDir('runs/server')
         }
+    }
+}
+
+configurations.all {
+    resolutionStrategy.capabilitiesResolution.withCapability("mysticdrew:commonnetworking") {
+        select("mysticdrew:common-networking-fabric:${common_networking_version}")
     }
 }

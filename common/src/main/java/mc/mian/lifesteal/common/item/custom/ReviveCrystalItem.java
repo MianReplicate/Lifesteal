@@ -30,12 +30,12 @@ public class ReviveCrystalItem extends Item {
             Player player = useOnContext.getPlayer();
 
             if (!LSUtil.isMultiplayer(level.getServer(), false)) {
-                player.displayClientMessage(Component.translatable("gui.lifesteal.multiplayer_only"), true);
+                player.sendOverlayMessage(Component.translatable("gui.lifesteal.multiplayer_only"));
                 return super.useOn(useOnContext);
             }
 
             if (LifeSteal.config.disableReviveCrystals.get()) {
-                player.displayClientMessage(Component.translatable("gui.lifesteal.revive_crystal_disabled"), true);
+                player.sendOverlayMessage(Component.translatable("gui.lifesteal.revive_crystal_disabled"));
                 return super.useOn(useOnContext);
             }
 
@@ -44,7 +44,7 @@ public class ReviveCrystalItem extends Item {
             if(level.getBlockEntity(blockPos) instanceof SkullBlockEntity blockEntity){
                 ResolvableProfile gameprofile = blockEntity.getOwnerProfile();
                 if (gameprofile == null) {
-                    player.displayClientMessage(Component.translatable("gui.lifesteal.null_revive_block"), true);
+                    player.sendOverlayMessage(Component.translatable("gui.lifesteal.null_revive_block"));
                 } else {
                     if (LSUtil.revivePlayer(
                             (ServerLevel) level,
@@ -56,12 +56,12 @@ public class ReviveCrystalItem extends Item {
                         itemStack.shrink(1);
                         LSCriteria.REVIVED.trigger((ServerPlayer) player);
                     } else {
-                        player.displayClientMessage(Component.translatable("gui.lifesteal.error_revive_block"), true);
+                        player.sendOverlayMessage(Component.translatable("gui.lifesteal.error_revive_block"));
                     }
                 }
 
             } else {
-                player.displayClientMessage(Component.translatable("gui.lifesteal.invaild_revive_block"), true);
+                player.sendOverlayMessage(Component.translatable("gui.lifesteal.invaild_revive_block"));
             }
         }
         return super.useOn(useOnContext);
