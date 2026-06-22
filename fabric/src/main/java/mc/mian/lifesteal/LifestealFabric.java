@@ -8,7 +8,7 @@ import mc.mian.lifesteal.event.CommandRegistry;
 import mc.mian.lifesteal.event.LSEvents;
 import mc.mian.lifesteal.util.LSConstants;
 import mc.mian.lifesteal.world.gen.LSBiomeModifier;
-import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.advancements.triggers.CriteriaTriggers;
 import net.neoforged.fml.config.ModConfig;
 
 public class LifestealFabric implements ModInitializer {

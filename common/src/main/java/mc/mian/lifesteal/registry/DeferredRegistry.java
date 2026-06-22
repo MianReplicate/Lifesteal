@@ -11,7 +11,7 @@ public abstract class DeferredRegistry<T> {
 
     public abstract void register();
 
-    public abstract <R extends T> RegistrySupplier<R> register(String id, Supplier<R> supplier);
+    public abstract <R> RegistrySupplier<R> register(String id, Supplier<T> supplier);
 
     public abstract Collection<RegistrySupplier<T>> getEntries();
 

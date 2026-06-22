@@ -23,10 +23,12 @@ public class FabricRegistryCreator implements IRegistryCreator {
 
         private final String modid;
         private final Registry<T> registry;
+        private final ResourceKey<? extends Registry<T>> registryKey;
         private final List<RegistrySupplier<T>> entries;
 
         public Impl(String modid, ResourceKey<? extends Registry<T>> resourceKey) {
             this.modid = modid;
+            this.registryKey = resourceKey;
             this.registry = (Registry<T>) BuiltInRegistries.REGISTRY.get(resourceKey.identifier()).orElseThrow(() -> new NullPointerException("Registry " + resourceKey + " not found!")).value();
             this.entries = new ArrayList<>();
         }
@@ -37,11 +39,11 @@ public class FabricRegistryCreator implements IRegistryCreator {
         }
 
         @Override
-        public <R extends T> RegistrySupplier<R> register(String id, Supplier<R> supplier) {
+        public <R> RegistrySupplier<R> register(String id, Supplier<T> supplier) {
             Identifier registeredId = Identifier.fromNamespaceAndPath(this.modid, id);
-            RegistrySupplier<R> registrySupplier = new RegistrySupplier<>(registeredId, Registry.register(this.registry, registeredId, supplier.get()));
-            this.entries.add((RegistrySupplier<T>) registrySupplier);
-            return registrySupplier;
+            RegistrySupplier<T> registrySupplier = new RegistrySupplier<>(registeredId, ResourceKey.create(registryKey, registeredId), Registry.register(this.registry, registeredId, supplier.get()));
+            this.entries.add(registrySupplier);
+            return (RegistrySupplier<R>) registrySupplier;
         }
 
         @Override

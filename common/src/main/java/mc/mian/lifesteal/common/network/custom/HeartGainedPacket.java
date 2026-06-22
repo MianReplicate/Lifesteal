@@ -12,13 +12,14 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvents;
 
-public class HeartGainedPacket {
-    public static final Identifier CHANNEL = LSConstants.modLoc("heart_gained");
+public class HeartGainedPacket implements CustomPacketPayload {
+    public static CustomPacketPayload.Type<HeartGainedPacket> TYPE = new CustomPacketPayload.Type<HeartGainedPacket>(LSConstants.modLoc("heart_gained"));
     public static final StreamCodec<FriendlyByteBuf, HeartGainedPacket> STREAM_CODEC =
             StreamCodec.ofMember(HeartGainedPacket::encode, HeartGainedPacket::new);
 
-    public static CustomPacketPayload.Type<CustomPacketPayload> type(){
-        return new CustomPacketPayload.Type<>(CHANNEL);
+    @Override
+    public Type<? extends CustomPacketPayload> type() {
+        return TYPE;
     }
 
     public HeartGainedPacket(){}

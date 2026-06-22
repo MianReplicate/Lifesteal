@@ -2,10 +2,10 @@ package mc.mian.lifesteal.common.advancement;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.advancements.Criterion;
-import net.minecraft.advancements.criterion.ContextAwarePredicate;
-import net.minecraft.advancements.criterion.EntityPredicate;
-import net.minecraft.advancements.criterion.SimpleCriterionTrigger;
+import net.minecraft.advancements.predicates.ContextAwarePredicate;
+import net.minecraft.advancements.predicates.entity.EntityPredicate;
+import net.minecraft.advancements.triggers.Criterion;
+import net.minecraft.advancements.triggers.SimpleCriterionTrigger;
 import net.minecraft.server.level.ServerPlayer;
 
 import java.util.Optional;
@@ -33,7 +33,7 @@ public class LSAdvancementTrigger extends SimpleCriterionTrigger<LSAdvancementTr
         public static Criterion<LSAdvancementTrigger.TriggerInstance> USE_TOTEM_WHILE_20_MAX_HEARTS() {
             return LSCriteria.USE_TOTEM_WHILE_20_MAX_HEARTS.createCriterion(new LSAdvancementTrigger.TriggerInstance(Optional.empty()));
         }
-        public static Criterion<LSAdvancementTrigger.TriggerInstance> BACK_FROM_THE_DEAD() {
+        public static Criterion<TriggerInstance> BACK_FROM_THE_DEAD() {
             return LSCriteria.BACK_FROM_THE_DEAD.createCriterion(new LSAdvancementTrigger.TriggerInstance(Optional.empty()));
         }
         public static Criterion<LSAdvancementTrigger.TriggerInstance> REVIVED() {

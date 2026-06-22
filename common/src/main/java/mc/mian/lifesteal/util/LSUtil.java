@@ -256,7 +256,7 @@ public class LSUtil {
                 level.removeBlock(reviveAt, true);
             }
             if (enableLightningEffect) {
-                Entity entity = new LightningBolt(EntityType.LIGHTNING_BOLT, level);
+                Entity entity = new LightningBolt(EntityTypes.LIGHTNING_BOLT, level);
                 Vec3 vec3 = new Vec3(reviveAt.getX(), reviveAt.getY(), reviveAt.getZ());
                 entity.setPos(vec3);
                 level.addFreshEntity(entity);

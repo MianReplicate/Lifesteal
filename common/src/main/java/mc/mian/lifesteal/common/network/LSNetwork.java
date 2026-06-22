@@ -6,8 +6,7 @@ import mc.mian.lifesteal.common.network.custom.HeartGainedPacket;
 public class LSNetwork {
     public static void register(){
         Network.registerPacket(
-                HeartGainedPacket.type(),
-                HeartGainedPacket.class,
+                HeartGainedPacket.TYPE,
                 HeartGainedPacket.STREAM_CODEC,
                 HeartGainedPacket::handle
         );

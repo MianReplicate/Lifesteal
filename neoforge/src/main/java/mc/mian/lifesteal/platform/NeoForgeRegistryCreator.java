@@ -24,10 +24,12 @@ public class NeoForgeRegistryCreator implements IRegistryCreator {
 
         private final DeferredRegister<T> register;
         private final List<RegistrySupplier<T>> entries;
+        private final ResourceKey<? extends Registry<T>> registryKey;
 
         public Impl(String modid, ResourceKey<? extends Registry<T>> resourceKey) {
             this.register = DeferredRegister.create(resourceKey, modid);
             this.entries = new ArrayList<>();
+            this.registryKey = resourceKey;
         }
 
         @Override
@@ -37,11 +39,11 @@ public class NeoForgeRegistryCreator implements IRegistryCreator {
 
 
         @Override
-        public <R extends T> RegistrySupplier<R> register(String id, Supplier<R> supplier) {
+        public <R> RegistrySupplier<R> register(String id, Supplier<T> supplier) {
             var orig = this.register.register(id, supplier);
-            var registrySupplier = new RegistrySupplier<>(orig.getId(), orig);
-            this.entries.add((RegistrySupplier<T>) registrySupplier);
-            return registrySupplier;
+            var registrySupplier = new RegistrySupplier<>(orig.getId(), ResourceKey.create(registryKey, orig.getId()), orig);
+            this.entries.add(registrySupplier);
+            return (RegistrySupplier<R>) registrySupplier;
         }
 
         @Override

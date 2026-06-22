@@ -3,12 +3,15 @@ package mc.mian.lifesteal.datagen.worldgen.level;
 import com.google.common.collect.ImmutableList;
 import mc.mian.lifesteal.common.block.LSBlocks;
 import mc.mian.lifesteal.util.LSConstants;
+import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
+import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.valueproviders.UniformInt;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.GeodeBlockSettings;
 import net.minecraft.world.level.levelgen.GeodeCrackSettings;
@@ -28,12 +31,12 @@ import java.util.List;
 public class LSConfiguredFeaturesProvider {
 
     public static void bootstrap(BootstrapContext<ConfiguredFeature<?, ?>> context) {
+        HolderGetter<Block> blocks = context.lookup(Registries.BLOCK);
 
         RuleTest stoneReplaceable = new TagMatchTest(BlockTags.STONE_ORE_REPLACEABLES);
         RuleTest deepslateReplaceable = new TagMatchTest(BlockTags.DEEPSLATE_ORE_REPLACEABLES);
         RuleTest netherReplaceable = new TagMatchTest(BlockTags.BASE_STONE_NETHER);
 
-        HolderGetter<ConfiguredFeature<?, ?>> configuredFeatures = context.lookup(Registries.CONFIGURED_FEATURE);
         register(context, LSConstants.DEEPSLATE_HEART_GEODE_CONFIGURED, Feature.GEODE,
                 new GeodeConfiguration(
                         new GeodeBlockSettings(
@@ -43,8 +46,8 @@ public class LSConfiguredFeaturesProvider {
                                 BlockStateProvider.simple(Blocks.CALCITE),
                                 BlockStateProvider.simple(Blocks.SMOOTH_BASALT),
                                 List.of(Blocks.GRAVEL.defaultBlockState()),
-                                BlockTags.FEATURES_CANNOT_REPLACE,
-                                BlockTags.GEODE_INVALID_BLOCKS
+                                blocks.getOrThrow(BlockTags.FEATURES_CANNOT_REPLACE),
+                                blocks.getOrThrow(BlockTags.GEODE_INVALID_BLOCKS)
                         ),
                         new GeodeLayerSettings(1.7, 2.2, 3.2, 4.2),
                         new GeodeCrackSettings(0.95, 2.0, 2),
@@ -58,8 +61,8 @@ public class LSConfiguredFeaturesProvider {
                                 BlockStateProvider.simple(Blocks.MAGMA_BLOCK),
                                 BlockStateProvider.simple(Blocks.BLACKSTONE),
                                 List.of(Blocks.NETHER_GOLD_ORE.defaultBlockState(), Blocks.SOUL_SAND.defaultBlockState(), Blocks.GRAVEL.defaultBlockState()),
-                                BlockTags.FEATURES_CANNOT_REPLACE,
-                                BlockTags.GEODE_INVALID_BLOCKS
+                                blocks.getOrThrow(BlockTags.FEATURES_CANNOT_REPLACE),
+                                blocks.getOrThrow(BlockTags.GEODE_INVALID_BLOCKS)
                         ),
                         new GeodeLayerSettings(1.7, 2.2, 3.2, 4.2),
                         new GeodeCrackSettings(0.95, 2.0, 2),

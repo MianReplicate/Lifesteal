@@ -7,6 +7,7 @@ import mc.mian.lifesteal.data.NeoForgeLSData;
 import mc.mian.lifesteal.util.LSConstants;
 import net.minecraft.client.renderer.blockentity.SkullBlockRenderer;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -20,7 +21,7 @@ public class LSEventHandlers {
     public static class Common{
         @SubscribeEvent
         public static void registerCapabilities(final RegisterCapabilitiesEvent event) {
-            event.registerEntity(NeoForgeLSCapabilities.LIFESTEAL_DATA, EntityType.PLAYER, (entity, context) -> new LSData(entity));
+            event.registerEntity(NeoForgeLSCapabilities.LIFESTEAL_DATA, EntityTypes.PLAYER, (entity, context) -> new LSData(entity));
         }
 
         @SubscribeEvent
