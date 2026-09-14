@@ -17,10 +17,12 @@ publishMods {
 
     displayName = "[${projectName}] ${project.minecraft_version} - ${project.mod_version}"
 
-    var CURSE_API_KEY = project.findProperty("curseforge_token")
+    var CURSE_API_KEY = System.getenv("curseforge_token")
     curseforge {
         accessToken = CURSE_API_KEY
         projectId = "${project.curseforge_id}"
+        client = true
+        server = true
 
         minecraftVersions.add("${project.minecraft_version}")
         requires("common-network", "indestructible-blocks")
@@ -30,7 +32,7 @@ publishMods {
         }
     }
 
-    var MODRINTH_TOKEN = project.findProperty("modrinth_token")
+    var MODRINTH_TOKEN = System.getenv("modrinth_token")
     modrinth {
         accessToken = MODRINTH_TOKEN
         projectId = "${project.modrinth_id}"
