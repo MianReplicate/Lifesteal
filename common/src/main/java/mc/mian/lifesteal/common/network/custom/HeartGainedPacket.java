@@ -38,7 +38,7 @@ public class HeartGainedPacket implements CustomPacketPayload {
             Minecraft minecraft = Minecraft.getInstance();
 
             minecraft.level.playLocalSound(minecraft.player.getX(), minecraft.player.getY(), minecraft.player.getZ(), SoundEvents.TOTEM_USE, minecraft.player.getSoundSource(), 1.0F, 1.0F, false);
-            minecraft.gameRenderer.displayItemActivation(LSItems.HEART_CRYSTAL.get().getDefaultInstance());
+            minecraft.player.displayItemActivation(LSItems.HEART_CRYSTAL.get().getDefaultInstance());
         }
     }
 }

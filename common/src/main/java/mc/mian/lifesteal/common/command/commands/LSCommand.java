@@ -32,6 +32,7 @@ import net.minecraft.server.permissions.PermissionProviderCheck;
 import net.minecraft.server.permissions.PermissionSetSupplier;
 import net.minecraft.server.permissions.Permissions;
 import net.minecraft.server.players.NameAndId;
+import net.minecraft.util.Prediction;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -169,7 +170,7 @@ public class LSCommand {
             heartCrystal.set(DataComponents.CUSTOM_NAME, Component.translatable("item.lifesteal.heart_crystal.unnatural"));
             boolean given = serverPlayer.getInventory().add(heartCrystal);
             if (!given) {
-                serverPlayer.drop(heartCrystal, false);
+                serverPlayer.drop(heartCrystal, false, Prediction.PREDICTED);
             }
         } else {
             String text = LifeSteal.config.textUsedForRequirementOnWithdrawing.get();

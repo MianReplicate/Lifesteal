@@ -23,7 +23,7 @@ public class LSWorldGenProvider extends DatapackBuiltinEntriesProvider {
             .add(Registries.TEMPLATE_POOL, LSStructurePoolProvider::bootstrap)
             .add(Registries.STRUCTURE_SET, LSStructureSetProvider::bootstrap)
             .add(Registries.STRUCTURE, LSStructureProvider::bootstrap)
-            .add(Registries.CONFIGURED_FEATURE, LSConfiguredFeaturesProvider::bootstrap)
+            .add(Registries.FEATURE, LSConfiguredFeaturesProvider::bootstrap)
             .add(Registries.PLACED_FEATURE, LSPlacedFeaturesProvider::bootstrap)
             .add(NeoForgeRegistries.Keys.BIOME_MODIFIERS, LSBiomeModifiersProvider::bootstrap);
 

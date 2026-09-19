@@ -2,11 +2,11 @@ package mc.mian.lifesteal.common.advancement;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.advancements.predicates.ContextAwarePredicate;
-import net.minecraft.advancements.predicates.entity.EntityPredicate;
 import net.minecraft.advancements.triggers.Criterion;
 import net.minecraft.advancements.triggers.SimpleCriterionTrigger;
+import net.minecraft.core.Holder;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 
 import java.util.Optional;
 
@@ -22,9 +22,9 @@ public class LSAdvancementTrigger extends SimpleCriterionTrigger<LSAdvancementTr
         this.trigger(serverPlayer, (testTrigger) -> true);
     }
 
-    public record TriggerInstance(Optional<ContextAwarePredicate> player) implements SimpleInstance {
+    public record TriggerInstance(Optional<Holder<LootItemCondition>> player) implements SimpleInstance {
         public static final Codec<TriggerInstance> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-                EntityPredicate.ADVANCEMENT_CODEC.optionalFieldOf("player")
+                LootItemCondition.CODEC.optionalFieldOf("player")
                         .forGetter(TriggerInstance::player)).apply(instance, TriggerInstance::new));
 
         public static Criterion<LSAdvancementTrigger.TriggerInstance> GET_10_MAX_HEARTS() {

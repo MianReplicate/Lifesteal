@@ -3,7 +3,7 @@ package mc.mian.lifesteal.util;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.Identifier;
-import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureSet;
@@ -107,10 +107,10 @@ public class LSConstants {
     public static final Identifier ROOT = modLoc("root");
 
     // Configured Features
-    public static final ResourceKey<ConfiguredFeature<?, ?>> DEEPSLATE_HEART_GEODE_CONFIGURED = createConfiguredFeature(LSConstants.MOD_ID,"deepslate_heart_geode");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> HEART_ORE_CONFIGURED = createConfiguredFeature(LSConstants.MOD_ID,"heart_ore");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> NETHER_HEART_GEODE_CONFIGURED = createConfiguredFeature(LSConstants.MOD_ID,"nether_heart_geode");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> NETHER_HEART_ORE_CONFIGURED = createConfiguredFeature(LSConstants.MOD_ID,"nether_heart_ore");
+    public static final ResourceKey<Feature> DEEPSLATE_HEART_GEODE_CONFIGURED = createConfiguredFeature(LSConstants.MOD_ID,"deepslate_heart_geode");
+    public static final ResourceKey<Feature> HEART_ORE_CONFIGURED = createConfiguredFeature(LSConstants.MOD_ID,"heart_ore");
+    public static final ResourceKey<Feature> NETHER_HEART_GEODE_CONFIGURED = createConfiguredFeature(LSConstants.MOD_ID,"nether_heart_geode");
+    public static final ResourceKey<Feature> NETHER_HEART_ORE_CONFIGURED = createConfiguredFeature(LSConstants.MOD_ID,"nether_heart_ore");
 
     // Placed Features
     public static final ResourceKey<PlacedFeature> HEART_ORE_PLACED = createPlacedFeature(LSConstants.MOD_ID,"heart_ore_placed");
@@ -129,8 +129,8 @@ public class LSConstants {
     private static ResourceKey<PlacedFeature> createPlacedFeature(String domain, String name){
         return ResourceKey.create(Registries.PLACED_FEATURE, Identifier.fromNamespaceAndPath(domain, name));
     }
-    private static ResourceKey<ConfiguredFeature<?, ?>> createConfiguredFeature(String domain, String name){
-        return ResourceKey.create(Registries.CONFIGURED_FEATURE, Identifier.fromNamespaceAndPath(domain, name));
+    private static ResourceKey<Feature> createConfiguredFeature(String domain, String name){
+        return ResourceKey.create(Registries.FEATURE, Identifier.fromNamespaceAndPath(domain, name));
     }
     
     private static ResourceKey<LootTable> createLootTable(String domain, String name){

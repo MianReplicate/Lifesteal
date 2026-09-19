@@ -25,6 +25,7 @@ import net.minecraft.server.players.NameAndId;
 import net.minecraft.server.players.UserBanList;
 import net.minecraft.server.players.UserBanListEntry;
 import net.minecraft.util.Mth;
+import net.minecraft.util.Prediction;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
@@ -142,7 +143,7 @@ public class LSData implements ILSData {
             if (!serverPlayer.level().isClientSide()) {
                 ItemStack itemStack = new ItemStack(LSItems.REVIVE_HEAD_ITEM.get());
                 itemStack.set(DataComponents.PROFILE, ResolvableProfile.createResolved(serverPlayer.getGameProfile()));
-                serverPlayer.drop(itemStack, true, false);
+                serverPlayer.drop(itemStack, true, Prediction.PREDICTED);
                 return true;
             }
         }

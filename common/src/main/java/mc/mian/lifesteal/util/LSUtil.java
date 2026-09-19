@@ -25,6 +25,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.players.NameAndId;
 import net.minecraft.server.players.PlayerList;
 import net.minecraft.server.players.UserBanList;
+import net.minecraft.util.Prediction;
 import net.minecraft.util.Util;
 import net.minecraft.util.datafix.DataFixTypes;
 import net.minecraft.world.entity.*;
@@ -35,7 +36,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.SkullBlockEntity;
-import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureSet;
@@ -54,8 +55,8 @@ public class LSUtil {
     public static ResourceKey<PlacedFeature> createPlacedFeature(String domain, String name){
         return ResourceKey.create(Registries.PLACED_FEATURE, Identifier.fromNamespaceAndPath(domain, name));
     }
-    public static ResourceKey<ConfiguredFeature<?, ?>> createConfiguredFeature(String domain, String name){
-        return ResourceKey.create(Registries.CONFIGURED_FEATURE, Identifier.fromNamespaceAndPath(domain, name));
+    public static ResourceKey<Feature> createFeature(String domain, String name){
+        return ResourceKey.create(Registries.FEATURE, Identifier.fromNamespaceAndPath(domain, name));
     }
 
     public static ResourceKey<LootTable> createLootTable(String domain, String name){
@@ -280,7 +281,7 @@ public class LSUtil {
         itemStack.set(DataComponents.CUSTOM_NAME, Component.translatable("item.lifesteal.heart_crystal.named", killedPlayer.getName().getString()));
 
         ServerPlayer serverPlayer = (ServerPlayer) killedPlayer;
-        serverPlayer.drop(itemStack, true, false);
+        serverPlayer.drop(itemStack, true, Prediction.PREDICTED);
     }
 
     public static boolean isMultiplayer(MinecraftServer server, boolean excludeLan){
