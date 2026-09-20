@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "lifesteal:crystal_core"
+        "recipes": "lifesteal:crystal_core"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

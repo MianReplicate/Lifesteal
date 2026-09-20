@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "lifesteal:heart_crystal"
+        "recipes": "lifesteal:heart_crystal"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

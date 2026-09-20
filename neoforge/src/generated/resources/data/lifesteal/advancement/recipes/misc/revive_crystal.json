@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "lifesteal:revive_crystal"
+        "recipes": "lifesteal:revive_crystal"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

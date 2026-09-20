@@ -1,0 +1,40 @@
+{
+  "type": "minecraft:geode",
+  "blocks": {
+    "alternate_inner_layer_provider": {
+      "id": "lifesteal:netherrack_crystal_ore"
+    },
+    "cannot_replace": "#minecraft:features_cannot_replace",
+    "filling_provider": {
+      "id": "minecraft:air"
+    },
+    "inner_layer_provider": {
+      "id": "minecraft:netherrack"
+    },
+    "inner_placements": [
+      "minecraft:nether_gold_ore",
+      "minecraft:soul_sand",
+      "minecraft:gravel"
+    ],
+    "invalid_blocks": "#minecraft:geode_invalid_blocks",
+    "middle_layer_provider": {
+      "id": "minecraft:magma_block"
+    },
+    "outer_layer_provider": {
+      "id": "minecraft:blackstone"
+    }
+  },
+  "crack": {
+    "generate_crack_chance": 0.95
+  },
+  "invalid_blocks_threshold": 1,
+  "layers": {},
+  "max_gen_offset": -16,
+  "min_gen_offset": 16,
+  "outer_wall_distance": {
+    "type": "minecraft:uniform",
+    "max_inclusive": 6,
+    "min_inclusive": 4
+  },
+  "use_alternate_layer0_chance": 0.083
+}

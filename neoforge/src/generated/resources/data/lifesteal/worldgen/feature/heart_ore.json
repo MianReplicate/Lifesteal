@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:scattered_ore",
+  "discard_chance_on_air_exposure": 0.0,
+  "size": 6,
+  "targets": [
+    {
+      "state": "lifesteal:crystal_ore",
+      "target": {
+        "predicate_type": "minecraft:tag_match",
+        "tag": "minecraft:stone_ore_replaceables"
+      }
+    },
+    {
+      "state": "lifesteal:deepslate_crystal_ore",
+      "target": {
+        "predicate_type": "minecraft:tag_match",
+        "tag": "minecraft:deepslate_ore_replaceables"
+      }
+    }
+  ]
+}
