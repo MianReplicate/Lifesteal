@@ -6,6 +6,7 @@ import mc.mian.lifesteal.common.item.LSItems;
 import mc.mian.lifesteal.common.network.LSNetwork;
 import mc.mian.lifesteal.common.tab.LSTabs;
 import mc.mian.lifesteal.common.configuration.LSConfig;
+import mc.mian.lifesteal.platform.Services;
 import mc.mian.lifesteal.util.LSConstants;
 
 public class LifeSteal {

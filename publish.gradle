@@ -25,7 +25,7 @@ publishMods {
         server = true
 
         minecraftVersions.add("${project.minecraft_version}")
-        requires("common-network", "indestructible-blocks")
+        requires("indestructible-blocks")
 
         if(project.name != 'forge'){
             requires("forge-config-api-port")
@@ -38,7 +38,7 @@ publishMods {
         projectId = "${project.modrinth_id}"
 
         minecraftVersions.add("${project.minecraft_version}")
-        requires("common-network", "indestructible-blocks")
+        requires("indestructible-blocks")
 
         if(project.name != 'forge'){
             requires("forge-config-api-port")

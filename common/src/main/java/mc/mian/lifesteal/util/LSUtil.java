@@ -2,14 +2,14 @@ package mc.mian.lifesteal.util;
 
 import com.google.common.collect.ImmutableMap;
 import com.mojang.authlib.GameProfile;
-import commonnetwork.api.Dispatcher;
 import mc.mian.indestructible_blocks.util.IndestructibleUtil;
 import mc.mian.lifesteal.LifeSteal;
 import mc.mian.lifesteal.api.PlayerImpl;
 import mc.mian.lifesteal.common.component.LSDataComponents;
 import mc.mian.lifesteal.common.item.LSItems;
-import mc.mian.lifesteal.common.network.custom.HeartGainedPacket;
+import mc.mian.lifesteal.common.network.custom.HeartGainedPayload;
 import mc.mian.lifesteal.common.data.LSData;
+import mc.mian.lifesteal.platform.Services;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
@@ -298,7 +298,7 @@ public class LSUtil {
             lsData.refreshHealth(false);
 
             if(livingEntity instanceof ServerPlayer serverPlayer)
-                Dispatcher.sendToClient(new HeartGainedPacket(), serverPlayer);
+                Services.NETWORK_REGISTRY.sendToPlayer(serverPlayer, new HeartGainedPayload());
         });
     }
 }

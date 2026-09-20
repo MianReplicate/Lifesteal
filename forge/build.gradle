@@ -48,7 +48,6 @@ dependencies {
     compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:${mixin_extras_version}"))
     jarJar("io.github.llamalad7:mixinextras-forge:${mixin_extras_version}")
 
-    implementation("mysticdrew:common-networking-forge:${common_networking_version}")
     implementation("mc.mian:indestructible-blocks:forge-${indestructible_blocks_version}")
 }
 

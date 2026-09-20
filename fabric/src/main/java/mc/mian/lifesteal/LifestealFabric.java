@@ -2,6 +2,8 @@ package mc.mian.lifesteal;
 
 import fuzs.forgeconfigapiport.fabric.api.v5.ConfigRegistry;
 import mc.mian.lifesteal.common.advancement.LSCriteria;
+import mc.mian.lifesteal.platform.FabricNetworkRegistry;
+import mc.mian.lifesteal.platform.Services;
 import net.fabricmc.api.ModInitializer;
 import mc.mian.lifesteal.common.configuration.ConfigHolder;
 import mc.mian.lifesteal.event.CommandRegistry;
@@ -29,5 +31,7 @@ public class LifestealFabric implements ModInitializer {
         CommandRegistry.register();
         LSBiomeModifier.register();
         registerCriteria();
+
+        ((FabricNetworkRegistry) Services.NETWORK_REGISTRY).registerServer();
     }
 }

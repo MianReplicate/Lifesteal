@@ -21,14 +21,6 @@ versionRange = "${indestructible_blocks_version},"
 ordering = "NONE"
 side = "BOTH"
 
-#Common Network dependency
-[[dependencies.${mod_id}]]
-modId = "commonnetworking"
-mandatory = true
-versionRange = "${common_networking_version},"
-ordering = "NONE"
-side = "BOTH"
-
 #Neoforge dependency
 [[dependencies.${mod_id}]]
 modId = "forge"

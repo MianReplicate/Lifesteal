@@ -5,6 +5,7 @@ import mc.mian.lifesteal.common.advancement.LSCriteria;
 import mc.mian.lifesteal.common.configuration.ConfigHolder;
 import mc.mian.lifesteal.data.LSDataAttachments;
 import mc.mian.lifesteal.datagen.LSDataGenerators;
+import mc.mian.lifesteal.platform.NeoForgeNetworkRegistry;
 import mc.mian.lifesteal.util.LSConstants;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.neoforged.bus.api.IEventBus;
@@ -12,6 +13,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.registries.RegisterEvent;
 
 @Mod(LSConstants.MOD_ID)
@@ -22,6 +24,7 @@ public class LifestealNeoForge {
     public LifestealNeoForge(IEventBus modEventBusParam) {
         modEventBus = modEventBusParam;
         modEventBus.addListener(this::registerEvent);
+        modEventBus.addListener(RegisterPayloadHandlersEvent.class, NeoForgeNetworkRegistry::registerPayload);
 
         ForgeConfigRegistry.INSTANCE.register(LSConstants.MOD_ID, ModConfig.Type.COMMON, ConfigHolder.SERVER_SPEC);
         LifeSteal.config = ConfigHolder.SERVER;

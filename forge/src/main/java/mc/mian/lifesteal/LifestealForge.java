@@ -2,6 +2,8 @@ package mc.mian.lifesteal;
 
 import mc.mian.lifesteal.common.advancement.LSCriteria;
 import mc.mian.lifesteal.common.configuration.ConfigHolder;
+import mc.mian.lifesteal.platform.ForgeNetworkRegistry;
+import mc.mian.lifesteal.platform.Services;
 import mc.mian.lifesteal.util.LSConstants;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraftforge.common.MinecraftForge;
@@ -27,6 +29,8 @@ public class LifestealForge {
         context.registerConfig(ModConfig.Type.COMMON, ConfigHolder.SERVER_SPEC);
         LifeSteal.config = ConfigHolder.SERVER;
         LifeSteal.init();
+
+        ((ForgeNetworkRegistry) Services.NETWORK_REGISTRY).build();
     }
 
     public static void registerCriteria(RegisterEvent registerEvent){

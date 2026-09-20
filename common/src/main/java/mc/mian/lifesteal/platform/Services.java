@@ -1,9 +1,6 @@
 package mc.mian.lifesteal.platform;
 
-import mc.mian.lifesteal.platform.services.IDataHelper;
-import mc.mian.lifesteal.platform.services.IPlatformHelper;
-import mc.mian.lifesteal.platform.services.IRegistryCreator;
-import mc.mian.lifesteal.platform.services.ITabCreator;
+import mc.mian.lifesteal.platform.services.*;
 import mc.mian.lifesteal.util.LSConstants;
 
 import java.util.ServiceLoader;
@@ -19,6 +16,8 @@ public class Services {
     public static final IDataHelper DATA_HELPER = load(IDataHelper.class);
     public static final ITabCreator TAB = load(ITabCreator.class);
     public static final IRegistryCreator REGISTRY_CREATOR = load(IRegistryCreator.class);
+
+    public static final INetworkRegistry NETWORK_REGISTRY = load(INetworkRegistry.class);
 
     // This code is used to load a service for the current environment. Your implementation of the service must be defined
     // manually by including a text file in META-INF/services named with the fully qualified class name of the service.

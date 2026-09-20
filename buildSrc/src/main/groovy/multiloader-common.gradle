@@ -112,7 +112,6 @@ processResources {
             forge_version_range : forge_version_range,
             forge_version: forge_version,
             forge_loader_version_range: forge_loader_version_range,
-            common_networking_version: common_networking_version,
             indestructible_blocks_version: indestructible_blocks_version,
             forge_config_api_port_version: forge_config_api_port_version,
     ]

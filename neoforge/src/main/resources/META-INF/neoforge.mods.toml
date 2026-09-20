@@ -22,14 +22,6 @@ versionRange = "${indestructible_blocks_version},"
 ordering = "NONE"
 side = "BOTH"
 
-#Common Network dependency
-[[dependencies.${mod_id}]]
-modId = "commonnetworking"
-type = 'required'
-versionRange = "${common_networking_version},"
-ordering = "NONE"
-side = "BOTH"
-
 #FCAP dependency
 [[dependencies.${mod_id}]]
 modId = "forgeconfigapiport"
