@@ -17,12 +17,14 @@ import java.lang.invoke.MethodHandles;
 
 @Mod(LSConstants.MOD_ID)
 public class LifestealForge {
-    public static BusGroup modEventGroup = FMLJavaModLoadingContext.get().getModBusGroup();
+    public static BusGroup modEventGroup;
 
-    public LifestealForge() {
+    public LifestealForge(FMLJavaModLoadingContext context) {
+        modEventGroup = context.getModBusGroup();
+
         RegisterEvent.getBus(modEventGroup).addListener(LifestealForge::registerCriteria);
 
-        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, ConfigHolder.SERVER_SPEC);
+        context.registerConfig(ModConfig.Type.COMMON, ConfigHolder.SERVER_SPEC);
         LifeSteal.config = ConfigHolder.SERVER;
         LifeSteal.init();
     }
