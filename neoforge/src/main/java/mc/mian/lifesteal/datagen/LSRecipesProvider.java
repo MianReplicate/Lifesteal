@@ -3,16 +3,19 @@ package mc.mian.lifesteal.datagen;
 import mc.mian.lifesteal.common.block.LSBlocks;
 import mc.mian.lifesteal.common.item.LSItems;
 import mc.mian.lifesteal.util.LSConstants;
+import net.minecraft.advancements.Advancement;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Recipe;
 
 import java.util.concurrent.CompletableFuture;
 
 public class LSRecipesProvider extends RecipeProvider {
-    public LSRecipesProvider(HolderLookup.Provider lookupProvider, RecipeOutput output) {
-        super(lookupProvider, output);
+    public LSRecipesProvider(final BootstrapContext<Recipe<?>> recipeOutput, final BootstrapContext<Advancement> advancementOutput) {
+        super(recipeOutput, advancementOutput);
     }
 
     @Override
@@ -56,21 +59,5 @@ public class LSRecipesProvider extends RecipeProvider {
                 .define('h', LSItems.HEART_CRYSTAL.get())
                 .unlockedBy("has_totem", this.has(Items.TOTEM_OF_UNDYING))
                 .save(this.output);
-    }
-
-    public static class Runner extends RecipeProvider.Runner {
-        public Runner(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> completableFuture) {
-            super(packOutput, completableFuture);
-        }
-
-        @Override
-        protected RecipeProvider createRecipeProvider(HolderLookup.Provider provider, RecipeOutput recipeOutput) {
-            return new LSRecipesProvider(provider, recipeOutput);
-        }
-
-        @Override
-        public String getName() {
-            return LSConstants.MOD_DISPLAY_NAME + " Recipes";
-        }
     }
 }

@@ -8,13 +8,15 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.TagsProvider;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
+import net.neoforged.neoforge.common.data.BlockTagCopyingItemTagProvider;
 
 import java.util.concurrent.CompletableFuture;
 
-public class LSItemTagsProvider extends TagsProvider<Item> {
+public class LSItemTagsProvider extends BlockTagCopyingItemTagProvider {
 
-    public LSItemTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider) {
-        super(output, Registries.ITEM, lookupProvider, LSConstants.MOD_ID);
+    public LSItemTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, CompletableFuture<TagLookup<Block>> blockTags) {
+        super(output, lookupProvider, blockTags, LSConstants.MOD_ID);
     }
 
     @Override
